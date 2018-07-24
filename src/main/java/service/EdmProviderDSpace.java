@@ -3,6 +3,7 @@ package service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.olingo.commons.api.edm.EdmPrimitiveTypeKind;
@@ -19,10 +20,12 @@ import org.apache.olingo.commons.api.edm.provider.CsdlPropertyRef;
 import org.apache.olingo.commons.api.edm.provider.CsdlSchema;
 import org.apache.olingo.commons.api.ex.ODataException;
 
+import entitys.EntityRegister;
+
 public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 
 	// Service Namespace
-	public final static String NAMESPACE = "rz.CourseService";
+	public final static String NAMESPACE = "rz.ODataService";
 
 	// EDM Container
 	public final static String CONTAINER_NAME = "Container";
@@ -34,17 +37,27 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 
 	public static final String ET_ORGUNIT_NAME = "Orgunit";
 	public static final FullQualifiedName ET_ORGUNIT_FQN = new FullQualifiedName(NAMESPACE, ET_ORGUNIT_NAME);
+	
+	public static final String ET_PROJECT_NAME = "Project";
+	public static final FullQualifiedName ET_PROJECT_FQN = new FullQualifiedName(NAMESPACE, ET_PROJECT_NAME);
 
 	// Entity Set Names
 	public static final String ES_RESEARCHERS_NAME = "Researchers";
 	public static final String ES_ORGUNITS_NAME = "Orgunits";
+	public static final String ES_PROJECTS_NAME = "Projects";
+	
+	EntityRegister entityRegister = new EntityRegister();
+
 
 	@Override
 	public CsdlEntityContainer getEntityContainer() throws ODataException {
 		// create EntitySets
 		List<CsdlEntitySet> entitySets = new ArrayList<CsdlEntitySet>();
-		entitySets.add(getEntitySet(CONTAINER, ES_RESEARCHERS_NAME));
-		entitySets.add(getEntitySet(CONTAINER, ES_ORGUNITS_NAME));
+
+		for(String entitySetName: entityRegister.getEntitySetNameList()) {
+			entitySets.add(getEntitySet(CONTAINER, entitySetName));		
+		}
+		
 		// create EntityContainer
 		CsdlEntityContainer entityContainer = new CsdlEntityContainer();
 		entityContainer.setName(CONTAINER_NAME);
@@ -68,7 +81,7 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 
 	@Override
 	public CsdlEntitySet getEntitySet(FullQualifiedName entityContainer, String entitySetName) throws ODataException {
-		CsdlEntitySet entitySet = null;
+		//TODO:Hier war ich! 
 
 		if (entityContainer.equals(CONTAINER)) {
 			if (entitySetName.equals(ES_RESEARCHERS_NAME)) {
@@ -149,62 +162,69 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 			entityType.setKey(Collections.singletonList(propertyRef));
 			entityType.setNavigationProperties(navPropList);
 
-		} else if (entityTypeName.equals(ET_PERFORMER_FQN)) {
+		} else if (entityTypeName.equals(ET_ORGUNIT_FQN)) {
 			CsdlProperty id = new CsdlProperty().setName("id")
 					.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
-			CsdlProperty familyName = new CsdlProperty().setName("familyName")
+			CsdlProperty idmKey = new CsdlProperty().setName("idmKey")
 					.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-			CsdlProperty givenName = new CsdlProperty().setName("givenName")
+			CsdlProperty name = new CsdlProperty().setName("Name")
 					.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-			CsdlProperty name = new CsdlProperty().setName("name")
+			CsdlProperty description = new CsdlProperty().setName("Beschreibung")
 					.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-			CsdlProperty uid = new CsdlProperty().setName("uid")
+			CsdlProperty url = new CsdlProperty().setName("Url")
 					.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-			CsdlProperty type = new CsdlProperty().setName("type")
+			CsdlProperty startDate = new CsdlProperty().setName("Startzeitpunkt")
 					.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+			CsdlProperty endDate = new CsdlProperty().setName("Endzeitpunkt")
+					.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+
 			CsdlPropertyRef propertyRef = new CsdlPropertyRef();
 			propertyRef.setName("id");
 
 			entityType = new CsdlEntityType();
-			entityType.setName(ET_PERFORMER_NAME);
-			entityType.setProperties(Arrays.asList(id, familyName, givenName, name, uid, type));
+			entityType.setName(ET_ORGUNIT_NAME);
+			entityType.setProperties(Arrays.asList(id, idmKey, name, description, url, startDate, endDate));
 			entityType.setKey(Arrays.asList(propertyRef));
 
-		} else if (entityTypeName.equals(ET_PLACE_FQN)) {
+		} else if (entityTypeName.equals(ET_PROJECT_FQN)) {
 
-			CsdlProperty id = new CsdlProperty().setName("id")
+			CsdlProperty id = new CsdlProperty().setName("Id")
 					.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
-			CsdlProperty alternateNames = new CsdlProperty().setName("alternateNames")
+			CsdlProperty acornym = new CsdlProperty().setName("Kürzel")
 					.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-			CsdlProperty categories = new CsdlProperty().setName("categories")
+			CsdlProperty title = new CsdlProperty().setName("Titel")
 					.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-			CsdlProperty description = new CsdlProperty().setName("description")
+			CsdlProperty description = new CsdlProperty().setName("Beschreibung")
 					.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-			CsdlProperty name = new CsdlProperty().setName("name")
+			CsdlProperty startDate = new CsdlProperty().setName("Startzeitpunkt")
 					.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-			CsdlProperty subType = new CsdlProperty().setName("subType")
+			CsdlProperty durationinMonths = new CsdlProperty().setName("Dauer in Monaten")
 					.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-			CsdlProperty uid = new CsdlProperty().setName("uid")
+			CsdlProperty endDate = new CsdlProperty().setName("Endzeitpunkt")
 					.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-			CsdlProperty type = new CsdlProperty().setName("type")
+			CsdlProperty budget = new CsdlProperty().setName("Budget")
 					.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-			CsdlProperty url = new CsdlProperty().setName("url")
+			CsdlProperty keywords = new CsdlProperty().setName("Stichwörter")
+					.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+			CsdlProperty url = new CsdlProperty().setName("Url")
+					.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+			CsdlProperty status = new CsdlProperty().setName("Status")
+					.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+			CsdlProperty specialProject = new CsdlProperty().setName("Sonderprojekt")
+					.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+			CsdlProperty projectTyp = new CsdlProperty().setName("Stichwörter")
 					.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 			CsdlPropertyRef propertyRef = new CsdlPropertyRef();
 			propertyRef.setName("id");
 
-			CsdlNavigationProperty navPropPlaceSubProperties = new CsdlNavigationProperty()
-					.setName("PlaceSubProperties").setType(ET_PLACE_SUB_PROPERTIES_FQN).setCollection(true);
 
-			List<CsdlNavigationProperty> navPropList = new ArrayList<CsdlNavigationProperty>();
-			navPropList.add(navPropPlaceSubProperties);
 
 			entityType = new CsdlEntityType();
 			entityType.setName(ET_PLACE_NAME);
 			entityType.setProperties(
 					Arrays.asList(id, alternateNames, categories, description, name, subType, type, url, uid));
 			entityType.setKey(Arrays.asList(propertyRef));
-			entityType.setNavigationProperties(navPropList);
+
 
 		}
 
