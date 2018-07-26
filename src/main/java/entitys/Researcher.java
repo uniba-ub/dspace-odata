@@ -2,7 +2,10 @@ package entitys;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
+import org.apache.olingo.commons.api.data.Entity;
+import org.apache.olingo.commons.api.data.Property;
 import org.apache.olingo.commons.api.edm.EdmPrimitiveTypeKind;
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
 import org.apache.olingo.commons.api.edm.provider.CsdlEntitySet;
@@ -10,15 +13,15 @@ import org.apache.olingo.commons.api.edm.provider.CsdlEntityType;
 import org.apache.olingo.commons.api.edm.provider.CsdlProperty;
 import org.apache.olingo.commons.api.edm.provider.CsdlPropertyRef;
 
-public class Researcher implements Entity {
+public class Researcher implements EntityModel {
 	
-	public final static String NAMESPACE = "rz.ODataService";
+	public final static String NAMESPACE = "dspace";
 	
 	public static final String ET_RESEARCHER_NAME = "Researcher";
 	public static final FullQualifiedName ET_RESEARCHER_FQN = new FullQualifiedName(NAMESPACE, ET_RESEARCHER_NAME);
 	public static final String ES_RESEARCHERS_NAME = "Researchers";
-	public CsdlEntityType entityType;
-	public CsdlEntitySet entitySet;
+	private CsdlEntityType entityType;
+	private CsdlEntitySet entitySet;
 	
 	public Researcher() {
 		
@@ -82,6 +85,6 @@ public class Researcher implements Entity {
 		return entitySet;
 	}
 
-	
-	
 }
+	
+

@@ -35,13 +35,13 @@ import org.apache.olingo.server.api.uri.queryoption.expression.Expression;
 import org.apache.olingo.server.api.uri.queryoption.expression.ExpressionVisitException;
 import org.apache.olingo.server.api.uri.queryoption.expression.Member;
 
-import courseservice.rz.data.EntityDatabase;
+import data.TestDatabase;
 
 public class QueryOptionService {
 
-	private EntityDatabase entityDatabase;
+	private TestDatabase entityDatabase;
 
-	public QueryOptionService(EntityDatabase entityDatabase) {
+	public QueryOptionService(TestDatabase entityDatabase) {
 
 		this.entityDatabase = entityDatabase;
 
@@ -96,7 +96,8 @@ public class QueryOptionService {
 		return entityList;
 
 	}
-
+//TODO: wieder einfügen
+	/*
 	public EdmEntitySet applyExpandOptionOnCollection(ExpandOption expandOption, EdmEntitySet responseEdmEntitySet,
 			EntityCollection entityCollection) throws ODataApplicationException {
 		List<EdmNavigationProperty> edmNavigationPropertyList = new LinkedList<EdmNavigationProperty>();
@@ -171,7 +172,10 @@ public class QueryOptionService {
 		return responseEdmEntitySet;
 
 	}
-
+	
+	*/
+	//TODO: wieder einfügen
+/*
 	public Entity applyExpandOptionOnEntity(ExpandOption expandOption, Entity responseEntity,
 			EdmEntitySet responseEdmEntitySet) throws ODataApplicationException {
 
@@ -253,7 +257,7 @@ public class QueryOptionService {
 
 		return responseEntity;
 	}
-
+*/
 	public List<Entity> applyOrderByOption(OrderByOption orderByOption, List<Entity> entityList) {
 		if (orderByOption != null) {
 			List<OrderByItem> orderItemList = orderByOption.getOrders();

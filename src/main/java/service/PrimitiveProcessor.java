@@ -29,15 +29,15 @@ import org.apache.olingo.server.api.uri.UriResource;
 import org.apache.olingo.server.api.uri.UriResourceEntitySet;
 import org.apache.olingo.server.api.uri.UriResourceProperty;
 
-import courseservice.rz.data.EntityDatabase;
+import data.TestDatabase;
 
 public class PrimitiveProcessor implements org.apache.olingo.server.api.processor.PrimitiveProcessor {
 
 	private OData odata;
-	private EntityDatabase entityDatabase;
+	private TestDatabase entityDatabase;
 	private ServiceMetadata serviceMetadata;
 
-	public PrimitiveProcessor(EntityDatabase entityDatabase) {
+	public PrimitiveProcessor(TestDatabase entityDatabase) {
 		this.entityDatabase = entityDatabase;
 	}
 

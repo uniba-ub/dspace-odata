@@ -30,17 +30,17 @@ import org.apache.olingo.server.api.uri.UriResourceNavigation;
 import org.apache.olingo.server.api.uri.queryoption.ExpandOption;
 import org.apache.olingo.server.api.uri.queryoption.SelectOption;
 
-import courseservice.rz.data.EntityDatabase;
-import courseservice.rz.util.Util;
+import data.TestDatabase;
+import util.Util;
 
 public class EntityProcessor implements org.apache.olingo.server.api.processor.EntityProcessor {
 
 	private OData odata;
 	private ServiceMetadata serviceMetadata;
-	private EntityDatabase entityDatabase;
+	private TestDatabase entityDatabase;
 	private QueryOptionService queryOptionService;
 
-	public EntityProcessor(EntityDatabase entityDatabase) {
+	public EntityProcessor(TestDatabase entityDatabase) {
 
 		this.entityDatabase = entityDatabase;
 		queryOptionService = new QueryOptionService(this.entityDatabase);
@@ -94,7 +94,10 @@ public class EntityProcessor implements org.apache.olingo.server.api.processor.E
 			List<UriParameter> keyPredicates = uriResourceEntitySet.getKeyPredicates();
 			responseEntity = entityDatabase.readEntityData(startEdmEntitySet, keyPredicates);
 
-		} else if (segmentCount == 2) {
+		} 
+		//TODO: wieder einfügen
+		/*
+		else if (segmentCount == 2) {
 			UriResource navSegment = resourceParts.get(1);
 			if (navSegment instanceof UriResourceNavigation) {
 				UriResourceNavigation uriResourceNavigation = (UriResourceNavigation) navSegment;
@@ -114,7 +117,7 @@ public class EntityProcessor implements org.apache.olingo.server.api.processor.E
 							navKeyPredicates);
 				}
 			}
-		} else {
+		}*/ else {
 			throw new ODataApplicationException("Not supported", HttpStatusCode.NOT_IMPLEMENTED.getStatusCode(),
 					Locale.ROOT);
 		}
@@ -127,10 +130,11 @@ public class EntityProcessor implements org.apache.olingo.server.api.processor.E
 		// Create System Query Options
 		SelectOption selectOption = uriInfo.getSelectOption();
 		ExpandOption expandOption = uriInfo.getExpandOption();
-
+//TODO: wieder einfügen
+		/*
 		responseEntity = queryOptionService.applyExpandOptionOnEntity(expandOption, responseEntity,
 				responseEdmEntitySet);
-
+	*/
 		ODataSerializer serializer = this.odata.createSerializer(responseFormat);
 
 		EdmEntityType edmEntityType = responseEdmEntitySet.getEntityType();

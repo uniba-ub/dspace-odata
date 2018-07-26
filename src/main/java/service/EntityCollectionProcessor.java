@@ -35,20 +35,20 @@ import org.apache.olingo.server.api.uri.queryoption.SelectOption;
 import org.apache.olingo.server.api.uri.queryoption.SkipOption;
 import org.apache.olingo.server.api.uri.queryoption.TopOption;
 
-import courseservice.rz.data.EntityDatabase;
-import courseservice.rz.util.Util;
+import util.Util;
+import data.TestDatabase;
 
 public class EntityCollectionProcessor implements org.apache.olingo.server.api.processor.EntityCollectionProcessor {
 
 	private OData odata;
 	private ServiceMetadata serviceMetadata;
-	private EntityDatabase entityDatabase;
+	private TestDatabase testDatabase;
 	private QueryOptionService queryOptionService;
 
-	public EntityCollectionProcessor(EntityDatabase entityDatabase) {
+	public EntityCollectionProcessor(TestDatabase testDatabase) {
 
-		this.entityDatabase = entityDatabase;
-		queryOptionService = new QueryOptionService(this.entityDatabase);
+		this.testDatabase = testDatabase;
+		queryOptionService = new QueryOptionService(this.testDatabase);
 
 	}
 
@@ -94,7 +94,8 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 			// get the data from EntityDatabase for this requested EntitySetName and deliver
 			// as EntitySet
 
-			entityCollection = entityDatabase.readEntitySetData(startEdmEntitySet);
+			entityCollection = testDatabase.readEntitySetData(startEdmEntitySet);
+
 			List<Entity> entityList = entityCollection.getEntities();
 			responseEntityCollection = queryOptionService.applyCountOption(countOption, entityList);
 			entityList = queryOptionService.applySkipOption(skipOption, entityList);
@@ -108,7 +109,7 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 
 			// Only Course->Performers or Course->Places is supported, so segmentCount== 3
 			// is not needed
-		} else if (segmentCount == 2) { // in case of navigation to performer
+		} /*else if (segmentCount == 2) { // in case of navigation to performer
 										// property:../CourseService.svc/Courses(1)/Performers
 
 			UriResource lastSegment = resourceParts.get(1);
@@ -120,13 +121,13 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 
 				// get the data from Entitydatabase
 				List<UriParameter> keyPredicates = uriResourceEntitySet.getKeyPredicates();
-				Entity sourceEntity = entityDatabase.readEntityData(startEdmEntitySet, keyPredicates);
+				Entity sourceEntity = testDatabase.readEntityData(startEdmEntitySet, keyPredicates);
 				if (sourceEntity == null) {
 					throw new ODataApplicationException("Entity not found.", HttpStatusCode.NOT_FOUND.getStatusCode(),
 							Locale.ROOT);
 				}
 				// get related EntityCollection
-				entityCollection = entityDatabase.getRelatedEntityCollection(sourceEntity, targetEntityType);
+				entityCollection = testDatabase.getRelatedEntityCollection(sourceEntity, targetEntityType);
 				List<Entity> entityList = entityCollection.getEntities();
 				responseEntityCollection = queryOptionService.applyCountOption(countOption, entityList);
 				entityList = queryOptionService.applySkipOption(skipOption, entityList);
@@ -141,10 +142,13 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 		} else {
 			throw new ODataApplicationException("Not supported", HttpStatusCode.NOT_IMPLEMENTED.getStatusCode(),
 					Locale.ROOT);
-		}
+		} */
 
+		//TODO: wieder einfügen
+		/*
 		responseEdmEntitySet = queryOptionService.applyExpandOptionOnCollection(expandOption, responseEdmEntitySet,
 				entityCollection);
+	*/
 
 		EdmEntityType edmEntityType = responseEdmEntitySet.getEntityType();
 		String selectList = odata.createUriHelper().buildContextURLSelectList(edmEntityType, expandOption,
@@ -156,12 +160,11 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 				.select(selectOption).expand(expandOption).id(id).count(countOption).build();
 
 		ODataSerializer serializer = odata.createSerializer(responseFormat);
-
+		List<Entity> list = responseEntityCollection.getEntities();
 		SerializerResult serializerResult = serializer.entityCollection(this.serviceMetadata, edmEntityType,
 				responseEntityCollection, opts);
 
 		InputStream serializedContent = serializerResult.getContent();
-
 		// configuration of the response object
 		response.setContent(serializedContent);
 		response.setStatusCode(HttpStatusCode.OK.getStatusCode());

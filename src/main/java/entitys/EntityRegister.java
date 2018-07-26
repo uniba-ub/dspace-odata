@@ -1,20 +1,27 @@
 package entitys;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.olingo.commons.api.data.Entity;
+import org.apache.olingo.commons.api.data.Property;
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
 import org.apache.olingo.commons.api.edm.provider.CsdlEntitySet;
 import org.apache.olingo.commons.api.edm.provider.CsdlEntityType;
 import org.apache.olingo.commons.api.edm.provider.CsdlNavigationProperty;
 import org.apache.olingo.commons.api.edm.provider.CsdlNavigationPropertyBinding;
+import org.apache.olingo.commons.api.ex.ODataRuntimeException;
+
+import service.EdmProviderDSpace;
 
 public class EntityRegister {
 	
 		public List<CsdlEntityType> entityTypList;
 		public List<String> entitySetNameList;
-		public List<FullQualifiedName> entityTypNameList;
+		public List<FullQualifiedName> entityFQNList;
 		public List<CsdlEntitySet> entitySetList;
 	
 		public EntityRegister() {		
@@ -23,7 +30,7 @@ public class EntityRegister {
 		}
 		
 		public void registerEntitys() {
-			List<Entity> entityList = new LinkedList<Entity>();
+			List<EntityModel> entityList = new LinkedList<EntityModel>();
 
 			Researcher researcher = new Researcher();
 			entityList.add(researcher);
@@ -45,8 +52,8 @@ public class EntityRegister {
 			return entitySetNameList;
 		}
 
-		public List<FullQualifiedName> getEntityTypNameList() {
-			return entityTypNameList;
+		public List<FullQualifiedName> getFQNList() {
+			return entityFQNList;
 		}
 		
 		public List<CsdlEntitySet> getEntitySet(){			
@@ -54,7 +61,7 @@ public class EntityRegister {
 			
 		}
 		
-		public void setNavigationPropertyForEntity (Entity entity, List<Entity> entitiyList) {
+		public void setNavigationPropertyForEntity (EntityModel entity, List<EntityModel> entitiyList) {
 			
 			List<CsdlNavigationPropertyBinding> navPropBindingList = new ArrayList<CsdlNavigationPropertyBinding>();
 			CsdlNavigationPropertyBinding navPropBinding= new CsdlNavigationPropertyBinding();
@@ -63,7 +70,7 @@ public class EntityRegister {
 			CsdlNavigationProperty navProp = new CsdlNavigationProperty();
 
 			
-			for(Entity item: entitiyList) {
+			for(EntityModel item: entitiyList) {
 				
 				navPropBinding.setTarget(item.getEntitySetName());
 				navPropBinding.setPath(item.getEntitySetName());
@@ -79,20 +86,60 @@ public class EntityRegister {
 			
 		}
 		
-		private void fillList(List<Entity> entityList) {
+		private void fillList(List<EntityModel> entityList) {
 			
 			entityTypList = new LinkedList<CsdlEntityType>();
 			entitySetNameList = new LinkedList<String>();
-			entityTypNameList = new LinkedList<FullQualifiedName>();
+			entityFQNList = new LinkedList<FullQualifiedName>();
 			entitySetList = new LinkedList<CsdlEntitySet>();
 			
-			for(Entity item: entityList) {
+			for(EntityModel item: entityList) {
 				entityTypList.add(item.getEntityType());
-				entityTypNameList.add(item.getFullQualifiedName());
+				entityFQNList.add(item.getFullQualifiedName());
 				entitySetNameList.add(item.getEntitySetName());
 				entitySetList.add(item.getEntitySet());			
 			}
 			
 		}
+		
+		public Entity createEntity(List<Property> propertyList, String entitySetName) {
+			Entity entity = new Entity();
+			String type = (EdmProviderDSpace.NAMESPACE + "." + entitySetName.substring(0, entitySetName.length()-1));
+			for(Property item: propertyList) {
+				entity.addProperty(item);
+				entity.setType(type);
+				entity.setId(createId(entity, "id"));
+			}
+			return entity;
+		}
+		
+		private URI createId(Entity entity, String idPropertyName, String navigationName) {
+			try {
+				StringBuilder sb = new StringBuilder(getEntitySetName(entity)).append("(");
+				final Property property = entity.getProperty(idPropertyName);
+				sb.append(property.asPrimitive()).append(")");
+				if (navigationName != null) {
+					sb.append("/").append(navigationName);
+				}
+				return new URI(sb.toString());
+			} catch (URISyntaxException e) {
+				throw new ODataRuntimeException("Unable to create (Atom) id for entity: " + entity, e);
+			}
+		}
+		
+		private URI createId(Entity entity, String idPropertyName) {
+			return createId(entity, idPropertyName, null);
+		}
+		
+		private String getEntitySetName(Entity entity) {
+			String result = new String();
+			for(CsdlEntitySet item: entitySetList) {
+				if(item.getTypeFQN().getFullQualifiedNameAsString().equals(entity.getType())){
+					result = item.getName();
+				} 
+			}
+			return result;
+		}
+			
 		
 }

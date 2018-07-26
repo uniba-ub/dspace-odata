@@ -1,7 +1,10 @@
 package entitys;
 
 import java.util.Arrays;
+import java.util.List;
 
+import org.apache.olingo.commons.api.data.Entity;
+import org.apache.olingo.commons.api.data.Property;
 import org.apache.olingo.commons.api.edm.EdmPrimitiveTypeKind;
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
 import org.apache.olingo.commons.api.edm.provider.CsdlEntitySet;
@@ -9,9 +12,9 @@ import org.apache.olingo.commons.api.edm.provider.CsdlEntityType;
 import org.apache.olingo.commons.api.edm.provider.CsdlProperty;
 import org.apache.olingo.commons.api.edm.provider.CsdlPropertyRef;
 
-public class Orgunit implements Entity{
+public class Orgunit implements EntityModel{
 	
-	public final static String NAMESPACE = "rz.ODataService";
+	public final static String NAMESPACE = "dspace";
 
 	public static final String ET_ORGUNIT_NAME = "Orgunit";
 	public static final FullQualifiedName ET_ORGUNIT_FQN = new FullQualifiedName(NAMESPACE, ET_ORGUNIT_NAME);
@@ -75,6 +78,7 @@ public class Orgunit implements Entity{
 	public CsdlEntitySet getEntitySet() {
 		return entitySet;
 	}
+
 	
 	
 }
