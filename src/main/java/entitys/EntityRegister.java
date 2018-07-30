@@ -31,12 +31,19 @@ public class EntityRegister {
 		
 		public void registerEntitys() {
 			List<EntityModel> entityList = new LinkedList<EntityModel>();
+			List<EntityModel> navEntityList = new LinkedList<EntityModel>();
 
 			Researcher researcher = new Researcher();
 			entityList.add(researcher);
 			
 			Orgunit orgunit = new Orgunit();
 		    entityList.add(orgunit);
+		    
+		    Project project = new Project();
+		    entityList.add(project);
+		    
+		    navEntityList.add(orgunit);
+		    setNavigationPropertyForEntity(researcher, navEntityList);
 		    
 		    fillList(entityList);
 
