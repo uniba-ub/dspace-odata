@@ -1,4 +1,4 @@
-package service;
+package odata;
 
 import java.io.InputStream;
 import java.util.List;
@@ -37,6 +37,7 @@ import org.apache.olingo.server.api.uri.queryoption.TopOption;
 
 import util.Util;
 import data.TestDatabase;
+import service.QueryOptionService;
 
 public class EntityCollectionProcessor implements org.apache.olingo.server.api.processor.EntityCollectionProcessor {
 

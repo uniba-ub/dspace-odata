@@ -15,7 +15,7 @@ import org.apache.olingo.commons.api.edm.provider.CsdlNavigationProperty;
 import org.apache.olingo.commons.api.edm.provider.CsdlNavigationPropertyBinding;
 import org.apache.olingo.commons.api.ex.ODataRuntimeException;
 
-import service.EdmProviderDSpace;
+import odata.EdmProviderDSpace;
 
 public class EntityRegister {
 	

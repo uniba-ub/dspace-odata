@@ -1,4 +1,4 @@
-package service;
+package odata;
 
 import java.io.InputStream;
 import java.util.List;

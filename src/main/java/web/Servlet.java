@@ -17,10 +17,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import data.TestDatabase;
-import service.EdmProviderDSpace;
-import service.EntityCollectionProcessor;
-import service.EntityProcessor;
-import service.PrimitiveProcessor;
+import odata.EdmProviderDSpace;
+import odata.EntityCollectionProcessor;
+import odata.EntityProcessor;
+import odata.PrimitiveProcessor;
 
 public class Servlet extends HttpServlet {
 

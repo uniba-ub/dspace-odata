@@ -1,4 +1,4 @@
-package service;
+package odata;
 
 import java.util.List;
 import java.util.Locale;
@@ -31,6 +31,7 @@ import org.apache.olingo.server.api.uri.queryoption.ExpandOption;
 import org.apache.olingo.server.api.uri.queryoption.SelectOption;
 
 import data.TestDatabase;
+import service.QueryOptionService;
 import util.Util;
 
 public class EntityProcessor implements org.apache.olingo.server.api.processor.EntityProcessor {
