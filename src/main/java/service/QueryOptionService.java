@@ -35,13 +35,13 @@ import org.apache.olingo.server.api.uri.queryoption.expression.Expression;
 import org.apache.olingo.server.api.uri.queryoption.expression.ExpressionVisitException;
 import org.apache.olingo.server.api.uri.queryoption.expression.Member;
 
-import data.TestDatabase;
+import data.DataHandler;
 
 public class QueryOptionService {
 
-	private TestDatabase entityDatabase;
+	private DataHandler entityDatabase;
 
-	public QueryOptionService(TestDatabase entityDatabase) {
+	public QueryOptionService(DataHandler entityDatabase) {
 
 		this.entityDatabase = entityDatabase;
 

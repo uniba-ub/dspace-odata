@@ -109,44 +109,5 @@ public class EntityRegister {
 			
 		}
 		
-		public Entity createEntity(List<Property> propertyList, String entitySetName) {
-			Entity entity = new Entity();
-			String type = (EdmProviderDSpace.NAMESPACE + "." + entitySetName.substring(0, entitySetName.length()-1));
-			for(Property item: propertyList) {
-				entity.addProperty(item);
-				entity.setType(type);
-				entity.setId(createId(entity, "id"));
-			}
-			return entity;
-		}
-		
-		private URI createId(Entity entity, String idPropertyName, String navigationName) {
-			try {
-				StringBuilder sb = new StringBuilder(getEntitySetName(entity)).append("(");
-				final Property property = entity.getProperty(idPropertyName);
-				sb.append(property.asPrimitive()).append(")");
-				if (navigationName != null) {
-					sb.append("/").append(navigationName);
-				}
-				return new URI(sb.toString());
-			} catch (URISyntaxException e) {
-				throw new ODataRuntimeException("Unable to create (Atom) id for entity: " + entity, e);
-			}
-		}
-		
-		private URI createId(Entity entity, String idPropertyName) {
-			return createId(entity, idPropertyName, null);
-		}
-		
-		private String getEntitySetName(Entity entity) {
-			String result = new String();
-			for(CsdlEntitySet item: entitySetList) {
-				if(item.getTypeFQN().getFullQualifiedNameAsString().equals(entity.getType())){
-					result = item.getName();
-				} 
-			}
-			return result;
-		}
-			
 		
 }

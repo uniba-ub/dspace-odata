@@ -1,5 +1,6 @@
 package odata;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Locale;
@@ -34,22 +35,23 @@ import org.apache.olingo.server.api.uri.queryoption.OrderByOption;
 import org.apache.olingo.server.api.uri.queryoption.SelectOption;
 import org.apache.olingo.server.api.uri.queryoption.SkipOption;
 import org.apache.olingo.server.api.uri.queryoption.TopOption;
+import org.apache.solr.client.solrj.SolrServerException;
 
 import util.Util;
-import data.TestDatabase;
+import data.DataHandler;
 import service.QueryOptionService;
 
 public class EntityCollectionProcessor implements org.apache.olingo.server.api.processor.EntityCollectionProcessor {
 
 	private OData odata;
 	private ServiceMetadata serviceMetadata;
-	private TestDatabase testDatabase;
+	private DataHandler datahandler;
 	private QueryOptionService queryOptionService;
 
-	public EntityCollectionProcessor(TestDatabase testDatabase) {
+	public EntityCollectionProcessor(DataHandler datahandler) {
 
-		this.testDatabase = testDatabase;
-		queryOptionService = new QueryOptionService(this.testDatabase);
+		this.datahandler = datahandler;
+		queryOptionService = new QueryOptionService(this.datahandler);
 
 	}
 
@@ -95,7 +97,15 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 			// get the data from EntityDatabase for this requested EntitySetName and deliver
 			// as EntitySet
 
-			entityCollection = testDatabase.readEntitySetData(startEdmEntitySet);
+			try {
+				entityCollection = datahandler.readEntitySetData(startEdmEntitySet);
+			} catch (SolrServerException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			List<Entity> entityList = entityCollection.getEntities();
 			responseEntityCollection = queryOptionService.applyCountOption(countOption, entityList);

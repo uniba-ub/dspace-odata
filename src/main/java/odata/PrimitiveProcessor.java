@@ -1,5 +1,6 @@
 package odata;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Locale;
@@ -28,17 +29,18 @@ import org.apache.olingo.server.api.uri.UriParameter;
 import org.apache.olingo.server.api.uri.UriResource;
 import org.apache.olingo.server.api.uri.UriResourceEntitySet;
 import org.apache.olingo.server.api.uri.UriResourceProperty;
+import org.apache.solr.client.solrj.SolrServerException;
 
-import data.TestDatabase;
+import data.DataHandler;
 
 public class PrimitiveProcessor implements org.apache.olingo.server.api.processor.PrimitiveProcessor {
 
 	private OData odata;
-	private TestDatabase entityDatabase;
+	private DataHandler datahandler;
 	private ServiceMetadata serviceMetadata;
 
-	public PrimitiveProcessor(TestDatabase entityDatabase) {
-		this.entityDatabase = entityDatabase;
+	public PrimitiveProcessor(DataHandler datahandler) {
+		this.datahandler = datahandler;
 	}
 
 	public void init(OData odata, ServiceMetadata serviceMetadata) {
@@ -68,7 +70,16 @@ public class PrimitiveProcessor implements org.apache.olingo.server.api.processo
 
 		// retrieve data from entitydatabase
 
-		Entity entity = entityDatabase.readEntityData(edmEntitySet, keyPredicates);
+		Entity entity = null;
+		try {
+			entity = datahandler.readEntityData(edmEntitySet, keyPredicates);
+		} catch (SolrServerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if (entity == null) { // Wrong request
 			throw new ODataApplicationException("Entity not found", HttpStatusCode.NOT_FOUND.getStatusCode(),
 					Locale.ENGLISH);

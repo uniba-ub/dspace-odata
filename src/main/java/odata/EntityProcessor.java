@@ -1,5 +1,6 @@
 package odata;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
@@ -29,8 +30,9 @@ import org.apache.olingo.server.api.uri.UriResourceEntitySet;
 import org.apache.olingo.server.api.uri.UriResourceNavigation;
 import org.apache.olingo.server.api.uri.queryoption.ExpandOption;
 import org.apache.olingo.server.api.uri.queryoption.SelectOption;
+import org.apache.solr.client.solrj.SolrServerException;
 
-import data.TestDatabase;
+import data.DataHandler;
 import service.QueryOptionService;
 import util.Util;
 
@@ -38,13 +40,13 @@ public class EntityProcessor implements org.apache.olingo.server.api.processor.E
 
 	private OData odata;
 	private ServiceMetadata serviceMetadata;
-	private TestDatabase entityDatabase;
+	private DataHandler datahandler;
 	private QueryOptionService queryOptionService;
 
-	public EntityProcessor(TestDatabase entityDatabase) {
+	public EntityProcessor(DataHandler entityDatabase) {
 
-		this.entityDatabase = entityDatabase;
-		queryOptionService = new QueryOptionService(this.entityDatabase);
+		this.datahandler = entityDatabase;
+		queryOptionService = new QueryOptionService(this.datahandler);
 	}
 
 	public void init(OData odata, ServiceMetadata serviceMetadata) {
@@ -93,7 +95,15 @@ public class EntityProcessor implements org.apache.olingo.server.api.processor.E
 
 			// Retrieve the data from entityDatabase
 			List<UriParameter> keyPredicates = uriResourceEntitySet.getKeyPredicates();
-			responseEntity = entityDatabase.readEntityData(startEdmEntitySet, keyPredicates);
+			try {
+				responseEntity = datahandler.readEntityData(startEdmEntitySet, keyPredicates);
+			} catch (SolrServerException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 		} 
 		//TODO: wieder einfügen

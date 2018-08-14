@@ -16,7 +16,7 @@ import org.apache.olingo.server.api.edmx.EdmxReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import data.TestDatabase;
+import data.DataHandler;
 import odata.EdmProviderDSpace;
 import odata.EntityCollectionProcessor;
 import odata.EntityProcessor;
@@ -32,10 +32,10 @@ public class Servlet extends HttpServlet {
 			throws ServletException, IOException {
 		try {
 			HttpSession session = req.getSession(true);
-			TestDatabase entityDatabase = (TestDatabase) session.getAttribute(TestDatabase.class.getName());
+			DataHandler entityDatabase = (DataHandler) session.getAttribute(DataHandler.class.getName());
 			if (entityDatabase == null) {
-				entityDatabase = new TestDatabase();
-				session.setAttribute(TestDatabase.class.getName(), entityDatabase);
+				entityDatabase = new DataHandler();
+				session.setAttribute(DataHandler.class.getName(), entityDatabase);
 
 			}
 			OData odata = OData.newInstance();

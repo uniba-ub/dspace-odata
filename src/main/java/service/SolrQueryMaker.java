@@ -8,7 +8,7 @@ public class SolrQueryMaker {
 	
 	private SolrQuery query;
 	
-	SolrQueryMaker(){
+	public SolrQueryMaker(){
 		
 		query = new SolrQuery();
 	}

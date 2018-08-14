@@ -24,7 +24,7 @@ public class Project implements EntityModel{
 		
 		CsdlProperty id = new CsdlProperty().setName("id")
 				.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
-		CsdlProperty acronym = new CsdlProperty().setName("Kürzel")
+		CsdlProperty acronym = new CsdlProperty().setName("objectname")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty title = new CsdlProperty().setName("Titel")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
