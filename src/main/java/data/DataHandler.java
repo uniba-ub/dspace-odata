@@ -76,7 +76,7 @@ public class DataHandler {
 		if(entitySetName.equals("Projects")) {
 			queryMaker.setQuerySearchToProjects();			
 			}
-		System.out.println("hallo1:getQuerriedData");
+		System.out.println(queryMaker.getQuery().toQueryString());
 		SolrDocumentList responseDocuments = solr.getData(queryMaker.getQuery());	
 		System.out.println("hallo2:getQuerriedData");
 
