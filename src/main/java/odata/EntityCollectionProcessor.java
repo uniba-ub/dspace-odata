@@ -64,7 +64,6 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 	// Method is triggered when HTTP-GET Request on Collection
 	public void readEntityCollection(ODataRequest request, ODataResponse response, UriInfo uriInfo,
 			ContentType responseFormat) throws ODataApplicationException, ODataLibraryException {
-		System.out.println("Hallo");
 		EdmEntitySet responseEdmEntitySet = null;
 		EntityCollection responseEntityCollection = null;
 

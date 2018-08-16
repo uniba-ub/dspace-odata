@@ -45,8 +45,6 @@ public class DataHandler {
 		for(String item:entityRegister.getEntitySetNameList()) {
 			if(edmEntitySet.getName().equals(item)) {	
 				responseDocuments = getQuerriedDataFromSolr(item);
-				System.out.println("hallo:readEntitySetData");
-
 				entitySet = createEntitySet(responseDocuments, item);
 			}
 		}		
@@ -73,13 +71,11 @@ public class DataHandler {
 	}
 	
 	public SolrDocumentList getQuerriedDataFromSolr(String entitySetName) throws SolrServerException, IOException {
+		solr.connectToDSpaceSolr();
 		if(entitySetName.equals("Projects")) {
 			queryMaker.setQuerySearchToProjects();			
 			}
-		System.out.println(queryMaker.getQuery().toQueryString());
 		SolrDocumentList responseDocuments = solr.getData(queryMaker.getQuery());	
-		System.out.println("hallo2:getQuerriedData");
-
 		return responseDocuments;
 	}
 	
@@ -104,7 +100,6 @@ public class DataHandler {
 			entity.setType(type);
 			entity.setId(createId(entity, "id"));
 		}
-		System.out.println(entity);
 		return entity;
 	}
 	
