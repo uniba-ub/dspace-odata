@@ -25,11 +25,15 @@ public class SolrConnector {
 	}
 	
 	public SolrDocumentList getData(SolrQuery query) throws SolrServerException, IOException {
+		connectToDSpaceSolr();
     	QueryResponse response = solr.query(query);
 		SolrDocumentList list = response.getResults();	
+		solr.close();
 		return list;
 
+		
 	}
+
 
 
 }

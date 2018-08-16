@@ -69,7 +69,6 @@ public class EntityProcessor implements org.apache.olingo.server.api.processor.E
 
 	public void readEntity(ODataRequest request, ODataResponse response, UriInfo uriInfo, ContentType responseFormat)
 			throws ODataApplicationException, SerializerException {
-
 		EdmEntityType responseEdmEntityType = null;
 		Entity responseEntity = null;
 		EdmEntitySet responseEdmEntitySet = null;

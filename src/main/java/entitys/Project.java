@@ -24,6 +24,8 @@ public class Project implements EntityModel{
 		
 		CsdlProperty id = new CsdlProperty().setName("id")
 				.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
+		CsdlProperty crisId = new CsdlProperty().setName("cris-id")
+				.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
 		CsdlProperty acronym = new CsdlProperty().setName("objectname")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty title = new CsdlProperty().setName("Titel")
@@ -55,7 +57,7 @@ public class Project implements EntityModel{
 
 		entityType = new CsdlEntityType();
 		entityType.setName(ET_PROJECT_NAME);
-		entityType.setProperties(Arrays.asList(id, acronym, title, description, startDate,durationInMonths, endDate, budget,keywords,url,status,specialProject, visibility));
+		entityType.setProperties(Arrays.asList(id,crisId, acronym, title, description, startDate,durationInMonths, endDate, budget,keywords,url,status,specialProject, visibility));
 		entityType.setKey(Arrays.asList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
