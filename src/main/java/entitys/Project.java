@@ -21,11 +21,10 @@ public class Project implements EntityModel{
 	
 	public Project() {
 		
-		
 		CsdlProperty id = new CsdlProperty().setName("id")
 				.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
 		CsdlProperty crisId = new CsdlProperty().setName("cris-id")
-				.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty acronym = new CsdlProperty().setName("objectname")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty title = new CsdlProperty().setName("Titel")

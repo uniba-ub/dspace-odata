@@ -6,7 +6,6 @@ import java.net.URISyntaxException;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.commons.math3.distribution.EnumeratedIntegerDistribution;
 import org.apache.olingo.commons.api.data.Entity;
 import org.apache.olingo.commons.api.data.EntityCollection;
 import org.apache.olingo.commons.api.data.Property;
@@ -23,6 +22,7 @@ import org.apache.solr.common.SolrDocumentList;
 
 import entitys.EntityRegister;
 import odata.EdmProviderDSpace;
+import service.IdConverter;
 import service.SolrQueryMaker;
 
 public class DataHandler {
@@ -31,12 +31,14 @@ public class DataHandler {
 	private List<Property> propertyList;
 	private SolrConnector solr;
 	private SolrQueryMaker queryMaker;
+	private IdConverter converter;
 
 	public DataHandler() {
 
 		entityRegister = new EntityRegister();
 		solr = new SolrConnector();
 		queryMaker = new SolrQueryMaker();
+		converter = new IdConverter();
 
 	}
 
@@ -45,7 +47,8 @@ public class DataHandler {
 		SolrDocumentList responseDocuments;
 		for (String item : entityRegister.getEntitySetNameList()) {
 			if (edmEntitySet.getName().equals(item)) {
-				responseDocuments = getQuerriedDataFromSolr(item);
+				List<UriParameter> keyParams = null;
+				responseDocuments = getQuerriedDataFromSolr(item, keyParams);
 				entitySet = createEntitySet(responseDocuments, item);
 			}
 		}
@@ -60,8 +63,7 @@ public class DataHandler {
 		EdmEntityType edmEntityType = edmEntitySet.getEntityType();
 		for (CsdlEntityType item : entityRegister.getEntityTypList()) {
 			if (edmEntityType.getName().equals(item.getName())) {
-				// unklar ob richtige Stelle
-				responseDocuments = getQuerriedDataFromSolr(edmEntityType.getName());
+				responseDocuments = getQuerriedDataFromSolr(edmEntityType.getName(), keyParams);
 				entitySet = createEntitySet(responseDocuments, item.getName());
 				entity = entitySet.getEntities().get(0);
 			}
@@ -71,12 +73,18 @@ public class DataHandler {
 		return entity;
 	}
 
-	public SolrDocumentList getQuerriedDataFromSolr(String entitySetName) throws SolrServerException, IOException {
+	public SolrDocumentList getQuerriedDataFromSolr(String entitySetName, List<UriParameter> keyParams) throws SolrServerException, IOException {
 		if (entitySetName.equals("Projects")) {
 			queryMaker.setQuerySearchToProjects();
 			queryMaker.setResponseLimitToMax();
 		} else if (entitySetName.equals("Project")) {
 			queryMaker.setQuerySearchToProjects();
+			String type = "pj";
+			String id = keyParams.get(0).getText();
+			System.out.println("Hallo");
+			String crisId= converter.convertToCrisID(id, type);
+			System.out.println(crisId);
+			queryMaker.addSearchFilterForAttribute("cris-id", crisId);
 		}
 
 		else if (entitySetName.equals("Researchers")) {
@@ -93,11 +101,9 @@ public class DataHandler {
 
 	public EntityCollection createEntitySet(SolrDocumentList documentList, String entitySetName) {
 		EntityCollection entitySet = new EntityCollection();
-		int idIndex = 1;
 		for (SolrDocument solrDocument : documentList) {
 			entitySet.getEntities()
-					.add(createEntity(createPropertyList(solrDocument, entitySetName, idIndex), entitySetName));
-			idIndex++;
+					.add(createEntity(createPropertyList(solrDocument, entitySetName), entitySetName));
 		}
 
 		return entitySet;
@@ -105,7 +111,7 @@ public class DataHandler {
 
 	public Entity createEntity(List<Property> propertyList, String entitySetName) {
 		Entity entity = new Entity();
-		String type = (EdmProviderDSpace.NAMESPACE + "." + entitySetName.substring(0, entitySetName.length() - 1));
+		String type = (EdmProviderDSpace.NAMESPACE + "." + entitySetName.replaceAll("s$", ""));
 		for (Property item : propertyList) {
 			entity.addProperty(item);
 		}
@@ -114,17 +120,24 @@ public class DataHandler {
 		return entity;
 	}
 
-	public List<Property> createPropertyList(SolrDocument solrDocument, String entitySetName, int idIndex) {
+	public List<Property> createPropertyList(SolrDocument solrDocument, String entitySetName) {
 		propertyList = new LinkedList<Property>();
 		Property property;
-		Property propertyId = new Property(null, "id", ValueType.PRIMITIVE, idIndex);
-		propertyList.add(propertyId);
-
 		for (String item : solrDocument.getFieldNames()) {
+			if(item.equals("cris-id")) {
+				//change item value
+				String currentId = (String) solrDocument.getFieldValue(item);
+				int convertedId = converter.convertToId(currentId);
+				property = new Property(null, "id", ValueType.PRIMITIVE, convertedId);
+				propertyList.add(property);
+				
+			} 
 			property = new Property(null, item, ValueType.PRIMITIVE, solrDocument.getFieldValue(item));
 			propertyList.add(property);
-		}
+			
 
+		}
+		
 		return propertyList;
 
 	}

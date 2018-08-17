@@ -31,8 +31,11 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 	public final static String CONTAINER_NAME = "Container";
 	public static final FullQualifiedName CONTAINER = new FullQualifiedName(NAMESPACE, CONTAINER_NAME);
 
+	public EntityRegister entityRegister;
 	
-	EntityRegister entityRegister = new EntityRegister();
+	public EdmProviderDSpace() {
+		entityRegister = new EntityRegister();
+	}
 
 
 	@Override
