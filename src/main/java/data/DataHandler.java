@@ -50,8 +50,6 @@ public class DataHandler {
 				List<UriParameter> keyParams = null;
 				responseDocuments = getQuerriedDataFromSolr(item, keyParams);
 				entitySet = createEntitySet(responseDocuments, item);
-				System.out.println(entitySet.getEntities().get(0).getProperty("fullName"));
-
 			}
 		}
 		return entitySet;
