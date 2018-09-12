@@ -21,3 +21,14 @@ Start a tomcat server with port 8080 mapped to the
 
 **note:** Missing database connection as environment variables
 -> Work in progress
+
+
+
+### Use OData API
+
+
+*Get all Projects
+`http://localhost:8080/ODataService/ODataService.svc/Projects?$format=application/json`
+
+*Get all Researchers
+`http://localhost:8080/ODataService/ODataService.svc/Researchers?$format=application/json`
