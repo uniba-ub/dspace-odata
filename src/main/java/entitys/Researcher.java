@@ -27,23 +27,25 @@ public class Researcher implements EntityModel {
 		
 		CsdlProperty id = new CsdlProperty().setName("id")
 				.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
-		CsdlProperty fullName = new CsdlProperty().setName("Name")
-				.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
-		CsdlProperty  creditName= new CsdlProperty().setName("Anzeigename")
+		CsdlProperty crisId = new CsdlProperty().setName("cris-id")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty researchInterests = new CsdlProperty().setName("Forschungsinteressen")
+		CsdlProperty fullName = new CsdlProperty().setName("crisrp.fullName")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty description = new CsdlProperty().setName("Beschreibung")
+		CsdlProperty  creditName= new CsdlProperty().setName("crisrp.variants")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty title = new CsdlProperty().setName("Titel")
+		CsdlProperty researchInterests = new CsdlProperty().setName("crisrp.interests")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty email = new CsdlProperty().setName("E-Mail")
+		CsdlProperty description = new CsdlProperty().setName("crisrp.description")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty position = new CsdlProperty().setName("Position")
+		CsdlProperty title = new CsdlProperty().setName("crisrp.title")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty transferabstract = new CsdlProperty().setName("Transfer Abstract")
+		CsdlProperty email = new CsdlProperty().setName("crisrp.email")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty transferkeywords = new CsdlProperty().setName("Transfer Stichwörter")
+		CsdlProperty position = new CsdlProperty().setName("crisrp.position")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty transferabstract = new CsdlProperty().setName("crisrp.transfer-abstract")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty transferkeywords = new CsdlProperty().setName("crisrp.transfer-keyword")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 
 		// creation of PropertyRef for the key Element
@@ -56,7 +58,7 @@ public class Researcher implements EntityModel {
 
 		entityType = new CsdlEntityType();
 		entityType.setName(ET_RESEARCHER_NAME);
-		entityType.setProperties(Arrays.asList(id, fullName, creditName, researchInterests, description, title, email, position, transferabstract, transferkeywords));
+		entityType.setProperties(Arrays.asList(id, crisId, fullName, creditName, researchInterests, description, title, email, position, transferabstract, transferkeywords));
 		entityType.setKey(Collections.singletonList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();

@@ -50,6 +50,8 @@ public class DataHandler {
 				List<UriParameter> keyParams = null;
 				responseDocuments = getQuerriedDataFromSolr(item, keyParams);
 				entitySet = createEntitySet(responseDocuments, item);
+				System.out.println(entitySet.getEntities().get(0).getProperty("fullName"));
+
 			}
 		}
 		return entitySet;
@@ -66,7 +68,7 @@ public class DataHandler {
 				responseDocuments = getQuerriedDataFromSolr(edmEntityType.getName(), keyParams);
 				entitySet = createEntitySet(responseDocuments, item.getName());
 				entity = entitySet.getEntities().get(0);
-			}
+				}
 
 		}
 
@@ -81,9 +83,7 @@ public class DataHandler {
 			queryMaker.setQuerySearchToProjects();
 			String type = "pj";
 			String id = keyParams.get(0).getText();
-			System.out.println("Hallo");
 			String crisId= converter.convertToCrisID(id, type);
-			System.out.println(crisId);
 			queryMaker.addSearchFilterForAttribute("cris-id", crisId);
 		}
 

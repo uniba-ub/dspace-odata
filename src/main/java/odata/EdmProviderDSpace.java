@@ -42,7 +42,6 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 	public CsdlEntityContainer getEntityContainer() throws ODataException {
 		// create EntitySets
 		List<CsdlEntitySet> entitySets = new ArrayList<CsdlEntitySet>();
-
 		for(String entitySetName: entityRegister.getEntitySetNameList()) {
 			entitySets.add(getEntitySet(CONTAINER, entitySetName));		
 		}

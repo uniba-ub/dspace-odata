@@ -25,30 +25,16 @@ public class Project implements EntityModel{
 				.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
 		CsdlProperty crisId = new CsdlProperty().setName("cris-id")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty acronym = new CsdlProperty().setName("objectname")
+		CsdlProperty title = new CsdlProperty().setName("crisproject.title")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty title = new CsdlProperty().setName("Titel")
+		CsdlProperty startDate = new CsdlProperty().setName("crisproject.startdate")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty description = new CsdlProperty().setName("Beschreibung")
+		CsdlProperty endDate = new CsdlProperty().setName("crisproject.expdate")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty startDate = new CsdlProperty().setName("Startzeitpunkt")
+		CsdlProperty keywords = new CsdlProperty().setName("crisproject.keywords")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty durationInMonths = new CsdlProperty().setName("Dauer in Monaten")
+		CsdlProperty status = new CsdlProperty().setName("crisproject.status")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty endDate = new CsdlProperty().setName("Endzeitpunkt")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty budget = new CsdlProperty().setName("Budget")
-				.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
-		CsdlProperty keywords = new CsdlProperty().setName("Stichwörter")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty url = new CsdlProperty().setName("Url")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty status = new CsdlProperty().setName("Status")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty specialProject = new CsdlProperty().setName("Sonderprojekt")
-				.setType(EdmPrimitiveTypeKind.Boolean.getFullQualifiedName());
-		CsdlProperty visibility = new CsdlProperty().setName("Sichtbarkeit")
-				.setType(EdmPrimitiveTypeKind.Boolean.getFullQualifiedName());
 
 
 		CsdlPropertyRef propertyRef = new CsdlPropertyRef();
@@ -56,7 +42,7 @@ public class Project implements EntityModel{
 
 		entityType = new CsdlEntityType();
 		entityType.setName(ET_PROJECT_NAME);
-		entityType.setProperties(Arrays.asList(id,crisId, acronym, title, description, startDate,durationInMonths, endDate, budget,keywords,url,status,specialProject, visibility));
+		entityType.setProperties(Arrays.asList(id,crisId, title,  startDate, endDate,keywords,status));
 		entityType.setKey(Arrays.asList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
