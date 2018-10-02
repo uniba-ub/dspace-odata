@@ -28,5 +28,6 @@ COPY tomcat/context.xml /usr/local/tomcat/webapps/host-manager/META-INF/context.
 
 WORKDIR ${CATALINA_HOME}
 EXPOSE 8080
+ENV SOLR_URL="http://localhost:8080/solr/search"
 
 COPY --from=maven-builder /app/target/*.war ${CATALINA_HOME}/webapps/
