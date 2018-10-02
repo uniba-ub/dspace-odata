@@ -71,11 +71,14 @@ public class SolrQueryMaker {
 		return query;
 	}
 	
+	public void resetQuery() {
+		query.clear();
+
+	}
 	
-	public void setFilterForRelation(FullQualifiedName relatedEntityFqn, int crisID) {
-		if(relatedEntityFqn.equals(Publication.ET_PUBLICATION_FQN)) {
-			query.addFilterQuery("dc.contributor.author_authority:\'"+crisID+"\'");
-		}
+	public void setFilterForRelation(String navigationFilter, String crisID) {
+			query.addFilterQuery(navigationFilter+crisID+"\"");
+		
 
 		
 	}

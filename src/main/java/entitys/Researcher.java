@@ -98,7 +98,7 @@ public class Researcher implements EntityModel {
 		return ID_CONVERTER_TYP;
 	}
 
-	public List<String> getNavigationFilterList() {
+	public String getNavigationFilter() {
 		// TODO Auto-generated method stub
 		return null;
 	}

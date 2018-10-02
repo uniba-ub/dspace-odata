@@ -20,7 +20,7 @@ public class Publication implements EntityModel {
 	public static final FullQualifiedName ET_PUBLICATION_FQN = new FullQualifiedName(NAMESPACE, ET_PUBLICATION_NAME);
 	public static final String ES_PUBLICATIONS_NAME = "Publications";
 	public final static String RECOURCE_TYPE_FILTER= "resourcetype_filter:\"001publications\n|||\nPublications###publications\"";
-	public final static String ID_CONVERTER_TYP= "TODO";
+	public final static String ID_CONVERTER_TYP= "http://hdl.handle.net/123456789/";
 	private CsdlEntityType entityType;
 	private CsdlEntitySet entitySet;
 	
@@ -119,9 +119,9 @@ public class Publication implements EntityModel {
 		return ID_CONVERTER_TYP;
 	}
 
-	public List<String> getNavigationFilterList() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getNavigationFilter() {
+		String navigationFilter = ("dc.contributor.author_authority:\"");
+			return navigationFilter;
 	}
 
 }

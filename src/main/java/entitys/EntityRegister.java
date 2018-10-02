@@ -100,7 +100,7 @@ public class EntityRegister {
 				
 			}
 			entity.getEntitySet().setNavigationPropertyBindings(navPropBindingList);
-			
+			entity.getEntityType().setNavigationProperties(navPropList);
 		}
 		
 		private void fillList(List<EntityModel> entityList) {

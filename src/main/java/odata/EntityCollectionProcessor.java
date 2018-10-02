@@ -118,9 +118,8 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 
 			// Only Course->Performers or Course->Places is supported, so segmentCount== 3
 			// is not needed
-		} /*else if (segmentCount == 2) { // in case of navigation to performer
+		} else if (segmentCount == 2) { // in case of navigation to performer
 										// property:../CourseService.svc/Courses(1)/Performers
-
 			UriResource lastSegment = resourceParts.get(1);
 			if (lastSegment instanceof UriResourceNavigation) {
 				UriResourceNavigation uriResourceNavigation = (UriResourceNavigation) lastSegment;
@@ -130,13 +129,19 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 
 				// get the data from Entitydatabase
 				List<UriParameter> keyPredicates = uriResourceEntitySet.getKeyPredicates();
-				Entity sourceEntity = testDatabase.readEntityData(startEdmEntitySet, keyPredicates);
-				if (sourceEntity == null) {
-					throw new ODataApplicationException("Entity not found.", HttpStatusCode.NOT_FOUND.getStatusCode(),
-							Locale.ROOT);
+				Entity sourceEntity;
+				try {
+					sourceEntity = datahandler.readEntityData(startEdmEntitySet, keyPredicates);
+					entityCollection = datahandler.getRelatedEntityCollection(sourceEntity, targetEntityType);
+
+				} catch (SolrServerException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-				// get related EntityCollection
-				entityCollection = testDatabase.getRelatedEntityCollection(sourceEntity, targetEntityType);
+
 				List<Entity> entityList = entityCollection.getEntities();
 				responseEntityCollection = queryOptionService.applyCountOption(countOption, entityList);
 				entityList = queryOptionService.applySkipOption(skipOption, entityList);
@@ -151,13 +156,14 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 		} else {
 			throw new ODataApplicationException("Not supported", HttpStatusCode.NOT_IMPLEMENTED.getStatusCode(),
 					Locale.ROOT);
-		} */
 
-		//TODO: wieder einfügen
+		}
+		// TODO: wieder einfügen
 		/*
-		responseEdmEntitySet = queryOptionService.applyExpandOptionOnCollection(expandOption, responseEdmEntitySet,
-				entityCollection);
-	*/
+		 * responseEdmEntitySet =
+		 * queryOptionService.applyExpandOptionOnCollection(expandOption,
+		 * responseEdmEntitySet, entityCollection);
+		 */
 
 		EdmEntityType edmEntityType = responseEdmEntitySet.getEntityType();
 		String selectList = odata.createUriHelper().buildContextURLSelectList(edmEntityType, expandOption,

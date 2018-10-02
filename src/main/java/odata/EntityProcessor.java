@@ -105,7 +105,6 @@ public class EntityProcessor implements org.apache.olingo.server.api.processor.E
 			}
 
 		} 
-/*
 		else if (segmentCount == 2) {
 			UriResource navSegment = resourceParts.get(1);
 			if (navSegment instanceof UriResourceNavigation) {
@@ -143,7 +142,7 @@ public class EntityProcessor implements org.apache.olingo.server.api.processor.E
 			throw new ODataApplicationException("Nothing found.", HttpStatusCode.NOT_FOUND.getStatusCode(),
 					Locale.ROOT);
 		}
-*/
+
 		// Create System Query Options
 		SelectOption selectOption = uriInfo.getSelectOption();
 		ExpandOption expandOption = uriInfo.getExpandOption();

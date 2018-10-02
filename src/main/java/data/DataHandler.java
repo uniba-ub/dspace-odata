@@ -52,7 +52,8 @@ public class DataHandler {
 			if (edmEntitySet.getName().equals(item)) {
 				List<UriParameter> keyParams = null;
 				boolean isEntityCollection=true;
-				responseDocuments = getQuerriedDataFromSolr(item, keyParams, isEntityCollection);
+				List<String> filterList = new LinkedList<String>();
+				responseDocuments = getQuerriedDataFromSolr(item, keyParams, isEntityCollection, filterList);
 				entitySet = createEntitySet(responseDocuments, item);
 			}
 		}
@@ -65,11 +66,12 @@ public class DataHandler {
 		EntityCollection entitySet;
 		SolrDocumentList responseDocuments;
 		EdmEntityType edmEntityType = edmEntitySet.getEntityType();
-		for (CsdlEntityType item : entityRegister.getEntityTypList()) {
-			if (edmEntityType.getName().equals(item.getName())) {
+		for (EntityModel item : entityRegister.getEntityList()) {
+			if (edmEntityType.getName().equals(item.getEntityType().getName())) {
 				boolean isEntityCollection = false;
-				responseDocuments = getQuerriedDataFromSolr(edmEntityType.getName(), keyParams, isEntityCollection);
-				entitySet = createEntitySet(responseDocuments, item.getName());
+				List<String> filterList = new LinkedList<String>();
+				responseDocuments = getQuerriedDataFromSolr(item.getEntitySetName(), keyParams, isEntityCollection, filterList);
+				entitySet = createEntitySet(responseDocuments, item.getEntitySetName());
 				entity = entitySet.getEntities().get(0);
 				}
 
@@ -78,11 +80,16 @@ public class DataHandler {
 		return entity;
 	}
 
-	public SolrDocumentList getQuerriedDataFromSolr(String entitySetName, List<UriParameter> keyParams, boolean isEntityCollection) throws SolrServerException, IOException {
+	public SolrDocumentList getQuerriedDataFromSolr(String entitySetName, List<UriParameter> keyParams, boolean isEntityCollection, List<String> filterList) throws SolrServerException, IOException {
 		for(EntityModel item: entityRegister.getEntityList()) {
 			if(item.getEntitySetName().equals(entitySetName)) {
 				if(isEntityCollection) {
-				queryMaker.setQuerySearchTerm(item.getRecourceTypeFilter());
+					queryMaker.setQuerySearchTerm(item.getRecourceTypeFilter());
+					if(!filterList.isEmpty()) {
+						for(String filter: filterList) {
+							queryMaker.addSearchFilter(filter);	
+						}
+					}
 				queryMaker.setResponseLimitToMax();
 				}
 				else {
@@ -96,6 +103,7 @@ public class DataHandler {
 		}		
 
 		SolrDocumentList responseDocuments = solr.getData(queryMaker.getQuery());
+		queryMaker.resetQuery();
 		return responseDocuments;
 	}
 
@@ -176,9 +184,9 @@ public class DataHandler {
 		}
 		return result;
 	}
-	/*
+	
 	// Navigation from EntityCollection to corresponding Entity
-	public Entity getRelatedEntity(Entity entity, EdmEntityType relatedEntityType) {
+	public Entity getRelatedEntity(Entity entity, EdmEntityType relatedEntityType) throws SolrServerException, IOException {
 		EntityCollection collection = getRelatedEntityCollection(entity, relatedEntityType);
 		if (collection.getEntities().isEmpty()) {
 			return null;
@@ -186,181 +194,43 @@ public class DataHandler {
 		return collection.getEntities().get(0);
 	}
 
-	public Entity getRelatedEntity(Entity entity, EdmEntityType relatedEntityType, List<UriParameter> keyPredicates) {
+	public Entity getRelatedEntity(Entity entity, EdmEntityType relatedEntityType, List<UriParameter> keyPredicates) throws SolrServerException, IOException {
 
 		EntityCollection relatedEntities = getRelatedEntityCollection(entity, relatedEntityType);
 		return Util.findEntity(relatedEntityType, relatedEntities, keyPredicates);
 	}
 
-	public EntityCollection getRelatedEntityCollection(Entity sourceEntity, EdmEntityType targetEntityType) {
+	public EntityCollection getRelatedEntityCollection(Entity sourceEntity, EdmEntityType targetEntityType) throws SolrServerException, IOException {
 		EntityCollection navigationTargetEntityCollection = new EntityCollection();
 
-		FullQualifiedName relatedEntityFqn = targetEntityType.getFullQualifiedName();
-		String sourceEntityFqn = sourceEntity.getType();
-		
-			// relation Course->Performer (result all Performers)
 			// get ID from Entitiy Source
-		
-			int entityID = (Integer) sourceEntity.getProperty("id").getValue();
-			String crisID = converter.convertToCrisID(entityID, sourceEntityFqn);
-			
-			// Get relating PerformerKeys
-			if (course.getDozsKeys().contains(";")) {
-				String[] dozRefs = course.getDozsKeys().split(";");
-				for (int i = 0; i < dozRefs.length; i++) {
-					// Get Performers from database
-					List<VCPerson> persons = databaseConnector
-							.getPerformers(sqlCreater.createPerformersOfCourseStatement(dozRefs[i]));
-					if(!persons.isEmpty()) {
-						personList.add(persons.get(0));
-					}
-
-
-				}
-				if (!personList.isEmpty()) {
-					// init Entitys out of VCPerson Java Objects
-					List<Entity> entityPerformerList = initPerformerOfCourseList(personList);
-					// iterate over all performer entitys
-					for (Entity entityPerformer : entityPerformerList) {
-						// add all Performer Entitys to navigationTargetEntityCollection
-						navigationTargetEntityCollection.getEntities().add(entityPerformer);
-					}
-				}
-
-			} else {
-				// if only Course only has one Performer, get Performer from database
-				List<VCPerson> persons = databaseConnector
-						.getPerformers(sqlCreater.createPerformersOfCourseStatement(course.getDozsKeys()));
-				if (!persons.isEmpty()) {
-					personList.add(persons.get(0));
-					// init Entitys out of VCPerson Java Objects
-					List<Entity> entityPerformerList = initPerformerOfCourseList(personList);
-					// iterate over all performer entitys
-					for (Entity entityPerformer : entityPerformerList) {
-						// add all Performer Entitys to navigationTargetEntityCollection
-						navigationTargetEntityCollection.getEntities().add(entityPerformer);
-					}
-				}
-
-
-
-		} else if (sourceEntityFqn.equals(EdmProvider.ET_COURSE_FQN.getFullQualifiedNameAsString())
-				&& relatedEntityFqn.equals(EdmProvider.ET_PLACE_FQN)) {
-			// relation Course->Place (result all Places )
-			int courseID = (Integer) sourceEntity.getProperty("id").getValue();
-			// Get Course from database
-			List<VCEvent> courses = databaseConnector.getCourses(sqlCreater.createCourseStatement(courseID));
-			VCEvent course = courses.get(0);
-			List<VCPlace> placeList = new LinkedList<VCPlace>();
-			// Get relating PlaceKeys
-			if (course.getPlaceKeys().contains(";")) {
-				String[] placeRefs = course.getPlaceKeys().split(";");
-				for (int i = 0; i < placeRefs.length; i++) {
-					// get Places from database
-					List<VCPlace> places = databaseConnector
-							.getPlaces(sqlCreater.createPlacesOfCourseStatement(placeRefs[i]));
-					placeList.add(places.get(0));
-				}
-				if (!placeList.isEmpty()) {
-					// init Entitys out of VCPlace Java Objects
-					List<Entity> entityPlaceList = initPlaceOfCourseList(placeList);
-					// iterate over all place entitys
-					for (Entity entityPlace : entityPlaceList) {
-						// add all Place Entitys to navigationTargetEntityCollection
-						navigationTargetEntityCollection.getEntities().add(entityPlace);
-
-					}
-				}
-			} else {
-				// if only Course only has one Place, get Place from database
-				List<VCPlace> places = databaseConnector
-						.getPlaces(sqlCreater.createPlacesOfCourseStatement(course.getPlaceKeys()));
-				if (!places.isEmpty()) {
-					placeList.add(places.get(0));
-					// init Entitys out of VCPlace Java Objects
-					List<Entity> entityPlaceList = initPlaceOfCourseList(placeList);
-					// iterate over all place entitys
-					for (Entity entityPlace : entityPlaceList) {
-						// add all Place Entitys to navigationTargetEntityCollection
-						navigationTargetEntityCollection.getEntities().add(entityPlace);
-
-					}
-				} else {
-					Entity entity = new Entity();
-					entity.addProperty(new Property(null, "id", ValueType.PRIMITIVE, 99999999));
-					entity.addProperty(new Property(null, "name", ValueType.PRIMITIVE, "No place added"));
-					entity.addProperty(new Property(null, "type", ValueType.PRIMITIVE, ThingTypes.Place));	
-					navigationTargetEntityCollection.getEntities().add(entity);
-					entity.setType(EdmProvider.ET_PLACE_FQN.getFullQualifiedNameAsString());
-					entity.setId(createId(entity, "id"));
-
-				}
-			}
-
-		} else if (sourceEntityFqn.equals(EdmProvider.ET_PLACE_FQN.getFullQualifiedNameAsString())
-				&& relatedEntityFqn.equals(EdmProvider.ET_PLACE_SUB_PROPERTIES_FQN)) {
-			// relation Place->PostalAdress
-			int placeID = (Integer) sourceEntity.getProperty("id").getValue();
-			List<VCPlace> places = databaseConnector.getPlaces((sqlCreater.createPlaceByIDStatement(placeID)));
-			if(!places.isEmpty()) {
-				Entity entityPlaceSUbPropertiesList = initPlaceSubPropertiesOfPlace(places);
-					navigationTargetEntityCollection.getEntities().add(entityPlaceSUbPropertiesList);
-			} else {
-				Entity entity = new Entity();
-				entity.addProperty(new Property(null, "id", ValueType.PRIMITIVE, placeID));
-				entity.addProperty(new Property(null, "floors", ValueType.PRIMITIVE, "No floor added"));
-				navigationTargetEntityCollection.getEntities().add(entity);
-				
-				
-			}
-
-		}
-
-		else if (sourceEntityFqn.equals(EdmProvider.ET_COURSE_FQN.getFullQualifiedNameAsString())
-				&& relatedEntityFqn.equals(EdmProvider.ET_COURSE_FQN)) {
-			// relation Course->superEvent (result Place)
-			int courseID = (Integer) sourceEntity.getProperty("id").getValue();
-			String superEventRef="";
-			for (VCEvent course : dataCourseList) {
-				if (course.getId() == courseID) {
-					superEventRef = course.getSuperEvent();
-				}
-			}
-			if (!superEventRef.equals("")) {
-				for(VCEvent course: dataCourseList) {
-					if(course.getUid().equals(superEventRef)) {
-						Entity entitySuperEvent = initSuperEvent(course);
-						navigationTargetEntityCollection.getEntities().add(entitySuperEvent);
-					}
+			String entityID = sourceEntity.getProperty("id").getValue().toString();
+			List<UriParameter> keyParams = null;
+			SolrDocumentList responseDocuments;
+			boolean isEntityCollection = true;
+			List<String> filterList = new LinkedList<String>();
+			EntityModel sourceModel = null;
+			EntityModel targetModel;
+			for(EntityModel item: entityRegister.getEntityList()) {
+				if(item.getFullQualifiedName().getFullQualifiedNameAsString().equals(sourceEntity.getType())){
 					
+					sourceModel = item;
+					//TODO: Anhand von sourceModel den entsprechenden NavigationFilter bestimmen
 				}
-
-			}
-		}
-
-
-		else if (sourceEntityFqn.equals(EdmProvider.ET_COURSE_FQN.getFullQualifiedNameAsString())
-				&& relatedEntityFqn.equals(EdmProvider.ET_EVENT_SUB_PROPERTY_FQN)) {
-			// relation Course->Event_Sub_Properties
-			int courseID = (Integer) sourceEntity.getProperty("id").getValue();
-			String semester = "";
-			String originalCategory = "";
-			for (VCEvent course : dataCourseList) {
-				if (course.getId() == courseID) {
-					semester = course.getSemester();
-					originalCategory = course.getOriginalCategory();
-					break;
+				
+				if(item.getFullQualifiedName().equals(targetEntityType.getFullQualifiedName())) {
+					targetModel= item;	
+					String crisId = converter.convertToCrisID(entityID, sourceModel.getIDConverterTyp());
+					queryMaker.setFilterForRelation(targetModel.getNavigationFilter(), crisId);
+					responseDocuments = getQuerriedDataFromSolr(targetModel.getEntitySetName(), keyParams, isEntityCollection, filterList);	
+					navigationTargetEntityCollection = createEntitySet(responseDocuments, targetModel.getEntitySetName());
 				}
 			}
-
-			Entity entityEventSubProperties = initEventSubProperties(courseID, semester, originalCategory);
-			navigationTargetEntityCollection.getEntities().add(entityEventSubProperties);
-		}
-
+			
 		if (navigationTargetEntityCollection.getEntities().isEmpty()) {
 			return null;
 		}
 		return navigationTargetEntityCollection;
 	}
-	*/
+	
 }
