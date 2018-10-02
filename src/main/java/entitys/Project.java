@@ -88,7 +88,7 @@ public class Project implements EntityModel{
 
 
 
-	public List<String> getNavigationFilter() {
+	public String getNavigationFilter() {
 		// TODO Auto-generated method stub
 		return null;
 	}

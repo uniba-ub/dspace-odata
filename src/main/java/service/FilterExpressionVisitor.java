@@ -17,6 +17,7 @@ import org.apache.olingo.server.api.uri.queryoption.expression.Expression;
 import org.apache.olingo.server.api.uri.queryoption.expression.ExpressionVisitException;
 import org.apache.olingo.server.api.uri.queryoption.expression.ExpressionVisitor;
 import org.apache.olingo.server.api.uri.queryoption.expression.Literal;
+import org.apache.olingo.server.api.uri.queryoption.expression.Member;
 import org.apache.olingo.server.api.uri.queryoption.expression.MethodKind;
 import org.apache.olingo.server.api.uri.queryoption.expression.UnaryOperatorKind;
 
@@ -214,5 +215,10 @@ public class FilterExpressionVisitor implements ExpressionVisitor<Object> {
 	public Object visitLambdaReference(String variableName) throws ExpressionVisitException, ODataApplicationException {
 		throw new ODataApplicationException("Lamdba references are not implemented",
 				HttpStatusCode.NOT_IMPLEMENTED.getStatusCode(), Locale.ENGLISH);
+	}
+
+	public Object visitMember(Member member) throws ExpressionVisitException, ODataApplicationException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

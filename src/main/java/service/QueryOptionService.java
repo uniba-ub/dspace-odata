@@ -1,5 +1,6 @@
 package service;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -34,6 +35,7 @@ import org.apache.olingo.server.api.uri.queryoption.TopOption;
 import org.apache.olingo.server.api.uri.queryoption.expression.Expression;
 import org.apache.olingo.server.api.uri.queryoption.expression.ExpressionVisitException;
 import org.apache.olingo.server.api.uri.queryoption.expression.Member;
+import org.apache.solr.client.solrj.SolrServerException;
 
 import data.DataHandler;
 
@@ -96,10 +98,9 @@ public class QueryOptionService {
 		return entityList;
 
 	}
-//TODO: wieder einfügen
-	/*
+
 	public EdmEntitySet applyExpandOptionOnCollection(ExpandOption expandOption, EdmEntitySet responseEdmEntitySet,
-			EntityCollection entityCollection) throws ODataApplicationException {
+			EntityCollection entityCollection) throws ODataApplicationException, SolrServerException, IOException {
 		List<EdmNavigationProperty> edmNavigationPropertyList = new LinkedList<EdmNavigationProperty>();
 		if (expandOption != null) {
 			EdmNavigationProperty edmNavigationProperty = null;
@@ -173,11 +174,10 @@ public class QueryOptionService {
 
 	}
 	
-	*/
-	//TODO: wieder einfügen
-/*
+
+
 	public Entity applyExpandOptionOnEntity(ExpandOption expandOption, Entity responseEntity,
-			EdmEntitySet responseEdmEntitySet) throws ODataApplicationException {
+			EdmEntitySet responseEdmEntitySet) throws ODataApplicationException, SolrServerException, IOException {
 
 		if (expandOption != null) {
 			EdmNavigationProperty edmNavigationProperty = null;
@@ -257,7 +257,7 @@ public class QueryOptionService {
 
 		return responseEntity;
 	}
-*/
+
 	public List<Entity> applyOrderByOption(OrderByOption orderByOption, List<Entity> entityList) {
 		if (orderByOption != null) {
 			List<OrderByItem> orderItemList = orderByOption.getOrders();

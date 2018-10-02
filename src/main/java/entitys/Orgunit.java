@@ -79,6 +79,24 @@ public class Orgunit implements EntityModel{
 		return entitySet;
 	}
 
+
+	public String getRecourceTypeFilter() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	public String getIDConverterTyp() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	public String getNavigationFilter() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 	
 }

@@ -158,12 +158,19 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 					Locale.ROOT);
 
 		}
-		// TODO: wieder einfügen
-		/*
-		 * responseEdmEntitySet =
-		 * queryOptionService.applyExpandOptionOnCollection(expandOption,
-		 * responseEdmEntitySet, entityCollection);
-		 */
+		
+		 try {
+			responseEdmEntitySet =
+			 queryOptionService.applyExpandOptionOnCollection(expandOption,
+			 responseEdmEntitySet, entityCollection);
+		} catch (SolrServerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 
 
 		EdmEntityType edmEntityType = responseEdmEntitySet.getEntityType();
 		String selectList = odata.createUriHelper().buildContextURLSelectList(edmEntityType, expandOption,

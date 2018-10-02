@@ -109,7 +109,7 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 
 		// adding EntityContainer
 		schema.setEntityContainer(getEntityContainer());
-
+			
 		List<CsdlSchema> schemas = new ArrayList<CsdlSchema>();
 		schemas.add(schema);
 
