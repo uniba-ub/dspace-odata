@@ -20,6 +20,10 @@ public class Researcher implements EntityModel {
 	public static final String ET_RESEARCHER_NAME = "Researcher";
 	public static final FullQualifiedName ET_RESEARCHER_FQN = new FullQualifiedName(NAMESPACE, ET_RESEARCHER_NAME);
 	public static final String ES_RESEARCHERS_NAME = "Researchers";
+	public final static String RECOURCE_TYPE_FILTER= "resourcetype_filter:\"009researchers\n|||\nResearcher profiles###researcherprofiles\"";
+	public final static String ID_CONVERTER_TYP= "rp";
+
+	
 	private CsdlEntityType entityType;
 	private CsdlEntitySet entitySet;
 	
@@ -64,8 +68,7 @@ public class Researcher implements EntityModel {
 		entitySet = new CsdlEntitySet();
 		entitySet.setName(ES_RESEARCHERS_NAME);
 		entitySet.setType(ET_RESEARCHER_FQN);
-		
-		
+			
 		
 	}
 	
@@ -85,6 +88,19 @@ public class Researcher implements EntityModel {
 
 	public CsdlEntitySet getEntitySet() {
 		return entitySet;
+	}
+
+	public String getRecourceTypeFilter() {
+		return RECOURCE_TYPE_FILTER;
+	}
+
+	public String getIDConverterTyp() {
+		return ID_CONVERTER_TYP;
+	}
+
+	public List<String> getNavigationFilterList() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

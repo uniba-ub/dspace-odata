@@ -14,6 +14,8 @@ public interface EntityModel {
 	public FullQualifiedName getFullQualifiedName();
 	public String getEntitySetName();
 	public CsdlEntitySet getEntitySet();
-	
+	public String getRecourceTypeFilter();
+	public String getIDConverterTyp();
+	public List<String> getNavigationFilterList();
 
 }

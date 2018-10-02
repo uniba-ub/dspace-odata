@@ -16,7 +16,7 @@ public class SolrConnector {
 	
 	public void connectToDSpaceSolr() throws SolrServerException, IOException {
 		
-		String urlString = "http://dspace-bamberg-725.fis-dev1.rz.uni-bamberg.de/solr/search";
+		String urlString = "http://localhost:8080/solr/search";
 		solr = new HttpSolrClient.Builder(urlString).build();
 	}
 	

@@ -105,8 +105,7 @@ public class EntityProcessor implements org.apache.olingo.server.api.processor.E
 			}
 
 		} 
-		//TODO: wieder einfügen
-		/*
+/*
 		else if (segmentCount == 2) {
 			UriResource navSegment = resourceParts.get(1);
 			if (navSegment instanceof UriResourceNavigation) {
@@ -116,18 +115,26 @@ public class EntityProcessor implements org.apache.olingo.server.api.processor.E
 				responseEdmEntitySet = Util.getNavigationTargetEntitySet(startEdmEntitySet, edmNavigationProperty);
 
 				List<UriParameter> keyPredicates = uriResourceEntitySet.getKeyPredicates();
-				Entity sourceEntity = entityDatabase.readEntityData(startEdmEntitySet, keyPredicates);
-
-				List<UriParameter> navKeyPredicates = uriResourceNavigation.getKeyPredicates();
-
-				if (navKeyPredicates.isEmpty()) {
-					responseEntity = entityDatabase.getRelatedEntity(sourceEntity, responseEdmEntityType);
-				} else {
-					responseEntity = entityDatabase.getRelatedEntity(sourceEntity, responseEdmEntityType,
-							navKeyPredicates);
+				Entity sourceEntity;
+				try {
+					sourceEntity = datahandler.readEntityData(startEdmEntitySet, keyPredicates);
+					List<UriParameter> navKeyPredicates = uriResourceNavigation.getKeyPredicates();
+					if (navKeyPredicates.isEmpty()) {
+						responseEntity = datahandler.getRelatedEntity(sourceEntity, responseEdmEntityType);
+					} else {
+						responseEntity = datahandler.getRelatedEntity(sourceEntity, responseEdmEntityType,
+								navKeyPredicates);
+					}
+				} catch (SolrServerException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
+
 			}
-		}*/ else {
+		}else {
 			throw new ODataApplicationException("Not supported", HttpStatusCode.NOT_IMPLEMENTED.getStatusCode(),
 					Locale.ROOT);
 		}
@@ -136,15 +143,16 @@ public class EntityProcessor implements org.apache.olingo.server.api.processor.E
 			throw new ODataApplicationException("Nothing found.", HttpStatusCode.NOT_FOUND.getStatusCode(),
 					Locale.ROOT);
 		}
-
+*/
 		// Create System Query Options
 		SelectOption selectOption = uriInfo.getSelectOption();
 		ExpandOption expandOption = uriInfo.getExpandOption();
 //TODO: wieder einfügen
-		/*
+	/*
 		responseEntity = queryOptionService.applyExpandOptionOnEntity(expandOption, responseEntity,
 				responseEdmEntitySet);
 	*/
+		
 		ODataSerializer serializer = this.odata.createSerializer(responseFormat);
 
 		EdmEntityType edmEntityType = responseEdmEntitySet.getEntityType();

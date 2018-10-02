@@ -2,7 +2,12 @@ package service;
 
 import java.util.List;
 
+import org.apache.commons.math3.transform.RealTransformer;
+import org.apache.olingo.commons.api.edm.FullQualifiedName;
 import org.apache.solr.client.solrj.SolrQuery;
+
+import entitys.EntityRegister;
+import entitys.Publication;
 
 public class SolrQueryMaker {
 	
@@ -27,23 +32,7 @@ public class SolrQueryMaker {
 		
 		query.setQuery(term);
 	}
-	
-	public void setQuerySearchToProjects() {
-		
-		query.setQuery("resourcetype_filter:\"010projects\n" + 
-    			"|||\n" + 
-    			"Fundings###fundings\"");
-	}
-	
-	public void setQueryTermToPublications() {
-		
-		query.setQuery("resourcetype_filter:\"001publications\n|||\nPublications###publications\"");
-	}
-	
-	public void setQueryTermToResearchers() {
-		
-		query.setQuery("resourcetype_filter:\"009researchers\n|||\nResearcher profiles###researcherprofiles\"");	
-	}
+
 
 	public void limitResultAttributes(List<String> attributeList) {
 		String attributes = "";
@@ -83,6 +72,13 @@ public class SolrQueryMaker {
 	}
 	
 	
+	public void setFilterForRelation(FullQualifiedName relatedEntityFqn, int crisID) {
+		if(relatedEntityFqn.equals(Publication.ET_PUBLICATION_FQN)) {
+			query.addFilterQuery("dc.contributor.author_authority:\'"+crisID+"\'");
+		}
+
+		
+	}
 	
 	
 }

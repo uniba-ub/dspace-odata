@@ -66,7 +66,6 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 			ContentType responseFormat) throws ODataApplicationException, ODataLibraryException {
 		EdmEntitySet responseEdmEntitySet = null;
 		EntityCollection responseEntityCollection = null;
-
 		// get the requested EntitySet from the uriInfo object
 		List<UriResource> resourceParts = uriInfo.getUriResourceParts();
 		int segmentCount = resourceParts.size();

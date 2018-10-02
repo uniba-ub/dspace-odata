@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.olingo.commons.api.data.Entity;
 import org.apache.olingo.commons.api.data.Property;
@@ -23,14 +24,16 @@ public class EntityRegister {
 		public List<String> entitySetNameList;
 		public List<FullQualifiedName> entityFQNList;
 		public List<CsdlEntitySet> entitySetList;
+		List<EntityModel> entityList;
 	
+
 		public EntityRegister() {		
 			registerEntitys();
 						
 		}
 		
 		public void registerEntitys() {
-			List<EntityModel> entityList = new LinkedList<EntityModel>();
+			entityList = new LinkedList<EntityModel>();
 			List<EntityModel> navEntityList = new LinkedList<EntityModel>();
 
 			Researcher researcher = new Researcher();
@@ -42,7 +45,10 @@ public class EntityRegister {
 		    Project project = new Project();
 		    entityList.add(project);
 		    
-		    navEntityList.add(orgunit);
+		    Publication publication = new Publication();
+		    entityList.add(publication);
+		    
+		    navEntityList.add(publication);
 		    setNavigationPropertyForEntity(researcher, navEntityList);
 		    
 		    fillList(entityList);
@@ -66,6 +72,10 @@ public class EntityRegister {
 		public List<CsdlEntitySet> getEntitySet(){			
 			return entitySetList;
 			
+		}
+		
+		public List<EntityModel> getEntityList() {
+			return entityList;
 		}
 		
 		public void setNavigationPropertyForEntity (EntityModel entity, List<EntityModel> entitiyList) {

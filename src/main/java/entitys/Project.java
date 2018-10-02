@@ -1,6 +1,7 @@
 package entitys;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.apache.olingo.commons.api.edm.EdmPrimitiveTypeKind;
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
@@ -16,6 +17,10 @@ public class Project implements EntityModel{
 	public static final String ET_PROJECT_NAME = "Project";
 	public static final FullQualifiedName ET_PROJECT_FQN = new FullQualifiedName(NAMESPACE, ET_PROJECT_NAME);
 	public static final String ES_PROJECTS_NAME = "Projects";
+	public final static String RECOURCE_TYPE_FILTER= "resourcetype_filter:\"010projects\n" + 
+			"|||\n" + 
+			"Fundings###fundings\"";
+	public final static String ID_CONVERTER_TYP= "pj";
 	private CsdlEntityType entityType;
 	private CsdlEntitySet entitySet;
 	
@@ -67,6 +72,25 @@ public class Project implements EntityModel{
 
 	public CsdlEntitySet getEntitySet() {
 		return entitySet;
+	}
+
+
+
+	public String getRecourceTypeFilter() {
+		return RECOURCE_TYPE_FILTER;
+	}
+
+
+
+	public String getIDConverterTyp() {
+		return ID_CONVERTER_TYP;
+	}
+
+
+
+	public List<String> getNavigationFilterList() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
