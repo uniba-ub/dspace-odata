@@ -178,7 +178,6 @@ public class QueryOptionService {
 
 	public Entity applyExpandOptionOnEntity(ExpandOption expandOption, Entity responseEntity,
 			EdmEntitySet responseEdmEntitySet) throws ODataApplicationException, SolrServerException, IOException {
-
 		if (expandOption != null) {
 			EdmNavigationProperty edmNavigationProperty = null;
 

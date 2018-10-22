@@ -119,8 +119,16 @@ public class Publication implements EntityModel {
 		return ID_CONVERTER_TYP;
 	}
 
-	public String getNavigationFilter() {
-		String navigationFilter = ("dc.contributor.author_authority:\"");
+	public String getNavigationFilter(String sourceType, String id) {
+		String navigationFilter = "";
+		if(sourceType.equals("Researchers")) {
+			navigationFilter = ("dc.contributor.author_authority:\"");
+			navigationFilter = (navigationFilter+id+"\"");
+
+		} else if(sourceType.equals("Orgunits")) {
+			navigationFilter = ("TODO");
+		
+		}
 			return navigationFilter;
 	}
 

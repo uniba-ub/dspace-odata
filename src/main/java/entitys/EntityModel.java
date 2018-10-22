@@ -13,6 +13,6 @@ public interface EntityModel {
 	public CsdlEntitySet getEntitySet();
 	public String getRecourceTypeFilter();
 	public String getIDConverterTyp();
-	public String getNavigationFilter();
+	public String getNavigationFilter(String sourceType, String id);
 
 }

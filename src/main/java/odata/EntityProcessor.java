@@ -146,11 +146,17 @@ public class EntityProcessor implements org.apache.olingo.server.api.processor.E
 		// Create System Query Options
 		SelectOption selectOption = uriInfo.getSelectOption();
 		ExpandOption expandOption = uriInfo.getExpandOption();
-//TODO: wieder einfügen
-	/*
-		responseEntity = queryOptionService.applyExpandOptionOnEntity(expandOption, responseEntity,
-				responseEdmEntitySet);
-	*/
+
+		try {
+			responseEntity = queryOptionService.applyExpandOptionOnEntity(expandOption, responseEntity,
+					responseEdmEntitySet);
+		} catch (SolrServerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		ODataSerializer serializer = this.odata.createSerializer(responseFormat);
 

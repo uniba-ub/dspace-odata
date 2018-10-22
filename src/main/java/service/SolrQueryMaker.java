@@ -53,7 +53,7 @@ public class SolrQueryMaker {
 	}
 	
 	public void addSearchFilter(String filter) {
-		query.setFilterQueries(filter);
+		query.addFilterQuery(filter);
 	}
 	
 	public void addSearchFilters(List<String> filters) {
@@ -76,12 +76,6 @@ public class SolrQueryMaker {
 
 	}
 	
-	public void setFilterForRelation(String navigationFilter, String crisID) {
-			query.addFilterQuery(navigationFilter+crisID+"\"");
-		
-
-		
-	}
 	
 	
 }

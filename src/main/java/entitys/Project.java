@@ -88,9 +88,18 @@ public class Project implements EntityModel{
 
 
 
-	public String getNavigationFilter() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getNavigationFilter(String sourceType, String id) {
+		String navigationFilter = "";
+		if(sourceType.equals("Researchers")) {
+			navigationFilter = ("crisproject.principalinvestigator_authority:\""+ id+"\"");
+			navigationFilter = (navigationFilter+ "OR ");
+			navigationFilter = (navigationFilter+ "crisproject.coinvestigators_authority:\""+ id+"\"");
+			
+		} else if(sourceType.equals("Orgunits")) {
+			navigationFilter = ("TODO");
+		
+		}
+			return navigationFilter;
 	}
 
 }

@@ -98,9 +98,15 @@ public class Researcher implements EntityModel {
 		return ID_CONVERTER_TYP;
 	}
 
-	public String getNavigationFilter() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getNavigationFilter(String sourceType, String id) {
+			String navigationFilter = "";
+			if(sourceType.equals("Orgunits")) {
+				navigationFilter = ("crisrp.dept_authority:\"");
+				navigationFilter = (navigationFilter+id+"\"");
+			
+			}
+				return navigationFilter;
+		
 	}
 
 }

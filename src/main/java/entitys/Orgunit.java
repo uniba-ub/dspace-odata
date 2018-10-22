@@ -19,6 +19,8 @@ public class Orgunit implements EntityModel{
 	public static final String ET_ORGUNIT_NAME = "Orgunit";
 	public static final FullQualifiedName ET_ORGUNIT_FQN = new FullQualifiedName(NAMESPACE, ET_ORGUNIT_NAME);
 	public static final String ES_ORGUNITS_NAME = "Orgunits";
+	public final static String RECOURCE_TYPE_FILTER= "resourcetype_filter:\"008orgunits\n|||\nOrganizations###orgunits\"";
+	public final static String ID_CONVERTER_TYP= "ou";
 	private CsdlEntityType entityType;
 	private CsdlEntitySet entitySet;
 
@@ -28,17 +30,17 @@ public class Orgunit implements EntityModel{
 		
 	CsdlProperty id = new CsdlProperty().setName("id")
 			.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
-	CsdlProperty idmKey = new CsdlProperty().setName("idmKey")
+	CsdlProperty idmKey = new CsdlProperty().setName("cris-id")
 			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-	CsdlProperty name = new CsdlProperty().setName("Name")
+	CsdlProperty name = new CsdlProperty().setName("crisou.name")
 			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 	CsdlProperty description = new CsdlProperty().setName("Beschreibung")
 			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-	CsdlProperty url = new CsdlProperty().setName("Url")
+	CsdlProperty url = new CsdlProperty().setName("crisou.iso-3166-country")
 			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-	CsdlProperty startDate = new CsdlProperty().setName("Startzeitpunkt")
+	CsdlProperty startDate = new CsdlProperty().setName("startdate")
 			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-	CsdlProperty endDate = new CsdlProperty().setName("Endzeitpunkt")
+	CsdlProperty endDate = new CsdlProperty().setName("crisou.city")
 			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 
 	CsdlPropertyRef propertyRef = new CsdlPropertyRef();
@@ -81,18 +83,16 @@ public class Orgunit implements EntityModel{
 
 
 	public String getRecourceTypeFilter() {
-		// TODO Auto-generated method stub
-		return null;
+		return RECOURCE_TYPE_FILTER;
 	}
 
 
 	public String getIDConverterTyp() {
-		// TODO Auto-generated method stub
-		return null;
+		return ID_CONVERTER_TYP;
 	}
 
 
-	public String getNavigationFilter() {
+	public String getNavigationFilter(String sourceType, String id) {
 		// TODO Auto-generated method stub
 		return null;
 	}

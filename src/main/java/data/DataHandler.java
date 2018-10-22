@@ -210,22 +210,20 @@ public class DataHandler {
 			boolean isEntityCollection = true;
 			List<String> filterList = new LinkedList<String>();
 			EntityModel sourceModel = null;
-			EntityModel targetModel;
+			EntityModel targetModel = null;
 			for(EntityModel item: entityRegister.getEntityList()) {
-				if(item.getFullQualifiedName().getFullQualifiedNameAsString().equals(sourceEntity.getType())){
-					
+				if(item.getFullQualifiedName().getFullQualifiedNameAsString().equals(sourceEntity.getType())){					
 					sourceModel = item;
-					//TODO: Anhand von sourceModel den entsprechenden NavigationFilter bestimmen
-				}
-				
+				}		
 				if(item.getFullQualifiedName().equals(targetEntityType.getFullQualifiedName())) {
 					targetModel= item;	
-					String crisId = converter.convertToCrisID(entityID, sourceModel.getIDConverterTyp());
-					queryMaker.setFilterForRelation(targetModel.getNavigationFilter(), crisId);
-					responseDocuments = getQuerriedDataFromSolr(targetModel.getEntitySetName(), keyParams, isEntityCollection, filterList);	
-					navigationTargetEntityCollection = createEntitySet(responseDocuments, targetModel.getEntitySetName());
 				}
 			}
+			
+			String crisId = converter.convertToCrisID(entityID, sourceModel.getIDConverterTyp());
+			queryMaker.addSearchFilter((targetModel.getNavigationFilter(sourceModel.getEntitySetName(), crisId)));
+			responseDocuments = getQuerriedDataFromSolr(targetModel.getEntitySetName(), keyParams, isEntityCollection, filterList);	
+			navigationTargetEntityCollection = createEntitySet(responseDocuments, targetModel.getEntitySetName());
 			
 		if (navigationTargetEntityCollection.getEntities().isEmpty()) {
 			return null;

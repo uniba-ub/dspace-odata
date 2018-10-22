@@ -1,22 +1,17 @@
 package entitys;
 
-import java.net.URI;
-import java.net.URISyntaxException;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
-import org.apache.olingo.commons.api.data.Entity;
-import org.apache.olingo.commons.api.data.Property;
+
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
 import org.apache.olingo.commons.api.edm.provider.CsdlEntitySet;
 import org.apache.olingo.commons.api.edm.provider.CsdlEntityType;
 import org.apache.olingo.commons.api.edm.provider.CsdlNavigationProperty;
 import org.apache.olingo.commons.api.edm.provider.CsdlNavigationPropertyBinding;
-import org.apache.olingo.commons.api.ex.ODataRuntimeException;
 
-import odata.EdmProviderDSpace;
 
 public class EntityRegister {
 	
@@ -49,7 +44,14 @@ public class EntityRegister {
 		    entityList.add(publication);
 		    
 		    navEntityList.add(publication);
+		    navEntityList.add(project);
 		    setNavigationPropertyForEntity(researcher, navEntityList);
+		    
+		    navEntityList = new LinkedList<EntityModel>();
+		    navEntityList.add(project);
+		    navEntityList.add(researcher);
+		    navEntityList.add(publication);
+		    setNavigationPropertyForEntity(orgunit, navEntityList);
 		    
 		    fillList(entityList);
 
@@ -80,25 +82,27 @@ public class EntityRegister {
 		
 		public void setNavigationPropertyForEntity (EntityModel entity, List<EntityModel> entitiyList) {
 			
-			List<CsdlNavigationPropertyBinding> navPropBindingList = new ArrayList<CsdlNavigationPropertyBinding>();
-			CsdlNavigationPropertyBinding navPropBinding= new CsdlNavigationPropertyBinding();
-			
+			List<CsdlNavigationPropertyBinding> navPropBindingList = new ArrayList<CsdlNavigationPropertyBinding>();			
 			List<CsdlNavigationProperty> navPropList = new ArrayList<CsdlNavigationProperty>();
-			CsdlNavigationProperty navProp = new CsdlNavigationProperty();
 
 			
 			for(EntityModel item: entitiyList) {
 				
+				
+				CsdlNavigationPropertyBinding navPropBinding= new CsdlNavigationPropertyBinding();
 				navPropBinding.setTarget(item.getEntitySetName());
 				navPropBinding.setPath(item.getEntitySetName());
 				navPropBindingList.add(navPropBinding);
 				
+				CsdlNavigationProperty navProp = new CsdlNavigationProperty();
+	
 				navProp.setName(item.getEntitySetName());
 				navProp.setType(item.getFullQualifiedName());
 				navProp.setCollection(true);
 				navPropList.add(navProp);
-				
 			}
+			
+			
 			entity.getEntitySet().setNavigationPropertyBindings(navPropBindingList);
 			entity.getEntityType().setNavigationProperties(navPropList);
 		}
