@@ -25,7 +25,7 @@ public class SolrQueryMaker {
 	
 	public void setResponseLimitToMax() {
 		
-			query.setRows(9999);
+			query.setRows(Integer.MAX_VALUE);
 	}
 
 	public void setQuerySearchTerm(String term) {
