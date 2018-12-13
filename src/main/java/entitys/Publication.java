@@ -78,7 +78,7 @@ public class Publication implements EntityModel {
 
 		entityType = new CsdlEntityType();	
 		entityType.setName(ET_PUBLICATION_NAME);
-		entityType.setProperties(Arrays.asList(id, handle, title, alternativeTitle, contributorEditor, description, description, language, publisher, series, subject,type,contributor,contributorSupervisor,contributorCorporation,publisherPlace,relationEdition,relationSeriesnumber,risPartOfOtherSeries,issued,licence,pages,faculty,uriIdentifier,authors));
+		entityType.setProperties(Arrays.asList(id, handle, title, alternativeTitle, contributorEditor, description, description, language, publisher, series, subject,contributor,contributorSupervisor,contributorCorporation,publisherPlace,relationEdition,relationSeriesnumber,risPartOfOtherSeries,issued,faculty,uriIdentifier,authors));
 		entityType.setKey(Collections.singletonList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
