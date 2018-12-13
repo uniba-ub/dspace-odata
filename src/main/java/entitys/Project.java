@@ -1,7 +1,6 @@
 package entitys;
 
 import java.util.Arrays;
-import java.util.List;
 
 import org.apache.olingo.commons.api.edm.EdmPrimitiveTypeKind;
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
@@ -40,14 +39,19 @@ public class Project implements EntityModel{
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty status = new CsdlProperty().setName("crisproject.status")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-
+		CsdlProperty abstracts = new CsdlProperty().setName("crisproject.abstract")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty budget = new CsdlProperty().setName("crisproject.budget")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
+		CsdlProperty url = new CsdlProperty().setName("crisproject.projectURL")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 
 		CsdlPropertyRef propertyRef = new CsdlPropertyRef();
 		propertyRef.setName("id");
 
 		entityType = new CsdlEntityType();
 		entityType.setName(ET_PROJECT_NAME);
-		entityType.setProperties(Arrays.asList(id,crisId, title,  startDate, endDate,keywords,status));
+		entityType.setProperties(Arrays.asList(id,crisId, title, abstracts, budget, startDate, endDate,keywords,status, url));
 		entityType.setKey(Arrays.asList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
