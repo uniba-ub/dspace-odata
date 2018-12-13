@@ -2,7 +2,6 @@ package entitys;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 import org.apache.olingo.commons.api.edm.EdmPrimitiveTypeKind;
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
@@ -47,8 +46,6 @@ public class Publication implements EntityModel {
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty subject = new CsdlProperty().setName("dc.subject")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty type = new CsdlProperty().setName("dc.type.en_US")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty contributor = new CsdlProperty().setName("dc.contributor.contributor")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty contributorSupervisor = new CsdlProperty().setName("dc.contributor.supervisor")
@@ -63,11 +60,7 @@ public class Publication implements EntityModel {
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty risPartOfOtherSeries = new CsdlProperty().setName("dc.relation.ispartofotherseries")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty issued= new CsdlProperty().setName("dc.issued")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty licence= new CsdlProperty().setName("ubg.accessRights.depositlicence.en_US")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty pages= new CsdlProperty().setName("dc.description.pages")
+		CsdlProperty issued= new CsdlProperty().setName("dateIssued.year")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty faculty= new CsdlProperty().setName("ubg.faculty.org")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
@@ -126,7 +119,9 @@ public class Publication implements EntityModel {
 			navigationFilter = (navigationFilter+id+"\"");
 
 		} else if(sourceType.equals("Orgunits")) {
-			navigationFilter = ("TODO");
+			navigationFilter = ("ubg.faculty.org_authority:\"");
+			navigationFilter = (navigationFilter+id+"\"");
+			
 		
 		}
 			return navigationFilter;
