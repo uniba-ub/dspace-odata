@@ -2,6 +2,7 @@ package entitys;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.olingo.commons.api.data.Entity;
@@ -22,6 +23,8 @@ public class Researcher implements EntityModel {
 	public static final String ES_RESEARCHERS_NAME = "Researchers";
 	public final static String RECOURCE_TYPE_FILTER= "resourcetype_filter:\"009researchers\n|||\nResearcher profiles###researcherprofiles\"";
 	public final static String ID_CONVERTER_TYP= "rp";
+	private HashMap<String, String> mapping;
+
 
 	
 	private CsdlEntityType entityType;
@@ -69,7 +72,17 @@ public class Researcher implements EntityModel {
 		entitySet.setName(ES_RESEARCHERS_NAME);
 		entitySet.setType(ET_RESEARCHER_FQN);
 			
+		mapping = new HashMap<String, String>();
 		
+		mapping.put("crisrp.fullName", "fullName");
+		mapping.put("crisrp.fullName", "creditName");
+		mapping.put("crisrp.fullName", "researchInterests");
+		mapping.put("crisrp.fullName", "description");
+		mapping.put("crisrp.fullName", "title");
+		mapping.put("crisrp.fullName", "email");
+		mapping.put("crisrp.fullName", "position");
+		mapping.put("crisrp.fullName", "transferabstract");
+
 	}
 	
 	public CsdlEntityType getEntityType() {	
@@ -107,6 +120,10 @@ public class Researcher implements EntityModel {
 			}
 				return navigationFilter;
 		
+	}
+
+	public HashMap<String, String> getMapping() {
+		return mapping;
 	}
 
 }

@@ -2,6 +2,7 @@ package entitys;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 
 import org.apache.olingo.commons.api.edm.EdmPrimitiveTypeKind;
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
@@ -22,6 +23,7 @@ public class Publication implements EntityModel {
 	public final static String ID_CONVERTER_TYP= "http://hdl.handle.net/123456789/";
 	private CsdlEntityType entityType;
 	private CsdlEntitySet entitySet;
+	private HashMap<String, String> mapping;
 	
 	
 	public Publication(){
@@ -30,43 +32,27 @@ public class Publication implements EntityModel {
 				.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
 		CsdlProperty handle = new CsdlProperty().setName("handle")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty title = new CsdlProperty().setName("dc.title")
+		CsdlProperty title = new CsdlProperty().setName("title")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
-		CsdlProperty alternativeTitle = new CsdlProperty().setName("dc.title.alternative")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());	
-		CsdlProperty contributorEditor = new CsdlProperty().setName("dc.contributor.editor")
+		CsdlProperty description = new CsdlProperty().setName("description")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty description = new CsdlProperty().setName("dc.description")
+		CsdlProperty  language= new CsdlProperty().setName("language")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty  language= new CsdlProperty().setName("dc.language.iso.en_US")
+		CsdlProperty publisher = new CsdlProperty().setName("publisher")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty publisher = new CsdlProperty().setName("dc.publisher")
+		CsdlProperty series = new CsdlProperty().setName("ispartofseries")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty series = new CsdlProperty().setName("dc.relation.ispartofseries")
+		CsdlProperty subject = new CsdlProperty().setName("subject")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty subject = new CsdlProperty().setName("dc.subject")
+		CsdlProperty publisherPlace = new CsdlProperty().setName("publisherplace")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty contributor = new CsdlProperty().setName("dc.contributor.contributor")
+		CsdlProperty issued= new CsdlProperty().setName("completedYear")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty contributorSupervisor = new CsdlProperty().setName("dc.contributor.supervisor")
+		CsdlProperty faculty= new CsdlProperty().setName("faculty")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty contributorCorporation = new CsdlProperty().setName("dc.contributor.corporation")
+		CsdlProperty uriIdentifier= new CsdlProperty().setName("uri")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty publisherPlace = new CsdlProperty().setName("dc.publisher.place")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty relationEdition = new CsdlProperty().setName("dc.relation.edition")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty relationSeriesnumber = new CsdlProperty().setName("dc.relation.seriesnumber")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty risPartOfOtherSeries = new CsdlProperty().setName("dc.relation.ispartofotherseries")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty issued= new CsdlProperty().setName("dateIssued.year")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty faculty= new CsdlProperty().setName("ubg.faculty.org")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty uriIdentifier= new CsdlProperty().setName("dc.identifier.uri")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty authors= new CsdlProperty().setName("dc.contributor.author")
+		CsdlProperty authors= new CsdlProperty().setName("author")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
 		// creation of PropertyRef for the key Element
 
@@ -78,13 +64,28 @@ public class Publication implements EntityModel {
 
 		entityType = new CsdlEntityType();	
 		entityType.setName(ET_PUBLICATION_NAME);
-		entityType.setProperties(Arrays.asList(id, handle, title, alternativeTitle, contributorEditor, description, description, language, publisher, series, subject,contributor,contributorSupervisor,contributorCorporation,publisherPlace,relationEdition,relationSeriesnumber,risPartOfOtherSeries,issued,faculty,uriIdentifier,authors));
+		entityType.setProperties(Arrays.asList(id, handle, title, description, description, language, publisher, series, subject,publisherPlace,issued,faculty,uriIdentifier,authors));
 		entityType.setKey(Collections.singletonList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
 		entitySet.setName(ES_PUBLICATIONS_NAME);
 		entitySet.setType(ET_PUBLICATION_FQN);
 		
+		mapping = new HashMap<String, String>();
+		
+		mapping.put("handle", "handle");
+		mapping.put("dc.title", "title");
+		mapping.put("dc.description", "description");
+		mapping.put("dc.publisher", "publisher");
+		mapping.put("dc.subject", "subject");
+		mapping.put("dc.contributor.author", "author");
+		mapping.put("dc.identifier.uri", "uri");
+		mapping.put("ubg.date.completedyear", "completedYear");
+		mapping.put("dc.language.iso", "language");
+		mapping.put("dc.relation.ispartofseries", "ispartofseries");
+		mapping.put("dc.publisher.place", "publisherplace");
+		mapping.put("ubg.faculty.org","faculty");
+
 		
 	}
 
@@ -125,6 +126,10 @@ public class Publication implements EntityModel {
 		
 		}
 			return navigationFilter;
+	}
+
+	public HashMap<String, String> getMapping() {
+		return mapping;
 	}
 
 }

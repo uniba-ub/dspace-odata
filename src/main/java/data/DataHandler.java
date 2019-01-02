@@ -3,6 +3,7 @@ package data;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -48,12 +49,12 @@ public class DataHandler {
 	public EntityCollection readEntitySetData(EdmEntitySet edmEntitySet) throws SolrServerException, IOException {
 		EntityCollection entitySet = new EntityCollection();
 		SolrDocumentList responseDocuments;
-		for (String item : entityRegister.getEntitySetNameList()) {
-			if (edmEntitySet.getName().equals(item)) {
+		for (EntityModel item : entityRegister.getEntityList()) {
+			if (edmEntitySet.getName().equals(item.getEntitySetName())) {
 				List<UriParameter> keyParams = null;
 				boolean isEntityCollection=true;
 				List<String> filterList = new LinkedList<String>();
-				responseDocuments = getQuerriedDataFromSolr(item, keyParams, isEntityCollection, filterList);
+				responseDocuments = getQuerriedDataFromSolr(item.getEntitySetName(), keyParams, isEntityCollection, filterList);
 				entitySet = createEntitySet(responseDocuments, item);
 			}
 		}
@@ -71,7 +72,7 @@ public class DataHandler {
 				boolean isEntityCollection = false;
 				List<String> filterList = new LinkedList<String>();
 				responseDocuments = getQuerriedDataFromSolr(item.getEntitySetName(), keyParams, isEntityCollection, filterList);
-				entitySet = createEntitySet(responseDocuments, item.getEntitySetName());
+				entitySet = createEntitySet(responseDocuments, item);
 				entity = entitySet.getEntities().get(0);
 				}
 
@@ -94,24 +95,23 @@ public class DataHandler {
 				}
 				else {
 					queryMaker.setQuerySearchTerm(item.getRecourceTypeFilter());
-					String type = item.getIDConverterTyp();
-					String id = keyParams.get(0).getText();
-					String crisId = converter.convertToCrisID(id, type);
-					queryMaker.addSearchFilterForAttribute("cris-id", crisId);
+					String id = keyParams.get(0).getText();				
+					String dspaceId = converter.convertODataIDToDSpaceID(id, item.getIDConverterTyp());
+					queryMaker.addSearchFilterForAttribute(converter.getIDSolrFilter(item.getIDConverterTyp()), dspaceId);
 				}
 			}		
 		}		
 
-		SolrDocumentList responseDocuments = solr.getData(queryMaker.getQuery());
+		SolrDocumentList responseDocuments = solr.getData(queryMaker);
 		queryMaker.resetQuery();
 		return responseDocuments;
 	}
 
-	public EntityCollection createEntitySet(SolrDocumentList documentList, String entitySetName) {
+	public EntityCollection createEntitySet(SolrDocumentList documentList, EntityModel entity) {
 		EntityCollection entitySet = new EntityCollection();
 		for (SolrDocument solrDocument : documentList) {
 			entitySet.getEntities()
-					.add(createEntity(createPropertyList(solrDocument, entitySetName), entitySetName));
+					.add(createEntity(createPropertyList(solrDocument, entity), entity.getEntitySetName()));
 		}
 
 		return entitySet;
@@ -128,9 +128,10 @@ public class DataHandler {
 		return entity;
 	}
 
-	public List<Property> createPropertyList(SolrDocument solrDocument, String entitySetName) {
+	public List<Property> createPropertyList(SolrDocument solrDocument, EntityModel entity) {
 		propertyList = new LinkedList<Property>();
 		Property property;
+		HashMap<String, String> mapping = entity.getMapping();
 		for (String item : solrDocument.getFieldNames()) {
 			if(item.equals("cris-id")) {
 				//change item value
@@ -147,7 +148,7 @@ public class DataHandler {
 				
 			}
 			
-			property = new Property(null, item, ValueType.PRIMITIVE, solrDocument.getFieldValue(item));
+			property = new Property(null, mapping.get(item), ValueType.PRIMITIVE, solrDocument.getFieldValue(item));
 			propertyList.add(property);
 			
 
@@ -220,10 +221,10 @@ public class DataHandler {
 				}
 			}
 			
-			String crisId = converter.convertToCrisID(entityID, sourceModel.getIDConverterTyp());
-			queryMaker.addSearchFilter((targetModel.getNavigationFilter(sourceModel.getEntitySetName(), crisId)));
+			String dspaceId = converter.convertODataIDToDSpaceID(entityID, sourceModel.getIDConverterTyp());
+			queryMaker.addSearchFilter((targetModel.getNavigationFilter(sourceModel.getEntitySetName(), dspaceId)));
 			responseDocuments = getQuerriedDataFromSolr(targetModel.getEntitySetName(), keyParams, isEntityCollection, filterList);	
-			navigationTargetEntityCollection = createEntitySet(responseDocuments, targetModel.getEntitySetName());
+			navigationTargetEntityCollection = createEntitySet(responseDocuments, targetModel);
 			
 		if (navigationTargetEntityCollection.getEntities().isEmpty()) {
 			return null;

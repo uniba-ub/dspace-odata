@@ -1,6 +1,7 @@
 package entitys;
 
 import java.util.Arrays;
+import java.util.HashMap;
 
 import org.apache.olingo.commons.api.edm.EdmPrimitiveTypeKind;
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
@@ -104,6 +105,13 @@ public class Project implements EntityModel{
 		
 		}
 			return navigationFilter;
+	}
+
+
+
+	public HashMap<String, String> getMapping() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

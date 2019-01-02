@@ -3,11 +3,12 @@ package data;
 import java.io.IOException;
 
 import org.apache.solr.client.solrj.SolrClient;
-import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocumentList;
+
+import service.SolrQueryMaker;
 
 
 public class SolrConnector {
@@ -21,10 +22,11 @@ public class SolrConnector {
 		solr = new HttpSolrClient.Builder(urlString).build();
 	}
 	
-	public SolrDocumentList getData(SolrQuery query) throws SolrServerException, IOException {
+	public SolrDocumentList getData(SolrQueryMaker queryMaker) throws SolrServerException, IOException {
 		connectToDSpaceSolr();
-    	QueryResponse response = solr.query(query);
+    	QueryResponse response = solr.query(queryMaker.getQuery());
 		SolrDocumentList list = response.getResults();	
+		queryMaker.resetQuery();
 		solr.close();
 		return list;
 

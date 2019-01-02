@@ -1,7 +1,16 @@
 package service;
 
+
 public class IdConverter {
-		
+
+	
+	public String getIDSolrFilter (String converterTyp) {
+		if(converterTyp.equals("http://hdl.handle.net/123456789/")) {
+			return "handle";
+		}else {
+			return "cris-id";		}	
+	}
+	
 	
 	public int convertCrisToId(String crisId) {
 		String convertedId = crisId.replaceAll("[^\\d.]", "");
@@ -19,11 +28,16 @@ public class IdConverter {
 	}
 	
 	
-	public String convertToCrisID(String id, String type) {
-		int crisIdAsInt = Integer.valueOf(id);
-		String crisId = String.format("%s%05d", type,crisIdAsInt);
-		return crisId;
+	public String convertODataIDToDSpaceID(String id, String type) {
+		if(type.equals("http://hdl.handle.net/123456789/")) {
+			type = type.replaceAll("[^0-9]", "");
+			type= type + "/";
+		}
+		int dspaceIdAsInt = Integer.valueOf(id);
+		String dspaceId = String.format("%s%05d", type,dspaceIdAsInt);	
+		return dspaceId;
 	}
+	
 	
 }
 

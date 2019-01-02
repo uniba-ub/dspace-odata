@@ -1,6 +1,8 @@
 package entitys;
 
 
+import java.util.HashMap;
+
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
 import org.apache.olingo.commons.api.edm.provider.CsdlEntitySet;
 import org.apache.olingo.commons.api.edm.provider.CsdlEntityType;
@@ -14,5 +16,6 @@ public interface EntityModel {
 	public String getRecourceTypeFilter();
 	public String getIDConverterTyp();
 	public String getNavigationFilter(String sourceType, String id);
+	public HashMap<String, String> getMapping();
 
 }

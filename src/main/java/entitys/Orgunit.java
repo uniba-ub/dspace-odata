@@ -1,6 +1,7 @@
 package entitys;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.olingo.commons.api.data.Entity;
@@ -93,6 +94,12 @@ public class Orgunit implements EntityModel{
 
 
 	public String getNavigationFilter(String sourceType, String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	public HashMap<String, String> getMapping() {
 		// TODO Auto-generated method stub
 		return null;
 	}
