@@ -181,8 +181,11 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 		EntityCollectionSerializerOptions opts = EntityCollectionSerializerOptions.with().contextURL(contextUrl)
 				.select(selectOption).expand(expandOption).id(id).count(countOption).build();
 
+		//check if requestedResponseFormat is null, then use json
+		if(uriInfo.getFormatOption()==null) {
+			responseFormat = ContentType.APPLICATION_JSON;	
+		}
 		ODataSerializer serializer = odata.createSerializer(responseFormat);
-		List<Entity> list = responseEntityCollection.getEntities();
 		SerializerResult serializerResult = serializer.entityCollection(this.serviceMetadata, edmEntityType,
 				responseEntityCollection, opts);
 

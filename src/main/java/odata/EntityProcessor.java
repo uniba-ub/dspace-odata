@@ -158,6 +158,10 @@ public class EntityProcessor implements org.apache.olingo.server.api.processor.E
 			e.printStackTrace();
 		}
 		
+		//check if requestedResponseFormat is null, then use json
+		if(uriInfo.getFormatOption()==null) {
+			responseFormat = ContentType.APPLICATION_JSON;	
+		}
 		ODataSerializer serializer = this.odata.createSerializer(responseFormat);
 
 		EdmEntityType edmEntityType = responseEdmEntitySet.getEntityType();

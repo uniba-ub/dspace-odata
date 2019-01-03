@@ -93,6 +93,10 @@ public class PrimitiveProcessor implements org.apache.olingo.server.api.processo
 
 		Object value = property.getValue();
 		if (value != null) {
+			//check if requestedResponseFormat is null, then use json
+			if(uriInfo.getFormatOption()==null) {
+				responseFormat = ContentType.APPLICATION_JSON;	
+			}
 			ODataSerializer serializer = odata.createSerializer(responseFormat);
 
 			ContextURL contextUrl = ContextURL.with().entitySet(edmEntitySet).navOrPropertyPath(edmPropertyName)
