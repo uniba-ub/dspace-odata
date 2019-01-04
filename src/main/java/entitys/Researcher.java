@@ -3,10 +3,7 @@ package entitys;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 
-import org.apache.olingo.commons.api.data.Entity;
-import org.apache.olingo.commons.api.data.Property;
 import org.apache.olingo.commons.api.edm.EdmPrimitiveTypeKind;
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
 import org.apache.olingo.commons.api.edm.provider.CsdlEntitySet;
@@ -36,36 +33,52 @@ public class Researcher implements EntityModel {
 				.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
 		CsdlProperty crisId = new CsdlProperty().setName("cris-id")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty fullName = new CsdlProperty().setName("crisrp.fullName")
+		CsdlProperty fullName = new CsdlProperty().setName("fullname")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty  creditName= new CsdlProperty().setName("crisrp.variants")
+		CsdlProperty  creditName= new CsdlProperty().setName("creditname")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty researchInterests = new CsdlProperty().setName("crisrp.interests")
+		CsdlProperty researchinterests = new CsdlProperty().setName("researchinterests")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty description = new CsdlProperty().setName("crisrp.description")
+		CsdlProperty description = new CsdlProperty().setName("description")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty title = new CsdlProperty().setName("crisrp.title")
+		CsdlProperty title = new CsdlProperty().setName("title")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty email = new CsdlProperty().setName("crisrp.email")
+		CsdlProperty email = new CsdlProperty().setName("email")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty position = new CsdlProperty().setName("crisrp.position")
+		CsdlProperty position = new CsdlProperty().setName("position")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty transferabstract = new CsdlProperty().setName("crisrp.transfer-abstract")
+		CsdlProperty transferabstract = new CsdlProperty().setName("transferabstract")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty transferkeywords = new CsdlProperty().setName("crisrp.transfer-keyword")
+		CsdlProperty transferkeywords = new CsdlProperty().setName("transferkeywords")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty contactroom = new CsdlProperty().setName("contactroom")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty contactaddress = new CsdlProperty().setName("contactaddress")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty contactphone = new CsdlProperty().setName("contactphone")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty contacturl = new CsdlProperty().setName("contacturl")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty contactemail = new CsdlProperty().setName("contactemail")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty consultation = new CsdlProperty().setName("consultation")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty researcharea = new CsdlProperty().setName("researcharea")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty biography = new CsdlProperty().setName("biography")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 
+				
 		// creation of PropertyRef for the key Element
 
 		CsdlPropertyRef propertyRef = new CsdlPropertyRef();
 		propertyRef.setName("id");
 
-
 		// configuration of the Entity Type and adding of properties
 
 		entityType = new CsdlEntityType();
 		entityType.setName(ET_RESEARCHER_NAME);
-		entityType.setProperties(Arrays.asList(id, crisId, fullName, creditName, researchInterests, description, title, email, position, transferabstract, transferkeywords));
+		entityType.setProperties(Arrays.asList(id, crisId, fullName, creditName, researchinterests, description, title, email, position, biography, researcharea, contactroom, contactaddress, contactphone, contacturl, contactemail, consultation, transferabstract, transferkeywords));
 		entityType.setKey(Collections.singletonList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
@@ -74,14 +87,25 @@ public class Researcher implements EntityModel {
 			
 		mapping = new HashMap<String, String>();
 		
-		mapping.put("crisrp.fullName", "fullName");
-		mapping.put("crisrp.fullName", "creditName");
-		mapping.put("crisrp.fullName", "researchInterests");
-		mapping.put("crisrp.fullName", "description");
-		mapping.put("crisrp.fullName", "title");
-		mapping.put("crisrp.fullName", "email");
-		mapping.put("crisrp.fullName", "position");
-		mapping.put("crisrp.fullName", "transferabstract");
+		mapping.put("cris-id", "cris-id");
+		mapping.put("crisrp.fullName", "fullname");
+		mapping.put("crisrp.variants", "creditname");
+		mapping.put("crisrp.interests", "researchinterests");
+		mapping.put("crisrp.description", "description");
+		mapping.put("crisrp.title", "title");
+		mapping.put("crisrp.email", "email");
+		mapping.put("crisrp.position", "position");
+		mapping.put("crisrp.transfer-abstract", "transferabstract");
+		mapping.put("crisrp.transfer-keyword", "transferkeywords");
+		mapping.put("crisrp.contactroom", "contactroom");
+		mapping.put("crisrp.contactaddress", "contactaddress");
+		mapping.put("crisrp.contactphone", "contactphone");
+		mapping.put("crisrp.contacturl", "contacturl");
+		mapping.put("crisrp.contactemail", "contactemail");
+		mapping.put("crisrp.consultation", "consultation");
+		mapping.put("crisrp.researcharea", "researcharea");
+		mapping.put("biography", "biography");
+
 
 	}
 	

@@ -2,10 +2,7 @@ package entitys;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
-import org.apache.olingo.commons.api.data.Entity;
-import org.apache.olingo.commons.api.data.Property;
 import org.apache.olingo.commons.api.edm.EdmPrimitiveTypeKind;
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
 import org.apache.olingo.commons.api.edm.provider.CsdlEntitySet;
@@ -24,6 +21,7 @@ public class Orgunit implements EntityModel{
 	public final static String ID_CONVERTER_TYP= "ou";
 	private CsdlEntityType entityType;
 	private CsdlEntitySet entitySet;
+	private HashMap<String, String> mapping;
 
 
 
@@ -33,15 +31,21 @@ public class Orgunit implements EntityModel{
 			.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
 	CsdlProperty idmKey = new CsdlProperty().setName("cris-id")
 			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-	CsdlProperty name = new CsdlProperty().setName("crisou.name")
+	CsdlProperty name = new CsdlProperty().setName("name")
 			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-	CsdlProperty description = new CsdlProperty().setName("Beschreibung")
+	CsdlProperty description = new CsdlProperty().setName("description")
 			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-	CsdlProperty url = new CsdlProperty().setName("crisou.iso-3166-country")
+	CsdlProperty url = new CsdlProperty().setName("url")
 			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-	CsdlProperty startDate = new CsdlProperty().setName("startdate")
+	CsdlProperty date = new CsdlProperty().setName("date")
 			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-	CsdlProperty endDate = new CsdlProperty().setName("crisou.city")
+	CsdlProperty endDate = new CsdlProperty().setName("enddate")
+			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+	CsdlProperty active = new CsdlProperty().setName("active")
+			.setType(EdmPrimitiveTypeKind.Boolean.getFullQualifiedName());
+	CsdlProperty crossrefid = new CsdlProperty().setName("crossrefid")
+			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+	CsdlProperty director = new CsdlProperty().setName("director")
 			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 
 	CsdlPropertyRef propertyRef = new CsdlPropertyRef();
@@ -49,12 +53,25 @@ public class Orgunit implements EntityModel{
 
 	entityType = new CsdlEntityType();
 	entityType.setName(ET_ORGUNIT_NAME);
-	entityType.setProperties(Arrays.asList(id, idmKey, name, description, url, startDate, endDate));
+	entityType.setProperties(Arrays.asList(id, idmKey, name, description, url, director, date, endDate,active,crossrefid));
 	entityType.setKey(Arrays.asList(propertyRef));
 	
 	entitySet = new CsdlEntitySet();
 	entitySet.setName(ES_ORGUNITS_NAME);
 	entitySet.setType(ET_ORGUNIT_FQN);
+	
+	mapping = new HashMap<String, String>();
+	
+	mapping.put("cris-id", "cris-id");
+	mapping.put("crisou.name", "name");
+	mapping.put("crisou.director","director");
+	mapping.put("crisou.date", "date");
+	mapping.put("crisou.crossrefid", "crossrefid");
+	mapping.put("crisou.description", "description");
+	mapping.put("crisou.endDate", "enddate");
+	mapping.put("crisou.active", "active");
+	mapping.put("crisou.url", "url");
+	
 	
 	
 	}
@@ -100,8 +117,7 @@ public class Orgunit implements EntityModel{
 
 
 	public HashMap<String, String> getMapping() {
-		// TODO Auto-generated method stub
-		return null;
+		return mapping;
 	}
 
 	

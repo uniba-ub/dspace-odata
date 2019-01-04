@@ -23,6 +23,9 @@ public class Project implements EntityModel{
 	public final static String ID_CONVERTER_TYP= "pj";
 	private CsdlEntityType entityType;
 	private CsdlEntitySet entitySet;
+	private HashMap<String, String> mapping;
+
+	
 	
 	public Project() {
 		
@@ -30,34 +33,61 @@ public class Project implements EntityModel{
 				.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
 		CsdlProperty crisId = new CsdlProperty().setName("cris-id")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty title = new CsdlProperty().setName("crisproject.title")
+		CsdlProperty title = new CsdlProperty().setName("title")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty startDate = new CsdlProperty().setName("crisproject.startdate")
+		CsdlProperty startDate = new CsdlProperty().setName("startdate")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty endDate = new CsdlProperty().setName("crisproject.expdate")
+		CsdlProperty endDate = new CsdlProperty().setName("expdate")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty keywords = new CsdlProperty().setName("crisproject.keywords")
+		CsdlProperty keywords = new CsdlProperty().setName("keywords")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty status = new CsdlProperty().setName("crisproject.status")
+		CsdlProperty status = new CsdlProperty().setName("status")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty abstracts = new CsdlProperty().setName("crisproject.abstract")
+		CsdlProperty abstracts = new CsdlProperty().setName("abstract")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty budget = new CsdlProperty().setName("crisproject.budget")
+		CsdlProperty budget = new CsdlProperty().setName("budget")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
-		CsdlProperty url = new CsdlProperty().setName("crisproject.projectURL")
+		CsdlProperty url = new CsdlProperty().setName("url")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty principalinvestigator = new CsdlProperty().setName("principalinvestigator")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty coinvestigators = new CsdlProperty().setName("coinvestigators")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty projectarea = new CsdlProperty().setName("projectarea")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty code = new CsdlProperty().setName("code")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
 
 		CsdlPropertyRef propertyRef = new CsdlPropertyRef();
 		propertyRef.setName("id");
 
 		entityType = new CsdlEntityType();
 		entityType.setName(ET_PROJECT_NAME);
-		entityType.setProperties(Arrays.asList(id,crisId, title, abstracts, budget, startDate, endDate,keywords,status, url));
+		entityType.setProperties(Arrays.asList(id,crisId, title, abstracts, principalinvestigator, coinvestigators, budget, startDate, endDate, projectarea,code,keywords,status, url));
 		entityType.setKey(Arrays.asList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
 		entitySet.setName(ES_PROJECTS_NAME);
 		entitySet.setType(ET_PROJECT_FQN);
+		
+		
+		mapping = new HashMap<String, String>();
+		
+		mapping.put("cris-id", "cris-id");
+		mapping.put("crisproject.title", "title");
+		mapping.put("crisproject.startdate", "startdate");
+		mapping.put("crisproject.expdate", "expdate");
+		mapping.put("crisproject.keywords", "keywords");
+		mapping.put("crisproject.status", "status");
+		mapping.put("crisproject.abstract", "abstract");
+		mapping.put("crisproject.budget", "budget");
+		mapping.put("crisproject.code", "code");
+		mapping.put("crisproject.principalinvestigator", "principalinvestigator");
+		mapping.put("crisproject.coinvestigators", "coinvestigators");
+		mapping.put("crisproject.status", "status");
+		mapping.put("crisproject.projectArea", "projectarea");
+		mapping.put("crisproject.projectURL", "url");
+
 		
 	}
 	
@@ -101,8 +131,8 @@ public class Project implements EntityModel{
 			navigationFilter = (navigationFilter+ "crisproject.coinvestigators_authority:\""+ id+"\"");
 			
 		} else if(sourceType.equals("Orgunits")) {
-			navigationFilter = ("TODO");
-		
+			navigationFilter = ("crisproject.deptproject_authority:\""+ id+"\"");
+
 		}
 			return navigationFilter;
 	}
@@ -110,8 +140,7 @@ public class Project implements EntityModel{
 
 
 	public HashMap<String, String> getMapping() {
-		// TODO Auto-generated method stub
-		return null;
+		return mapping;
 	}
 
 }
