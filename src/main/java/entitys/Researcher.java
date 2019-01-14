@@ -35,7 +35,7 @@ public class Researcher implements EntityModel {
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty fullName = new CsdlProperty().setName("fullname")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty  creditName= new CsdlProperty().setName("creditname")
+		CsdlProperty  creditName= new CsdlProperty().setName("variants")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty researchinterests = new CsdlProperty().setName("researchinterests")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
@@ -89,7 +89,7 @@ public class Researcher implements EntityModel {
 		
 		mapping.put("cris-id", "cris-id");
 		mapping.put("crisrp.fullName", "fullname");
-		mapping.put("crisrp.variants", "creditname");
+		mapping.put("crisrp.variants", "variants");
 		mapping.put("crisrp.interests", "researchinterests");
 		mapping.put("crisrp.description", "description");
 		mapping.put("crisrp.title", "title");

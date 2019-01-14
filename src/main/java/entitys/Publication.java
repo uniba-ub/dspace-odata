@@ -46,8 +46,8 @@ public class Publication implements EntityModel {
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty publisherPlace = new CsdlProperty().setName("publisherplace")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty issued= new CsdlProperty().setName("completedYear")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty issued= new CsdlProperty().setName("completedyear")
+				.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
 		CsdlProperty faculty= new CsdlProperty().setName("faculty")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty uriIdentifier= new CsdlProperty().setName("uri")
@@ -80,7 +80,7 @@ public class Publication implements EntityModel {
 		mapping.put("dc.subject", "subject");
 		mapping.put("dc.contributor.author", "author");
 		mapping.put("dc.identifier.uri", "uri");
-		mapping.put("ubg.date.completedyear", "completedYear");
+		mapping.put("ubg.date.completedyear", "completedyear");
 		mapping.put("dc.language.iso", "language");
 		mapping.put("dc.relation.ispartofseries", "ispartofseries");
 		mapping.put("dc.publisher.place", "publisherplace");

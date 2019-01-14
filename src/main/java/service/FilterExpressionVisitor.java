@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Locale;
 
 import org.apache.olingo.commons.api.data.Entity;
+import org.apache.olingo.commons.api.data.Property;
 import org.apache.olingo.commons.api.edm.EdmEnumType;
 import org.apache.olingo.commons.api.edm.EdmType;
 import org.apache.olingo.commons.api.http.HttpStatusCode;
@@ -27,9 +28,8 @@ public class FilterExpressionVisitor implements ExpressionVisitor<Object> {
 	public FilterExpressionVisitor(Entity currentEntity) {
 		this.currentEntity = currentEntity;
 	}
-
+	
 	public Object visitMember(UriInfoResource member) throws ExpressionVisitException, ODataApplicationException {
-
 		final List<UriResource> uriResourceParts = member.getUriResourceParts();
 		if (uriResourceParts.size() == 1 && uriResourceParts.get(0) instanceof UriResourcePrimitiveProperty) {
 			UriResourcePrimitiveProperty uriResourceProperty = (UriResourcePrimitiveProperty) uriResourceParts.get(0);
@@ -39,7 +39,6 @@ public class FilterExpressionVisitor implements ExpressionVisitor<Object> {
 					HttpStatusCode.NOT_IMPLEMENTED.getStatusCode(), Locale.ENGLISH);
 		}
 	}
-
 	public Object visitLiteral(Literal literal) throws ExpressionVisitException, ODataApplicationException {
 
 		String literalAsString = literal.getText();
@@ -75,6 +74,9 @@ public class FilterExpressionVisitor implements ExpressionVisitor<Object> {
 
 	public Object visitBinaryOperator(BinaryOperatorKind operator, Object left, Object right)
 			throws ExpressionVisitException, ODataApplicationException {
+		if(left== null) {
+			return false;
+		}
 		if (operator == BinaryOperatorKind.ADD || operator == BinaryOperatorKind.MOD
 				|| operator == BinaryOperatorKind.MUL || operator == BinaryOperatorKind.DIV
 				|| operator == BinaryOperatorKind.SUB) {
@@ -111,7 +113,6 @@ public class FilterExpressionVisitor implements ExpressionVisitor<Object> {
 
 	private Object evaluateComparisonOperation(BinaryOperatorKind operator, Object left, Object right)
 			throws ODataApplicationException {
-
 		if (left.getClass().equals(right.getClass()) && left instanceof Comparable) {
 			int result;
 			if (left instanceof Integer) {
@@ -124,7 +125,6 @@ public class FilterExpressionVisitor implements ExpressionVisitor<Object> {
 				throw new ODataApplicationException("Class " + left.getClass().getCanonicalName() + " not expected",
 						HttpStatusCode.INTERNAL_SERVER_ERROR.getStatusCode(), Locale.ENGLISH);
 			}
-
 			if (operator == BinaryOperatorKind.EQ) {
 				return result == 0;
 			} else if (operator == BinaryOperatorKind.NE) {
@@ -172,12 +172,13 @@ public class FilterExpressionVisitor implements ExpressionVisitor<Object> {
 
 	public Object visitMethodCall(MethodKind methodCall, List<Object> parameters)
 			throws ExpressionVisitException, ODataApplicationException {
-
 		if (methodCall == MethodKind.CONTAINS) {
-
-			if (parameters.get(0) instanceof String && parameters.get(1) instanceof String) {
-				String valueParam1 = (String) parameters.get(0);
-				String valueParam2 = (String) parameters.get(1);
+			if(parameters.get(0)==null) {
+				return false;
+			}
+			if (parameters.get(0).toString() instanceof String && parameters.get(1) instanceof String) {
+				String valueParam1 = parameters.get(0).toString();
+				String valueParam2 = parameters.get(1).toString();
 
 				return valueParam1.contains(valueParam2);
 			} else {
@@ -218,7 +219,18 @@ public class FilterExpressionVisitor implements ExpressionVisitor<Object> {
 	}
 
 	public Object visitMember(Member member) throws ExpressionVisitException, ODataApplicationException {
-		// TODO Auto-generated method stub
-		return null;
+		final UriInfoResource uriInfoResource = member.getResourcePath();
+		final List<UriResource> uriResourceParts = uriInfoResource.getUriResourceParts();
+		if (uriResourceParts.size() == 1 && uriResourceParts.get(0) instanceof UriResourcePrimitiveProperty) {
+			UriResourcePrimitiveProperty uriResourceProperty = (UriResourcePrimitiveProperty) uriResourceParts.get(0);
+			if(currentEntity.getProperty(uriResourceProperty.getProperty().getName())==null) {
+				return null;
+			}
+			return currentEntity.getProperty(uriResourceProperty.getProperty().getName()).getValue();
+		} else {
+			throw new ODataApplicationException("Only primitive properties are implemented in filter expressions",
+					HttpStatusCode.NOT_IMPLEMENTED.getStatusCode(), Locale.ENGLISH);
+		}
 	}
+
 }

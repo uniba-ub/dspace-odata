@@ -35,7 +35,9 @@ import org.apache.olingo.server.api.uri.queryoption.TopOption;
 import org.apache.olingo.server.api.uri.queryoption.expression.Expression;
 import org.apache.olingo.server.api.uri.queryoption.expression.ExpressionVisitException;
 import org.apache.olingo.server.api.uri.queryoption.expression.Member;
+import org.apache.olingo.server.api.uri.queryoption.expression.MethodKind;
 import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.common.cloud.ZkMaintenanceUtils.VISIT_ORDER;
 
 import data.DataHandler;
 
@@ -280,8 +282,8 @@ public class QueryOptionService {
 
 								compareResult = integer1.compareTo(integer2);
 							} else if (type.equals("Edm.String")) {
-								String propertyValue1 = (String) entity1.getProperty(sortPropertyName).getValue();
-								String propertyValue2 = (String) entity2.getProperty(sortPropertyName).getValue();
+								String propertyValue1 = entity1.getProperty(sortPropertyName).getValue().toString();
+								String propertyValue2 = entity2.getProperty(sortPropertyName).getValue().toString();
 
 								compareResult = propertyValue1.compareTo(propertyValue2);
 							}
@@ -312,7 +314,6 @@ public class QueryOptionService {
 				while (iterator.hasNext()) {
 					Entity entity = iterator.next();
 					FilterExpressionVisitor expressionVisitor = new FilterExpressionVisitor(entity);
-
 					Object visitorResult = expression.accept(expressionVisitor);
 
 					if (visitorResult instanceof Boolean) {
