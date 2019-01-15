@@ -74,19 +74,19 @@ public class Project implements EntityModel{
 		mapping = new HashMap<String, String>();
 		
 		mapping.put("cris-id", "cris-id");
-		mapping.put("crisproject.title", "title");
-		mapping.put("crisproject.startdate", "startdate");
-		mapping.put("crisproject.expdate", "expdate");
-		mapping.put("crisproject.keywords", "keywords");
-		mapping.put("crisproject.status", "status");
-		mapping.put("crisproject.abstract", "abstract");
-		mapping.put("crisproject.budget", "budget");
-		mapping.put("crisproject.code", "code");
-		mapping.put("crisproject.principalinvestigator", "principalinvestigator");
-		mapping.put("crisproject.coinvestigators", "coinvestigators");
-		mapping.put("crisproject.status", "status");
-		mapping.put("crisproject.projectArea", "projectarea");
-		mapping.put("crisproject.projectURL", "url");
+		mapping.put("title", "crisproject.title");
+		mapping.put("startdate", "crisproject.startdate");
+		mapping.put("expdate", "crisproject.expdate");
+		mapping.put("keywords", "crisproject.keywords");
+		mapping.put("status", "crisproject.status");
+		mapping.put("abstract", "crisproject.abstract");
+		mapping.put("budget", "crisproject.budget");
+		mapping.put("code", "crisproject.code");
+		mapping.put("principalinvestigator", "crisproject.principalinvestigator");
+		mapping.put("coinvestigators", "crisproject.coinvestigators");
+		mapping.put("status", "crisproject.status");
+		mapping.put("projectarea", "crisproject.projectArea");
+		mapping.put("url", "crisproject.projectURL");
 
 		
 	}

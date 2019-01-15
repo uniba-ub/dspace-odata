@@ -36,6 +36,8 @@ public class Publication implements EntityModel {
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
 		CsdlProperty description = new CsdlProperty().setName("description")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty type = new CsdlProperty().setName("type")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty  language= new CsdlProperty().setName("language")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty publisher = new CsdlProperty().setName("publisher")
@@ -47,13 +49,15 @@ public class Publication implements EntityModel {
 		CsdlProperty publisherPlace = new CsdlProperty().setName("publisherplace")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty issued= new CsdlProperty().setName("completedyear")
-				.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty faculty= new CsdlProperty().setName("faculty")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty uriIdentifier= new CsdlProperty().setName("uri")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty authors= new CsdlProperty().setName("author")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
+		CsdlProperty fulltext= new CsdlProperty().setName("fulltext")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());	
 		// creation of PropertyRef for the key Element
 
 		CsdlPropertyRef propertyRef = new CsdlPropertyRef();
@@ -64,7 +68,7 @@ public class Publication implements EntityModel {
 
 		entityType = new CsdlEntityType();	
 		entityType.setName(ET_PUBLICATION_NAME);
-		entityType.setProperties(Arrays.asList(id, handle, title, description, language, publisher, series, subject,publisherPlace,issued,faculty,uriIdentifier,authors));
+		entityType.setProperties(Arrays.asList(id, handle, title, description, type, language, publisher, series, fulltext,subject,publisherPlace,issued,faculty,uriIdentifier,authors));
 		entityType.setKey(Collections.singletonList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
@@ -74,17 +78,19 @@ public class Publication implements EntityModel {
 		mapping = new HashMap<String, String>();
 		
 		mapping.put("handle", "handle");
-		mapping.put("dc.title", "title");
-		mapping.put("dc.description", "description");
-		mapping.put("dc.publisher", "publisher");
-		mapping.put("dc.subject", "subject");
-		mapping.put("dc.contributor.author", "author");
-		mapping.put("dc.identifier.uri", "uri");
-		mapping.put("ubg.date.completedyear", "completedyear");
-		mapping.put("dc.language.iso", "language");
-		mapping.put("dc.relation.ispartofseries", "ispartofseries");
-		mapping.put("dc.publisher.place", "publisherplace");
-		mapping.put("ubg.faculty.org","faculty");
+		mapping.put("title", "dc.title");
+		mapping.put("description", "dc.description");
+		mapping.put("publisher", "dc.publisher");
+		mapping.put("subject", "dc.subject");
+		mapping.put("author", "dc.contributor.author");
+		mapping.put("uri", "dc.identifier.uri");
+		mapping.put("completedyear", "ubg.date.completedyear");
+		mapping.put("language", "dc.language.iso");
+		mapping.put("ispartofseries", "dc.relation.ispartofseries");
+		mapping.put("publisherplace", "dc.publisher.place");
+		mapping.put("faculty","ubg.faculty.org");
+		mapping.put("type", "dc.type");
+		mapping.put("fulltext", "infofulltext");
 
 		
 	}
