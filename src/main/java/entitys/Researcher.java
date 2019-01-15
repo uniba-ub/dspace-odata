@@ -88,25 +88,23 @@ public class Researcher implements EntityModel {
 		mapping = new HashMap<String, String>();
 		
 		mapping.put("cris-id", "cris-id");
-		mapping.put("crisrp.fullName", "fullname");
-		mapping.put("crisrp.variants", "variants");
-		mapping.put("crisrp.interests", "researchinterests");
-		mapping.put("crisrp.description", "description");
-		mapping.put("crisrp.title", "title");
-		mapping.put("crisrp.email", "email");
-		mapping.put("crisrp.position", "position");
-		mapping.put("crisrp.transfer-abstract", "transferabstract");
-		mapping.put("crisrp.transfer-keyword", "transferkeywords");
-		mapping.put("crisrp.contactroom", "contactroom");
-		mapping.put("crisrp.contactaddress", "contactaddress");
-		mapping.put("crisrp.contactphone", "contactphone");
-		mapping.put("crisrp.contacturl", "contacturl");
-		mapping.put("crisrp.contactemail", "contactemail");
-		mapping.put("crisrp.consultation", "consultation");
-		mapping.put("crisrp.researcharea", "researcharea");
+		mapping.put("fullname", "crisrp.fullName");
+		mapping.put("variants", "crisrp.variants");
+		mapping.put("researchinterests", "crisrp.researchinterests");
+		mapping.put("description", "crisrp.description");
+		mapping.put("title", "crisrp.title");
+		mapping.put("email", "crisrp.email");
+		mapping.put("position", "crisrp.position");
+		mapping.put("transferabstract", "crisrp.transfer-abstract");
+		mapping.put("transferkeywords", "crisrp.transfer-keyword");
+		mapping.put("contactroom", "crisrp.contactroom");
+		mapping.put("contactaddress", "crisrp.contactaddress");
+		mapping.put("contactphone", "crisrp.contactphone");
+		mapping.put("contacturl", "crisrp.contacturl");
+		mapping.put("contactemail", "crisrp.contactemail");
+		mapping.put("consultation", "crisrp.consultation");
+		mapping.put("researcharea", "crisrp.researcharea");
 		mapping.put("biography", "biography");
-
-
 	}
 	
 	public CsdlEntityType getEntityType() {	

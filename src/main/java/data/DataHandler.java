@@ -13,9 +13,9 @@ import org.apache.olingo.commons.api.data.Property;
 import org.apache.olingo.commons.api.data.ValueType;
 import org.apache.olingo.commons.api.edm.EdmEntitySet;
 import org.apache.olingo.commons.api.edm.EdmEntityType;
-import org.apache.olingo.commons.api.edm.FullQualifiedName;
+import org.apache.olingo.commons.api.edm.EdmPrimitiveTypeKind;
 import org.apache.olingo.commons.api.edm.provider.CsdlEntitySet;
-import org.apache.olingo.commons.api.edm.provider.CsdlEntityType;
+import org.apache.olingo.commons.api.edm.provider.CsdlProperty;
 import org.apache.olingo.commons.api.ex.ODataRuntimeException;
 import org.apache.olingo.server.api.uri.UriParameter;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -132,30 +132,37 @@ public class DataHandler {
 		propertyList = new LinkedList<Property>();
 		Property property;
 		HashMap<String, String> mapping = entity.getMapping();
-		for (String item : solrDocument.getFieldNames()) {
-			if(item.equals("cris-id")) {
-				//change item value
-				String currentId = (String) solrDocument.getFieldValue(item);
-				int convertedId = converter.convertCrisToId(currentId);
-				property = new Property(null, "id", ValueType.PRIMITIVE, convertedId);
-				propertyList.add(property);
+		StringBuilder builder = new StringBuilder();
+		for(CsdlProperty item: entity.getEntityType().getProperties()) {
+			if(item.getName().equals("id")) {
+				if(entity.getEntityType().getName().toString().equals("Publication")) {
+					String currentId = (String) solrDocument.getFieldValue("handle");
+					int convertedId = converter.convertHandleToId(currentId);
+					property = new Property(null, "id", ValueType.PRIMITIVE, convertedId);
+					propertyList.add(property);
+					
+				} else {
+					String currentId = (String) solrDocument.getFieldValue("cris-id");
+					int convertedId = converter.convertCrisToId(currentId);
+					property = new Property(null, "id", ValueType.PRIMITIVE, convertedId);
+					propertyList.add(property);	
+				}
 			
-			} else if(item.equals("handle")) {
-				String currentId = (String) solrDocument.getFieldValue(item);
-				int convertedId = converter.convertHandleToId(currentId);
-				property = new Property(null, "id", ValueType.PRIMITIVE, convertedId);
-				propertyList.add(property);
-				
-			}
-			
-			property = new Property(null, mapping.get(item), ValueType.PRIMITIVE, solrDocument.getFieldValue(item));
-			propertyList.add(property);
-			
-
-		}
-		
+			} else {
+				if(solrDocument.getFieldValue(mapping.get(item.getName()))!=null) {
+					for(Object value: solrDocument.getFieldValues(mapping.get(item.getName()))) {
+						if(builder.toString().length()!=0) {
+							builder.append(", ");
+						}
+						builder.append(value.toString());
+						}	
+					property = new Property(null, item.getName(), ValueType.PRIMITIVE, builder.toString());
+					propertyList.add(property);
+					builder = new StringBuilder();
+					}
+				}	
+		}	
 		return propertyList;
-
 	}
 
 	private URI createId(Entity entity, String idPropertyName, String navigationName) {

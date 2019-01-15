@@ -42,7 +42,7 @@ public class Orgunit implements EntityModel{
 	CsdlProperty endDate = new CsdlProperty().setName("enddate")
 			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 	CsdlProperty active = new CsdlProperty().setName("active")
-			.setType(EdmPrimitiveTypeKind.Boolean.getFullQualifiedName());
+			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 	CsdlProperty crossrefid = new CsdlProperty().setName("crossrefid")
 			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 	CsdlProperty director = new CsdlProperty().setName("director")
@@ -63,14 +63,14 @@ public class Orgunit implements EntityModel{
 	mapping = new HashMap<String, String>();
 	
 	mapping.put("cris-id", "cris-id");
-	mapping.put("crisou.name", "name");
-	mapping.put("crisou.director","director");
-	mapping.put("crisou.date", "date");
-	mapping.put("crisou.crossrefid", "crossrefid");
-	mapping.put("crisou.description", "description");
-	mapping.put("crisou.endDate", "enddate");
-	mapping.put("crisou.active", "active");
-	mapping.put("crisou.url", "url");
+	mapping.put("name", "crisou.name");
+	mapping.put("director","crisou.director");
+	mapping.put("date", "crisou.date");
+	mapping.put("crossrefid", "crisou.crossrefid");
+	mapping.put("description", "crisou.description");
+	mapping.put("endDate", "crisou.enddate");
+	mapping.put("active", "crisou.active");
+	mapping.put("url", "crisou.url");
 	
 	
 	
