@@ -66,11 +66,17 @@ Examples:
 * Get all Researchers of Orgunit and Orgunit data with id 5 in single JSON Object
 `http://localhost:8070/ODataService/ODataService.svc/Orgunits(14)?$expand=Researchers`
 
+* Filter Researcher Name with String 'Test'
+`http://localhost:8080/ODataService/ODataService.svc/Researchers?$filter=contains(name,'Test')`
+
+* Filter Publications of a Researcher with String 'Book'
+`http://localhost:8080/ODataService/ODataService.svc/Researchers(5)/Publications?$filter=contains(type,'Book')`
+
 ### API Architecture
 rough draft of the architecture:
 
-![](odata-architecture.bmp)
+![](odata-architecture.jpg)
 
 ### More informations and filter options of OData
 
-please have a look at **odata.pdf**
+please have a look at ![odata.pdf](odata.pdf)
