@@ -89,12 +89,11 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 		FilterOption filterOption = uriInfo.getFilterOption();
 		EntityCollection entityCollection = new EntityCollection();
 
-		if (segmentCount == 1) { // if.../CourseService.svc/Courses is requested
+		if (segmentCount == 1) { 
 			responseEdmEntitySet = startEdmEntitySet;
 
 			// get the data from EntityDatabase for this requested EntitySetName and deliver
 			// as EntitySet
-
 			try {
 				entityCollection = datahandler.readEntitySetData(startEdmEntitySet);
 			} catch (SolrServerException e) {
@@ -116,10 +115,7 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 				responseEntityCollection.getEntities().add(entity);
 			}
 
-			// Only Course->Performers or Course->Places is supported, so segmentCount== 3
-			// is not needed
-		} else if (segmentCount == 2) { // in case of navigation to performer
-										// property:../CourseService.svc/Courses(1)/Performers
+		} else if (segmentCount == 2) { 
 			UriResource lastSegment = resourceParts.get(1);
 			if (lastSegment instanceof UriResourceNavigation) {
 				UriResourceNavigation uriResourceNavigation = (UriResourceNavigation) lastSegment;
@@ -127,7 +123,6 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 				EdmEntityType targetEntityType = edmNavigationProperty.getType();
 				responseEdmEntitySet = Util.getNavigationTargetEntitySet(startEdmEntitySet, edmNavigationProperty);
 
-				// get the data from Entitydatabase
 				List<UriParameter> keyPredicates = uriResourceEntitySet.getKeyPredicates();
 				Entity sourceEntity;
 				try {
@@ -147,6 +142,7 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 				entityList = queryOptionService.applySkipOption(skipOption, entityList);
 				entityList = queryOptionService.applyTopOption(topOption, entityList);
 				entityList = queryOptionService.applyOrderByOption(orderByOption, entityList);
+				entityList = queryOptionService.applyFilterOption(entityList, filterOption);
 
 				for (Entity entity : entityList) {
 					responseEntityCollection.getEntities().add(entity);
