@@ -13,7 +13,6 @@ import org.apache.olingo.commons.api.data.Property;
 import org.apache.olingo.commons.api.data.ValueType;
 import org.apache.olingo.commons.api.edm.EdmEntitySet;
 import org.apache.olingo.commons.api.edm.EdmEntityType;
-import org.apache.olingo.commons.api.edm.EdmPrimitiveTypeKind;
 import org.apache.olingo.commons.api.edm.provider.CsdlEntitySet;
 import org.apache.olingo.commons.api.edm.provider.CsdlProperty;
 import org.apache.olingo.commons.api.ex.ODataRuntimeException;
@@ -150,17 +149,26 @@ public class DataHandler {
 			
 			} else {
 				if(solrDocument.getFieldValue(mapping.get(item.getName()))!=null) {
-					for(Object value: solrDocument.getFieldValues(mapping.get(item.getName()))) {
-						if(builder.toString().length()!=0) {
-							builder.append(", ");
-						}
-						builder.append(value.toString());
-						}	
-					property = new Property(null, item.getName(), ValueType.PRIMITIVE, builder.toString());
-					propertyList.add(property);
-					builder = new StringBuilder();
-					}
-				}	
+					if(item.getTypeAsFQNObject().getName().equals("String")) {
+						for(Object value: solrDocument.getFieldValues(mapping.get(item.getName()))) {
+							if(builder.toString().length()!=0) {
+								if(item.getName().equals("author")) {
+									builder.append("; ");
+								} else {
+									builder.append(", ");
+								}			
+							}
+							builder.append(value.toString());
+						} 
+						property = new Property(null, item.getName(), ValueType.PRIMITIVE, builder.toString());
+						propertyList.add(property);
+						builder = new StringBuilder();
+					} else if(item.getTypeAsFQNObject().getName().equals("Int32")|item.getTypeAsFQNObject().getName().equals("Int16")| item.getTypeAsFQNObject().getName().equals("Boolean")) {
+						property = new Property(null, item.getName(), ValueType.PRIMITIVE, solrDocument.getFirstValue(item.getName()));
+						propertyList.add(property);					
+					} 
+				}
+			}	
 		}	
 		return propertyList;
 	}

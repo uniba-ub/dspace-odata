@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Locale;
 
 import org.apache.olingo.commons.api.data.Entity;
-import org.apache.olingo.commons.api.data.Property;
 import org.apache.olingo.commons.api.edm.EdmEnumType;
 import org.apache.olingo.commons.api.edm.EdmType;
 import org.apache.olingo.commons.api.http.HttpStatusCode;
@@ -176,9 +175,9 @@ public class FilterExpressionVisitor implements ExpressionVisitor<Object> {
 			if(parameters.get(0)==null) {
 				return false;
 			}
-			if (parameters.get(0).toString() instanceof String && parameters.get(1) instanceof String) {
-				String valueParam1 = parameters.get(0).toString();
-				String valueParam2 = parameters.get(1).toString();
+			if (parameters.get(0) instanceof String && parameters.get(1) instanceof String) {
+				String valueParam1 = (String) parameters.get(0);
+				String valueParam2 = (String )parameters.get(1);
 
 				return valueParam1.contains(valueParam2);
 			} else {
