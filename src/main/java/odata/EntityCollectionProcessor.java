@@ -103,7 +103,6 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
 			List<Entity> entityList = entityCollection.getEntities();
 			responseEntityCollection = queryOptionService.applyCountOption(countOption, entityList);
 			entityList = queryOptionService.applySkipOption(skipOption, entityList);
@@ -173,10 +172,8 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 				selectOption);
 		ContextURL contextUrl = ContextURL.with().entitySet(responseEdmEntitySet).selectList(selectList).build();
 		final String id = request.getRawBaseUri() + "/" + responseEdmEntitySet.getName();
-
 		EntityCollectionSerializerOptions opts = EntityCollectionSerializerOptions.with().contextURL(contextUrl)
 				.select(selectOption).expand(expandOption).id(id).count(countOption).build();
-
 		//check if requestedResponseFormat is null, then use json
 		if(uriInfo.getFormatOption()==null) {
 			responseFormat = ContentType.APPLICATION_JSON;	

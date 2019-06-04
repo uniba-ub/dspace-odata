@@ -7,6 +7,7 @@ import java.util.List;
 
 
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
+import org.apache.olingo.commons.api.edm.provider.CsdlComplexType;
 import org.apache.olingo.commons.api.edm.provider.CsdlEntitySet;
 import org.apache.olingo.commons.api.edm.provider.CsdlEntityType;
 import org.apache.olingo.commons.api.edm.provider.CsdlNavigationProperty;
@@ -15,18 +16,24 @@ import org.apache.olingo.commons.api.edm.provider.CsdlNavigationPropertyBinding;
 
 public class EntityRegister {
 	
-		public List<CsdlEntityType> entityTypList;
-		public List<String> entitySetNameList;
-		public List<FullQualifiedName> entityFQNList;
-		public List<CsdlEntitySet> entitySetList;
+		private List<CsdlEntityType> entityTypList;
+		private List<CsdlComplexType> complexTypeList;
+		private List<String> entitySetNameList;
+		private List<String> complexTypeNameList;
+		private List<FullQualifiedName> entityFQNList;
+		private List<FullQualifiedName> complexTypeFQNList;
+		private List<CsdlEntitySet> entitySetList;
 		List<EntityModel> entityList;
+		List<ComplexModel> complexPropertyList;
 	
 
-		public EntityRegister() {		
+		public EntityRegister() {
+			registerComplexTypes();
 			registerEntitys();
+			fillList();
 						
 		}
-		
+
 		public void registerEntitys() {
 			entityList = new LinkedList<EntityModel>();
 			List<EntityModel> navEntityList = new LinkedList<EntityModel>();
@@ -52,14 +59,15 @@ public class EntityRegister {
 		    navEntityList.add(researcher);
 		    navEntityList.add(publication);
 		    setNavigationPropertyForEntity(orgunit, navEntityList);
-		    
-		    fillList(entityList);
+		}
 
-			
+		private void registerComplexTypes() {
+			complexPropertyList = new LinkedList<ComplexModel>();
+			Funding funding = new Funding();
+			complexPropertyList.add(funding);
 		}
 		
-
-		public List<CsdlEntityType> getEntityTypList() {
+		public List<CsdlEntityType> getEntityTypeList() {
 			return entityTypList;
 		}
 
@@ -67,7 +75,7 @@ public class EntityRegister {
 			return entitySetNameList;
 		}
 
-		public List<FullQualifiedName> getFQNList() {
+		public List<FullQualifiedName> getEntityFQNList() {
 			return entityFQNList;
 		}
 		
@@ -80,12 +88,28 @@ public class EntityRegister {
 			return entityList;
 		}
 		
+
+		public List<FullQualifiedName> getComplexFQNList(){
+			return complexTypeFQNList;
+		}
+
+		public List<CsdlComplexType> getComplexTypeList(){
+			return complexTypeList;
+		}
+
+		public List<ComplexModel> getComplexProperties(){
+			return complexPropertyList;
+		}
+
+		public List<String> getComplexTypeNameList(){
+			return complexTypeNameList;
+		}
+
 		public void setNavigationPropertyForEntity (EntityModel entity, List<EntityModel> entitiyList) {
-			
+
 			List<CsdlNavigationPropertyBinding> navPropBindingList = new ArrayList<CsdlNavigationPropertyBinding>();			
 			List<CsdlNavigationProperty> navPropList = new ArrayList<CsdlNavigationProperty>();
 
-			
 			for(EntityModel item: entitiyList) {
 				
 				
@@ -107,12 +131,21 @@ public class EntityRegister {
 			entity.getEntityType().setNavigationProperties(navPropList);
 		}
 		
-		private void fillList(List<EntityModel> entityList) {
+		private void fillList() {
 			
 			entityTypList = new LinkedList<CsdlEntityType>();
 			entitySetNameList = new LinkedList<String>();
 			entityFQNList = new LinkedList<FullQualifiedName>();
 			entitySetList = new LinkedList<CsdlEntitySet>();
+			complexTypeList = new LinkedList<CsdlComplexType>();
+			complexTypeFQNList = new LinkedList<FullQualifiedName>();
+			complexTypeNameList = new LinkedList<String>();
+
+			for(ComplexModel item: complexPropertyList) {
+				complexTypeList.add(item.getComplexType());
+				complexTypeFQNList.add(item.getFullQualifiedName());
+				complexTypeNameList.add(item.getName());
+			}
 			
 			for(EntityModel item: entityList) {
 				entityTypList.add(item.getEntityType());
@@ -120,8 +153,5 @@ public class EntityRegister {
 				entitySetNameList.add(item.getEntitySetName());
 				entitySetList.add(item.getEntitySet());			
 			}
-			
 		}
-		
-		
 }

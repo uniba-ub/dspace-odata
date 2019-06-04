@@ -9,6 +9,7 @@ import java.util.List;
 import org.apache.olingo.commons.api.edm.EdmPrimitiveTypeKind;
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
 import org.apache.olingo.commons.api.edm.provider.CsdlAbstractEdmProvider;
+import org.apache.olingo.commons.api.edm.provider.CsdlComplexType;
 import org.apache.olingo.commons.api.edm.provider.CsdlEntityContainer;
 import org.apache.olingo.commons.api.edm.provider.CsdlEntityContainerInfo;
 import org.apache.olingo.commons.api.edm.provider.CsdlEntitySet;
@@ -83,7 +84,7 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 	@Override
 	public CsdlEntityType getEntityType(FullQualifiedName entityTypeName) throws ODataException {
 		CsdlEntityType entityType = null;
-		for(CsdlEntityType item:entityRegister.getEntityTypList()) {
+		for(CsdlEntityType item:entityRegister.getEntityTypeList()) {
 			if(entityTypeName.equals(new FullQualifiedName(NAMESPACE, item.getName()))) {
 				entityType = item;			
 			}
@@ -93,19 +94,23 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 	}
 
 	@Override
+	public CsdlComplexType getComplexType(FullQualifiedName complexTypeName) throws ODataException {
+		CsdlComplexType complexType = null;
+		for(CsdlComplexType item:entityRegister.getComplexTypeList()) {
+			if(complexTypeName.equals(new FullQualifiedName(NAMESPACE, item.getName()))) {
+				complexType = item;
+			}
+		}
+		return complexType;
+	}
+
+	@Override
 	public List<CsdlSchema> getSchemas() throws ODataException {
 		// creation of OData Schema
 		CsdlSchema schema = new CsdlSchema();
 		schema.setNamespace(NAMESPACE);
-
-		// adding EntityTypes to schema
-		List<CsdlEntityType> entityTypes = new ArrayList<CsdlEntityType>();
-		for(FullQualifiedName item: entityRegister.getFQNList()) {
-			entityTypes.add(getEntityType(item));
-			
-		}
-
-		schema.setEntityTypes(entityTypes);
+		schema.setEntityTypes(entityRegister.getEntityTypeList());
+		schema.setComplexTypes(entityRegister.getComplexTypeList());
 
 		// adding EntityContainer
 		schema.setEntityContainer(getEntityContainer());
