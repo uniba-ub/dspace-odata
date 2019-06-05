@@ -6,17 +6,14 @@ import java.util.HashMap;
 import org.apache.olingo.commons.api.edm.EdmPrimitiveTypeKind;
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
 import org.apache.olingo.commons.api.edm.provider.CsdlComplexType;
-import org.apache.olingo.commons.api.edm.provider.CsdlEntitySet;
-import org.apache.olingo.commons.api.edm.provider.CsdlEntityType;
 import org.apache.olingo.commons.api.edm.provider.CsdlProperty;
-import org.apache.olingo.commons.api.edm.provider.CsdlPropertyRef;
 
-public class Funding implements ComplexModel {
-	
+public class Partnership implements ComplexModel {
+
 	public final static String NAMESPACE = "dspace";
 
-	public static final String CT_FUNDING_NAME = "Funding";
-	public static final FullQualifiedName CT_FUNDING_FQN = new FullQualifiedName(NAMESPACE, CT_FUNDING_NAME);
+	public static final String CT_PARTNERSHIP_NAME = "Partnership";
+	public static final FullQualifiedName CT_PARTNERSHIP_FQN = new FullQualifiedName(NAMESPACE, CT_PARTNERSHIP_NAME);
 	public final static String RECOURCE_TYPE_FILTER= 
 	"resourcetype_filter:\"nobjects\n" + 
 	"|||\n" + 
@@ -27,30 +24,34 @@ public class Funding implements ComplexModel {
 	private HashMap<String, String> mapping;
 	
 	
-	public Funding() {
+	public Partnership() {
 
-		CsdlProperty funder = new CsdlProperty().setName("funder")
+		CsdlProperty projectpartner = new CsdlProperty().setName("projectpartner")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
-		CsdlProperty period = new CsdlProperty().setName("period")
+		CsdlProperty cooperative = new CsdlProperty().setName("cooperative")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
-		CsdlProperty supportCode = new CsdlProperty().setName("supportcode")
+		CsdlProperty name = new CsdlProperty().setName("name")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
-		CsdlProperty grant = new CsdlProperty().setName("grant")
+		CsdlProperty description = new CsdlProperty().setName("description")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
-		CsdlProperty program = new CsdlProperty().setName("program")
+		CsdlProperty url = new CsdlProperty().setName("url")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty type = new CsdlProperty().setName("type")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
 
 		complexType = new CsdlComplexType();
-		complexType.setName(CT_FUNDING_NAME);
-		complexType.setProperties(Arrays.asList(funder, period, supportCode, grant, program));
+		complexType.setName(CT_PARTNERSHIP_NAME);
+		complexType.setProperties(Arrays.asList(name, projectpartner, cooperative, description, url, type));
 		
 		mapping = new HashMap<String, String>();
 		
-		mapping.put("funder", "ncrisprojectfunding.fundingfunder");
-		mapping.put("period","ncrisprojectfunding.fundingperiod");
-		mapping.put("supportcode", "ncrisprojectfunding.fundingsupportcode");
-		mapping.put("grant", "ncrisprojectfunding.fundinggrant");
-		mapping.put("program", "ncrisprojectfunding.fundingprogram");
+		mapping.put("projectpartner", "ncrisprojectpartnership.partnershipprojectpartner");
+		mapping.put("cooperative","ncrisprojectpartnership.partnershipcooperative");
+		mapping.put("name", "ncrisprojectpartnership.partnershipname");
+		mapping.put("description", "ncrisprojectpartnership.partnershipdescription");
+		mapping.put("url", "ncrisprojectpartnership.partnershipurl");
+		mapping.put("type", "ncrisprojectpartnership.partnershiptypeofpartnership");
+
 		
 		
 	}
@@ -61,10 +62,10 @@ public class Funding implements ComplexModel {
 	}
 
 	public FullQualifiedName getFullQualifiedName() {
-		return CT_FUNDING_FQN;
+		return CT_PARTNERSHIP_FQN;
 	}
 	public String getName() {
-		return CT_FUNDING_NAME;
+		return CT_PARTNERSHIP_NAME;
 	}
 		
 	public String getRecourceTypeFilter() {
@@ -83,5 +84,6 @@ public class Funding implements ComplexModel {
 	public HashMap<String, String> getMapping() {
 		return mapping;
 	}
+
 
 }

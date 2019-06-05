@@ -64,7 +64,9 @@ public class EntityRegister {
 		private void registerComplexTypes() {
 			complexPropertyList = new LinkedList<ComplexModel>();
 			Funding funding = new Funding();
+			Partnership partnership = new Partnership();
 			complexPropertyList.add(funding);
+			complexPropertyList.add(partnership);
 		}
 		
 		public List<CsdlEntityType> getEntityTypeList() {
