@@ -3,7 +3,6 @@ package data;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,8 +10,6 @@ import java.util.List;
 import org.apache.olingo.commons.api.data.ComplexValue;
 import org.apache.olingo.commons.api.data.Entity;
 import org.apache.olingo.commons.api.data.EntityCollection;
-import org.apache.olingo.commons.api.data.Link;
-import org.apache.olingo.commons.api.data.Linked;
 import org.apache.olingo.commons.api.data.Property;
 import org.apache.olingo.commons.api.data.ValueType;
 import org.apache.olingo.commons.api.edm.EdmEntitySet;
@@ -20,7 +17,6 @@ import org.apache.olingo.commons.api.edm.EdmEntityType;
 import org.apache.olingo.commons.api.edm.provider.CsdlEntitySet;
 import org.apache.olingo.commons.api.edm.provider.CsdlProperty;
 import org.apache.olingo.commons.api.ex.ODataRuntimeException;
-import org.apache.olingo.server.api.processor.ComplexProcessor;
 import org.apache.olingo.server.api.uri.UriParameter;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.common.SolrDocument;
@@ -41,8 +37,6 @@ public class DataHandler {
 	private SolrConnector solr;
 	private SolrQueryMaker queryMaker;
 	private IdConverter converter;
-	private List<Property> complexProperties;
-
 	public DataHandler() {
 
 		entityRegister = new EntityRegister();
@@ -138,7 +132,6 @@ public class DataHandler {
 		Property property;
 		HashMap<String, String> mapping = entity.getMapping();
 		StringBuilder builder = new StringBuilder();
-		complexProperties = new LinkedList<Property>();
 		String itemType;
 		for(CsdlProperty item: entity.getEntityType().getProperties()) {
 			if(item.getName().equals("id")) {
