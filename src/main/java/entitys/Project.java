@@ -60,14 +60,15 @@ public class Project implements EntityModel{
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
 
 		//complex type
-		CsdlProperty funding = new CsdlProperty().setName("Funding").setType(Funding.CT_FUNDING_FQN);
+		CsdlProperty funding = new CsdlProperty().setName("Funding").setType(Funding.CT_FUNDING_FQN).setCollection(true);
+		CsdlProperty partnership = new CsdlProperty().setName("Partnership").setType(Partnership.CT_PARTNERSHIP_FQN).setCollection(true);
 
 		CsdlPropertyRef propertyRef = new CsdlPropertyRef();
 		propertyRef.setName("id");
 
 		entityType = new CsdlEntityType();
 		entityType.setName(ET_PROJECT_NAME);
-		entityType.setProperties(Arrays.asList(id,crisId, title, abstracts, principalinvestigator, coinvestigators, budget, startDate, endDate, projectarea,code,keywords,status, url,funding));
+		entityType.setProperties(Arrays.asList(id,crisId, title, abstracts, principalinvestigator, coinvestigators, budget, startDate, endDate, projectarea,code,keywords,status, url,funding, partnership));
 		entityType.setKey(Arrays.asList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();

@@ -76,9 +76,10 @@ public class SolrQueryMaker {
 
 	}
 	
-	public void setSearchFilterForComplexProperty(int idOfSolrObject, int parentfk) {
+	public void setSearchFilterForComplexProperty(int idOfSolrObject, int parentfk, String schema) {
 		String result = (parentfk+"-"+idOfSolrObject);
 		query.addFilterQuery("search.parentfk:"+result);
+		query.addFilterQuery("search.schema_s:"+schema);
 	}
 	
 }

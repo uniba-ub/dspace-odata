@@ -184,10 +184,11 @@ public class DataHandler {
 
 	private void loadComplexPropertyFromSolr(ComplexModel complexProperty, int idOfSolrObject, List<Property> propertyList) throws SolrServerException, IOException {
 		queryMaker.setQuerySearchTerm(complexProperty.getRecourceTypeFilter());
-		queryMaker.setSearchFilterForComplexProperty(idOfSolrObject, complexProperty.getParentFK());
+		queryMaker.setSearchFilterForComplexProperty(idOfSolrObject, complexProperty.getParentFK(), complexProperty.getSchema());
 		queryMaker.setResponseLimitToMax();
 		SolrDocumentList responseDocumentsForComplexProperty = solr.getData(queryMaker);
 		HashMap<String, String> mapping = complexProperty.getMapping();
+		List<ComplexValue> complexValueList = new LinkedList<ComplexValue>();
 		for(SolrDocument solrDocument: responseDocumentsForComplexProperty) {
 			ComplexValue complexvalue = new ComplexValue();
 			List <Property> complexSubProperties = complexvalue.getValue();
@@ -195,9 +196,10 @@ public class DataHandler {
 				Property complexSubProperty = new Property(null, item.getName(), ValueType.PRIMITIVE, solrDocument.getFirstValue(mapping.get(item.getName())));
 				complexSubProperties.add(complexSubProperty);
 			}
-			Property propertyComplex = new Property(null, complexProperty.getName(), ValueType.COMPLEX, complexvalue);
-			propertyList.add(propertyComplex);
+			complexValueList.add(complexvalue);
 		}
+		Property propertyComplex = new Property(null, complexProperty.getName(), ValueType.COLLECTION_COMPLEX, complexValueList);
+		propertyList.add(propertyComplex);
 		queryMaker.resetQuery();
 	}
 

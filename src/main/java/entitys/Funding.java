@@ -21,8 +21,9 @@ public class Funding implements ComplexModel {
 	"resourcetype_filter:\"nobjects\n" + 
 	"|||\n" + 
 	"N-Object###default\"";
-	// nested objects need a parent key
+	// nested objects need a parent key and a search schema
 	public static final int PARENT_FK = 10;
+	public static final String SCHEMA = "ncrisprojectfunding";
 	private CsdlComplexType complexType;
 	private HashMap<String, String> mapping;
 	
@@ -73,6 +74,10 @@ public class Funding implements ComplexModel {
 
 	public int getParentFK() {
 		return PARENT_FK;
+	}
+
+	public String getSchema() {
+		return SCHEMA;
 	}
 
 	public String getNavigationFilter(String sourceType, String id) {

@@ -20,6 +20,7 @@ public class Partnership implements ComplexModel {
 	"N-Object###default\"";
 	// nested objects need a parent key
 	public static final int PARENT_FK = 10;
+	public static final String SCHEMA = "ncrisprojectpartnership";
 	private CsdlComplexType complexType;
 	private HashMap<String, String> mapping;
 	
@@ -83,6 +84,11 @@ public class Partnership implements ComplexModel {
 
 	public HashMap<String, String> getMapping() {
 		return mapping;
+	}
+
+
+	public String getSchema() {
+		return SCHEMA;
 	}
 
 

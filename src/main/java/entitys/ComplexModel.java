@@ -14,6 +14,7 @@ public interface ComplexModel {
 	public String getRecourceTypeFilter();
 	public int getParentFK();
 	public HashMap<String, String> getMapping();
+	public String getSchema();
 	
 	
 }
