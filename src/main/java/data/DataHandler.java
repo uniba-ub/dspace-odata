@@ -172,7 +172,7 @@ public class DataHandler {
 						propertyList.add(property);
 						builder = new StringBuilder();
 					} else if(itemType.equals("Int32")|itemType.equals("Int16")| itemType.equals("Boolean")) {
-						property = new Property(null, item.getName(), ValueType.PRIMITIVE, solrDocument.getFirstValue(item.getName()));
+						property = new Property(null, item.getName(), ValueType.PRIMITIVE, solrDocument.getFirstValue(mapping.get(item.getName())));
 						propertyList.add(property);
 					} 
 				} else if(entityRegister.getComplexTypeNameList().contains(itemType)){
