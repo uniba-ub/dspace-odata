@@ -30,6 +30,19 @@ Example value:
 **value:** `http://localhost:8080/solr/search`
 
 
+### Adjustments regarding data model of dspace instance
+
+Already existing Entitys (Publication, Project, Researcher, Orgunit) can be used as default.
+
+Probably need to be changed for entitys (regarding your database model):
+
+- `Resource_TYPE_FILTER` need to be changed, if you are using a different resource type filters at your dspace installation. You can find your Resource Type Filters in solr: `localhost:8080/solr/#/search/schema-browser?field=resourcetype_filter`
+- For Entity **Publication**: `ID_CONVERTER_TYP` need to be changed to the handle you are using at your dspace instance for dspace items
+- Metadata field names and mapping of names in all Entities regarding your database model   
+
+
+All new Entities with metadata need to be definied in `src/main/java/entitys/` and added to `src/main/java/entitys/EntityRegister`.
+Relations between those entities and ComplexProperties (which represents NestedObjects from DspaceCris) need to be registered in the `EntitiyRegister` as well. 
 
 
 ### Use OData API
