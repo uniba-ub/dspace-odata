@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.olingo.commons.api.data.ComplexValue;
 import org.apache.olingo.commons.api.data.Entity;
 import org.apache.olingo.commons.api.data.EntityCollection;
 import org.apache.olingo.commons.api.data.Property;
@@ -21,6 +22,7 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 
+import entitys.ComplexModel;
 import entitys.EntityModel;
 import entitys.EntityRegister;
 import odata.EdmProviderDSpace;
@@ -35,7 +37,6 @@ public class DataHandler {
 	private SolrConnector solr;
 	private SolrQueryMaker queryMaker;
 	private IdConverter converter;
-
 	public DataHandler() {
 
 		entityRegister = new EntityRegister();
@@ -106,13 +107,12 @@ public class DataHandler {
 		return responseDocuments;
 	}
 
-	public EntityCollection createEntitySet(SolrDocumentList documentList, EntityModel entity) {
+	public EntityCollection createEntitySet(SolrDocumentList documentList, EntityModel entity) throws SolrServerException, IOException {
 		EntityCollection entitySet = new EntityCollection();
 		for (SolrDocument solrDocument : documentList) {
 			entitySet.getEntities()
 					.add(createEntity(createPropertyList(solrDocument, entity), entity.getEntitySetName()));
 		}
-
 		return entitySet;
 	}
 
@@ -127,11 +127,12 @@ public class DataHandler {
 		return entity;
 	}
 
-	public List<Property> createPropertyList(SolrDocument solrDocument, EntityModel entity) {
+	public List<Property> createPropertyList(SolrDocument solrDocument, EntityModel entity) throws SolrServerException, IOException {
 		propertyList = new LinkedList<Property>();
 		Property property;
 		HashMap<String, String> mapping = entity.getMapping();
 		StringBuilder builder = new StringBuilder();
+		String itemType;
 		for(CsdlProperty item: entity.getEntityType().getProperties()) {
 			if(item.getName().equals("id")) {
 				if(entity.getEntityType().getName().toString().equals("Publication")) {
@@ -139,7 +140,6 @@ public class DataHandler {
 					int convertedId = converter.convertHandleToId(currentId);
 					property = new Property(null, "id", ValueType.PRIMITIVE, convertedId);
 					propertyList.add(property);
-					
 				} else {
 					String currentId = (String) solrDocument.getFieldValue("cris-id");
 					int convertedId = converter.convertCrisToId(currentId);
@@ -148,8 +148,9 @@ public class DataHandler {
 				}
 			
 			} else {
+				itemType = item.getTypeAsFQNObject().getName();
 				if(solrDocument.getFieldValue(mapping.get(item.getName()))!=null) {
-					if(item.getTypeAsFQNObject().getName().equals("String")) {
+					if(itemType.equals("String")) {
 						for(Object value: solrDocument.getFieldValues(mapping.get(item.getName()))) {
 							if(builder.toString().length()!=0) {
 								if(item.getName().equals("author")) {
@@ -163,14 +164,42 @@ public class DataHandler {
 						property = new Property(null, item.getName(), ValueType.PRIMITIVE, builder.toString());
 						propertyList.add(property);
 						builder = new StringBuilder();
-					} else if(item.getTypeAsFQNObject().getName().equals("Int32")|item.getTypeAsFQNObject().getName().equals("Int16")| item.getTypeAsFQNObject().getName().equals("Boolean")) {
-						property = new Property(null, item.getName(), ValueType.PRIMITIVE, solrDocument.getFirstValue(item.getName()));
-						propertyList.add(property);					
+					} else if(itemType.equals("Int32")|itemType.equals("Int16")| itemType.equals("Boolean")) {
+						property = new Property(null, item.getName(), ValueType.PRIMITIVE, solrDocument.getFirstValue(mapping.get(item.getName())));
+						propertyList.add(property);
 					} 
+				} else if(entityRegister.getComplexTypeNameList().contains(itemType)){
+					int idOfSolrObject = (Integer) solrDocument.getFieldValue("search.resourceid");
+					for (ComplexModel complexProperty:entityRegister.getComplexProperties()) {
+						if(complexProperty.getName().equals(item.getName())) {
+							loadComplexPropertyFromSolr(complexProperty, idOfSolrObject, propertyList);
+						}
+					}
 				}
 			}	
 		}	
+
 		return propertyList;
+	}
+
+	private void loadComplexPropertyFromSolr(ComplexModel complexProperty, int idOfSolrObject, List<Property> propertyList) throws SolrServerException, IOException {
+		queryMaker.setSearchFilterForComplexProperty(idOfSolrObject, complexProperty.getParentFK(), complexProperty.getSchema());
+		queryMaker.setResponseLimitToMax();
+		SolrDocumentList responseDocumentsForComplexProperty = solr.getData(queryMaker);
+		HashMap<String, String> mapping = complexProperty.getMapping();
+		List<ComplexValue> complexValueList = new LinkedList<ComplexValue>();
+		for(SolrDocument solrDocument: responseDocumentsForComplexProperty) {
+			ComplexValue complexvalue = new ComplexValue();
+			List <Property> complexSubProperties = complexvalue.getValue();
+			for(CsdlProperty item: complexProperty.getComplexType().getProperties()) {
+				Property complexSubProperty = new Property(null, item.getName(), ValueType.PRIMITIVE, solrDocument.getFirstValue(mapping.get(item.getName())));
+				complexSubProperties.add(complexSubProperty);
+			}
+			complexValueList.add(complexvalue);
+		}
+		Property propertyComplex = new Property(null, complexProperty.getName(), ValueType.COLLECTION_COMPLEX, complexValueList);
+		propertyList.add(propertyComplex);
+		queryMaker.resetQuery();
 	}
 
 	private URI createId(Entity entity, String idPropertyName, String navigationName) {

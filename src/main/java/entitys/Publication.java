@@ -84,7 +84,9 @@ public class Publication implements EntityModel {
 		mapping.put("subject", "dc.subject");
 		mapping.put("author", "dc.contributor.author");
 		mapping.put("uri", "dc.identifier.uri");
-		mapping.put("completedyear", "ubg.date.completedyear");
+		//TODO: when Opus Migration works correct, completedyear needs to be changed again
+		//mapping.put("completedyear", "ubg.date.completedyear");
+		mapping.put("completedyear", "dateIssued.year_sort");
 		mapping.put("language", "dc.language.iso");
 		mapping.put("ispartofseries", "dc.relation.ispartofseries");
 		mapping.put("publisherplace", "dc.publisher.place");

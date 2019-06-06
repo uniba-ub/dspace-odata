@@ -58,12 +58,16 @@ public class Project implements EntityModel{
 		CsdlProperty code = new CsdlProperty().setName("code")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
 
+		//complex type
+		CsdlProperty funding = new CsdlProperty().setName("Funding").setType(Funding.CT_FUNDING_FQN).setCollection(true);
+		CsdlProperty partnership = new CsdlProperty().setName("Partnership").setType(Partnership.CT_PARTNERSHIP_FQN).setCollection(true);
+
 		CsdlPropertyRef propertyRef = new CsdlPropertyRef();
 		propertyRef.setName("id");
 
 		entityType = new CsdlEntityType();
 		entityType.setName(ET_PROJECT_NAME);
-		entityType.setProperties(Arrays.asList(id,crisId, title, abstracts, principalinvestigator, coinvestigators, budget, startDate, endDate, projectarea,code,keywords,status, url));
+		entityType.setProperties(Arrays.asList(id,crisId, title, abstracts, principalinvestigator, coinvestigators, budget, startDate, endDate, projectarea,code,keywords,status, url,funding, partnership));
 		entityType.setKey(Arrays.asList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
@@ -71,6 +75,7 @@ public class Project implements EntityModel{
 		entitySet.setType(ET_PROJECT_FQN);
 		
 		
+
 		mapping = new HashMap<String, String>();
 		
 		mapping.put("cris-id", "cris-id");
@@ -109,8 +114,6 @@ public class Project implements EntityModel{
 		return entitySet;
 	}
 
-
-
 	public String getRecourceTypeFilter() {
 		return RECOURCE_TYPE_FILTER;
 	}
@@ -132,7 +135,6 @@ public class Project implements EntityModel{
 			
 		} else if(sourceType.equals("Orgunits")) {
 			navigationFilter = ("crisproject.deptproject_authority:\""+ id+"\"");
-
 		}
 			return navigationFilter;
 	}
