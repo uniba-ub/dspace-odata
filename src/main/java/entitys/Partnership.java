@@ -14,11 +14,7 @@ public class Partnership implements ComplexModel {
 
 	public static final String CT_PARTNERSHIP_NAME = "Partnership";
 	public static final FullQualifiedName CT_PARTNERSHIP_FQN = new FullQualifiedName(NAMESPACE, CT_PARTNERSHIP_NAME);
-	public final static String RECOURCE_TYPE_FILTER= 
-	"resourcetype_filter:\"nobjects\n" + 
-	"|||\n" + 
-	"N-Object###default\"";
-	// nested objects need a parent key
+	// nested objects need a parent key and a search schema
 	public static final int PARENT_FK = 10;
 	public static final String SCHEMA = "ncrisprojectpartnership";
 	private CsdlComplexType complexType;
@@ -53,11 +49,8 @@ public class Partnership implements ComplexModel {
 		mapping.put("url", "ncrisprojectpartnership.partnershipurl");
 		mapping.put("type", "ncrisprojectpartnership.partnershiptypeofpartnership");
 
-		
-		
 	}
 	
-
 	public CsdlComplexType getComplexType() {
 		return complexType;
 	}
@@ -67,10 +60,6 @@ public class Partnership implements ComplexModel {
 	}
 	public String getName() {
 		return CT_PARTNERSHIP_NAME;
-	}
-		
-	public String getRecourceTypeFilter() {
-		return RECOURCE_TYPE_FILTER;
 	}
 
 	public int getParentFK() {

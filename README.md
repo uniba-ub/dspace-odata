@@ -79,4 +79,7 @@ rough draft of the architecture:
 
 ### More informations and filter options of OData
 
-please have a look at ![odata.pdf](odata.pdf)
+please have a look at:
+![Apache Olingo](https://olingo.apache.org/doc/odata4/index.html)
+![Olingo OData 4.0 Javadoc](https://olingo.apache.org/javadoc/odata4/index.html)
+

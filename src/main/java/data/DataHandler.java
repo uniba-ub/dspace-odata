@@ -183,7 +183,6 @@ public class DataHandler {
 	}
 
 	private void loadComplexPropertyFromSolr(ComplexModel complexProperty, int idOfSolrObject, List<Property> propertyList) throws SolrServerException, IOException {
-		queryMaker.setQuerySearchTerm(complexProperty.getRecourceTypeFilter());
 		queryMaker.setSearchFilterForComplexProperty(idOfSolrObject, complexProperty.getParentFK(), complexProperty.getSchema());
 		queryMaker.setResponseLimitToMax();
 		SolrDocumentList responseDocumentsForComplexProperty = solr.getData(queryMaker);
