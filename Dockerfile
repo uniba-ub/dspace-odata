@@ -2,7 +2,7 @@
 # build environment #
 #####################
 
-FROM maven:3.5.4-jdk-8 AS maven-builder
+FROM maven:3.6-jdk-11 AS maven-builder
 
 COPY . /app
 WORKDIR /app
@@ -12,7 +12,7 @@ RUN mvn clean install
 #######################
 # runtime environment #
 #######################
-FROM tomcat:8.5.32-jre8
+FROM tomcat:9.0-jdk11-openjdk-slim
 
 ENV PATH=$CATALINA_HOME/bin:$PATH
 

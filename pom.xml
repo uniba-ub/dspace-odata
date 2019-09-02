@@ -24,6 +24,16 @@
     		</snapshots>
   		</repository>
 	</repositories>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+            </plugin>
+        </plugins>
+		<finalName>ODataService</finalName>
+    </build>
 	<dependencies>
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -104,7 +114,4 @@
     		<version>1.0</version>
   		</dependency>	
 	</dependencies>
-	<build>
-		<finalName>ODataService</finalName>
-	</build>
 </project>
