@@ -57,6 +57,8 @@ public class Publication implements EntityModel {
 		CsdlProperty authors= new CsdlProperty().setName("author")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
 		CsdlProperty fulltext= new CsdlProperty().setName("fulltext")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty csl= new CsdlProperty().setName("csl")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());	
 		// creation of PropertyRef for the key Element
 
@@ -68,7 +70,7 @@ public class Publication implements EntityModel {
 
 		entityType = new CsdlEntityType();	
 		entityType.setName(ET_PUBLICATION_NAME);
-		entityType.setProperties(Arrays.asList(id, handle, title, description, type, language, publisher, series, fulltext,subject,publisherPlace,issued,faculty,uriIdentifier,authors));
+		entityType.setProperties(Arrays.asList(id, handle, title, description, type, language, publisher, series, fulltext,subject,publisherPlace,issued,faculty,uriIdentifier,authors,csl));
 		entityType.setKey(Collections.singletonList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
@@ -84,8 +86,6 @@ public class Publication implements EntityModel {
 		mapping.put("subject", "dc.subject");
 		mapping.put("author", "dc.contributor.author");
 		mapping.put("uri", "dc.identifier.uri");
-		//TODO: when Opus Migration works correct, completedyear needs to be changed again
-		//mapping.put("completedyear", "ubg.date.completedyear");
 		mapping.put("completedyear", "dateIssued.year_sort");
 		mapping.put("language", "dc.language.iso");
 		mapping.put("ispartofseries", "dc.relation.ispartofseries");

@@ -17,7 +17,10 @@ import org.apache.olingo.commons.api.edm.EdmEntityType;
 import org.apache.olingo.commons.api.edm.provider.CsdlEntitySet;
 import org.apache.olingo.commons.api.edm.provider.CsdlProperty;
 import org.apache.olingo.commons.api.ex.ODataRuntimeException;
+import org.apache.olingo.server.api.ODataApplicationException;
+import org.apache.olingo.server.api.ServiceMetadata;
 import org.apache.olingo.server.api.uri.UriParameter;
+import org.apache.olingo.server.api.uri.UriResourceFunction;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
@@ -274,6 +277,24 @@ public class DataHandler {
 			return null;
 		}
 		return navigationTargetEntityCollection;
+	}
+	
+	
+	public EntityCollection readFunctionImportCollection(final UriResourceFunction uriResourceFunction, final ServiceMetadata serviceMetadata) throws ODataApplicationException {
+		if(EdmProviderDSpace.FUNCTION_CSL.equals(uriResourceFunction.getFunctionImport().getName())){
+				//TODO: EntityCollection auslesen, Metadaten Feld csl befüllen mit HTML Snippet
+				System.out.println("test");	
+			
+		}
+		return null;
+	}
+	
+	public Entity readFunctiomImportEntity(final UriResourceFunction uriResourceFunction, final ServiceMetadata serviceMetadata) throws ODataApplicationException{
+
+		  final EntityCollection entityCollection = readFunctionImportCollection(uriResourceFunction, serviceMetadata);
+		  final EdmEntityType edmEntityType = (EdmEntityType) uriResourceFunction.getFunction().getReturnType().getType();
+
+		  return Util.findEntity(edmEntityType, entityCollection, uriResourceFunction.getKeyPredicates());
 	}
 	
 }

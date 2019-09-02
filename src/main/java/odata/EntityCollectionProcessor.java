@@ -27,6 +27,7 @@ import org.apache.olingo.server.api.uri.UriInfo;
 import org.apache.olingo.server.api.uri.UriParameter;
 import org.apache.olingo.server.api.uri.UriResource;
 import org.apache.olingo.server.api.uri.UriResourceEntitySet;
+import org.apache.olingo.server.api.uri.UriResourceFunction;
 import org.apache.olingo.server.api.uri.UriResourceNavigation;
 import org.apache.olingo.server.api.uri.queryoption.CountOption;
 import org.apache.olingo.server.api.uri.queryoption.ExpandOption;
@@ -39,6 +40,7 @@ import org.apache.solr.client.solrj.SolrServerException;
 
 import util.Util;
 import data.DataHandler;
+import service.CslService;
 import service.QueryOptionService;
 
 public class EntityCollectionProcessor implements org.apache.olingo.server.api.processor.EntityCollectionProcessor {
@@ -47,11 +49,13 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 	private ServiceMetadata serviceMetadata;
 	private DataHandler datahandler;
 	private QueryOptionService queryOptionService;
+	private CslService cslService;
 
 	public EntityCollectionProcessor(DataHandler datahandler) {
 
 		this.datahandler = datahandler;
 		queryOptionService = new QueryOptionService(this.datahandler);
+		cslService = new CslService();
 
 	}
 
@@ -66,17 +70,25 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 			ContentType responseFormat) throws ODataApplicationException, ODataLibraryException {
 		EdmEntitySet responseEdmEntitySet = null;
 		EntityCollection responseEntityCollection = null;
+		UriResourceEntitySet uriResourceEntitySet = null;
 		// get the requested EntitySet from the uriInfo object
 		List<UriResource> resourceParts = uriInfo.getUriResourceParts();
 		int segmentCount = resourceParts.size();
 
-		UriResource uriResource = resourceParts.get(0);
-		if (!(uriResource instanceof UriResourceEntitySet)) {
+		UriResource firstUriResourceSegment = resourceParts.get(0);
+		if (!(firstUriResourceSegment instanceof UriResourceEntitySet)) {
 			throw new ODataApplicationException("Only EntitySet is supported",
 					HttpStatusCode.NOT_IMPLEMENTED.getStatusCode(), Locale.ROOT);
 		}
+		else if(firstUriResourceSegment instanceof UriResourceEntitySet) {
+			uriResourceEntitySet = (UriResourceEntitySet) firstUriResourceSegment;
+		}
+		else if(firstUriResourceSegment instanceof UriResourceFunction) {
+			final UriResourceFunction uriResourceFunction = (UriResourceFunction) firstUriResourceSegment;	
+			datahandler.readFunctionImportCollection(uriResourceFunction, serviceMetadata);	
+			
+		}
 
-		UriResourceEntitySet uriResourceEntitySet = (UriResourceEntitySet) uriResource;
 		EdmEntitySet startEdmEntitySet = uriResourceEntitySet.getEntitySet();
 
 		// Creation of different Option which the Client might selected
@@ -146,12 +158,17 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 				for (Entity entity : entityList) {
 					responseEntityCollection.getEntities().add(entity);
 				}
-
 			}
 		} else {
 			throw new ODataApplicationException("Not supported", HttpStatusCode.NOT_IMPLEMENTED.getStatusCode(),
 					Locale.ROOT);
-
+		}
+		
+		try {
+			responseEntityCollection = cslService.enhanceCollection(responseEntityCollection, "ieee");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 		 try {

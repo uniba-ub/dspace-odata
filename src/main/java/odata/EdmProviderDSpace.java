@@ -14,14 +14,19 @@ import org.apache.olingo.commons.api.edm.provider.CsdlEntityContainer;
 import org.apache.olingo.commons.api.edm.provider.CsdlEntityContainerInfo;
 import org.apache.olingo.commons.api.edm.provider.CsdlEntitySet;
 import org.apache.olingo.commons.api.edm.provider.CsdlEntityType;
+import org.apache.olingo.commons.api.edm.provider.CsdlFunction;
+import org.apache.olingo.commons.api.edm.provider.CsdlFunctionImport;
 import org.apache.olingo.commons.api.edm.provider.CsdlNavigationProperty;
 import org.apache.olingo.commons.api.edm.provider.CsdlNavigationPropertyBinding;
+import org.apache.olingo.commons.api.edm.provider.CsdlParameter;
 import org.apache.olingo.commons.api.edm.provider.CsdlProperty;
 import org.apache.olingo.commons.api.edm.provider.CsdlPropertyRef;
+import org.apache.olingo.commons.api.edm.provider.CsdlReturnType;
 import org.apache.olingo.commons.api.edm.provider.CsdlSchema;
 import org.apache.olingo.commons.api.ex.ODataException;
 
 import entitys.EntityRegister;
+import entitys.Publication;
 
 public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 
@@ -31,6 +36,10 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 	// EDM Container
 	public final static String CONTAINER_NAME = "Container";
 	public static final FullQualifiedName CONTAINER = new FullQualifiedName(NAMESPACE, CONTAINER_NAME);
+	
+	//Function
+	public static final String FUNCTION_CSL = "Csl";
+	public static final FullQualifiedName FUNCTION_CSL_FQN = new FullQualifiedName(NAMESPACE, FUNCTION_CSL);
 
 	public EntityRegister entityRegister;
 	
@@ -51,7 +60,12 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 		CsdlEntityContainer entityContainer = new CsdlEntityContainer();
 		entityContainer.setName(CONTAINER_NAME);
 		entityContainer.setEntitySets(entitySets);
-
+		
+		//create function
+		List<CsdlFunctionImport> functionImports = new LinkedList<CsdlFunctionImport>();
+		functionImports.add(getFunctionImport(CONTAINER, FUNCTION_CSL));
+		entityContainer.setFunctionImports(functionImports);
+		
 		return entityContainer;
 	}
 
@@ -114,11 +128,58 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 
 		// adding EntityContainer
 		schema.setEntityContainer(getEntityContainer());
-			
+		
+		//add function
+		List<CsdlFunction> functions = new LinkedList<CsdlFunction>();
+		functions.addAll(getFunctions(FUNCTION_CSL_FQN));
+		schema.setFunctions(functions);
+		
+		
 		List<CsdlSchema> schemas = new ArrayList<CsdlSchema>();
 		schemas.add(schema);
 
 		return schemas;
 	}
-
+	
+	@Override 
+	public List<CsdlFunction> getFunctions(final FullQualifiedName functionName){
+		if(functionName.equals(FUNCTION_CSL_FQN)) {
+			
+			final List<CsdlFunction> functions = new LinkedList<CsdlFunction>();
+			
+			final CsdlParameter parameterStyle = new CsdlParameter();
+			parameterStyle.setName("Style");
+			parameterStyle.setNullable(false);
+			parameterStyle.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+			
+			final CsdlReturnType returnType = new CsdlReturnType();
+			returnType.setCollection(true);
+			returnType.setType(Publication.ET_PUBLICATION_FQN);
+			
+			final CsdlFunction function = new CsdlFunction();
+			function.setName(FUNCTION_CSL)
+					.setParameters(Arrays.asList(parameterStyle))
+					.setReturnType(returnType)
+					.setComposable(true);
+			functions.add(function);
+			
+			return functions;
+		}
+		return null;
+	}
+	
+	
+	@Override
+	public CsdlFunctionImport getFunctionImport(FullQualifiedName entityContainer, String functionImportName) {
+		if(entityContainer.equals(CONTAINER)) {
+			if(functionImportName.equals(FUNCTION_CSL)) {
+				return new CsdlFunctionImport()
+						.setName(functionImportName)
+						.setFunction(FUNCTION_CSL_FQN)
+						.setEntitySet(Publication.ET_PUBLICATION_NAME)
+						.setIncludeInServiceDocument(true);
+			}
+		}
+		return null;
+	}
 }
