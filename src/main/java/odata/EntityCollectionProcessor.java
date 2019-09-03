@@ -50,6 +50,7 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 	private DataHandler datahandler;
 	private QueryOptionService queryOptionService;
 	private CslService cslService;
+	private String cslstyle;
 
 	public EntityCollectionProcessor(DataHandler datahandler) {
 
@@ -76,17 +77,17 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 		int segmentCount = resourceParts.size();
 
 		UriResource firstUriResourceSegment = resourceParts.get(0);
-		if (!(firstUriResourceSegment instanceof UriResourceEntitySet)) {
-			throw new ODataApplicationException("Only EntitySet is supported",
-					HttpStatusCode.NOT_IMPLEMENTED.getStatusCode(), Locale.ROOT);
-		}
-		else if(firstUriResourceSegment instanceof UriResourceEntitySet) {
+		if(firstUriResourceSegment instanceof UriResourceEntitySet) {
 			uriResourceEntitySet = (UriResourceEntitySet) firstUriResourceSegment;
 		}
 		else if(firstUriResourceSegment instanceof UriResourceFunction) {
 			final UriResourceFunction uriResourceFunction = (UriResourceFunction) firstUriResourceSegment;	
 			datahandler.readFunctionImportCollection(uriResourceFunction, serviceMetadata);	
 			
+		}
+		else {
+			throw new ODataApplicationException("Only EntitySet is supported",
+					HttpStatusCode.NOT_IMPLEMENTED.getStatusCode(), Locale.ROOT);
 		}
 
 		EdmEntitySet startEdmEntitySet = uriResourceEntitySet.getEntitySet();

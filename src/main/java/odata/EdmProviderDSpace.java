@@ -40,7 +40,7 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 	//Function
 	public static final String FUNCTION_CSL = "Csl";
 	public static final FullQualifiedName FUNCTION_CSL_FQN = new FullQualifiedName(NAMESPACE, FUNCTION_CSL);
-
+	
 	public EntityRegister entityRegister;
 	
 	public EdmProviderDSpace() {
@@ -85,7 +85,7 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 	@Override
 	public CsdlEntitySet getEntitySet(FullQualifiedName entityContainer, String entitySetName) throws ODataException {
 		
-		CsdlEntitySet entitySet = new CsdlEntitySet();
+		CsdlEntitySet entitySet = null;
 		if (entityContainer.equals(CONTAINER)) {
 			for(CsdlEntitySet item:entityRegister.getEntitySet() )
 				if(entitySetName.equals(item.getName())) {
@@ -125,15 +125,14 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 		schema.setNamespace(NAMESPACE);
 		schema.setEntityTypes(entityRegister.getEntityTypeList());
 		schema.setComplexTypes(entityRegister.getComplexTypeList());
-
-		// adding EntityContainer
-		schema.setEntityContainer(getEntityContainer());
 		
 		//add function
 		List<CsdlFunction> functions = new LinkedList<CsdlFunction>();
 		functions.addAll(getFunctions(FUNCTION_CSL_FQN));
 		schema.setFunctions(functions);
 		
+		// adding EntityContainer
+		schema.setEntityContainer(getEntityContainer());
 		
 		List<CsdlSchema> schemas = new ArrayList<CsdlSchema>();
 		schemas.add(schema);
@@ -157,10 +156,10 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 			returnType.setType(Publication.ET_PUBLICATION_FQN);
 			
 			final CsdlFunction function = new CsdlFunction();
-			function.setName(FUNCTION_CSL)
+			function.setName(FUNCTION_CSL_FQN.getName())
 					.setParameters(Arrays.asList(parameterStyle))
-					.setReturnType(returnType)
-					.setComposable(true);
+					.setReturnType(returnType);
+//					.setComposable(false);
 			functions.add(function);
 			
 			return functions;
@@ -172,11 +171,11 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 	@Override
 	public CsdlFunctionImport getFunctionImport(FullQualifiedName entityContainer, String functionImportName) {
 		if(entityContainer.equals(CONTAINER)) {
-			if(functionImportName.equals(FUNCTION_CSL)) {
+			if(functionImportName.equals(FUNCTION_CSL_FQN.getName())) {
 				return new CsdlFunctionImport()
 						.setName(functionImportName)
 						.setFunction(FUNCTION_CSL_FQN)
-						.setEntitySet(Publication.ET_PUBLICATION_NAME)
+						.setEntitySet(Publication.ES_PUBLICATIONS_NAME)
 						.setIncludeInServiceDocument(true);
 			}
 		}

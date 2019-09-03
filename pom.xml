@@ -1,16 +1,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+	<modelVersion>4.6.0</modelVersion>
 	<groupId>api</groupId>
 	<artifactId>ODataService</artifactId>
 	<packaging>war</packaging>
-	<version>4.0.0</version>
+	<version>4.6.0</version>
 	<name>ODataService Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 	<properties>
 		<javax.version>2.5</javax.version>
-		<odata.version>4.5.0</odata.version>
+		<odata.version>4.6.0</odata.version>
 		<slf4j.version>1.7.7</slf4j.version>
 	</properties>
 	<repositories>

@@ -280,21 +280,15 @@ public class DataHandler {
 	}
 	
 	
-	public EntityCollection readFunctionImportCollection(final UriResourceFunction uriResourceFunction, final ServiceMetadata serviceMetadata) throws ODataApplicationException {
+	public String readFunctionImportCollection(final UriResourceFunction uriResourceFunction, final ServiceMetadata serviceMetadata) throws ODataApplicationException {
 		if(EdmProviderDSpace.FUNCTION_CSL.equals(uriResourceFunction.getFunctionImport().getName())){
-				//TODO: EntityCollection auslesen, Metadaten Feld csl befüllen mit HTML Snippet
-				System.out.println("test");	
-			
+				List<UriParameter> parameters = uriResourceFunction.getParameters();
+				if(!parameters.isEmpty()) {
+					String parameter = parameters.get(0).getText();	
+					return parameter;
+				}
+				return null;			
 		}
 		return null;
-	}
-	
-	public Entity readFunctiomImportEntity(final UriResourceFunction uriResourceFunction, final ServiceMetadata serviceMetadata) throws ODataApplicationException{
-
-		  final EntityCollection entityCollection = readFunctionImportCollection(uriResourceFunction, serviceMetadata);
-		  final EdmEntityType edmEntityType = (EdmEntityType) uriResourceFunction.getFunction().getReturnType().getType();
-
-		  return Util.findEntity(edmEntityType, entityCollection, uriResourceFunction.getKeyPredicates());
-	}
-	
+	}	
 }

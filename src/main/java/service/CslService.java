@@ -43,24 +43,37 @@ public class CslService {
 	}
 	
 	private CSLItemData buildCslItem(Entity entity) {
-		return new CSLItemDataBuilder()
+		CSLItemDataBuilder builder = new CSLItemDataBuilder()
 				.id((String) entity.getProperty("id").getValue().toString())
-				.type((getType((String)entity.getProperty("type").getValue())))
-				.title((String) entity.getProperty("title").getValue())
-				.author(authorNameSpliter((String) entity.getProperty("author").getValue()))
-			
-				.issued(Integer.valueOf((String) entity.getProperty("completedyear").getValue()))
-				.build();
-			
+				.type((getType((String)checkValueNull(entity.getProperty("type")))))
+				.title((String) checkValueNull(entity.getProperty("title")))
+				.author(authorNameSpliter((String) checkValueNull(entity.getProperty("author"))))		
+				.language((String) checkValueNull(entity.getProperty("language")))
+				.publisher((String)checkValueNull(entity.getProperty("publisher")))
+				.publisherPlace((String) checkValueNull(entity.getProperty("publisherplace")));
+
+			if((String)checkValueNull(entity.getProperty("completedyear"))!=null) {
+				builder.issued(Integer.valueOf((String)entity.getProperty("completedyear").getValue()));
+			}
+		return builder.build();
 	}	
 	
 	
 	private CSLType getType(String type) {
+		if(type==null) {
+			return null;
+		}
 		if(type.equals("workingpaper")) {
 			return CSLType.REPORT;
-		} else if(type.equals("dissertation")||type.equals("masterthesis")||type.equals("habilitation")) {
+		} 
+		else if(type.equals("dissertation")||type.equals("masterthesis")||type.equals("habilitation")) {
 			return CSLType.THESIS;
-		} else {
+		
+		}
+		else if(type.equals("periodicalpart")) {
+			return CSLType.ARTICLE_JOURNAL;
+		}
+		else {
 			return CSLType.fromString(type);
 		}	
 	}
@@ -71,21 +84,29 @@ public class CslService {
 		citeproc.registerCitationItems(ids.stream().map(x->x).toArray(String[]::new));
 	}
 	
-	private CSLName[] authorNameSpliter(String author) {
-		//TODO: split authors with ;
-		//TODO: split author name with , into given and family name
-		//TODO: Build CSLName (List), then stream list into CSLName Array
-		
-		
-		
-		CSLNameBuilder builder = new CSLNameBuilder();
-		builder.given("Jonathan");
-		builder.family("Boss");
-		CSLName name = builder.build();
-		CSLName name2 = builder.build();
-
-		CSLName[] namearray = {name,name2};
-		return namearray;
-		
+	private CSLName[] authorNameSpliter(String authorfield) {
+		if(authorfield==null) {
+			return null;
+		}
+		CSLNameBuilder builder;
+		String authors[] = authorfield.split(";");
+		List<CSLName> resultList = new LinkedList<CSLName>();
+		for(int i=0; i<authors.length; i++) {
+			builder = new CSLNameBuilder();
+			String splitauthorname[] = authors[i].split(",");
+			builder.given(splitauthorname[0]);
+			builder.family(splitauthorname[1]);
+			resultList.add(builder.build());
+		}
+		CSLName[] resultArray =  resultList.stream().map(x->x).toArray(CSLName[]::new);
+		return resultArray;
+	}
+	
+	private Object checkValueNull(Property property) {
+		if(property==null) {
+			return null;
+		} else {
+			return property.getValue();
+		}
 	}
 }
