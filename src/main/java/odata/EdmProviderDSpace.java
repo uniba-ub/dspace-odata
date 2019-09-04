@@ -38,7 +38,7 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 	public static final FullQualifiedName CONTAINER = new FullQualifiedName(NAMESPACE, CONTAINER_NAME);
 	
 	//Function
-	public static final String FUNCTION_CSL = "Csl";
+	public static final String FUNCTION_CSL = "csl";
 	public static final FullQualifiedName FUNCTION_CSL_FQN = new FullQualifiedName(NAMESPACE, FUNCTION_CSL);
 	
 	public EntityRegister entityRegister;
@@ -145,11 +145,15 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 		if(functionName.equals(FUNCTION_CSL_FQN)) {
 			
 			final List<CsdlFunction> functions = new LinkedList<CsdlFunction>();
+			final List<CsdlParameter> parameterList = new LinkedList<CsdlParameter>();
 			
 			final CsdlParameter parameterStyle = new CsdlParameter();
 			parameterStyle.setName("Style");
 			parameterStyle.setNullable(false);
 			parameterStyle.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+			parameterList.add(parameterStyle);
+			
+			
 			
 			final CsdlReturnType returnType = new CsdlReturnType();
 			returnType.setCollection(true);
@@ -157,9 +161,9 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 			
 			final CsdlFunction function = new CsdlFunction();
 			function.setName(FUNCTION_CSL_FQN.getName())
-					.setParameters(Arrays.asList(parameterStyle))
-					.setReturnType(returnType);
-//					.setComposable(false);
+					.setParameters(parameterList)
+					.setReturnType(returnType)
+					.setComposable(true);
 			functions.add(function);
 			
 			return functions;

@@ -40,6 +40,7 @@ import org.apache.solr.client.solrj.SolrServerException;
 
 import util.Util;
 import data.DataHandler;
+import entitys.EntityRegister;
 import service.CslService;
 import service.QueryOptionService;
 
@@ -50,7 +51,6 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 	private DataHandler datahandler;
 	private QueryOptionService queryOptionService;
 	private CslService cslService;
-	private String cslstyle;
 
 	public EntityCollectionProcessor(DataHandler datahandler) {
 
@@ -75,23 +75,7 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 		// get the requested EntitySet from the uriInfo object
 		List<UriResource> resourceParts = uriInfo.getUriResourceParts();
 		int segmentCount = resourceParts.size();
-
-		UriResource firstUriResourceSegment = resourceParts.get(0);
-		if(firstUriResourceSegment instanceof UriResourceEntitySet) {
-			uriResourceEntitySet = (UriResourceEntitySet) firstUriResourceSegment;
-		}
-		else if(firstUriResourceSegment instanceof UriResourceFunction) {
-			final UriResourceFunction uriResourceFunction = (UriResourceFunction) firstUriResourceSegment;	
-			datahandler.readFunctionImportCollection(uriResourceFunction, serviceMetadata);	
-			
-		}
-		else {
-			throw new ODataApplicationException("Only EntitySet is supported",
-					HttpStatusCode.NOT_IMPLEMENTED.getStatusCode(), Locale.ROOT);
-		}
-
-		EdmEntitySet startEdmEntitySet = uriResourceEntitySet.getEntitySet();
-
+		
 		// Creation of different Option which the Client might selected
 		CountOption countOption = uriInfo.getCountOption();
 		SkipOption skipOption = uriInfo.getSkipOption();
@@ -101,46 +85,20 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 		OrderByOption orderByOption = uriInfo.getOrderByOption();
 		FilterOption filterOption = uriInfo.getFilterOption();
 		EntityCollection entityCollection = new EntityCollection();
+		
 
-		if (segmentCount == 1) { 
-			responseEdmEntitySet = startEdmEntitySet;
+		UriResource firstUriResourceSegment = resourceParts.get(0);
+		if(firstUriResourceSegment instanceof UriResourceEntitySet) {
+			uriResourceEntitySet = (UriResourceEntitySet) firstUriResourceSegment;
+			EdmEntitySet startEdmEntitySet = uriResourceEntitySet.getEntitySet();
+			
+			if (segmentCount == 1) { 
+				responseEdmEntitySet = startEdmEntitySet;
 
-			// get the data from EntityDatabase for this requested EntitySetName and deliver
-			// as EntitySet
-			try {
-				entityCollection = datahandler.readEntitySetData(startEdmEntitySet);
-			} catch (SolrServerException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			List<Entity> entityList = entityCollection.getEntities();
-			responseEntityCollection = queryOptionService.applyCountOption(countOption, entityList);
-			entityList = queryOptionService.applySkipOption(skipOption, entityList);
-			entityList = queryOptionService.applyTopOption(topOption, entityList);
-			entityList = queryOptionService.applyOrderByOption(orderByOption, entityList);
-			entityList = queryOptionService.applyFilterOption(entityList, filterOption);
-
-			for (Entity entity : entityList) {
-				responseEntityCollection.getEntities().add(entity);
-			}
-
-		} else if (segmentCount == 2) { 
-			UriResource lastSegment = resourceParts.get(1);
-			if (lastSegment instanceof UriResourceNavigation) {
-				UriResourceNavigation uriResourceNavigation = (UriResourceNavigation) lastSegment;
-				EdmNavigationProperty edmNavigationProperty = uriResourceNavigation.getProperty();
-				EdmEntityType targetEntityType = edmNavigationProperty.getType();
-				responseEdmEntitySet = Util.getNavigationTargetEntitySet(startEdmEntitySet, edmNavigationProperty);
-
-				List<UriParameter> keyPredicates = uriResourceEntitySet.getKeyPredicates();
-				Entity sourceEntity;
+				// get the data from EntityDatabase for this requested EntitySetName and deliver
+				// as EntitySet
 				try {
-					sourceEntity = datahandler.readEntityData(startEdmEntitySet, keyPredicates);
-					entityCollection = datahandler.getRelatedEntityCollection(sourceEntity, targetEntityType);
-
+					entityCollection = datahandler.readEntitySetData(startEdmEntitySet);
 				} catch (SolrServerException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -148,7 +106,6 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-
 				List<Entity> entityList = entityCollection.getEntities();
 				responseEntityCollection = queryOptionService.applyCountOption(countOption, entityList);
 				entityList = queryOptionService.applySkipOption(skipOption, entityList);
@@ -159,17 +116,86 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 				for (Entity entity : entityList) {
 					responseEntityCollection.getEntities().add(entity);
 				}
+
+			} else if (segmentCount == 2) { 
+				UriResource lastSegment = resourceParts.get(1);
+				if (lastSegment instanceof UriResourceNavigation) {
+					UriResourceNavigation uriResourceNavigation = (UriResourceNavigation) lastSegment;
+					EdmNavigationProperty edmNavigationProperty = uriResourceNavigation.getProperty();
+					EdmEntityType targetEntityType = edmNavigationProperty.getType();
+					responseEdmEntitySet = Util.getNavigationTargetEntitySet(startEdmEntitySet, edmNavigationProperty);
+
+					List<UriParameter> keyPredicates = uriResourceEntitySet.getKeyPredicates();
+					Entity sourceEntity;
+					try {
+						sourceEntity = datahandler.readEntityData(startEdmEntitySet, keyPredicates);
+						entityCollection = datahandler.getRelatedEntityCollection(sourceEntity, targetEntityType);
+
+					} catch (SolrServerException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+					List<Entity> entityList = entityCollection.getEntities();
+					responseEntityCollection = queryOptionService.applyCountOption(countOption, entityList);
+					entityList = queryOptionService.applySkipOption(skipOption, entityList);
+					entityList = queryOptionService.applyTopOption(topOption, entityList);
+					entityList = queryOptionService.applyOrderByOption(orderByOption, entityList);
+					entityList = queryOptionService.applyFilterOption(entityList, filterOption);
+
+					for (Entity entity : entityList) {
+						responseEntityCollection.getEntities().add(entity);
+					}
+				}
+			} else {
+				throw new ODataApplicationException("Not supported", HttpStatusCode.NOT_IMPLEMENTED.getStatusCode(),
+						Locale.ROOT);
 			}
-		} else {
-			throw new ODataApplicationException("Not supported", HttpStatusCode.NOT_IMPLEMENTED.getStatusCode(),
-					Locale.ROOT);
+			
+			
+
 		}
-		
-		try {
-			responseEntityCollection = cslService.enhanceCollection(responseEntityCollection, "ieee");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		else if(firstUriResourceSegment instanceof UriResourceFunction) {
+			final UriResourceFunction uriResourceFunction = (UriResourceFunction) firstUriResourceSegment;	
+			String cslStyle = datahandler.readFunctionImportStyle(uriResourceFunction, serviceMetadata);
+			responseEdmEntitySet = datahandler.readFunctionImportEntitySet(uriResourceFunction, serviceMetadata);
+					// get the data from EntityDatabase for this requested EntitySetName and deliver
+					// as EntitySet
+					try {
+						entityCollection = datahandler.readEntitySetData(responseEdmEntitySet);
+					} catch (SolrServerException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					List<Entity> entityList = entityCollection.getEntities();
+					responseEntityCollection = queryOptionService.applyCountOption(countOption, entityList);
+					entityList = queryOptionService.applySkipOption(skipOption, entityList);
+					entityList = queryOptionService.applyTopOption(topOption, entityList);
+					entityList = queryOptionService.applyOrderByOption(orderByOption, entityList);
+					entityList = queryOptionService.applyFilterOption(entityList, filterOption);
+	
+					for (Entity entity : entityList) {
+						responseEntityCollection.getEntities().add(entity);
+					}
+					
+					try {
+						responseEntityCollection = cslService.enhanceCollection(responseEntityCollection, cslStyle);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				
+			} 	
+		else {
+			throw new ODataApplicationException("Only EntitySet is supported",
+					HttpStatusCode.NOT_IMPLEMENTED.getStatusCode(), Locale.ROOT);
 		}
 		
 		 try {

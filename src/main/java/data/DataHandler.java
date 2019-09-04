@@ -28,6 +28,7 @@ import org.apache.solr.common.SolrDocumentList;
 import entitys.ComplexModel;
 import entitys.EntityModel;
 import entitys.EntityRegister;
+import entitys.Publication;
 import odata.EdmProviderDSpace;
 import service.IdConverter;
 import service.SolrQueryMaker;
@@ -280,15 +281,24 @@ public class DataHandler {
 	}
 	
 	
-	public String readFunctionImportCollection(final UriResourceFunction uriResourceFunction, final ServiceMetadata serviceMetadata) throws ODataApplicationException {
+	public String readFunctionImportStyle(final UriResourceFunction uriResourceFunction, final ServiceMetadata serviceMetadata) throws ODataApplicationException {
 		if(EdmProviderDSpace.FUNCTION_CSL.equals(uriResourceFunction.getFunctionImport().getName())){
 				List<UriParameter> parameters = uriResourceFunction.getParameters();
 				if(!parameters.isEmpty()) {
-					String parameter = parameters.get(0).getText();	
+					String parameter = parameters.get(0).getText().replace("'", "");
 					return parameter;
 				}
 				return null;			
 		}
 		return null;
 	}	
+	
+	public EdmEntitySet readFunctionImportEntitySet(final UriResourceFunction uriResourceFunction, final ServiceMetadata serviceMetadata) throws ODataApplicationException {
+		if(EdmProviderDSpace.FUNCTION_CSL.equals(uriResourceFunction.getFunctionImport().getName())){
+			  EdmEntitySet entitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Publication.ES_PUBLICATIONS_NAME);
+			  return entitySet;
+		}
+		return null;
+	}	
+	
 }

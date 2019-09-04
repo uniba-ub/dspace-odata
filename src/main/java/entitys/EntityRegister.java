@@ -59,6 +59,7 @@ public class EntityRegister {
 		    navEntityList.add(researcher);
 		    navEntityList.add(publication);
 		    setNavigationPropertyForEntity(orgunit, navEntityList);
+		    
 		}
 
 		private void registerComplexTypes() {
@@ -84,6 +85,15 @@ public class EntityRegister {
 		public List<CsdlEntitySet> getEntitySet(){			
 			return entitySetList;
 			
+		}
+		
+		public CsdlEntitySet getEntitySetByName(String entitySetName){
+			for(CsdlEntitySet item:entitySetList) {
+				if(item.getName().equals(entitySetName)) {
+					return item;
+				}
+			}
+			return null;
 		}
 		
 		public List<EntityModel> getEntityList() {
@@ -127,7 +137,6 @@ public class EntityRegister {
 				navProp.setCollection(true);
 				navPropList.add(navProp);
 			}
-			
 			
 			entity.getEntitySet().setNavigationPropertyBindings(navPropBindingList);
 			entity.getEntityType().setNavigationProperties(navPropList);
