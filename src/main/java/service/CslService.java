@@ -15,6 +15,7 @@ import de.undercouch.citeproc.csl.CSLItemDataBuilder;
 import de.undercouch.citeproc.csl.CSLName;
 import de.undercouch.citeproc.csl.CSLNameBuilder;
 import de.undercouch.citeproc.csl.CSLType;
+import de.undercouch.citeproc.output.Bibliography;
 
 public class CslService {
 	
@@ -33,16 +34,11 @@ public class CslService {
 		}
 		provider = new CslProvider(itemdatalist);	
 		createCiteproc(style);
-		int counter = 0;
+		Bibliography bibliography = citeproc.makeBibliography();
 		for(Entity entity: collection.getEntities()) {
-		       Property property = new Property(null, "csl", ValueType.PRIMITIVE, citeproc.makeBibliography().getEntries()[counter]);
+		       Property property = new Property(null, "csl", ValueType.PRIMITIVE, bibliography.getEntries()[Integer.valueOf(entity.getProperty("id").getValue().toString())]);
 		       entity.addProperty(property);
-		       counter++;
 		           }
-
-		
-		
-		String[] htmlSnippet = citeproc.makeBibliography().getEntries();
 		return collection;
 	}
 	
