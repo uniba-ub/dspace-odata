@@ -35,10 +35,14 @@ public class CslService {
 		createCiteproc(style);
 		int counter = 0;
 		for(Entity entity: collection.getEntities()) {
-			Property property = new Property(null, "csl", ValueType.PRIMITIVE, citeproc.makeBibliography().getEntries()[counter]);
-			entity.addProperty(property);
-			counter++;
-		}
+		       Property property = new Property(null, "csl", ValueType.PRIMITIVE, citeproc.makeBibliography().getEntries()[counter]);
+		       entity.addProperty(property);
+		       counter++;
+		           }
+
+		
+		
+		String[] htmlSnippet = citeproc.makeBibliography().getEntries();
 		return collection;
 	}
 	
@@ -46,7 +50,7 @@ public class CslService {
 		CSLItemDataBuilder builder = new CSLItemDataBuilder()
 				.id((String) entity.getProperty("id").getValue().toString())
 				.type((getType((String)checkValueNull(entity.getProperty("type")))))
-				.title((String) checkValueNull(entity.getProperty("title")))
+				.title(enhanceTitleWithUrl(entity))
 				.author(authorNameSpliter((String) checkValueNull(entity.getProperty("author"))))		
 				.language((String) checkValueNull(entity.getProperty("language")))
 				.publisher((String)checkValueNull(entity.getProperty("publisher")))
@@ -108,5 +112,12 @@ public class CslService {
 		} else {
 			return property.getValue();
 		}
+	}
+	
+	private String enhanceTitleWithUrl(Entity entity) {
+		String title = (String) checkValueNull(entity.getProperty("title"))+ "</a>";
+		String url = "<a href=\""+(String) checkValueNull(entity.getProperty("uri"))+ "\">";	
+		String result = url + title;
+		return result;
 	}
 }
