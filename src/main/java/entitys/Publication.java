@@ -130,6 +130,8 @@ public class Publication implements EntityModel {
 		} else if(sourceType.equals("Orgunits")) {
 			navigationFilter = ("ubg.faculty.org_authority:\"");
 			navigationFilter = (navigationFilter+id+"\"");
+			navigationFilter = (navigationFilter+ "OR ");
+			navigationFilter = (navigationFilter+ "dc.relation.authororgunit_authority\""+ id+"\"");
 			
 		
 		}
