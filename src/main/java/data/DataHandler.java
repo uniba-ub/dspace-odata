@@ -281,24 +281,27 @@ public class DataHandler {
 	}
 	
 	
-	public String readFunctionImportStyle(final UriResourceFunction uriResourceFunction, final ServiceMetadata serviceMetadata) throws ODataApplicationException {
-		if(EdmProviderDSpace.FUNCTION_CSL.equals(uriResourceFunction.getFunctionImport().getName())){
+	public String readFunctionImportStyle(final UriResourceFunction uriResourceFunction) throws ODataApplicationException {	
 				List<UriParameter> parameters = uriResourceFunction.getParameters();
 				if(!parameters.isEmpty()) {
-					String parameter = parameters.get(0).getText().replace("'", "");
-					return parameter;
+					String styleparameter = parameters.get(0).getText().replace("'", "");
+					return styleparameter;
 				}
 				return null;			
-		}
-		return null;
 	}	
 	
 	public EdmEntitySet readFunctionImportEntitySet(final UriResourceFunction uriResourceFunction, final ServiceMetadata serviceMetadata) throws ODataApplicationException {
-		if(EdmProviderDSpace.FUNCTION_CSL.equals(uriResourceFunction.getFunctionImport().getName())){
+		if(EdmProviderDSpace.FUNCTION_CSL_FOR_RESEARCHER.equals(uriResourceFunction.getFunctionImport().getName())){
 			  EdmEntitySet entitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Publication.ES_PUBLICATIONS_NAME);
 			  return entitySet;
 		}
 		return null;
 	}	
 	
+	public List<UriParameter> readFunctionImportId(final UriResourceFunction uriResourceFunction){
+		List<UriParameter> parameters = new LinkedList<UriParameter>();
+		parameters.add(uriResourceFunction.getParameters().get(1));
+		return parameters;
+
+	}
 }

@@ -34,10 +34,12 @@ public class CslService {
 		}
 		provider = new CslProvider(itemdatalist);	
 		createCiteproc(style);
-		Bibliography bibliography = citeproc.makeBibliography();
+		String[] entries = citeproc.makeBibliography().getEntries();
+		int counter = 0;
 		for(Entity entity: collection.getEntities()) {
-		       Property property = new Property(null, "csl", ValueType.PRIMITIVE, bibliography.getEntries()[Integer.valueOf(entity.getProperty("id").getValue().toString())]);
-		       entity.addProperty(property);
+		       	Property property = new Property(null, "csl", ValueType.PRIMITIVE, entries[counter]);
+		       	entity.addProperty(property);
+		       	counter ++;
 		           }
 		return collection;
 	}

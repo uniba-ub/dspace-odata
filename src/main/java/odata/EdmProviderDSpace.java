@@ -37,9 +37,12 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 	public final static String CONTAINER_NAME = "Container";
 	public static final FullQualifiedName CONTAINER = new FullQualifiedName(NAMESPACE, CONTAINER_NAME);
 	
-	//Function
-	public static final String FUNCTION_CSL_FOR_AUTHOR = "cslforauthor";
-	public static final FullQualifiedName FUNCTION_CSL__FOR_AUTHOR_FQN = new FullQualifiedName(NAMESPACE, FUNCTION_CSL_FOR_AUTHOR);
+	//Functions
+	public static final String FUNCTION_CSL_FOR_RESEARCHER = "cslforresearcher";
+	public static final FullQualifiedName FUNCTION_CSL_FOR_RESEARCHER_FQN = new FullQualifiedName(NAMESPACE, FUNCTION_CSL_FOR_RESEARCHER);
+
+	public static final String FUNCTION_CSL_FOR_ORGUNIT = "cslfororgunit";
+	public static final FullQualifiedName FUNCTION_CSL_FOR_ORGUNIT_FQN = new FullQualifiedName(NAMESPACE, FUNCTION_CSL_FOR_ORGUNIT);
 	
 	public EntityRegister entityRegister;
 	
@@ -63,7 +66,7 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 		
 		//create function
 		List<CsdlFunctionImport> functionImports = new LinkedList<CsdlFunctionImport>();
-		functionImports.add(getFunctionImport(CONTAINER, FUNCTION_CSL_FOR_AUTHOR));
+		functionImports.add(getFunctionImport(CONTAINER, FUNCTION_CSL_FOR_RESEARCHER));
 		entityContainer.setFunctionImports(functionImports);
 		
 		return entityContainer;
@@ -128,7 +131,7 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 		
 		//add function
 		List<CsdlFunction> functions = new LinkedList<CsdlFunction>();
-		functions.addAll(getFunctions(FUNCTION_CSL__FOR_AUTHOR_FQN));
+		functions.addAll(getFunctions(FUNCTION_CSL_FOR_RESEARCHER_FQN));
 		schema.setFunctions(functions);
 		
 		// adding EntityContainer
@@ -142,25 +145,31 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 	
 	@Override 
 	public List<CsdlFunction> getFunctions(final FullQualifiedName functionName){
-		if(functionName.equals(FUNCTION_CSL__FOR_AUTHOR_FQN)) {
+		if(functionName.equals(FUNCTION_CSL_FOR_RESEARCHER_FQN)) {
 			
 			final List<CsdlFunction> functions = new LinkedList<CsdlFunction>();
-			final List<CsdlParameter> parameterList = new LinkedList<CsdlParameter>();
+			final List<CsdlParameter> parameterList = new ArrayList<CsdlParameter>();
 			
 			final CsdlParameter parameterStyle = new CsdlParameter();
-			parameterStyle.setName("Style");
+			parameterStyle.setName("style");
 			parameterStyle.setNullable(false);
+			parameterStyle.setCollection(false);
 			parameterStyle.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 			parameterList.add(parameterStyle);
 			
-			
+			final CsdlParameter parameterAuthorid = new CsdlParameter()
+							.setName("id")
+							.setNullable(false)
+							.setCollection(false)
+							.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
+			parameterList.add(parameterAuthorid);
 			
 			final CsdlReturnType returnType = new CsdlReturnType();
 			returnType.setCollection(true);
 			returnType.setType(Publication.ET_PUBLICATION_FQN);
 			
 			final CsdlFunction function = new CsdlFunction();
-			function.setName(FUNCTION_CSL__FOR_AUTHOR_FQN.getName())
+			function.setName(FUNCTION_CSL_FOR_RESEARCHER_FQN.getName())
 					.setParameters(parameterList)
 					.setReturnType(returnType)
 					.setComposable(true);
@@ -175,10 +184,10 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 	@Override
 	public CsdlFunctionImport getFunctionImport(FullQualifiedName entityContainer, String functionImportName) {
 		if(entityContainer.equals(CONTAINER)) {
-			if(functionImportName.equals(FUNCTION_CSL__FOR_AUTHOR_FQN.getName())) {
+			if(functionImportName.equals(FUNCTION_CSL_FOR_RESEARCHER_FQN.getName())) {
 				return new CsdlFunctionImport()
 						.setName(functionImportName)
-						.setFunction(FUNCTION_CSL__FOR_AUTHOR_FQN)
+						.setFunction(FUNCTION_CSL_FOR_RESEARCHER_FQN)
 						.setEntitySet(Publication.ES_PUBLICATIONS_NAME)
 						.setIncludeInServiceDocument(true);
 			}

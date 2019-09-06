@@ -41,6 +41,9 @@ import org.apache.solr.client.solrj.SolrServerException;
 import util.Util;
 import data.DataHandler;
 import entitys.EntityRegister;
+import entitys.Orgunit;
+import entitys.Publication;
+import entitys.Researcher;
 import service.CslService;
 import service.QueryOptionService;
 
@@ -160,12 +163,21 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 		}
 		else if(firstUriResourceSegment instanceof UriResourceFunction) {
 			final UriResourceFunction uriResourceFunction = (UriResourceFunction) firstUriResourceSegment;	
-			String cslStyle = datahandler.readFunctionImportStyle(uriResourceFunction, serviceMetadata);
+			String cslStyle = datahandler.readFunctionImportStyle(uriResourceFunction);
 			responseEdmEntitySet = datahandler.readFunctionImportEntitySet(uriResourceFunction, serviceMetadata);
-					// get the data from EntityDatabase for this requested EntitySetName and deliver
-					// as EntitySet
-					try {
-						entityCollection = datahandler.readEntitySetData(responseEdmEntitySet);
+			List<UriParameter> keyPredicates = datahandler.readFunctionImportId(uriResourceFunction);
+			EdmEntitySet startEntitySet=null;
+			if(EdmProviderDSpace.FUNCTION_CSL_FOR_RESEARCHER.equals(uriResourceFunction.getFunctionImport().getName())) {
+				startEntitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Researcher.ES_RESEARCHERS_NAME);
+			} else if(EdmProviderDSpace.FUNCTION_CSL_FOR_ORGUNIT.equals(uriResourceFunction.getFunctionImport().getName())) {
+				startEntitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Orgunit.ES_ORGUNITS_NAME);
+			}
+			EdmEntityType targetEntityType = serviceMetadata.getEdm().getEntityType(Publication.ET_PUBLICATION_FQN);
+			Entity sourceEntity;
+			try {
+				sourceEntity = datahandler.readEntityData(startEntitySet, keyPredicates);
+				entityCollection = datahandler.getRelatedEntityCollection(sourceEntity, targetEntityType);
+
 					} catch (SolrServerException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
