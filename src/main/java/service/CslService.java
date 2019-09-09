@@ -64,20 +64,38 @@ public class CslService {
 	private CSLType getType(String type) {
 		if(type==null) {
 			return null;
-		}
-		if(type.equals("workingpaper")) {
-			return CSLType.REPORT;
-		} 
-		else if(type.equals("dissertation")||type.equals("masterthesis")||type.equals("habilitation")) {
-			return CSLType.THESIS;
-		
-		}
-		else if(type.equals("periodicalpart")) {
-			return CSLType.ARTICLE_JOURNAL;
-		}
-		else {
-			return CSLType.fromString(type);
 		}	
+		switch(type) {
+		case "article":
+			return CSLType.ARTICLE_JOURNAL;
+		case "articlecollection":
+			return CSLType.ARTICLE;			
+		case "workingpaper":
+		case "report":
+			return CSLType.REPORT;
+		case "masterthesis":
+		case "doctoralthesis":
+		case "habilitation":
+			return CSLType.THESIS;
+		case "movingimage":
+			return CSLType.MOTION_PICTURE;
+		case "book":
+		case "periodicalpart":
+			return CSLType.BOOK;
+		case "conferenceobject":
+			return CSLType.PAPER_CONFERENCE;
+		case "preprint":
+			return CSLType.MANUSCRIPT;
+		case "review":
+			return CSLType.REVIEW;
+		case "other":
+			return CSLType.ARTICLE;
+		case "bookpart":
+			return CSLType.CHAPTER;
+		case "sound":
+			return CSLType.SONG;
+		}
+		return null;
 	}
 	
 	private void createCiteproc(String style) throws IOException {
