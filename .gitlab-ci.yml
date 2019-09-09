@@ -1,5 +1,5 @@
 include:
-  - project: itfl-service/devops/pipeline
+  - project: rz-internal/pipeline
     file: /gitlab-ci.yml
 
 # jobs
