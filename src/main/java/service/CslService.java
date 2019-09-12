@@ -37,7 +37,7 @@ public class CslService {
 		String[] entries = citeproc.makeBibliography().getEntries();
 		int counter = 0;
 		for(Entity entity: collection.getEntities()) {
-		       	Property property = new Property(null, "csl", ValueType.PRIMITIVE, entries[counter]);
+		       	Property property = new Property(null, "csl", ValueType.PRIMITIVE, replaceEscapedHTML(entries[counter]));
 		       	entity.addProperty(property);
 		       	counter ++;
 		           }
@@ -57,6 +57,7 @@ public class CslService {
 			if((String)checkValueNull(entity.getProperty("completedyear"))!=null) {
 				builder.issued(Integer.valueOf((String)entity.getProperty("completedyear").getValue()));
 			}
+			
 		return builder.build();
 	}	
 	
@@ -132,8 +133,20 @@ public class CslService {
 	
 	private String enhanceTitleWithUrl(Entity entity) {
 		String title = (String) checkValueNull(entity.getProperty("title"))+ "</a>";
-		String url = "<a href=\""+(String) checkValueNull(entity.getProperty("uri"))+ "\">";	
+		String url = "<a href="+(String) checkValueNull(entity.getProperty("uri"))+ ">";	
 		String result = url + title;
 		return result;
+	}
+	
+	private String replaceEscapedHTML(String html) {
+		if(html==null) {
+			return html;
+		}else {
+			html = html.replace("\n", "");
+			html = html.replace("&#60;", "<");
+			html= html.replace("&#62;", ">");
+			html = html.replace("\"", "'");
+		}
+		return html;
 	}
 }
