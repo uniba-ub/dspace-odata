@@ -52,11 +52,29 @@ public class CslService {
 				.author(authorNameSpliter((String) checkValueNull(entity.getProperty("author"))))		
 				.language((String) checkValueNull(entity.getProperty("language")))
 				.publisher((String)checkValueNull(entity.getProperty("publisher")))
-				.publisherPlace((String) checkValueNull(entity.getProperty("publisherplace")));
+				.publisherPlace((String) checkValueNull(entity.getProperty("publisherplace")))
+				.containerTitle((String) checkValueNull(entity.getProperty("journal")))
+				.ISSN((String) checkValueNull(entity.getProperty("issn")))
+				.numberOfPages((String) checkValueNull(entity.getProperty("pages")))
+				.keyword((String) checkValueNull(entity.getProperty("gndsw")))
+				.abstrct((String) checkValueNull(entity.getProperty("description")))
+				.editor(authorNameSpliter((String) checkValueNull(entity.getProperty("corporation"))))
+				.containerAuthor(authorNameSpliter((String) checkValueNull(entity.getProperty("corporation"))))
+				.edition((String) checkValueNull(entity.getProperty("edition")))
+				.ISBN((String) checkValueNull(entity.getProperty("isbn")))
+				.collectionTitle((String) checkValueNull(entity.getProperty("ispartofseries")))
+				.collectionNumber((String) checkValueNull(entity.getProperty("seriesnumber")));		
 
 			if((String)checkValueNull(entity.getProperty("completedyear"))!=null) {
-				builder.issued(Integer.valueOf((String)entity.getProperty("completedyear").getValue()));
+				builder.volume(Integer.valueOf((String)entity.getProperty("completedyear").getValue()));
 			}
+			if((String)checkValueNull(entity.getProperty("volume"))!=null) {
+				builder.volume((String)entity.getProperty("volume").getValue());	
+			} else if((String)checkValueNull(entity.getProperty("multipartTitel"))!=null) {
+				builder.volume((String)entity.getProperty("multipartTitel").getValue());
+			}
+			
+			//TODO: Container Author und Editor (wie kommen die Namen an, müssen diese gesplittet werden?)
 			
 		return builder.build();
 	}	
