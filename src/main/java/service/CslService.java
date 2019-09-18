@@ -63,10 +63,11 @@ public class CslService {
 				.edition((String) checkValueNull(entity.getProperty("edition")))
 				.ISBN((String) checkValueNull(entity.getProperty("isbn")))
 				.collectionTitle((String) checkValueNull(entity.getProperty("ispartofseries")))
+				
 				.collectionNumber((String) checkValueNull(entity.getProperty("seriesnumber")));		
 
 			if((String)checkValueNull(entity.getProperty("completedyear"))!=null) {
-				builder.volume(Integer.valueOf((String)entity.getProperty("completedyear").getValue()));
+				builder.issued((Integer.valueOf((String)entity.getProperty("completedyear").getValue())));
 			}
 			if((String)checkValueNull(entity.getProperty("volume"))!=null) {
 				builder.volume((String)entity.getProperty("volume").getValue());	
