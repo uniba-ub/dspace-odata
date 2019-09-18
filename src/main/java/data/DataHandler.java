@@ -114,8 +114,10 @@ public class DataHandler {
 	public EntityCollection createEntitySet(SolrDocumentList documentList, EntityModel entity) throws SolrServerException, IOException {
 		EntityCollection entitySet = new EntityCollection();
 		for (SolrDocument solrDocument : documentList) {
-			entitySet.getEntities()
-					.add(createEntity(createPropertyList(solrDocument, entity), entity.getEntitySetName()));
+			if(solrDocument.getFirstValue("withdrawn").equals("false")) {
+				entitySet.getEntities()
+				.add(createEntity(createPropertyList(solrDocument, entity), entity.getEntitySetName()));
+			}
 		}
 		return entitySet;
 	}
