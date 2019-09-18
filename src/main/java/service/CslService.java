@@ -58,8 +58,8 @@ public class CslService {
 				.numberOfPages((String) checkValueNull(entity.getProperty("pages")))
 				.keyword((String) checkValueNull(entity.getProperty("gndsw")))
 				.abstrct((String) checkValueNull(entity.getProperty("description")))
-				.editor(authorNameSpliter((String) checkValueNull(entity.getProperty("corporation"))))
-				.containerAuthor(authorNameSpliter((String) checkValueNull(entity.getProperty("corporation"))))
+//				.editor(authorNameSpliter((String) checkValueNull(entity.getProperty("corporation"))))
+				.containerAuthor(authorNameSpliter((String) checkValueNull(entity.getProperty("articlecollection"))))
 				.edition((String) checkValueNull(entity.getProperty("edition")))
 				.ISBN((String) checkValueNull(entity.getProperty("isbn")))
 				.collectionTitle((String) checkValueNull(entity.getProperty("ispartofseries")))
@@ -164,6 +164,7 @@ public class CslService {
 			html = html.replace("&#60;", "<");
 			html= html.replace("&#62;", ">");
 			html = html.replace("\"", "'");
+			html = html.replace("&#38", "&");
 		}
 		return html;
 	}
