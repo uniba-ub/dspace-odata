@@ -5,7 +5,7 @@
 <h4>How to use the API (examples):</h4>
 
 <h6>Overview of which metadata is accessible:</h6>
-<a href="odata.fis.uni-bamberg.de/ODataService.svc/$metadata?$format=application/json"><p>odata.fis.uni-bamberg.de/ODataService.svc/$metadata?$format=application/json</p></a>
+<a href="/ODataService.svc/$metadata?$format=application/json"><p>odata.fis.uni-bamberg.de/ODataService.svc/$metadata?$format=application/json</p></a>
 
 <h4>Get Collection of Entities:</h4>
 <h6>Get all Projects:</h6>
