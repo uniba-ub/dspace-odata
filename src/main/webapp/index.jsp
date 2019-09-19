@@ -51,7 +51,17 @@
 <b>Get Publications of Researcher with id 5 and order the result by completedyear</b>
 <p>odata.fis.uni-bamberg.de/ODataService.svc/Researchers(5)/Publications?$orderby= completedyear desc</p>
 
+<h6>How to use Citation Style Language:</h6>
+<b>There are two methods which can be used to create a csl style: cslforresearcher(style,id);cslfororgunit(style,id)</b>
 
+<b>Get Publications of researcher with id 1411 in style 'apa'</b>
+<p>odata.fis.uni-bamberg.de/ODataService.svc/cslforresearcher(style='apa',id=1411)</p>
+
+<b>Get Publications of orgunit with id 11 in style 'ieee'</b>
+<p>odata.fis.uni-bamberg.de/ODataService.svc/cslfororgunit(style='ieee',id=11)</p>
+
+<b>It is still possible to add filter or order options to the uri:</b>
+<p>odata.fis.uni-bamberg.de/ODataService.svc/cslfororgunit(style='ieee',id=11)?$filter=contains(type,'book')</p>
 
 </body>
 </html>
