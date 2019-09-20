@@ -85,6 +85,18 @@ Examples:
 * Filter Publications of a Researcher with String 'Book'
 `http://localhost:8080/ODataService/ODataService.svc/Researchers(5)/Publications?$filter=contains(type,'Book')`
 
+### Use OData API with CSL
+
+* Get all Publications of Researcher with id 5 in csl style 'apa'
+`http://localhost:8080/ODataService/ODataService.svc/cslforresearcher(style='apa',id=5)`
+
+* Get Publications of orgunit with id 11 in style 'ieee'
+`http://localhost:8080/ODataService/ODataService.svc/cslfororgunit(style='ieee',id=11)`
+
+* It is still possible to add filter or order options to the uri:
+`.../cslfororgunit(style='ieee',id=11)?$filter=contains(type,'book')`
+
+
 ### API Architecture
 rough draft of the architecture:
 
