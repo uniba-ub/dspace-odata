@@ -1,6 +1,9 @@
 package service;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,7 +18,7 @@ import de.undercouch.citeproc.csl.CSLItemDataBuilder;
 import de.undercouch.citeproc.csl.CSLName;
 import de.undercouch.citeproc.csl.CSLNameBuilder;
 import de.undercouch.citeproc.csl.CSLType;
-import de.undercouch.citeproc.output.Bibliography;
+
 
 public class CslService {
 	
@@ -32,13 +35,23 @@ public class CslService {
 			itemdatalist.add(buildCslItem(entity));
 			ids.add((String) entity.getProperty("id").getValue().toString());
 		}
-		provider = new CslProvider(itemdatalist);	
+		provider = new CslProvider(itemdatalist);
 		createCiteproc(style);
 		String[] entries = citeproc.makeBibliography().getEntries();
+		String[] idscitation =citeproc.makeBibliography().getEntryIds();
 		int counter = 0;
+		Collections.sort(collection.getEntities(), new Comparator<Entity>() {			
+			@Override
+			public int compare(Entity o1, Entity o2) {
+				int i = Arrays.asList(idscitation).indexOf(o1.getProperty("id").getValue().toString());
+				int j = Arrays.asList(idscitation).indexOf(o2.getProperty("id").getValue().toString());
+
+				return i-j;
+			}
+		});		
 		for(Entity entity: collection.getEntities()) {
 		       	Property property = new Property(null, "csl", ValueType.PRIMITIVE, replaceEscapedHTML(entries[counter]));
-		       	entity.addProperty(property);
+				entity.addProperty(property);
 		       	counter ++;
 		           }
 		return collection;
@@ -129,6 +142,7 @@ public class CslService {
 		citeproc = new CSL(provider, style);
 		citeproc.setOutputFormat("html");	
 		citeproc.registerCitationItems(ids.stream().map(x->x).toArray(String[]::new));
+		System.out.println(ids.stream().map(x->x).toArray(String[]::new)[1]);
 	}
 	
 	private CSLName[] authorNameSpliter(String authorfield) {
