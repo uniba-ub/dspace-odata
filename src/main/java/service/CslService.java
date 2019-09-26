@@ -62,11 +62,17 @@ public class CslService {
 				.containerAuthor(authorNameSpliter((String) checkValueNull(entity.getProperty("articlecollection"))))
 				.edition((String) checkValueNull(entity.getProperty("edition")))
 				.ISBN((String) checkValueNull(entity.getProperty("isbn")))
-				.issue((String) checkValueNull(entity.getProperty("issue")))
-				.collectionTitle((String) checkValueNull(entity.getProperty("ispartofseries")))
-				
-				.collectionNumber((String) checkValueNull(entity.getProperty("seriesnumber")));		
-
+				.issue((String) checkValueNull(entity.getProperty("issue")))				
+				.collectionNumber((String) checkValueNull(entity.getProperty("seriesnumber")))		
+				.containerTitle((String) checkValueNull(entity.getProperty("articlecollectionTitle")));
+			
+			if(entity.getProperty("ispartofseries")!=null) {
+				builder.collectionTitle((String) checkValueNull(entity.getProperty("ispartofseries")));
+			} else {
+				builder.containerTitle((String) checkValueNull(entity.getProperty("ispartofotherseries")));
+			}
+		
+		
 			if((String)checkValueNull(entity.getProperty("completedyear"))!=null) {
 				builder.issued((Integer.valueOf((String)entity.getProperty("completedyear").getValue())));
 			}
@@ -130,7 +136,7 @@ public class CslService {
 			return null;
 		}
 		CSLNameBuilder builder;
-		String authors[] = authorfield.split(";");
+		String authors[] = authorfield.split("; ");
 		List<CSLName> resultList = new LinkedList<CSLName>();
 		for(int i=0; i<authors.length; i++) {
 			builder = new CSLNameBuilder();
@@ -166,7 +172,7 @@ public class CslService {
 			html = html.replace("&#60;", "<");
 			html= html.replace("&#62;", ">");
 			html = html.replace("\"", "'");
-			html = html.replace("&#38", "&");
+			html = html.replace("&#38;", "&");
 		}
 		return html;
 	}

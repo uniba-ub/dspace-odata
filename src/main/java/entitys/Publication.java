@@ -86,7 +86,9 @@ public class Publication implements EntityModel {
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty thesis= new CsdlProperty().setName("thesis")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
-		CsdlProperty articlecollection= new CsdlProperty().setName("articlecollection")
+		CsdlProperty articlecollectionEditor= new CsdlProperty().setName("articlecollectionEditor")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty articlecollectionTitle= new CsdlProperty().setName("articlecollectionTitle")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		// creation of PropertyRef for the key Element
 
@@ -98,7 +100,7 @@ public class Publication implements EntityModel {
 
 		entityType = new CsdlEntityType();	
 		entityType.setName(ET_PUBLICATION_NAME);
-		entityType.setProperties(Arrays.asList(id, handle, title, description, type, language, publisher, series, seriesnumber, volume, articlecollection, ispartofotherseries, fulltext,subject,publisherPlace,issued,faculty,uriIdentifier,authors,journal,issn,multipartTitel,issue, pages,gndsw, corporation, edition, isbn, thesis, csl));
+		entityType.setProperties(Arrays.asList(id, handle, title, description, type, language, publisher, series, seriesnumber, volume, articlecollectionEditor, articlecollectionTitle, ispartofotherseries, fulltext,subject,publisherPlace,issued,faculty,uriIdentifier,authors,journal,issn,multipartTitel,issue, pages,gndsw, corporation, edition, isbn, thesis, csl));
 		entityType.setKey(Collections.singletonList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
@@ -124,7 +126,6 @@ public class Publication implements EntityModel {
 		mapping.put("uri", "dc.identifier.uri");
 		mapping.put("completedyear", "dateIssued.year_sort");
 		mapping.put("language", "dc.language.iso");
-		mapping.put("ispartofseries", "dc.relation.ispartofseries");
 		mapping.put("publisherplace", "dc.publisher.place");
 		mapping.put("faculty","ubg.faculty.org");
 		mapping.put("type", "dc.type");
@@ -142,7 +143,8 @@ public class Publication implements EntityModel {
 		mapping.put("isbn", "dc.identifier.isbn");
 		mapping.put("thesis", "dc.publisher.thesis");	
 		mapping.put("volume", "dc.relation.volume");
-		mapping.put("articlecollection", "ubg.editor.articlecollection");
+		mapping.put("articlecollectionEditor", "ubg.editor.articlecollection");
+		mapping.put("articlecollectionTitle", "ubg.titleparent.articlecollection");
 	}
 
 	public CsdlEntityType getEntityType() {
