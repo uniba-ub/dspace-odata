@@ -55,13 +55,14 @@ public class CslService {
 				.publisherPlace((String) checkValueNull(entity.getProperty("publisherplace")))
 				.containerTitle((String) checkValueNull(entity.getProperty("journal")))
 				.ISSN((String) checkValueNull(entity.getProperty("issn")))
-				.numberOfPages((String) checkValueNull(entity.getProperty("pages")))
+				.page((String) checkValueNull(entity.getProperty("pages")))
 				.keyword((String) checkValueNull(entity.getProperty("gndsw")))
 				.abstrct((String) checkValueNull(entity.getProperty("description")))
 //				.editor(authorNameSpliter((String) checkValueNull(entity.getProperty("corporation"))))
 				.containerAuthor(authorNameSpliter((String) checkValueNull(entity.getProperty("articlecollection"))))
 				.edition((String) checkValueNull(entity.getProperty("edition")))
 				.ISBN((String) checkValueNull(entity.getProperty("isbn")))
+				.issue((String) checkValueNull(entity.getProperty("issue")))
 				.collectionTitle((String) checkValueNull(entity.getProperty("ispartofseries")))
 				
 				.collectionNumber((String) checkValueNull(entity.getProperty("seriesnumber")));		
@@ -133,9 +134,9 @@ public class CslService {
 		List<CSLName> resultList = new LinkedList<CSLName>();
 		for(int i=0; i<authors.length; i++) {
 			builder = new CSLNameBuilder();
-			String splitauthorname[] = authors[i].split(",");
-			builder.given(splitauthorname[0]);
-			builder.family(splitauthorname[1]);
+			String splitauthorname[] = authors[i].split(", ");
+			builder.given(splitauthorname[1]);
+			builder.family(splitauthorname[0]);
 			resultList.add(builder.build());
 		}
 		CSLName[] resultArray =  resultList.stream().map(x->x).toArray(CSLName[]::new);
