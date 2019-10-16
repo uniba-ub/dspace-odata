@@ -81,8 +81,8 @@ public class CslService {
 			
 			if(entity.getProperty("ispartofseries")!=null) {
 				builder.collectionTitle((String) checkValueNull(entity.getProperty("ispartofseries")));
-			} else {
-				builder.containerTitle((String) checkValueNull(entity.getProperty("ispartofotherseries")));
+			} else if(entity.getProperty("ispartofotherseries")!=null){
+				builder.collectionTitle((String) checkValueNull(entity.getProperty("ispartofotherseries")));
 			}
 		
 		
@@ -142,7 +142,6 @@ public class CslService {
 		citeproc = new CSL(provider, style);
 		citeproc.setOutputFormat("html");	
 		citeproc.registerCitationItems(ids.stream().map(x->x).toArray(String[]::new));
-		System.out.println(ids.stream().map(x->x).toArray(String[]::new)[1]);
 	}
 	
 	private CSLName[] authorNameSpliter(String authorfield) {
@@ -155,8 +154,12 @@ public class CslService {
 		for(int i=0; i<authors.length; i++) {
 			builder = new CSLNameBuilder();
 			String splitauthorname[] = authors[i].split(", ");
-			builder.given(splitauthorname[1]);
-			builder.family(splitauthorname[0]);
+			if(splitauthorname[1]!=null) {
+				builder.given(splitauthorname[1]);
+			}
+			if(splitauthorname[0]!=null) {
+				builder.family(splitauthorname[0]);
+			}
 			resultList.add(builder.build());
 		}
 		CSLName[] resultArray =  resultList.stream().map(x->x).toArray(CSLName[]::new);
