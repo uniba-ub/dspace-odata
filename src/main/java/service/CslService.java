@@ -154,11 +154,11 @@ public class CslService {
 		for(int i=0; i<authors.length; i++) {
 			builder = new CSLNameBuilder();
 			String splitauthorname[] = authors[i].split(", ");
-			if(splitauthorname[1]!=null) {
+			if(splitauthorname.length>1) {
 				builder.given(splitauthorname[1]);
-			}
-			if(splitauthorname[0]!=null) {
 				builder.family(splitauthorname[0]);
+			}	else {
+				builder.given(splitauthorname[0]);
 			}
 			resultList.add(builder.build());
 		}
