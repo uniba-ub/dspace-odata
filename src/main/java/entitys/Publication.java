@@ -90,6 +90,8 @@ public class Publication implements EntityModel {
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty articlecollectionTitle= new CsdlProperty().setName("articlecollectionTitle")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty peerreview= new CsdlProperty().setName("peerreview")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		// creation of PropertyRef for the key Element
 
 		CsdlPropertyRef propertyRef = new CsdlPropertyRef();
@@ -100,7 +102,7 @@ public class Publication implements EntityModel {
 
 		entityType = new CsdlEntityType();	
 		entityType.setName(ET_PUBLICATION_NAME);
-		entityType.setProperties(Arrays.asList(id, handle, title, description, type, language, publisher, series, seriesnumber, volume, articlecollectionEditor, articlecollectionTitle, ispartofotherseries, fulltext,subject,publisherPlace,issued,faculty,uriIdentifier,authors,journal,issn,multipartTitel,issue, pages,gndsw, corporation, edition, isbn, thesis, csl));
+		entityType.setProperties(Arrays.asList(id, handle, title, description, type, language, publisher, series, seriesnumber, volume, articlecollectionEditor, articlecollectionTitle, ispartofotherseries, fulltext,subject,publisherPlace,issued,faculty,uriIdentifier,authors,journal,issn,multipartTitel,issue, pages,gndsw, corporation, edition, isbn, thesis, peerreview,csl));
 		entityType.setKey(Collections.singletonList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
@@ -145,6 +147,7 @@ public class Publication implements EntityModel {
 		mapping.put("volume", "dc.relation.volume");
 		mapping.put("articlecollectionEditor", "ubg.editor.articlecollection");
 		mapping.put("articlecollectionTitle", "ubg.titleparent.articlecollection");
+		mapping.put("peerreview", "ubg.peerreview");
 	}
 
 	public CsdlEntityType getEntityType() {
@@ -183,7 +186,9 @@ public class Publication implements EntityModel {
 			navigationFilter = (navigationFilter+ "OR ");
 			navigationFilter = (navigationFilter+ "dc.relation.authororgunit_authority\""+ id+"\"");
 			
-		
+		} else if(sourceType.equals("Series")) {
+			navigationFilter = ("dc.relation.ispartofseries_authority:\"");
+			navigationFilter = (navigationFilter+id+"\"");
 		}
 			return navigationFilter;
 	}

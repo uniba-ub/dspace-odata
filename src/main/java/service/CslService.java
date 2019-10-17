@@ -40,15 +40,6 @@ public class CslService {
 		String[] entries = citeproc.makeBibliography().getEntries();
 		String[] idscitation =citeproc.makeBibliography().getEntryIds();
 		int counter = 0;
-		Collections.sort(collection.getEntities(), new Comparator<Entity>() {			
-			@Override
-			public int compare(Entity o1, Entity o2) {
-				int i = Arrays.asList(idscitation).indexOf(o1.getProperty("id").getValue().toString());
-				int j = Arrays.asList(idscitation).indexOf(o2.getProperty("id").getValue().toString());
-
-				return i-j;
-			}
-		});		
 		for(Entity entity: collection.getEntities()) {
 		       	Property property = new Property(null, "csl", ValueType.PRIMITIVE, replaceEscapedHTML(entries[counter]));
 				entity.addProperty(property);
@@ -139,9 +130,10 @@ public class CslService {
 	}
 	
 	private void createCiteproc(String style) throws IOException {
+		style= "dependent/"+style;
 		citeproc = new CSL(provider, style);
 		citeproc.setOutputFormat("html");	
-		citeproc.registerCitationItems(ids.stream().map(x->x).toArray(String[]::new));
+		citeproc.registerCitationItems(ids.stream().map(x->x).toArray(String[]::new),true);
 	}
 	
 	private CSLName[] authorNameSpliter(String authorfield) {
