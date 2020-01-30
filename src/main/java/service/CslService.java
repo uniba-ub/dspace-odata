@@ -130,7 +130,6 @@ public class CslService {
 	}
 	
 	private void createCiteproc(String style) throws IOException {
-		style= "dependent/"+style;
 		citeproc = new CSL(provider, style);
 		citeproc.setOutputFormat("html");	
 		citeproc.registerCitationItems(ids.stream().map(x->x).toArray(String[]::new),true);
