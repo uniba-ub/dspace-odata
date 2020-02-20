@@ -22,8 +22,6 @@ public class Researcher implements EntityModel {
 	public final static String ID_CONVERTER_TYP= "rp";
 	private HashMap<String, String> mapping;
 
-
-	
 	private CsdlEntityType entityType;
 	private CsdlEntitySet entitySet;
 	
@@ -68,7 +66,6 @@ public class Researcher implements EntityModel {
 		CsdlProperty biography = new CsdlProperty().setName("biography")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 
-				
 		// creation of PropertyRef for the key Element
 
 		CsdlPropertyRef propertyRef = new CsdlPropertyRef();
@@ -112,7 +109,6 @@ public class Researcher implements EntityModel {
 		return entityType;
 	}
 	
-
 	public FullQualifiedName getFullQualifiedName() {
 		return ET_RESEARCHER_FQN;
 	}
@@ -138,7 +134,6 @@ public class Researcher implements EntityModel {
 			if(sourceType.equals("Orgunits")) {
 				navigationFilter = ("crisrp.dept_authority:\"");
 				navigationFilter = (navigationFilter+id+"\"");
-			
 			}
 				return navigationFilter;
 		
@@ -150,4 +145,3 @@ public class Researcher implements EntityModel {
 
 }
 	
-

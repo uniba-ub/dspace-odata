@@ -23,8 +23,6 @@ public class Orgunit implements EntityModel{
 	private CsdlEntitySet entitySet;
 	private HashMap<String, String> mapping;
 
-
-
 	public Orgunit(){
 		
 	CsdlProperty id = new CsdlProperty().setName("id")
@@ -72,54 +70,39 @@ public class Orgunit implements EntityModel{
 	mapping.put("active", "crisou.active");
 	mapping.put("url", "crisou.url");
 	
-	
-	
 	}
-
 
 	public CsdlEntityType getEntityType() {
 		return entityType;
 	}
 
-
-
 	public FullQualifiedName getFullQualifiedName() {
 		return ET_ORGUNIT_FQN;
 	}
-
-
 
 	public String getEntitySetName() {
 		return ES_ORGUNITS_NAME;
 	}
 
-
-
 	public CsdlEntitySet getEntitySet() {
 		return entitySet;
 	}
-
 
 	public String getRecourceTypeFilter() {
 		return RECOURCE_TYPE_FILTER;
 	}
 
-
 	public String getIDConverterTyp() {
 		return ID_CONVERTER_TYP;
 	}
-
 
 	public String getNavigationFilter(String sourceType, String id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-
 	public HashMap<String, String> getMapping() {
 		return mapping;
 	}
-
-	
 	
 }

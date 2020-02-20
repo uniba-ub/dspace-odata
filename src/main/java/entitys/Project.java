@@ -74,8 +74,6 @@ public class Project implements EntityModel{
 		entitySet.setName(ES_PROJECTS_NAME);
 		entitySet.setType(ET_PROJECT_FQN);
 		
-		
-
 		mapping = new HashMap<String, String>();
 		
 		mapping.put("cris-id", "cris-id");
@@ -92,12 +90,9 @@ public class Project implements EntityModel{
 		mapping.put("status", "crisproject.status");
 		mapping.put("projectarea", "crisproject.projectArea");
 		mapping.put("url", "crisproject.projectURL");
-
 		
 	}
 	
-	
-
 	public CsdlEntityType getEntityType() {
 		return entityType;
 	}
@@ -118,13 +113,9 @@ public class Project implements EntityModel{
 		return RECOURCE_TYPE_FILTER;
 	}
 
-
-
 	public String getIDConverterTyp() {
 		return ID_CONVERTER_TYP;
 	}
-
-
 
 	public String getNavigationFilter(String sourceType, String id) {
 		String navigationFilter = "";
@@ -138,8 +129,6 @@ public class Project implements EntityModel{
 		}
 			return navigationFilter;
 	}
-
-
 
 	public HashMap<String, String> getMapping() {
 		return mapping;
