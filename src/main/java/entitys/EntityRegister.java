@@ -49,6 +49,9 @@ public class EntityRegister {
 		    
 		    Publication publication = new Publication();
 		    entityList.add(publication);
+		   
+		    Journal journal = new Journal();
+		    entityList.add(journal);
 		    
 		    navEntityList.add(publication);
 		    navEntityList.add(project);
@@ -59,6 +62,15 @@ public class EntityRegister {
 		    navEntityList.add(researcher);
 		    navEntityList.add(publication);
 		    setNavigationPropertyForEntity(orgunit, navEntityList);
+		    
+		    navEntityList = new LinkedList<EntityModel>();
+		    navEntityList.add(publication);
+		    setNavigationPropertyForEntity(project, navEntityList);
+		    
+		    navEntityList = new LinkedList<EntityModel>();
+		    navEntityList.add(publication);
+		    setNavigationPropertyForEntity(journal, navEntityList);
+		    
 		    
 		}
 

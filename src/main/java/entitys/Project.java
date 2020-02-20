@@ -24,8 +24,6 @@ public class Project implements EntityModel{
 	private CsdlEntityType entityType;
 	private CsdlEntitySet entitySet;
 	private HashMap<String, String> mapping;
-
-	
 	
 	public Project() {
 		
