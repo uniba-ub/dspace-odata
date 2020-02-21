@@ -192,7 +192,7 @@ public class Publication implements EntityModel {
 			navigationFilter = ("dc.relation.ispartofseries_authority:\"");
 			navigationFilter = (navigationFilter+id+"\"");
 		} else if(sourceType.equals("Projects")) {
-			navigationFilter = ("ubg.projects.pj_authority:\""); //FIXME: <-- add used key
+			navigationFilter = ("ubg.relation.project_authority:\"");
 			navigationFilter = (navigationFilter+id+"\"");
 		} 
 		
