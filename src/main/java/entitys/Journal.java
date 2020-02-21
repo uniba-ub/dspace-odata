@@ -18,9 +18,9 @@ public class Journal implements EntityModel {
 	
 	public static final String ET_JOURNAL_NAME = "Journal";
 	public static final FullQualifiedName ET_JOURNAL_FQN = new FullQualifiedName(NAMESPACE, ET_JOURNAL_NAME);
-	public static final String ES_JOURNAL_NAME = "Journals";
-	public final static String RECOURCE_TYPE_FILTER= "resourcetype_filter:\"1001journals\n|||\njournals###crisjournals\"";
-	public final static String ID_CONVERTER_TYP= "crisjournal";
+	public static final String ES_JOURNALS_NAME = "Journals";
+	public final static String RECOURCE_TYPE_FILTER= "resourcetype_filter:\"journals\n|||\njournals###crisjournals\"";
+	public final static String ID_CONVERTER_TYP= "journals";
 	private CsdlEntityType entityType;
 	private CsdlEntitySet entitySet;
 	private HashMap<String, String> mapping;
@@ -34,9 +34,7 @@ public class Journal implements EntityModel {
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty issn = new CsdlProperty().setName("journalsissn")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty authority = new CsdlProperty().setName("this_authority")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty abbrevation = new CsdlProperty().setName("journalsabbrevation")
+		CsdlProperty abbrevation = new CsdlProperty().setName("journalsabbreviation")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty homepage = new CsdlProperty().setName("journalshomepage")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
@@ -52,21 +50,20 @@ public class Journal implements EntityModel {
 		
 		entityType = new CsdlEntityType();
 		entityType.setName(ET_JOURNAL_NAME);
-		entityType.setProperties(Arrays.asList(id, crisId, name, issn, authority, abbrevation, homepage, description));
+		entityType.setProperties(Arrays.asList(id, crisId, name, issn, abbrevation, homepage, description));
 		entityType.setKey(Collections.singletonList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
-		entitySet.setName(ES_JOURNAL_NAME);
+		entitySet.setName(ES_JOURNALS_NAME);
 		entitySet.setType(ET_JOURNAL_FQN);
 			
 		mapping = new HashMap<String, String>();
 		mapping.put("cris-id", "cris-id");
-		mapping.put("name", "crisjournal.journalsname");
-		mapping.put("issn", "crisjournal.journalsissn");
-		mapping.put("this_authority", "this_authority");
-		mapping.put("abbrevation", "crisjournal.journalsabbrevation");
-		mapping.put("homepage", "crisjournal.journalshomepage");
-		mapping.put("description", "crisjournal.journalsdescription");
+		mapping.put("journalsname", "crisjournals.journalsname");
+		mapping.put("journalsissn", "crisjournals.journalsissn");
+		mapping.put("journalsabbreviation", "crisjournals.journalsabbreviation");
+		mapping.put("journalshomepage", "crisjournals.journalshomepage");
+		mapping.put("journalsdescription", "crisjournals.journalsdescription");
 		
 	}
 	
@@ -82,7 +79,7 @@ public class Journal implements EntityModel {
 
 	@Override
 	public String getEntitySetName() {
-		return ES_JOURNAL_NAME;
+		return ES_JOURNALS_NAME;
 	}
 
 	@Override
