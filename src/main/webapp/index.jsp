@@ -25,6 +25,9 @@
 
 	<h6>Get all Orgunits:</h6>
 	<p>odata.fis.uni-bamberg.de/ODataService/ODataService.svc/Orgunits</p>
+	
+	<h6>Get all Journals:</h6>
+	<p>odata.fis.uni-bamberg.de/ODataService/ODataService.svc/Journals</p>
 
 	<h4>Get a specific entity:</h4>
 	<h6>Get Project entity with id 5:</h6>
@@ -35,6 +38,9 @@
 
 	<h6>Get Orgunit entity with id 5:</h6>
 	<p>odata.fis.uni-bamberg.de/ODataService/ODataService.svc/Orgunits(5)</p>
+	
+	<h6>Get Journal entity with id 28:</h6>
+	<p>odata.fis.uni-bamberg.de/ODataService/ODataService.svc/Journals(28)</p>
 
 	<h4>Get entities which are linked to each other</h4>
 	<h6>Get all Publications of OrganisationUnit with id 5</h6>
@@ -46,6 +52,12 @@
 	<h6>Get all Researchers of OrganisationUnit with id 5</h6>
 	<p>odata.fis.uni-bamberg.de/ODataService/ODataService.svc/Orgunits(5)/Researchers</p>
 
+	<h6>Get all Publications of Journal with id 28</h6>
+	<p>odata.fis.uni-bamberg.de/ODataService/ODataService.svc/Journals(28)/Publications</p>
+	
+	<h6>Get all Publications of Project with id 5</h6>
+	<p>odata.fis.uni-bamberg.de/ODataService/ODataService.svc/Projects(5)/Publications</p>
+	
 	<h4>Further options to add to request:</h4>
 
 	<h6>Get Project entity with id 5 only containing metadata about attribute "title":</h6>
@@ -53,6 +65,12 @@
 
 	<h6>Get Organisation Unit entity with id 5 and include all Researchers belonging to this entity</h6>
 	<p>odata.fis.uni-bamberg.de/ODataService/ODataService.svc/Orgunits(5)?$expand=Researchers</p>
+
+	<h6>Get Project entity with id 5 and include all Publications belonging to this entity</h6>
+	<p>odata.fis.uni-bamberg.de/ODataService/ODataService.svc/Projects(5)?$expand=Publications</p>
+	
+	<h6>Get Journal entity with id 5 and include all Publications belonging to this entity</h6>
+	<p>odata.fis.uni-bamberg.de/ODataService/ODataService.svc/Journals(5)?$expand=Publications</p>
 
 	<h6>Get Publications of Orgunit with id 5 filtered by type 'book':</h6>
 	<p>odata.fis.uni-bamberg.de/ODataService/ODataService.svc/Orgunits(5)/Publications?$filter=contains(type,'book')</p>
@@ -71,6 +89,9 @@
 
 	<h6>It is still possible to add filter or order options to the uri:</h6>
 	<p>odata.fis.uni-bamberg.de/ODataService.svc/cslfororgunit(style='ieee',id=11)?$filter=contains(type,'book')</p>
+	
+	<h6>Get Publications of researcher with id 1411 in style 'apa'</h6>
+	<p>odata.fis.uni-bamberg.de/ODataService.svc/cslforresearcher(style='apa',id=1411)</p>
 
 </body>
 
