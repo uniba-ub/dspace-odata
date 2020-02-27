@@ -175,8 +175,6 @@ public class QueryOptionService {
 		return responseEdmEntitySet;
 
 	}
-	
-
 
 	public Entity applyExpandOptionOnEntity(ExpandOption expandOption, Entity responseEntity,
 			EdmEntitySet responseEdmEntitySet) throws ODataApplicationException, SolrServerException, IOException {
@@ -263,9 +261,7 @@ public class QueryOptionService {
 		if (orderByOption != null) {
 			List<OrderByItem> orderItemList = orderByOption.getOrders();
 			final OrderByItem orderByItem = orderItemList.get(0);
-			//only first orderby-value is fetched, 
 			final OrderByItem orderByItem2 = orderItemList.get(1);
-			//order by first value, if these two are the same: order by second value
 						
 			Expression expression = orderByItem.getExpression();
 			if (expression instanceof Member) {
@@ -276,100 +272,97 @@ public class QueryOptionService {
 					final String sortPropertyName = edmProperty.getName();
 					final String type = edmProperty.getType().toString();
 					
+					//use single sort
 					if(orderByItem2 != null) {
-					//use souble sort
-						Expression expression2 = orderByItem2.getExpression();
-						if (expression2 instanceof Member) {
-							UriInfoResource resourcePath2 = ((Member) expression2).getResourcePath();
-							UriResource uriResource2 = resourcePath2.getUriResourceParts().get(0);
-							if (uriResource2 instanceof UriResourcePrimitiveProperty) {
-								EdmProperty edmProperty2 = ((UriResourcePrimitiveProperty) uriResource2).getProperty();
-								final String sortPropertyName2 = edmProperty2.getName();
-								final String type2 = edmProperty2.getType().toString();
-								
-								Collections.sort(entityList, new Comparator<Entity>() {
+						//use souble sort
+							Expression expression2 = orderByItem2.getExpression();
+							if (expression2 instanceof Member) {
+								UriInfoResource resourcePath2 = ((Member) expression2).getResourcePath();
+								UriResource uriResource2 = resourcePath2.getUriResourceParts().get(0);
+								if (uriResource2 instanceof UriResourcePrimitiveProperty) {
+									EdmProperty edmProperty2 = ((UriResourcePrimitiveProperty) uriResource2).getProperty();
+									final String sortPropertyName2 = edmProperty2.getName();
+									final String type2 = edmProperty2.getType().toString();
+									
+									Collections.sort(entityList, new Comparator<Entity>() {
 
-									public int compare(Entity entity1, Entity entity2) {
-										int compareResult = 0;
-										if (type.equals("Edm.Int32")) {
-											Integer integer1 = (Integer) entity1.getProperty(sortPropertyName).getValue();
-											Integer integer2 = (Integer) entity2.getProperty(sortPropertyName).getValue();
-
-											compareResult = integer1.compareTo(integer2);
-										} else if (type.equals("Edm.String")) {
-											String propertyValue1 = entity1.getProperty(sortPropertyName).getValue().toString();
-											String propertyValue2 = entity2.getProperty(sortPropertyName).getValue().toString();
-
-											compareResult = propertyValue1.compareTo(propertyValue2);
-										}
-										
-										if(compareResult == 0) {
-											//same values at first comparision, e.g. year
-											//compare second value, e.g. title
-											if (type2.equals("Edm.Int32")) {
-												Integer integer1 = (Integer) entity1.getProperty(sortPropertyName2).getValue();
-												Integer integer2 = (Integer) entity2.getProperty(sortPropertyName2).getValue();
+										public int compare(Entity entity1, Entity entity2) {
+											int compareResult = 0;
+											if (type.equals("Edm.Int32")) {
+												Integer integer1 = (Integer) entity1.getProperty(sortPropertyName).getValue();
+												Integer integer2 = (Integer) entity2.getProperty(sortPropertyName).getValue();
 
 												compareResult = integer1.compareTo(integer2);
-											} else if (type2.equals("Edm.String")) {
-												String propertyValue1 = entity1.getProperty(sortPropertyName2).getValue().toString();
-												String propertyValue2 = entity2.getProperty(sortPropertyName2).getValue().toString();
+											} else if (type.equals("Edm.String")) {
+												String propertyValue1 = entity1.getProperty(sortPropertyName).getValue().toString();
+												String propertyValue2 = entity2.getProperty(sortPropertyName).getValue().toString();
 
 												compareResult = propertyValue1.compareTo(propertyValue2);
-												if (orderByItem2.isDescending()) {
-													return -compareResult;
-												}
-
-												return compareResult;
-												
 											}
-										}
-										if (orderByItem.isDescending()) {
-											return -compareResult;
-										}
+											
+											if(compareResult == 0) {
+												//same values at first comparision, e.g. year
+												//compare second value, e.g. title
+												if (type2.equals("Edm.Int32")) {
+													Integer integer1 = (Integer) entity1.getProperty(sortPropertyName2).getValue();
+													Integer integer2 = (Integer) entity2.getProperty(sortPropertyName2).getValue();
 
-										return compareResult;
+													compareResult = integer1.compareTo(integer2);
+												} else if (type2.equals("Edm.String")) {
+													String propertyValue1 = entity1.getProperty(sortPropertyName2).getValue().toString();
+													String propertyValue2 = entity2.getProperty(sortPropertyName2).getValue().toString();
+
+													compareResult = propertyValue1.compareTo(propertyValue2);
+													if (orderByItem2.isDescending()) {
+														return -compareResult;
+													}
+
+													return compareResult;
+													
+												}
+											}
+											if (orderByItem.isDescending()) {
+												return -compareResult;
+											}
+
+											return compareResult;
+											
+										}
 										
-									}
-									
-								});
-							}
-						}
-						
-					}else {
-					//use single sort
-					Collections.sort(entityList, new Comparator<Entity>() {
-
-						public int compare(Entity entity1, Entity entity2) {
-							int compareResult = 0;
-							if (type.equals("Edm.Int32")) {
-								Integer integer1 = (Integer) entity1.getProperty(sortPropertyName).getValue();
-								Integer integer2 = (Integer) entity2.getProperty(sortPropertyName).getValue();
-
-								compareResult = integer1.compareTo(integer2);
-							} else if (type.equals("Edm.String")) {
-								String propertyValue1 = entity1.getProperty(sortPropertyName).getValue().toString();
-								String propertyValue2 = entity2.getProperty(sortPropertyName).getValue().toString();
-
-								compareResult = propertyValue1.compareTo(propertyValue2);
+									});
+								}
 							}
 							
-							if (orderByItem.isDescending()) {
-								return -compareResult;
-							}
+						}else {
+					Collections.sort(entityList, new Comparator<Entity>() {
 
-							return compareResult;
-						}
-						
-					});
-					}
-				}
+	public int compare(Entity entity1, Entity entity2) {
+		int compareResult = 0;
+		if (type.equals("Edm.Int32")) {
+			Integer integer1 = (Integer) entity1.getProperty(sortPropertyName).getValue();
+			Integer integer2 = (Integer) entity2.getProperty(sortPropertyName).getValue();
 
-			}
+			compareResult = integer1.compareTo(integer2);
+		} else if (type.equals("Edm.String")) {
+			String propertyValue1 = entity1.getProperty(sortPropertyName).getValue().toString();
+			String propertyValue2 = entity2.getProperty(sortPropertyName).getValue().toString();
 
+			compareResult = propertyValue1.compareTo(propertyValue2);
 		}
 
-		return entityList;
+		if (orderByItem.isDescending()) {
+			return -compareResult;
+		}
+
+		return compareResult;
+	}
+
+	});}
+				}
+			}
+		}
+
+	return entityList;
 
 	}
 
