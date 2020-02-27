@@ -139,6 +139,9 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 		//add function
 		List<CsdlFunction> functions = new LinkedList<CsdlFunction>();
 		functions.addAll(getFunctions(FUNCTION_CSL_FOR_RESEARCHER_FQN));
+		functions.addAll(getFunctions(FUNCTION_CSL_FOR_ORGUNIT_FQN));
+		functions.addAll(getFunctions(FUNCTION_CSL_FOR_PROJECT_FQN));
+		functions.addAll(getFunctions(FUNCTION_CSL_FOR_JOURNAL_FQN));
 
 		schema.setFunctions(functions);
 		
@@ -216,7 +219,7 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 			functions.add(function);
 			
 			return functions;
-		}else if(functionName.equals(FUNCTION_CSL_FOR_PROJECT_FQN)){ //TODO:
+		}else if(functionName.equals(FUNCTION_CSL_FOR_PROJECT_FQN)){
 			
 			final List<CsdlFunction> functions = new LinkedList<CsdlFunction>();
 			final List<CsdlParameter> parameterList = new ArrayList<CsdlParameter>();
@@ -247,7 +250,7 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 			functions.add(function);
 			
 			return functions;
-		}else if(functionName.equals(FUNCTION_CSL_FOR_JOURNAL_FQN)){ //TODO:
+		}else if(functionName.equals(FUNCTION_CSL_FOR_JOURNAL_FQN)){
 			
 			final List<CsdlFunction> functions = new LinkedList<CsdlFunction>();
 			final List<CsdlParameter> parameterList = new ArrayList<CsdlParameter>();
