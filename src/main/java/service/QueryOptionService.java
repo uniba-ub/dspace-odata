@@ -12,6 +12,7 @@ import org.apache.olingo.commons.api.Constants;
 import org.apache.olingo.commons.api.data.Entity;
 import org.apache.olingo.commons.api.data.EntityCollection;
 import org.apache.olingo.commons.api.data.Link;
+import org.apache.olingo.commons.api.data.Property;
 import org.apache.olingo.commons.api.edm.EdmElement;
 import org.apache.olingo.commons.api.edm.EdmEntitySet;
 import org.apache.olingo.commons.api.edm.EdmEntityType;
@@ -38,6 +39,7 @@ import org.apache.olingo.server.api.uri.queryoption.expression.Member;
 import org.apache.olingo.server.api.uri.queryoption.expression.MethodKind;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.common.cloud.ZkMaintenanceUtils.VISIT_ORDER;
+import org.apache.olingo.commons.api.data.Property;
 
 import data.DataHandler;
 
@@ -276,7 +278,6 @@ public class QueryOptionService {
 					EdmProperty edmProperty = ((UriResourcePrimitiveProperty) uriResource).getProperty();
 					final String sortPropertyName = edmProperty.getName();
 					final String type = edmProperty.getType().toString();
-
 					Collections.sort(entityList, new Comparator<Entity>() {
 						public int compare(Entity entity1, Entity entity2) {
 							int compareResult = 0;
@@ -285,17 +286,17 @@ public class QueryOptionService {
 								Integer integer2 = (Integer) entity2.getProperty(sortPropertyName).getValue();
 								compareResult = integer1.compareTo(integer2);
 							} else if (type.equals("Edm.String")) {
-								String propertyValue1 = ""; 
+								String propertyValue1 = "";  
 								String propertyValue2 = "";
-								try {
-								propertyValue1 = entity1.getProperty(sortPropertyName).getValue().toString();
-								propertyValue2 = entity2.getProperty(sortPropertyName).getValue().toString();
-									//compareResult = propertyValue1.compareTo(propertyValue2);
-								} catch (NullPointerException e) {
-									// Properties can be null with no values, so .getValue returns null -> throws exception. By Default String is empty
-								}finally {
-									compareResult = propertyValue1.compareTo(propertyValue2);
+								Property prop1 = entity1.getProperty(sortPropertyName);
+								if(prop1 != null && !prop1.isNull()) {
+									propertyValue1 = prop1.getValue().toString();
 								}
+								Property prop2 = entity2.getProperty(sortPropertyName);
+								if(prop2 != null && !prop2.isNull()) {
+									propertyValue2 = prop2.getValue().toString();
+								}
+								compareResult = propertyValue1.compareTo(propertyValue2);
 							}
 							if (orderByItem.isDescending()) {
 								return -compareResult;
@@ -341,35 +342,38 @@ public class QueryOptionService {
 								Integer integer2 = (Integer) entity2.getProperty(sortPropertyName).getValue();
 								compareResult = integer1.compareTo(integer2);
 							} else if (type.equals("Edm.String")) {
-								String propertyValue1 = "";
+								
+								String propertyValue1 = "";  
 								String propertyValue2 = "";
-								try {
-								propertyValue1 = entity1.getProperty(sortPropertyName).getValue().toString();
-								propertyValue2 = entity2.getProperty(sortPropertyName).getValue().toString();
-								} catch (NullPointerException e) {
-									// Properties can be values with null, throwing exception. Using empty String "" as default
-								}finally {
-									compareResult = propertyValue1.compareTo(propertyValue2);
+								Property prop1 = entity1.getProperty(sortPropertyName);
+								if(prop1 != null && !prop1.isNull()) {
+									propertyValue1 = prop1.getValue().toString();
 								}
+								Property prop2 = entity2.getProperty(sortPropertyName);
+								if(prop2 != null && !prop2.isNull()) {
+									propertyValue2 = prop2.getValue().toString();
+								}
+								compareResult = propertyValue1.compareTo(propertyValue2);
 							}
 							if (compareResult == 0) {
 								// first value is the same, compare second value
 								if (type2.equals("Edm.Int32")) {
-									Integer integer3 = (Integer) entity1.getProperty(sortPropertyName).getValue();
-									Integer integer4 = (Integer) entity2.getProperty(sortPropertyName).getValue();
+									Integer integer3 = (Integer) entity1.getProperty(sortPropertyName2).getValue();
+									Integer integer4 = (Integer) entity2.getProperty(sortPropertyName2).getValue();
 									compareResult = integer3.compareTo(integer4);
 								} else if (type2.equals("Edm.String")) {
 									String propertyValue3 = "";
 									String propertyValue4 = "";
-									try {
-									propertyValue3 = entity1.getProperty(sortPropertyName2).getValue().toString();
-									propertyValue4 = entity2.getProperty(sortPropertyName2).getValue().toString();
-									compareResult = propertyValue3.compareTo(propertyValue4);
-									} catch (NullPointerException e) {
-										// Properties can be values with null, throwing exception. Using empty String "" instead;
-									}finally {
-										compareResult = propertyValue3.compareTo(propertyValue4);
+									Property prop3 = entity1.getProperty(sortPropertyName);
+									if(prop3 != null && !prop3.isNull()) {
+										propertyValue3 = prop3.getValue().toString();
 									}
+									Property prop4 = entity2.getProperty(sortPropertyName);
+									if(prop4 != null && !prop4.isNull()) {
+										propertyValue4 = prop4.getValue().toString();
+									}
+									compareResult = propertyValue3.compareTo(propertyValue4);
+									
 									if (orderByItem2.isDescending()) {
 										return -compareResult;
 									}
