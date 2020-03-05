@@ -364,11 +364,11 @@ public class QueryOptionService {
 								} else if (type2.equals("Edm.String")) {
 									String propertyValue3 = "";
 									String propertyValue4 = "";
-									Property prop3 = entity1.getProperty(sortPropertyName);
+									Property prop3 = entity1.getProperty(sortPropertyName2);
 									if(prop3 != null && !prop3.isNull()) {
 										propertyValue3 = prop3.getValue().toString();
 									}
-									Property prop4 = entity2.getProperty(sortPropertyName);
+									Property prop4 = entity2.getProperty(sortPropertyName2);
 									if(prop4 != null && !prop4.isNull()) {
 										propertyValue4 = prop4.getValue().toString();
 									}
