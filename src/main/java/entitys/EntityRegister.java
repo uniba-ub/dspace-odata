@@ -77,6 +77,10 @@ public class EntityRegister {
 		    navEntityList.add(publication);
 		    setNavigationPropertyForEntity(journal, navEntityList);
 		    
+		    navEntityList = new LinkedList<EntityModel>();
+		    navEntityList.add(publication);
+		    setNavigationPropertyForEntity(series, navEntityList);
+		    
 		}
 
 		private void registerComplexTypes() {
