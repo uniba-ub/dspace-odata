@@ -23,37 +23,39 @@ public class Orgunit implements EntityModel{
 	private CsdlEntitySet entitySet;
 	private HashMap<String, String> mapping;
 
-
-
 	public Orgunit(){
 		
 	CsdlProperty id = new CsdlProperty().setName("id")
 			.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
-	CsdlProperty idmKey = new CsdlProperty().setName("cris-id")
-			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-	CsdlProperty name = new CsdlProperty().setName("name")
-			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-	CsdlProperty description = new CsdlProperty().setName("description")
-			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-	CsdlProperty url = new CsdlProperty().setName("url")
-			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-	CsdlProperty date = new CsdlProperty().setName("date")
-			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-	CsdlProperty endDate = new CsdlProperty().setName("enddate")
-			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 	CsdlProperty active = new CsdlProperty().setName("active")
+			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+	CsdlProperty idmKey = new CsdlProperty().setName("cris-id")
 			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 	CsdlProperty crossrefid = new CsdlProperty().setName("crossrefid")
 			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+	CsdlProperty date = new CsdlProperty().setName("date")
+			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+	CsdlProperty description = new CsdlProperty().setName("description")
+			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 	CsdlProperty director = new CsdlProperty().setName("director")
 			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+	CsdlProperty endDate = new CsdlProperty().setName("enddate")
+			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+	CsdlProperty parentorgunit = new CsdlProperty().setName("parentorgunit")
+			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+	CsdlProperty name = new CsdlProperty().setName("name")
+			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+	CsdlProperty url = new CsdlProperty().setName("url")
+			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+	
+	
 
 	CsdlPropertyRef propertyRef = new CsdlPropertyRef();
 	propertyRef.setName("id");
 
 	entityType = new CsdlEntityType();
 	entityType.setName(ET_ORGUNIT_NAME);
-	entityType.setProperties(Arrays.asList(id, idmKey, name, description, url, director, date, endDate,active,crossrefid));
+	entityType.setProperties(Arrays.asList(id, idmKey, name, description, url, director, date, endDate,active,crossrefid, parentorgunit));
 	entityType.setKey(Arrays.asList(propertyRef));
 	
 	entitySet = new CsdlEntitySet();
@@ -61,65 +63,50 @@ public class Orgunit implements EntityModel{
 	entitySet.setType(ET_ORGUNIT_FQN);
 	
 	mapping = new HashMap<String, String>();
-	
 	mapping.put("cris-id", "cris-id");
-	mapping.put("name", "crisou.name");
+	mapping.put("active", "crisou.active");
+	mapping.put("crossrefid", "crisou.crossrefid");
 	mapping.put("director","crisou.director");
 	mapping.put("date", "crisou.date");
-	mapping.put("crossrefid", "crisou.crossrefid");
 	mapping.put("description", "crisou.description");
 	mapping.put("endDate", "crisou.enddate");
-	mapping.put("active", "crisou.active");
+	mapping.put("name", "crisou.name");
+	mapping.put("parentorgunit", "crisou.parentorgunit");
 	mapping.put("url", "crisou.url");
 	
-	
-	
 	}
-
 
 	public CsdlEntityType getEntityType() {
 		return entityType;
 	}
 
-
-
 	public FullQualifiedName getFullQualifiedName() {
 		return ET_ORGUNIT_FQN;
 	}
-
-
 
 	public String getEntitySetName() {
 		return ES_ORGUNITS_NAME;
 	}
 
-
-
 	public CsdlEntitySet getEntitySet() {
 		return entitySet;
 	}
-
 
 	public String getRecourceTypeFilter() {
 		return RECOURCE_TYPE_FILTER;
 	}
 
-
 	public String getIDConverterTyp() {
 		return ID_CONVERTER_TYP;
 	}
-
 
 	public String getNavigationFilter(String sourceType, String id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-
 	public HashMap<String, String> getMapping() {
 		return mapping;
 	}
-
-	
 	
 }

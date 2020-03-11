@@ -232,4 +232,28 @@ public class FilterExpressionVisitor implements ExpressionVisitor<Object> {
 		}
 	}
 
+	@Override
+	public Object visitBinaryOperator(BinaryOperatorKind operator, Object left, List<Object> rights)
+			throws ExpressionVisitException, ODataApplicationException {
+			//FIXME: Needs to be implemented properly since olingo version 4.7.1, using first parameter as default
+		Object right = rights.get(0);
+		if(left== null) {
+			return false;
+		}
+		if (operator == BinaryOperatorKind.ADD || operator == BinaryOperatorKind.MOD
+				|| operator == BinaryOperatorKind.MUL || operator == BinaryOperatorKind.DIV
+				|| operator == BinaryOperatorKind.SUB) {
+			return evaluateArithmeticOperation(operator, left, right);
+		} else if (operator == BinaryOperatorKind.EQ || operator == BinaryOperatorKind.NE
+				|| operator == BinaryOperatorKind.GE || operator == BinaryOperatorKind.GT
+				|| operator == BinaryOperatorKind.LE || operator == BinaryOperatorKind.LT) {
+			return evaluateComparisonOperation(operator, left, right);
+		} else if (operator == BinaryOperatorKind.AND || operator == BinaryOperatorKind.OR) {
+			return evaluateBooleanOperation(operator, left, right);
+		} else {
+			throw new ODataApplicationException("Binary operation " + operator.name() + " is not implemented",
+					HttpStatusCode.NOT_IMPLEMENTED.getStatusCode(), Locale.ENGLISH);
+		}
+	}
+
 }

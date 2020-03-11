@@ -41,9 +41,12 @@ import org.apache.solr.client.solrj.SolrServerException;
 import util.Util;
 import data.DataHandler;
 import entitys.EntityRegister;
+import entitys.Journal;
 import entitys.Orgunit;
+import entitys.Project;
 import entitys.Publication;
 import entitys.Researcher;
+import entitys.Series;
 import service.CslService;
 import service.QueryOptionService;
 
@@ -171,6 +174,12 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 				startEntitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Researcher.ES_RESEARCHERS_NAME);
 			} else if(EdmProviderDSpace.FUNCTION_CSL_FOR_ORGUNIT.equals(uriResourceFunction.getFunctionImport().getName())) {
 				startEntitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Orgunit.ES_ORGUNITS_NAME);
+			} else if(EdmProviderDSpace.FUNCTION_CSL_FOR_PROJECT.equals(uriResourceFunction.getFunctionImport().getName())) {
+				startEntitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Project.ES_PROJECTS_NAME);
+			} else if(EdmProviderDSpace.FUNCTION_CSL_FOR_JOURNAL.equals(uriResourceFunction.getFunctionImport().getName())) {
+				startEntitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Journal.ES_JOURNALS_NAME);
+			}else if(EdmProviderDSpace.FUNCTION_CSL_FOR_SERIES.equals(uriResourceFunction.getFunctionImport().getName())) {
+				startEntitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Series.ES_SERIES_NAME);
 			}
 			EdmEntityType targetEntityType = serviceMetadata.getEdm().getEntityType(Publication.ET_PUBLICATION_FQN);
 			Entity sourceEntity;
@@ -201,8 +210,7 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
-					}
-					
+					}		
 				
 			} 	
 		else {
