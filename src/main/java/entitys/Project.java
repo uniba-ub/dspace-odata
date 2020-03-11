@@ -31,30 +31,30 @@ public class Project implements EntityModel{
 				.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
 		CsdlProperty crisId = new CsdlProperty().setName("cris-id")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty title = new CsdlProperty().setName("title")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty startDate = new CsdlProperty().setName("startdate")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty endDate = new CsdlProperty().setName("expdate")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty keywords = new CsdlProperty().setName("keywords")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty status = new CsdlProperty().setName("status")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty abstracts = new CsdlProperty().setName("abstract")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty budget = new CsdlProperty().setName("budget")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
-		CsdlProperty url = new CsdlProperty().setName("url")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty principalinvestigator = new CsdlProperty().setName("principalinvestigator")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty coinvestigators = new CsdlProperty().setName("coinvestigators")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty projectarea = new CsdlProperty().setName("projectarea")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty code = new CsdlProperty().setName("code")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
+		CsdlProperty endDate = new CsdlProperty().setName("expdate")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty keywords = new CsdlProperty().setName("keywords")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty principalinvestigator = new CsdlProperty().setName("principalinvestigator")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty projectarea = new CsdlProperty().setName("projectarea")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty startDate = new CsdlProperty().setName("startdate")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty status = new CsdlProperty().setName("status")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty title = new CsdlProperty().setName("title")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty url = new CsdlProperty().setName("url")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 
 		//complex type
 		CsdlProperty funding = new CsdlProperty().setName("Funding").setType(Funding.CT_FUNDING_FQN).setCollection(true);
@@ -73,20 +73,18 @@ public class Project implements EntityModel{
 		entitySet.setType(ET_PROJECT_FQN);
 		
 		mapping = new HashMap<String, String>();
-		
 		mapping.put("cris-id", "cris-id");
-		mapping.put("title", "crisproject.title");
-		mapping.put("startdate", "crisproject.startdate");
-		mapping.put("expdate", "crisproject.expdate");
-		mapping.put("keywords", "crisproject.keywords");
-		mapping.put("status", "crisproject.status");
 		mapping.put("abstract", "crisproject.abstract");
 		mapping.put("budget", "crisproject.budget");
 		mapping.put("code", "crisproject.code");
-		mapping.put("principalinvestigator", "crisproject.principalinvestigator");
 		mapping.put("coinvestigators", "crisproject.coinvestigators");
-		mapping.put("status", "crisproject.status");
+		mapping.put("expdate", "crisproject.expdate");
+		mapping.put("keywords", "crisproject.keywords");
+		mapping.put("principalinvestigator", "crisproject.principalinvestigator");
 		mapping.put("projectarea", "crisproject.projectArea");
+		mapping.put("startdate", "crisproject.startdate");
+		mapping.put("status", "crisproject.status");
+		mapping.put("title", "crisproject.title");
 		mapping.put("url", "crisproject.projectURL");
 		
 	}
