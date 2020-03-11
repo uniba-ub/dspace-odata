@@ -141,8 +141,7 @@ public class Publication implements EntityModel {
 		mapping.put("title", "dc.title");
 		mapping.put("uri", "dc.identifier.uri");
 		mapping.put("volume", "dc.relation.volume");
-
-		
+	
 	}
 
 	public CsdlEntityType getEntityType() {

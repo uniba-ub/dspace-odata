@@ -73,6 +73,7 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 		//create function
 		List<CsdlFunctionImport> functionImports = new LinkedList<CsdlFunctionImport>();
 		functionImports.add(getFunctionImport(CONTAINER, FUNCTION_CSL_FOR_RESEARCHER));
+		
 
 		entityContainer.setFunctionImports(functionImports);
 		
