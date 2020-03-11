@@ -12,6 +12,7 @@ import org.apache.olingo.commons.api.Constants;
 import org.apache.olingo.commons.api.data.Entity;
 import org.apache.olingo.commons.api.data.EntityCollection;
 import org.apache.olingo.commons.api.data.Link;
+import org.apache.olingo.commons.api.data.Property;
 import org.apache.olingo.commons.api.edm.EdmElement;
 import org.apache.olingo.commons.api.edm.EdmEntitySet;
 import org.apache.olingo.commons.api.edm.EdmEntityType;
@@ -38,6 +39,7 @@ import org.apache.olingo.server.api.uri.queryoption.expression.Member;
 import org.apache.olingo.server.api.uri.queryoption.expression.MethodKind;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.common.cloud.ZkMaintenanceUtils.VISIT_ORDER;
+import org.apache.olingo.commons.api.data.Property;
 
 import data.DataHandler;
 
@@ -175,8 +177,6 @@ public class QueryOptionService {
 		return responseEdmEntitySet;
 
 	}
-	
-
 
 	public Entity applyExpandOptionOnEntity(ExpandOption expandOption, Entity responseEntity,
 			EdmEntitySet responseEdmEntitySet) throws ODataApplicationException, SolrServerException, IOException {
@@ -260,9 +260,16 @@ public class QueryOptionService {
 	}
 
 	public List<Entity> applyOrderByOption(OrderByOption orderByOption, List<Entity> entityList) {
-		if (orderByOption != null) {
+		try {
+		if (orderByOption != null && orderByOption.getOrders().size() == 1) {
+			// sort by one option
 			List<OrderByItem> orderItemList = orderByOption.getOrders();
 			final OrderByItem orderByItem = orderItemList.get(0);
+			try {
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+
 			Expression expression = orderByItem.getExpression();
 			if (expression instanceof Member) {
 				UriInfoResource resourcePath = ((Member) expression).getResourcePath();
@@ -271,38 +278,121 @@ public class QueryOptionService {
 					EdmProperty edmProperty = ((UriResourcePrimitiveProperty) uriResource).getProperty();
 					final String sortPropertyName = edmProperty.getName();
 					final String type = edmProperty.getType().toString();
-
 					Collections.sort(entityList, new Comparator<Entity>() {
-
 						public int compare(Entity entity1, Entity entity2) {
 							int compareResult = 0;
 							if (type.equals("Edm.Int32")) {
 								Integer integer1 = (Integer) entity1.getProperty(sortPropertyName).getValue();
 								Integer integer2 = (Integer) entity2.getProperty(sortPropertyName).getValue();
-
 								compareResult = integer1.compareTo(integer2);
 							} else if (type.equals("Edm.String")) {
-								String propertyValue1 = entity1.getProperty(sortPropertyName).getValue().toString();
-								String propertyValue2 = entity2.getProperty(sortPropertyName).getValue().toString();
-
+								String propertyValue1 = "";  
+								String propertyValue2 = "";
+								Property prop1 = entity1.getProperty(sortPropertyName);
+								if(prop1 != null && !prop1.isNull()) {
+									propertyValue1 = prop1.getValue().toString();
+								}
+								Property prop2 = entity2.getProperty(sortPropertyName);
+								if(prop2 != null && !prop2.isNull()) {
+									propertyValue2 = prop2.getValue().toString();
+								}
 								compareResult = propertyValue1.compareTo(propertyValue2);
 							}
 							if (orderByItem.isDescending()) {
 								return -compareResult;
 							}
-
 							return compareResult;
 						}
 					});
-
 				}
-
 			}
+		} else if (orderByOption != null && orderByOption.getOrders().size() == 2) {
+			/*
+			 * sort by two options with correct expressions Workaround, more performant and
+			 * more generic implementations using ExpressionVisitor according to
+			 * https://olingo.apache.org/doc/odata4/tutorials/sqo_o/tutorial_sqo_o.html
+			 * might be possible
+			 */
+			List<OrderByItem> orderItemList = orderByOption.getOrders();
+			final OrderByItem orderByItem = orderItemList.get(0);
+			final OrderByItem orderByItem2 = orderItemList.get(1);
+			Expression expression = orderByItem.getExpression();
+			Expression expression2 = orderByItem2.getExpression();
 
+			if (expression instanceof Member && expression2 instanceof Member) {
+				UriInfoResource resourcePath = ((Member) expression).getResourcePath();
+				UriResource uriResource = resourcePath.getUriResourceParts().get(0);
+				UriInfoResource resourcePath2 = ((Member) expression2).getResourcePath();
+				UriResource uriResource2 = resourcePath2.getUriResourceParts().get(0);
+
+				if (uriResource instanceof UriResourcePrimitiveProperty
+						&& uriResource2 instanceof UriResourcePrimitiveProperty) {
+					EdmProperty edmProperty = ((UriResourcePrimitiveProperty) uriResource).getProperty();
+					final String sortPropertyName = edmProperty.getName();
+					final String type = edmProperty.getType().toString();
+					EdmProperty edmProperty2 = ((UriResourcePrimitiveProperty) uriResource2).getProperty();
+					final String sortPropertyName2 = edmProperty2.getName();
+					final String type2 = edmProperty2.getType().toString();
+
+					Collections.sort(entityList, new Comparator<Entity>() {
+						public int compare(Entity entity1, Entity entity2) {
+							int compareResult = 0;
+							if (type.equals("Edm.Int32")) {
+								Integer integer1 = (Integer) entity1.getProperty(sortPropertyName).getValue();
+								Integer integer2 = (Integer) entity2.getProperty(sortPropertyName).getValue();
+								compareResult = integer1.compareTo(integer2);
+							} else if (type.equals("Edm.String")) {
+								
+								String propertyValue1 = "";  
+								String propertyValue2 = "";
+								Property prop1 = entity1.getProperty(sortPropertyName);
+								if(prop1 != null && !prop1.isNull()) {
+									propertyValue1 = prop1.getValue().toString();
+								}
+								Property prop2 = entity2.getProperty(sortPropertyName);
+								if(prop2 != null && !prop2.isNull()) {
+									propertyValue2 = prop2.getValue().toString();
+								}
+								compareResult = propertyValue1.compareTo(propertyValue2);
+							}
+							if (compareResult == 0) {
+								// first value is the same, compare second value
+								if (type2.equals("Edm.Int32")) {
+									Integer integer3 = (Integer) entity1.getProperty(sortPropertyName2).getValue();
+									Integer integer4 = (Integer) entity2.getProperty(sortPropertyName2).getValue();
+									compareResult = integer3.compareTo(integer4);
+								} else if (type2.equals("Edm.String")) {
+									String propertyValue3 = "";
+									String propertyValue4 = "";
+									Property prop3 = entity1.getProperty(sortPropertyName2);
+									if(prop3 != null && !prop3.isNull()) {
+										propertyValue3 = prop3.getValue().toString();
+									}
+									Property prop4 = entity2.getProperty(sortPropertyName2);
+									if(prop4 != null && !prop4.isNull()) {
+										propertyValue4 = prop4.getValue().toString();
+									}
+									compareResult = propertyValue3.compareTo(propertyValue4);
+									
+									if (orderByItem2.isDescending()) {
+										return -compareResult;
+									}
+									return compareResult;
+								}
+							}
+							if (orderByItem.isDescending()) {
+								return -compareResult;
+							}
+							return compareResult;
+						}
+					});
+				}
+			}
 		}
-
+		}catch(Exception ex) {
+			ex.printStackTrace();
+		}
 		return entityList;
-
 	}
 
 	public List<Entity> applyFilterOption(List<Entity> entityList, FilterOption filterOption)

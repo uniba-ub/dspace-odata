@@ -5,7 +5,7 @@ public class IdConverter {
 
 	
 	public String getIDSolrFilter (String converterTyp) {
-		if(converterTyp.equals("http://hdl.handle.net/123456789/")) {
+		if(converterTyp.equals("uniba/")) {
 			return "handle";
 		}else {
 			return "cris-id";		}	

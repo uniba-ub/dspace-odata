@@ -44,6 +44,15 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 	public static final String FUNCTION_CSL_FOR_ORGUNIT = "cslfororgunit";
 	public static final FullQualifiedName FUNCTION_CSL_FOR_ORGUNIT_FQN = new FullQualifiedName(NAMESPACE, FUNCTION_CSL_FOR_ORGUNIT);
 	
+	public static final String FUNCTION_CSL_FOR_PROJECT = "cslforproject";
+	public static final FullQualifiedName FUNCTION_CSL_FOR_PROJECT_FQN = new FullQualifiedName(NAMESPACE, FUNCTION_CSL_FOR_PROJECT);
+	
+	public static final String FUNCTION_CSL_FOR_JOURNAL = "cslforjournal";
+	public static final FullQualifiedName FUNCTION_CSL_FOR_JOURNAL_FQN = new FullQualifiedName(NAMESPACE, FUNCTION_CSL_FOR_JOURNAL);
+	
+	public static final String FUNCTION_CSL_FOR_SERIES = "cslforseries";
+	public static final FullQualifiedName FUNCTION_CSL_FOR_SERIES_FQN = new FullQualifiedName(NAMESPACE, FUNCTION_CSL_FOR_SERIES);
+	
 	public EntityRegister entityRegister;
 	
 	public EdmProviderDSpace() {
@@ -67,6 +76,8 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 		//create function
 		List<CsdlFunctionImport> functionImports = new LinkedList<CsdlFunctionImport>();
 		functionImports.add(getFunctionImport(CONTAINER, FUNCTION_CSL_FOR_RESEARCHER));
+		
+
 		entityContainer.setFunctionImports(functionImports);
 		
 		return entityContainer;
@@ -132,8 +143,12 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 		//add function
 		List<CsdlFunction> functions = new LinkedList<CsdlFunction>();
 		functions.addAll(getFunctions(FUNCTION_CSL_FOR_RESEARCHER_FQN));
+		functions.addAll(getFunctions(FUNCTION_CSL_FOR_ORGUNIT_FQN));
+		functions.addAll(getFunctions(FUNCTION_CSL_FOR_PROJECT_FQN));
+		functions.addAll(getFunctions(FUNCTION_CSL_FOR_JOURNAL_FQN));
+		functions.addAll(getFunctions(FUNCTION_CSL_FOR_SERIES_FQN));
+
 		schema.setFunctions(functions);
-		
 		
 		
 		// adding EntityContainer
@@ -209,10 +224,102 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 			functions.add(function);
 			
 			return functions;
+		}else if(functionName.equals(FUNCTION_CSL_FOR_PROJECT_FQN)){
+			
+			final List<CsdlFunction> functions = new LinkedList<CsdlFunction>();
+			final List<CsdlParameter> parameterList = new ArrayList<CsdlParameter>();
+			
+			final CsdlParameter parameterStyle = new CsdlParameter();
+			parameterStyle.setName("style");
+			parameterStyle.setNullable(false);
+			parameterStyle.setCollection(false);
+			parameterStyle.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+			parameterList.add(parameterStyle);
+			
+			final CsdlParameter parameterOrgunitid = new CsdlParameter()
+							.setName("id")
+							.setNullable(false)
+							.setCollection(false)
+							.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
+			parameterList.add(parameterOrgunitid);
+			
+			final CsdlReturnType returnType = new CsdlReturnType();
+			returnType.setCollection(true);
+			returnType.setType(Publication.ET_PUBLICATION_FQN);
+			
+			final CsdlFunction function = new CsdlFunction();
+			function.setName(FUNCTION_CSL_FOR_PROJECT_FQN.getName())
+					.setParameters(parameterList)
+					.setReturnType(returnType)
+					.setComposable(true);
+			functions.add(function);
+			
+			return functions;
+		}else if(functionName.equals(FUNCTION_CSL_FOR_JOURNAL_FQN)){
+			
+			final List<CsdlFunction> functions = new LinkedList<CsdlFunction>();
+			final List<CsdlParameter> parameterList = new ArrayList<CsdlParameter>();
+			
+			final CsdlParameter parameterStyle = new CsdlParameter();
+			parameterStyle.setName("style");
+			parameterStyle.setNullable(false);
+			parameterStyle.setCollection(false);
+			parameterStyle.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+			parameterList.add(parameterStyle);
+			
+			final CsdlParameter parameterOrgunitid = new CsdlParameter()
+							.setName("id")
+							.setNullable(false)
+							.setCollection(false)
+							.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
+			parameterList.add(parameterOrgunitid);
+			
+			final CsdlReturnType returnType = new CsdlReturnType();
+			returnType.setCollection(true);
+			returnType.setType(Publication.ET_PUBLICATION_FQN);
+			
+			final CsdlFunction function = new CsdlFunction();
+			function.setName(FUNCTION_CSL_FOR_JOURNAL_FQN.getName())
+					.setParameters(parameterList)
+					.setReturnType(returnType)
+					.setComposable(true);
+			functions.add(function);
+			
+			return functions;
+		}else if(functionName.equals(FUNCTION_CSL_FOR_SERIES_FQN)){
+			
+			final List<CsdlFunction> functions = new LinkedList<CsdlFunction>();
+			final List<CsdlParameter> parameterList = new ArrayList<CsdlParameter>();
+			
+			final CsdlParameter parameterStyle = new CsdlParameter();
+			parameterStyle.setName("style");
+			parameterStyle.setNullable(false);
+			parameterStyle.setCollection(false);
+			parameterStyle.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+			parameterList.add(parameterStyle);
+			
+			final CsdlParameter parameterOrgunitid = new CsdlParameter()
+							.setName("id")
+							.setNullable(false)
+							.setCollection(false)
+							.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
+			parameterList.add(parameterOrgunitid);
+			
+			final CsdlReturnType returnType = new CsdlReturnType();
+			returnType.setCollection(true);
+			returnType.setType(Publication.ET_PUBLICATION_FQN);
+			
+			final CsdlFunction function = new CsdlFunction();
+			function.setName(FUNCTION_CSL_FOR_SERIES_FQN.getName())
+					.setParameters(parameterList)
+					.setReturnType(returnType)
+					.setComposable(true);
+			functions.add(function);
+			
+			return functions;
 		}
 		return null;
 	}
-	
 	
 	@Override
 	public CsdlFunctionImport getFunctionImport(FullQualifiedName entityContainer, String functionImportName) {
@@ -227,6 +334,24 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 				return new CsdlFunctionImport()
 						.setName(functionImportName)
 						.setFunction(FUNCTION_CSL_FOR_ORGUNIT_FQN)
+						.setEntitySet(Publication.ES_PUBLICATIONS_NAME)
+						.setIncludeInServiceDocument(true);		
+			}else if(functionImportName.equals(FUNCTION_CSL_FOR_PROJECT_FQN.getName())) {
+				return new CsdlFunctionImport()
+						.setName(functionImportName)
+						.setFunction(FUNCTION_CSL_FOR_PROJECT_FQN)
+						.setEntitySet(Publication.ES_PUBLICATIONS_NAME)
+						.setIncludeInServiceDocument(true);		
+			}else if(functionImportName.equals(FUNCTION_CSL_FOR_JOURNAL_FQN.getName())) {
+				return new CsdlFunctionImport()
+						.setName(functionImportName)
+						.setFunction(FUNCTION_CSL_FOR_JOURNAL_FQN)
+						.setEntitySet(Publication.ES_PUBLICATIONS_NAME)
+						.setIncludeInServiceDocument(true);		
+			}else if(functionImportName.equals(FUNCTION_CSL_FOR_SERIES_FQN.getName())) {
+				return new CsdlFunctionImport()
+						.setName(functionImportName)
+						.setFunction(FUNCTION_CSL_FOR_SERIES_FQN)
 						.setEntitySet(Publication.ES_PUBLICATIONS_NAME)
 						.setIncludeInServiceDocument(true);		
 			}

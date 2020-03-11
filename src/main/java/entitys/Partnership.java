@@ -23,31 +23,30 @@ public class Partnership implements ComplexModel {
 	
 	public Partnership() {
 
-		CsdlProperty projectpartner = new CsdlProperty().setName("projectpartner")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
 		CsdlProperty cooperative = new CsdlProperty().setName("cooperative")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty description = new CsdlProperty().setName("description")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
 		CsdlProperty name = new CsdlProperty().setName("name")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
-		CsdlProperty description = new CsdlProperty().setName("description")
+		CsdlProperty projectpartner = new CsdlProperty().setName("projectpartner")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
+		CsdlProperty type = new CsdlProperty().setName("type")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty url = new CsdlProperty().setName("url")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty type = new CsdlProperty().setName("type")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
 
 		complexType = new CsdlComplexType();
 		complexType.setName(CT_PARTNERSHIP_NAME);
 		complexType.setProperties(Arrays.asList(name, projectpartner, cooperative, description, url, type));
 		
 		mapping = new HashMap<String, String>();
-		
-		mapping.put("projectpartner", "ncrisprojectpartnership.partnershipprojectpartner");
 		mapping.put("cooperative","ncrisprojectpartnership.partnershipcooperative");
-		mapping.put("name", "ncrisprojectpartnership.partnershipname");
 		mapping.put("description", "ncrisprojectpartnership.partnershipdescription");
-		mapping.put("url", "ncrisprojectpartnership.partnershipurl");
+		mapping.put("projectpartner", "ncrisprojectpartnership.partnershipprojectpartner");
+		mapping.put("name", "ncrisprojectpartnership.partnershipname");
 		mapping.put("type", "ncrisprojectpartnership.partnershiptypeofpartnership");
+		mapping.put("url", "ncrisprojectpartnership.partnershipurl");
 
 	}
 	
