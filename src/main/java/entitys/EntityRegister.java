@@ -56,6 +56,9 @@ public class EntityRegister {
 		    Award award = new Award();
 		    entityList.add(award);
 		    
+		    Awardseries = new Awardseries();
+		    entityList.add(awardseries);
+		    
 		    Series series = new Series();
 		    entityList.add(series);
 		    
