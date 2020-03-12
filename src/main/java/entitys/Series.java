@@ -42,7 +42,8 @@ public class Series implements EntityModel {
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty url = new CsdlProperty().setName("url")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-
+		CsdlProperty keywords = new CsdlProperty().setName("keywords")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		// creation of PropertyRef for the key Element
 
 		CsdlPropertyRef propertyRef = new CsdlPropertyRef();
@@ -52,7 +53,7 @@ public class Series implements EntityModel {
 		
 		entityType = new CsdlEntityType();
 		entityType.setName(ET_SERIES_NAME);
-		entityType.setProperties(Arrays.asList(id, crisId, name, issn, abbrevation, homepage, description, url));
+		entityType.setProperties(Arrays.asList(id, crisId, name, issn, abbrevation, homepage, description, url, keywords));
 		entityType.setKey(Collections.singletonList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
@@ -61,12 +62,13 @@ public class Series implements EntityModel {
 			
 		mapping = new HashMap<String, String>();
 		mapping.put("cris-id", "cris-id");
-		mapping.put("name", "crisseries.seriesname");
-		mapping.put("issn", "crisseries.seriesissn");
-		mapping.put("abbreviation", "crisseries.seriesabbreviation");
-		mapping.put("homepage", "crisseries.serieshomepage");
-		mapping.put("description", "crisseries.seriesdescription");
-		mapping.put("url", "crisseries.url");
+		mapping.put("name", "crisseries.crisjournalsname");
+		mapping.put("issn", "crisseries.crisjournalsissn");
+		mapping.put("abbreviation", "crisseries.crisjournalsabbreviation");
+		mapping.put("homepage", "crisseries.crisjournalshomepage");
+		mapping.put("description", "crisseries.crisjournalsdescription");
+		mapping.put("keywords", "crisseries.crisjournalskeywords");
+		mapping.put("url", "crisseries.crisjournalsurl");
 		
 	}
 	
