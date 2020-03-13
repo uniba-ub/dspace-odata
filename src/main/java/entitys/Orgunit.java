@@ -41,14 +41,13 @@ public class Orgunit implements EntityModel{
 			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 	CsdlProperty endDate = new CsdlProperty().setName("enddate")
 			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-	CsdlProperty parentorgunit = new CsdlProperty().setName("parentorgunit")
-			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 	CsdlProperty name = new CsdlProperty().setName("name")
 			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 	CsdlProperty url = new CsdlProperty().setName("url")
 			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 	
-	
+	CsdlProperty parentorgunit = new CsdlProperty().setName("parentorgunit")
+			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 
 	CsdlPropertyRef propertyRef = new CsdlPropertyRef();
 	propertyRef.setName("id");
@@ -71,7 +70,7 @@ public class Orgunit implements EntityModel{
 	mapping.put("description", "crisou.description");
 	mapping.put("endDate", "crisou.enddate");
 	mapping.put("name", "crisou.name");
-	mapping.put("parentorgunit", "crisou.parentorgunit");
+	mapping.put("parentorgunit", "crisou.parentorgunit_authority");
 	mapping.put("url", "crisou.url");
 	
 	}
@@ -101,8 +100,11 @@ public class Orgunit implements EntityModel{
 	}
 
 	public String getNavigationFilter(String sourceType, String id) {
-		// TODO Auto-generated method stub
-		return null;
+		String navigationFilter = "";
+		if(sourceType.equals("Orgunits")) {
+			navigationFilter = ("crisou.parentorgunit_authority:\""+id+"\"");
+		}		
+		return navigationFilter;
 	}
 
 	public HashMap<String, String> getMapping() {

@@ -3,6 +3,7 @@ package entitys;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 import org.apache.olingo.commons.api.edm.EdmPrimitiveTypeKind;
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
@@ -15,6 +16,8 @@ import org.apache.olingo.commons.api.edm.provider.CsdlProperty;
 import org.apache.olingo.commons.api.edm.provider.CsdlPropertyRef;
 import org.apache.olingo.commons.api.edm.provider.annotation.CsdlAnnotationPath;
 import org.apache.olingo.commons.api.edm.provider.annotation.CsdlExpression;
+
+import util.Util;
 
 public class Researcher implements EntityModel {
 	
@@ -62,6 +65,9 @@ public class Researcher implements EntityModel {
 		CsdlProperty title = new CsdlProperty().setName("title")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		
+		CsdlProperty rp2ou = new CsdlProperty().setName("rp2ou")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		
 		// creation of PropertyRef for the key Element
 		CsdlPropertyRef propertyRef = new CsdlPropertyRef();
 		propertyRef.setName("id");
@@ -69,7 +75,7 @@ public class Researcher implements EntityModel {
 		// configuration of the Entity Type and adding of properties
 		entityType = new CsdlEntityType();
 		entityType.setName(ET_RESEARCHER_NAME);
-		entityType.setProperties(Arrays.asList(id, crisId, displayName, researchinterests, description, title, email, biography, researcharea, contacturl, contactemail, orcid, dept, contact));
+		entityType.setProperties(Arrays.asList(id, crisId, displayName, researchinterests, description, title, email, biography, researcharea, contacturl, contactemail, orcid, dept, contact, rp2ou));
 		entityType.setKey(Collections.singletonList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
@@ -91,6 +97,8 @@ public class Researcher implements EntityModel {
 		mapping.put("researcharea", "crisrp.researcharea");
 		mapping.put("researchinterests", "crisrp.researchinterests");
 		mapping.put("title", "crisrp.title");
+		
+		mapping.put("rp2ou", "crisrp.dept_authority");
 		
 	}
 	

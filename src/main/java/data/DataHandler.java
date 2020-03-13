@@ -105,11 +105,10 @@ public class DataHandler {
 				}
 			}		
 		}		
-
 		SolrDocumentList responseDocuments = solr.getData(queryMaker);
 		queryMaker.resetQuery();
 		return responseDocuments;
-	}
+		}
 
 	public EntityCollection createEntitySet(SolrDocumentList documentList, EntityModel entity) throws SolrServerException, IOException {
 		EntityCollection entitySet = new EntityCollection();
@@ -273,6 +272,7 @@ public class DataHandler {
 			
 			String dspaceId = converter.convertODataIDToDSpaceID(entityID, sourceModel.getIDConverterTyp());
 			queryMaker.addSearchFilter((targetModel.getNavigationFilter(sourceModel.getEntitySetName(), dspaceId)));
+			filterList.add(Util.calculatereverseRelation(sourceModel, targetModel, sourceEntity, dspaceId,  "reverse"));
 			responseDocuments = getQuerriedDataFromSolr(targetModel.getEntitySetName(), keyParams, isEntityCollection, filterList);	
 			navigationTargetEntityCollection = createEntitySet(responseDocuments, targetModel);
 			
