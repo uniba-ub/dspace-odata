@@ -1,4 +1,5 @@
 <%@ page import="javax.servlet.ServletContext" %>
+
 <%
 //adopt to your needs
 String baseurl = "odata.fis.uni-bamberg.de/";
@@ -12,18 +13,34 @@ String url = baseurl + folder;
 </head>
 
 <body>
-
 	<h2>OData API for fis.uni-bamberg.de</h2>
+	<p>This API offer read-access to contents of the FIS. It is based on the <a href="https://docs.oasis-open.org/odata/odata/v4.01/">OASIS OData Specification</a>, Version 4.0.1. The standard and tested responseformat is JSON. </p>
+	
+	<h4>Entities and their Relations:</h4>
+<img src="schema.svg" alt="Entities and their Relations" height="400px">
+<p>Visual overview on entities and their relations. All relations can also be traversed in their inverse relationship, e.g. Researchers/Publications and Publications/Researchers. Relations can only be traversed by a depth of 2.</p>
+	
+	
+	<h4>Filter and other Stuff</h4>
+	<p>This implementation supports main functionality from the <a href="https://www.odata.org/getting-started/basic-tutorial/#queryData">Odata Specification</a>. For Syntax have a look there:</p>
+	<p><ul><li><code>?$orderby=</code> : Sort results on a parameter ascending or descending. Sorting on two levels is possible , e.g. '$orderby=completedyear desc, author asc'</li>
+	<li><code>?$top=</code> : Return top x entries  </li>
+	<li><code>?$count=</code> : Return number of entries  </li>
+	<li><code>?$skip=</code> : Skip x entries  </li>
+	<li><code>?$expand=</code> : expand selected entity with further information  </li>
+	<li><code>?$filter=</code> : apply filter to content. Filter Expression is evaluated in a boolean tree.  </li></ul></p>
 
+	<h2>Sample Requests:</h2>
+	
 	<h4>How to use the API (examples):</h4>
 
-	<h6>Overview of which metadata is accessible:</h6>
+	<h6>Overview of which metadata is accessible (=Schema):</h6>
 	<a href="/ODataService.svc/$metadata?$format=application/json">
 		<p><%=baseurl %>ODataService.svc/$metadata?$format=application/json</p>
 	</a>
-
-	<h4>Get Collection of Entities:</h4>
-
+	
+	<h4>Get Collection of Entities: </h4>
+	<p>All Requests are GET-Requests. POST-Requests are not supported by now.</p>
 	<h6>Get all Projects:</h6>
 	<p><%=url %>ODataService.svc/Projects</p>
 
@@ -105,6 +122,7 @@ String url = baseurl + folder;
 	
 	<h6>Get Publications of project with id 236 in style 'apa'</h6>
 	<p><%=baseurl %>ODataService.svc/cslforproject(style='apa',id=236)</p>
+
 
 </body>
 
