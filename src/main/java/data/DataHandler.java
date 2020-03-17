@@ -3,6 +3,7 @@ package data;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -86,6 +87,7 @@ public class DataHandler {
 	}
 
 	public SolrDocumentList getQuerriedDataFromSolr(String entitySetName, List<UriParameter> keyParams, boolean isEntityCollection, List<String> filterList) throws SolrServerException, IOException {
+		try {
 		for(EntityModel item: entityRegister.getEntityList()) {
 			if(item.getEntitySetName().equals(entitySetName)) {
 				if(isEntityCollection) {
@@ -104,10 +106,17 @@ public class DataHandler {
 					queryMaker.addSearchFilterForAttribute(converter.getIDSolrFilter(item.getIDConverterTyp()), dspaceId);
 				}
 			}		
-		}		
+		}
+	
 		SolrDocumentList responseDocuments = solr.getData(queryMaker);
 		queryMaker.resetQuery();
 		return responseDocuments;
+		}catch(Exception e) {
+			//reset query, if queryMaker is false or not found
+			e.printStackTrace();
+			queryMaker.resetQuery();
+		}
+		return null;
 		}
 
 	public EntityCollection createEntitySet(SolrDocumentList documentList, EntityModel entity) throws SolrServerException, IOException {
@@ -272,7 +281,11 @@ public class DataHandler {
 			
 			String dspaceId = converter.convertODataIDToDSpaceID(entityID, sourceModel.getIDConverterTyp());
 			queryMaker.addSearchFilter((targetModel.getNavigationFilter(sourceModel.getEntitySetName(), dspaceId)));
-			filterList.add(Util.calculatereverseRelation(sourceModel, targetModel, sourceEntity, dspaceId,  "reverse"));
+			String[] reverseRelationArr = Util.calculatereverseRelation(sourceModel, targetModel, sourceEntity, dspaceId,  "reverse");
+			if(reverseRelationArr != null && reverseRelationArr.length > 0 && reverseRelationArr[0] != null && !reverseRelationArr[0].contentEquals("")) {
+			List<String> reverseRelation = Arrays.asList(reverseRelationArr);
+			filterList.addAll(reverseRelation);
+			}
 			responseDocuments = getQuerriedDataFromSolr(targetModel.getEntitySetName(), keyParams, isEntityCollection, filterList);	
 			navigationTargetEntityCollection = createEntitySet(responseDocuments, targetModel);
 			

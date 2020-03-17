@@ -97,17 +97,19 @@ public class Util {
 		return navigationTargetEntitySet;
 	}
 
-	public static String calculatereverseRelation(EntityModel sourceModel, EntityModel targetModel, Entity sourceEntity, String dspaceId,
+	public static String[] calculatereverseRelation(EntityModel sourceModel, EntityModel targetModel, Entity sourceEntity, String dspaceId,
 			String mode) {
 		//solr documents only save one pointer in a document (project -> researcher) referencing each other, not two
 		//this method is used to get cris-id's to enable the establishment of "reverse" navigation paths
 		//Definitions are actually here, not in the entitys models, because sourceEntity is already given and no third solr query is necessary
+		String navigationFilter = "";
+		String[] result = new String[1]; //use array for complexer querys; e.g. multiple Fields
+		try {
 		if(!mode.contentEquals("reverse")) {
-			return "";
+			return null;
 		}
 		String sourceType = sourceModel.getEntitySetName();
 		String targetType = targetModel.getEntitySetName();
-		String navigationFilter = "";
 		if(sourceType.contentEquals("Projects") && targetType.contentEquals("Researchers")) {
 			String filterquery = sourceEntity.getProperty("pj2rp").getValue().toString();
 			navigationFilter = reverseQueryGenerator(filterquery, "cris-id");			
@@ -133,7 +135,17 @@ public class Util {
 			String filterquery = sourceEntity.getProperty("rp2ou").getValue().toString();
 			navigationFilter = reverseQueryGenerator(filterquery, "cris-id");			
 		}	
-		return navigationFilter;
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+
+		}
+		if(navigationFilter.contentEquals("")) {
+			return null;
+		}else {
+		result[0] = navigationFilter;	
+		return result;
+		}
 	}
 	private static String reverseQueryGenerator(String values, String param) {
 		String output = "";
