@@ -55,6 +55,11 @@ public class Project implements EntityModel{
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty url = new CsdlProperty().setName("url")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		//The following properties are used for holding authority Keys to other entities
+		CsdlProperty pj2rp = new CsdlProperty().setName("pj2rp")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty pj2ou = new CsdlProperty().setName("pj2ou")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());	
 
 		//complex type
 		CsdlProperty funding = new CsdlProperty().setName("Funding").setType(Funding.CT_FUNDING_FQN).setCollection(true);
@@ -65,7 +70,7 @@ public class Project implements EntityModel{
 
 		entityType = new CsdlEntityType();
 		entityType.setName(ET_PROJECT_NAME);
-		entityType.setProperties(Arrays.asList(id,crisId, title, abstracts, principalinvestigator, coinvestigators, budget, startDate, endDate, projectarea,code,keywords,status, url,funding, partnership));
+		entityType.setProperties(Arrays.asList(id,crisId, title, abstracts, principalinvestigator, coinvestigators, budget, startDate, endDate, projectarea,code,keywords,status, url,funding, partnership, pj2rp, pj2ou));
 		entityType.setKey(Arrays.asList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
@@ -87,6 +92,9 @@ public class Project implements EntityModel{
 		mapping.put("title", "crisproject.title");
 		mapping.put("url", "crisproject.projectURL");
 		
+		mapping.put("pj2rp", "projectinvestigators_authority");
+		mapping.put("pj2ou", "crisproject.deptproject_authority");
+
 	}
 	
 	public CsdlEntityType getEntityType() {

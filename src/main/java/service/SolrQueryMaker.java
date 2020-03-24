@@ -2,12 +2,7 @@ package service;
 
 import java.util.List;
 
-import org.apache.commons.math3.transform.RealTransformer;
-import org.apache.olingo.commons.api.edm.FullQualifiedName;
 import org.apache.solr.client.solrj.SolrQuery;
-
-import entitys.EntityRegister;
-import entitys.Publication;
 
 public class SolrQueryMaker {
 	
@@ -53,17 +48,23 @@ public class SolrQueryMaker {
 	}
 	
 	public void addSearchFilter(String filter) {
+		if(filter != null) {
 		query.addFilterQuery(filter);
+		}
 	}
 	
 	public void addSearchFilters(List<String> filters) {
 		for(String item: filters) {
+			if(item != null) {
 			query.addFilterQuery(item);
+			}
 		}	
 	}
 	
 	public void addSearchFilterForAttribute(String attributeName, String filter) {
+		if(filter != null && attributeName != null) {
 		query.addFilterQuery(attributeName+":"+filter);
+		}
 	}
 	
 	

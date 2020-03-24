@@ -92,8 +92,18 @@ public class Publication implements EntityModel {
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty volume= new CsdlProperty().setName("volume")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-				
-		// creation of PropertyRef for the key Element
+		
+		CsdlProperty publ2rp= new CsdlProperty().setName("publ2rp")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty publ2series= new CsdlProperty().setName("publ2series")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty publ2journals= new CsdlProperty().setName("publ2journals")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty publ2pj= new CsdlProperty().setName("publ2pj")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty publ2ou= new CsdlProperty().setName("publ2ou")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		//creation of PropertyRef for the key Element
 
 		CsdlPropertyRef propertyRef = new CsdlPropertyRef();
 		propertyRef.setName("id");
@@ -102,7 +112,7 @@ public class Publication implements EntityModel {
 
 		entityType = new CsdlEntityType();	
 		entityType.setName(ET_PUBLICATION_NAME);
-		entityType.setProperties(Arrays.asList(id, handle, title, description, type, language, publisher, series, seriesnumber, volume, articlecollectionEditor, articlecollectionTitle, ispartofotherseries, fulltext,subject,publisherPlace,issued,faculty,uriIdentifier,authors,journal,issn,multipartTitel,issue, pages,gndsw, corporation, edition, isbn, thesis, peerreview, csl));
+		entityType.setProperties(Arrays.asList(id, handle, title, description, type, language, publisher, series, seriesnumber, volume, articlecollectionEditor, articlecollectionTitle, ispartofotherseries, fulltext,subject,publisherPlace,issued,faculty,uriIdentifier,authors,journal,issn,multipartTitel,issue, pages,gndsw, corporation, edition, isbn, thesis, peerreview, csl, publ2journals, publ2ou, publ2pj, publ2rp, publ2series));
 		entityType.setKey(Collections.singletonList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
@@ -141,6 +151,14 @@ public class Publication implements EntityModel {
 		mapping.put("title", "dc.title");
 		mapping.put("uri", "dc.identifier.uri");
 		mapping.put("volume", "dc.relation.volume");
+		
+		mapping.put("publ2rp", "dc.contributor.author_authority");
+		mapping.put("publ2series", "dc.relation.ispartofseries_authority");
+		mapping.put("publ2journals", "dc.relation.ispartofseries_authority");
+		mapping.put("publ2pj", "ubg.relation.project_authority");
+		mapping.put("publ2ou", "ubg.faculty.org_authority");
+
+
 	
 	}
 

@@ -23,13 +23,20 @@ public class SolrConnector {
 	}
 	
 	public SolrDocumentList getData(SolrQueryMaker queryMaker) throws SolrServerException, IOException {
+		try {
 		connectToDSpaceSolr();
     	QueryResponse response = solr.query(queryMaker.getQuery());
 		SolrDocumentList list = response.getResults();	
 		queryMaker.resetQuery();
 		solr.close();
 		return list;
-
+		}catch(Exception e) {
+			e.printStackTrace();
+			//Close connection when Error occurs
+			queryMaker.resetQuery();
+			solr.close();
+			return null;
+		}
 		
 	}
 

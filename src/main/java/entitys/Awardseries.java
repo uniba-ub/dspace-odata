@@ -11,59 +11,57 @@ import org.apache.olingo.commons.api.edm.provider.CsdlEntityType;
 import org.apache.olingo.commons.api.edm.provider.CsdlProperty;
 import org.apache.olingo.commons.api.edm.provider.CsdlPropertyRef;
 
-public class Journal implements EntityModel {
-
+public class Awardseries implements EntityModel {
 	
 	public final static String NAMESPACE = "dspace";
 	
-	public static final String ET_JOURNAL_NAME = "Journal";
-	public static final FullQualifiedName ET_JOURNAL_FQN = new FullQualifiedName(NAMESPACE, ET_JOURNAL_NAME);
-	public static final String ES_JOURNALS_NAME = "Journals";
-	public final static String RECOURCE_TYPE_FILTER= "resourcetype_filter:\"series\n|||\nseries###crisseries\"";
-	public final static String ID_CONVERTER_TYP= "journals";
+	public static final String ET_AWARDSERIES_NAME = "Awardseries";
+	public static final FullQualifiedName ET_AWARDSERIES_FQN = new FullQualifiedName(NAMESPACE, ET_AWARDSERIES_NAME);
+	public static final String ES_AWARDSERIES_NAME = "Awardseries";
+	public final static String RECOURCE_TYPE_FILTER= "resourcetype_filter:\"awardseries\n|||\nawardseries###crisawardseries\"";
+	public final static String ID_CONVERTER_TYP= "awardseries";
 	private CsdlEntityType entityType;
 	private CsdlEntitySet entitySet;
 	private HashMap<String, String> mapping;
 	
-	public Journal() {
+	public Awardseries() {
 		CsdlProperty id = new CsdlProperty().setName("id")
 				.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
 		CsdlProperty crisId = new CsdlProperty().setName("cris-id")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty name = new CsdlProperty().setName("name")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty issn = new CsdlProperty().setName("issn")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty abbrevation = new CsdlProperty().setName("abbreviation")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty homepage = new CsdlProperty().setName("homepage")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty description = new CsdlProperty().setName("description")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty name = new CsdlProperty().setName("name")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty url = new CsdlProperty().setName("url")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty year = new CsdlProperty().setName("year")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty category = new CsdlProperty().setName("category")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		
 		// creation of PropertyRef for the key Element
-
 		CsdlPropertyRef propertyRef = new CsdlPropertyRef();
 		propertyRef.setName("id");
 
-		// configuration of the Entity Type and adding of properties
-		
+		// configuration of the Entity Type and adding of properties		
 		entityType = new CsdlEntityType();
-		entityType.setName(ET_JOURNAL_NAME);
-		entityType.setProperties(Arrays.asList(id, crisId, name, issn, abbrevation, homepage, description));
+		entityType.setName(ET_AWARDSERIES_NAME);
+		entityType.setProperties(Arrays.asList(id, crisId));
 		entityType.setKey(Collections.singletonList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
-		entitySet.setName(ES_JOURNALS_NAME);
-		entitySet.setType(ET_JOURNAL_FQN);
+		entitySet.setName(ES_AWARDSERIES_NAME);
+		entitySet.setType(ET_AWARDSERIES_FQN);
 			
 		mapping = new HashMap<String, String>();
 		mapping.put("cris-id", "cris-id");
-		mapping.put("abbreviation", "crisseries.journalsabbreviation");
-		mapping.put("description", "crisseries.journalsdescription");
-		mapping.put("homepage", "crisseries.journalshomepage");
-		mapping.put("issn", "crisseries.journalsissn");
-		mapping.put("name", "crisseries.journalsname");
-		
+		mapping.put("description", "crisawardseries.awardseriesdescription");
+		mapping.put("category", "crisawardseries.awardseriescategory");
+		mapping.put("name", "crisawardseries.awardseriesname");
+		mapping.put("url", "crisawardseries.awardseriessurl");
+		mapping.put("year", "crisawardseries.awardseriesinstitution");
+
 	}
 	
 	@Override
@@ -73,12 +71,12 @@ public class Journal implements EntityModel {
 
 	@Override
 	public FullQualifiedName getFullQualifiedName() {
-		return ET_JOURNAL_FQN;
+		return ET_AWARDSERIES_FQN;
 	}
 
 	@Override
 	public String getEntitySetName() {
-		return ES_JOURNALS_NAME;
+		return ES_AWARDSERIES_NAME;
 	}
 
 	@Override
@@ -98,6 +96,7 @@ public class Journal implements EntityModel {
 
 	@Override
 	public String getNavigationFilter(String sourceType, String id) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
