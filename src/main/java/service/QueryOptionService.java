@@ -36,10 +36,7 @@ import org.apache.olingo.server.api.uri.queryoption.TopOption;
 import org.apache.olingo.server.api.uri.queryoption.expression.Expression;
 import org.apache.olingo.server.api.uri.queryoption.expression.ExpressionVisitException;
 import org.apache.olingo.server.api.uri.queryoption.expression.Member;
-import org.apache.olingo.server.api.uri.queryoption.expression.MethodKind;
 import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.common.cloud.ZkMaintenanceUtils.VISIT_ORDER;
-import org.apache.olingo.commons.api.data.Property;
 
 import data.DataHandler;
 

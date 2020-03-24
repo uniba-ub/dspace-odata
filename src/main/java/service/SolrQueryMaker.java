@@ -2,12 +2,7 @@ package service;
 
 import java.util.List;
 
-import org.apache.commons.math3.transform.RealTransformer;
-import org.apache.olingo.commons.api.edm.FullQualifiedName;
 import org.apache.solr.client.solrj.SolrQuery;
-
-import entitys.EntityRegister;
-import entitys.Publication;
 
 public class SolrQueryMaker {
 	
