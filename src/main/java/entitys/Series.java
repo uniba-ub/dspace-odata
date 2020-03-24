@@ -16,11 +16,11 @@ public class Series implements EntityModel {
 	
 	public final static String NAMESPACE = "dspace";
 	
-	public static final String ET_SERIES_NAME = "Series";
+	public static final String ET_SERIES_NAME = "Serie";
 	public static final FullQualifiedName ET_SERIES_FQN = new FullQualifiedName(NAMESPACE, ET_SERIES_NAME);
 	public static final String ES_SERIES_NAME = "Series";
 	public final static String RECOURCE_TYPE_FILTER= "resourcetype_filter:\"series\n|||\nseries###crisseries\"";
-	public final static String ID_CONVERTER_TYP= "series";
+	public final static String ID_CONVERTER_TYP= "journals";
 	private CsdlEntityType entityType;
 	private CsdlEntitySet entitySet;
 	private HashMap<String, String> mapping;
@@ -40,9 +40,6 @@ public class Series implements EntityModel {
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty description = new CsdlProperty().setName("description")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty url = new CsdlProperty().setName("url")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-
 		// creation of PropertyRef for the key Element
 
 		CsdlPropertyRef propertyRef = new CsdlPropertyRef();
@@ -52,7 +49,7 @@ public class Series implements EntityModel {
 		
 		entityType = new CsdlEntityType();
 		entityType.setName(ET_SERIES_NAME);
-		entityType.setProperties(Arrays.asList(id, crisId, name, issn, abbrevation, homepage, description, url));
+		entityType.setProperties(Arrays.asList(id, crisId, name, issn, abbrevation, homepage, description));
 		entityType.setKey(Collections.singletonList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
@@ -61,12 +58,11 @@ public class Series implements EntityModel {
 			
 		mapping = new HashMap<String, String>();
 		mapping.put("cris-id", "cris-id");
-		mapping.put("name", "crisseries.seriesname");
-		mapping.put("issn", "crisseries.seriesissn");
-		mapping.put("abbreviation", "crisseries.seriesabbreviation");
-		mapping.put("homepage", "crisseries.serieshomepage");
-		mapping.put("description", "crisseries.seriesdescription");
-		mapping.put("url", "crisseries.url");
+		mapping.put("name", "crisseries.journalsname");
+		mapping.put("issn", "crisseries.journalsissn");
+		mapping.put("abbreviation", "crisseries.journalsabbreviation");
+		mapping.put("homepage", "crisseries.journalshomepage");
+		mapping.put("description", "crisseries.journalsdescription");
 		
 	}
 	
