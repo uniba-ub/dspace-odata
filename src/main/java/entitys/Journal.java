@@ -30,17 +30,16 @@ public class Journal implements EntityModel {
 				.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
 		CsdlProperty crisId = new CsdlProperty().setName("cris-id")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty name = new CsdlProperty().setName("journalsname")
+		CsdlProperty name = new CsdlProperty().setName("name")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty issn = new CsdlProperty().setName("journalsissn")
+		CsdlProperty issn = new CsdlProperty().setName("issn")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty abbrevation = new CsdlProperty().setName("journalsabbreviation")
+		CsdlProperty abbrevation = new CsdlProperty().setName("abbreviation")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty homepage = new CsdlProperty().setName("journalshomepage")
+		CsdlProperty homepage = new CsdlProperty().setName("homepage")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty description = new CsdlProperty().setName("journalsdescription")
+		CsdlProperty description = new CsdlProperty().setName("description")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-
 		// creation of PropertyRef for the key Element
 
 		CsdlPropertyRef propertyRef = new CsdlPropertyRef();
@@ -59,11 +58,11 @@ public class Journal implements EntityModel {
 			
 		mapping = new HashMap<String, String>();
 		mapping.put("cris-id", "cris-id");
-		mapping.put("journalsname", "crisjournals.journalsname");
-		mapping.put("journalsissn", "crisjournals.journalsissn");
-		mapping.put("journalsabbreviation", "crisjournals.journalsabbreviation");
-		mapping.put("journalshomepage", "crisjournals.journalshomepage");
-		mapping.put("journalsdescription", "crisjournals.journalsdescription");
+		mapping.put("abbreviation", "crisseries.journalsabbreviation");
+		mapping.put("description", "crisseries.journalsdescription");
+		mapping.put("homepage", "crisseries.journalshomepage");
+		mapping.put("issn", "crisseries.journalsissn");
+		mapping.put("name", "crisseries.journalsname");
 		
 	}
 	
