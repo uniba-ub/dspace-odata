@@ -54,7 +54,7 @@ public class CslService {
 				.language((String) checkValueNull(entity.getProperty("language")))
 				.publisher((String)checkValueNull(entity.getProperty("publisher")))
 				.publisherPlace((String) checkValueNull(entity.getProperty("publisherplace")))
-				.containerTitle((String) checkValueNull(entity.getProperty("journal")))
+			
 				.ISSN((String) checkValueNull(entity.getProperty("issn")))
 				.page((String) checkValueNull(entity.getProperty("pages")))
 				.keyword((String) checkValueNull(entity.getProperty("gndsw")))
@@ -64,9 +64,14 @@ public class CslService {
 				.edition((String) checkValueNull(entity.getProperty("edition")))
 				.ISBN((String) checkValueNull(entity.getProperty("isbn")))
 				.issue((String) checkValueNull(entity.getProperty("issue")))				
-				.collectionNumber((String) checkValueNull(entity.getProperty("seriesnumber")))		
-				.containerTitle((String) checkValueNull(entity.getProperty("articlecollectionTitle")));
-			
+				.collectionNumber((String) checkValueNull(entity.getProperty("seriesnumber")));
+		
+		if(checkValueNull(entity.getProperty("journal")) != null) {
+			builder.containerTitle((String) checkValueNull(entity.getProperty("journal")));
+		}else if(checkValueNull(entity.getProperty("articlecollectionTitle")) != null) {
+			builder.containerTitle((String) checkValueNull(entity.getProperty("articlecollectionTitle")));
+		}
+		
 			if(entity.getProperty("ispartofseries")!=null) {
 				builder.collectionTitle((String) checkValueNull(entity.getProperty("ispartofseries")));
 			} else if(entity.getProperty("ispartofotherseries")!=null){
