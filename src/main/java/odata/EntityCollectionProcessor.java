@@ -40,7 +40,6 @@ import org.apache.solr.client.solrj.SolrServerException;
 
 import util.Util;
 import data.DataHandler;
-import entitys.EntityRegister;
 import entitys.Journal;
 import entitys.Orgunit;
 import entitys.Project;
