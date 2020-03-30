@@ -19,6 +19,7 @@ import org.apache.olingo.commons.api.edm.provider.annotation.CsdlExpression;
 
 
 
+
 public class Researcher implements EntityModel {
 	
 	public final static String NAMESPACE = "dspace";
