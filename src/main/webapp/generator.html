@@ -34,16 +34,26 @@ Andere (menschenlesbarere) Bezeichnungen von Entitäten und Attribute für die A
 Entität / Funktion:
 <select id="entity">
 </select>
+<label for="entityid">mit Identifikator</label>
+<input type="text" id="entityid" placeholder="id oder leer für alle"></input>
 </div>
 
 <div id="refentitypicker">
-einer Entität: <input type="checkbox" id="refentitycheck"></input>
-<select id="refentity">
+<input type="checkbox" id="refentitycheck"> einer Entität: </input>
+
+<select id="refentity" disabled>
 </select>
-<input type="text" id="refentityid"></input>
-<label for="refentityid">Identifikator</label>
+
+<label for="refentityid" disabled> mit Identifikator</label>
+<input type="text" id="refentityid" placeholder="id oder leer für alle"></input>
+
+
+
+<input type="checkbox" id="expand" diabled></input>
+<label for="expand">Expand (Inkludiere in erste Entität)</label>
 </div>
 <div id="functionpicker"></div>
+</div>
 
 <div>
 Filterung <button id="add-filter">[+]</button>
@@ -65,13 +75,16 @@ Selektion (Wähle bestimmte Attribute aus)
 <input type="number" id="top"></input>
 <label for="top">maximale Anzahl Ergebnisse</label>
 </p>
-<p>
-<button type="submit" id="generatequery" class="action">Generiere Link</button>
+
 <div id="idcheck"><button type="submit" class="action">Überprüfe Existenz der eingegebenen ID</button><p id="idcheck-result"></p></div>
+
+<div>
+<button type="submit" id="generatequery" class="action">Generiere Link</button>
 <p>
 <textarea id="fullurl" placeholder="Ergebnis" rows=4 cols=100></textarea>
 <label for="fullurl">Gesamtergebnis</label>
 </p>
+</div>
 
 </div>
 
@@ -177,7 +190,7 @@ function selectEntity(name){
 		$("#functionpicker").html("").append(generateFunctionPicker(schema[name], name)).show();
 		$("#refentitypicker").hide();
 		$("#idcheck").hide();
-	
+		$("#entityid").removeAttr("disabled");
 	}else{
 		//Property
 		functionname = "";
@@ -189,7 +202,7 @@ function selectEntity(name){
 	}
 	
 	//Default: Set one Orderby and one filter-Option
-		addFilter();
+	addFilter();
 	addOrderBy();
 }
 
@@ -215,6 +228,7 @@ function resetOptions(){
 	$("#orderby > p").remove();
 	$("#top").val(0);
 	$("#entityid").val(0);
+	$("#refentityid").val(0);
 }
 
 
@@ -477,23 +491,36 @@ $("#generatequery").on("click", function(){
 		//Get Single Property
 		console.log("Single Entity");
 		
-		var ent_id = $("#refentityid").val();
-		if(ent_id != ""){ //Not fetching set
-			ent_id = "(" + ent_id +")";
-		}
-		
 		if(!$("#refentitycheck").is(":checked")){
+			var ent_id = $("#entityid").val();
+			if(ent_id != ""){ //Not fetching set
+				ent_id = "(" + ent_id +")";
+			}
 		result = result + fetchContainerSetForEntity(entity) + ent_id;	
 		}else{
 			//Get NavigationPathProperty
-			
-			result = result + $("#refentity > option:selected").val() + ent_id +"/" + fetchContainerSetForEntity(entity);
+			var ref_ent_id = $("#refentityid").val();
+			if(ref_ent_id != ""){ //Not fetching set
+				ref_ent_id = "(" + ref_ent_id +")";
+			}
+			if($("#expand").is(":checked")){
+				result = result + $("#refentity > option:selected").val() + ref_ent_id;
+			}else{
+				result = result + $("#refentity > option:selected").val() + ref_ent_id +"/" + fetchContainerSetForEntity(entity);	
+			}
 			//no need to fetch reference, already written as set.
 		}
 	}
-	
 	//add Options ?
-	var options = [];		
+	var options = [];	
+	
+	//add expand funciton, if set
+	if($("#expand").is(":checked") && $("#refentitycheck").is(":checked") && functionname == ""){
+		options.push("$expand=" + fetchContainerSetForEntity(entity));
+	}
+	
+	
+	
 	//add Filter $filter
 	var optionsfilter = "";
 	var filterstotal = $("#filter").find(".filterentry").length;
@@ -528,7 +555,7 @@ $("#generatequery").on("click", function(){
 	if($("#top").val() > 0){
 		options.push("$top=" + $("#top").val()); 
 	}
-	if(options.length > 1){
+	if(options.length > 0){
 	result = result + "?"+options.join("&");
 	}
 	alert(result);
@@ -582,12 +609,30 @@ $("#refentityid").on("change", function(){
 	//if orderby -> toggle add button
 	$("#idcheck-result").html("");
 });
-$("#entity").on("change", function(){
+
+$("#refentitycheck").on("change", function(){
+	//if orderby -> toggle add button
+	$("#idcheck-result").html("");
+	if($("#refentitycheck").is(":checked")){
+		$("#refentityid").removeAttr("disabled");
+		$("#expand").removeAttr("disabled");
+		$("#refentity").removeAttr("disabled");
+		$("#entityid").attr("disabled", true);
+	}else{
+		$("#entityid").removeAttr("disabled");
+		$("#refentityid").attr("disabled", true);
+		$("#expand").attr("disabled", true);
+		$("#refentity").attr("disabled", true);
+	}
+	
+});
+
+$("#entityid").on("change", function(){
 	//if orderby -> toggle add button
 	$("#idcheck-result").html("");
 });
 
-$("#refentity").on("change", function(){
+$("#refentityid").on("change", function(){
 	//if orderby -> toggle add button
 	$("#idcheck-result").html("");
 });
