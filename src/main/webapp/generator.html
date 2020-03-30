@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+</head>
+
+<body>
+<div>
+Generator for Query:
+- Parses OData-Schema and provide functionality for simple building Querys 
+
+<div>
+Entität / Funktion:
+<select id="entity">
+</select>
+</div>
+<div id="refentitypicker">
+einer Entität: <input type="checkbox" id="refentitycheck"></input>
+<select id="refentity">
+</select>
+<input type="text" id="refentityid"></input>
+<label for="refentityid">Identifikator</label>
+</div>
+<div id="functionpicker"></div>
+
+<div>
+Filterung <button id="add-filter">[+]</button>
+<p id="filter"></p>
+
+</div>
+<div>
+Sortierung
+<button id="add-orderby">[+]</button>
+<p id="orderby"></p>
+</div>
+<p id="">
+<input type="number" id="top"></input>
+<label for="top">maximale Anzahl Ergebnisse</label>
+</p>
+<p>
+<button type="submit" id="generatequery">Generiere Link</button>
+<div id="idcheck"><button type="submit">Überprüfe Existenz der eingegebenen ID</button><p id="idcheck-result"></p></div>
+<p>
+<input type="text" id="fullurl"></input>
+<label for="fullurl">Gesamtergebnis</label>
+</p>
+
+<script>
+
+	
+
+$(document).ready(function(){
+
+	const serviceUrl = "ODataService.svc/";
+	const schemaquery = serviceUrl + "$metadata?$format=application/json";
+	const namespace = "dspace";
+	var entities = {};
+	var ref_entities = {};
+	var entity = "Publication";
+	var functionname = "";
+	var entity_shortcode = "publ";
+	var prop_filter = {};
+	var nav_filter = {};
+	var schema = {};	
+	
+	var alias_entity = {
+		"Publication" : "Publikation",
+		"Series" : "Schriftenreihe",
+		//alias for entity (perhaps define also sets)
+	}
+	
+	var alias_prop = {
+		//alias for property
+		//Entity Name -> Property Name
+		"Publication" : {
+			"title" : "Titel"
+		}
+	}
+	
+	var whitelist_prop = {
+		//whitelist for Properties	
+		//if contains property only these are displayed in dropdown
+		//Schema Key : [Val]
+		//"Publication" : ["title","author", "completedyear"]
+	}
+	
+	var whitelist_entity = {
+	//only display entities and functions in whitelist
+	//Schema Properties schema: Key :Val -> [] filters referenced entitites
+			/*"Publication" : ["Researchers","Journals"],
+			"cslforproject" : [],
+			"cslforjournal" : []*/
+	}
+	
+$.get( schemaquery, function(response){
+	console.log(response);	
+	schema = response['dspace'];
+	fillEntityList(response['dspace']);
+	selectEntity("Publication"); // Default Publication
+});	
+
+function fillEntityList(entries){
+	//apply Whitelist
+	
+	generateEntityPicker(entries);
+}
+
+function fillRefEntityList(entries){
+	//apply Whitelist
+	
+	generateRefEntityPicker(entries);
+}
+
+function fillPropFilter(prop_total){
+	prop_filter = {};
+	nav_filter = {};
+	
+	console.log(prop_total);
+	//For Functions: get Corresponding Result entity and their properties
+	for(const it in prop_total){
+		//filter navigation properties and other attributes
+	if(!(it.startsWith('\$') || it.startsWith(entity_shortcode) || prop_total[it]["\$Kind"])){
+		prop_filter[it] = prop_total[it];
+	}else if(prop_total[it]["\$Kind"] && prop_total[it]["\$Kind"] == "NavigationProperty"){
+		nav_filter[it] = prop_total[it];
+	}
+	}	
+	console.log(prop_filter);
+}
+
+function selectEntity(name){
+	resetOptions();
+	//set new Prop Filter
+	entity = name;
+	//getEntityShortname
+	if(schema[entity][0] && schema[entity][0]["\$Kind"] == "Function"){
+		//Function
+		var returntype = schema[entity][0]["\$ReturnType"]["\$Type"];
+		returntype = returntype.replace(namespace+".", "")
+		prop_total = schema[returntype];
+		entity = returntype;
+		functionname = name;
+		fillPropFilter(schema[entity]);
+		console.log("Function selected!");
+		console.log("name");
+		$("#functionpicker").html("").append(generateFunctionPicker(schema[name], name)).show();
+		$("#refentitypicker").hide();
+		$("#idcheck").hide();
+	
+	}else{
+		//Property
+		functionname = "";
+		fillPropFilter(schema[entity]);
+		fillRefEntityList(nav_filter);
+		$("#functionpicker").html("").hide();
+		$("#refentitypicker").show();
+		$("#idcheck").show();
+	}
+	
+	$("#orderby").append(generateOrderBy("orderby", 1, prop_filter));
+	$("#filter").append(generateFilter("filter", 1, prop_filter));
+	
+}
+
+function generateFunctionPicker(functionschema, name){
+	console.log(functionschema);
+	console.log(name);
+	var res = $('<p class="functionheader '+name+'"/>');
+	for(var it in functionschema[0]["\$Parameter"]){
+		var param = functionschema[0]["\$Parameter"][it];
+		$(res).append("<p class='functionparam param-"+it+"' name=\""+param['\$Name']+"\">"+param['\$Name']+": <input type=\'text\' content=\'"+param['\$Type']+"\'></input><p>");		
+	}
+	return res;
+}
+
+function resetOptions(){
+	$("#filter > p").remove();
+	$("#orderby > p").remove();
+	$("#top").val(0);
+	$("#entityid").val(0);
+}
+
+
+function generateEntityPicker(entries){
+	var res = "";
+	for(var it in entries){
+		//TODO: Get Mapping Name
+	if( ( Object.keys(whitelist_entity).length == 0 ) ||( Object.keys(whitelist_entity).length > 0 && whitelist_entity.hasOwnProperty(it) )){
+		if(!(entries[it]["\$Kind"] && ( entries[it]["\$Kind"] == "ComplexType" || entries[it]["\$Kind"] == "EntityContainer" ) )){
+			res = res + "<option value=\""+it+"\">"+printDisplayName(it)+"</option>";
+			}		
+	}
+	}
+	
+	$("#entity").append(res);
+}
+
+function printDisplayName(it){
+	if(alias_entity.hasOwnProperty(it)){
+		return alias_entity[it];
+	}else{
+		return it;
+	}
+}
+
+function generateRefEntityPicker(entries){
+	var res = "";
+	for(var it in entries){
+		//TODO: print displays on whitelist (How to handle other things)
+	if( ( Object.keys(whitelist_entity).length == 0 ) ||( Object.keys(whitelist_entity).length > 0 && !whitelist_entity.hasOwnProperty(entity) ) ||  ( Object.keys(whitelist_entity).length > 0 && whitelist_entity.hasOwnProperty(entity) && whitelist_entity[entity].includes(it))){	
+		res = res + "<option value=\""+it+"\">"+printDisplayName(it)+"</option>";
+	}
+	}
+	if(entries.length == 0){
+		$("#refentitypicker").hide();
+	}else{
+		$("#refentitypicker").show();
+	}
+	$("#refentity").html("").append(res);
+	
+	
+}
+
+function generateFilter(type, id, content){
+	var res = $('<p class="filterentry" />' , { id : type+""+id });
+	$(res).append(generateDropdownListWithEntry(content));
+	$(res).append(generateFilterTypes());
+	$(res).append(generateFilterCondition());
+	$(res).append(generateFilterConnector());
+	$(res).append(generateDeleteButton());
+	return res;
+}
+
+function generateOrderBy(type, id, content){
+	var res = $('<p class="orderbyentry" />', { id : type+""+id});
+	$(res).append(generateDropdownListWithEntry(content));
+	$(res).append(generateOrderByTypes());
+	$(res).append(generateDeleteButton());
+	return res;
+}
+
+function generateDeleteButton(){
+	return "<button class='delete'>x</button>";
+}
+function generateOrderByTypes(){
+	return $('<select class="type" />').append("<option value='desc'>absteigend</option>").append("<option value='asc'>aufsteigend</option>");
+}
+function generateFilterTypes(){
+	return $('<select class="type" />').append("<option value='eq'>ist gleich</option>").append("<option value='ne'>nicht gleichs</option>").append("<option value='lt'>kleiner/älter</option>").append("<option value='gt'>größer/jünger</option>");
+}
+
+function generateFilterCondition(){
+	return $('<input class="condition"  type="text" placeholder="Bedingung"></input>');		
+}
+function generateFilterConnector(){
+	return $('<select class="connector" />').append("<option value='and'>und</option>").append("<option value='or'>oder</option>");
+}
+
+
+function generateDropdownListWithEntry(content){
+//generate Dropdown list
+	return $('<select class="prop" />').append(generateDropdownwithAttributes(content));
+}
+
+function generateDropdownwithAttributes(content){
+//Generate options
+var res = "";
+var res_preferred = "";
+for(const it in content){
+	//TODO: Get Mapping Name
+	var displayValue = printDisplayName(it);
+	if( ( Object.keys(whitelist_prop).length == 0 ) ||( Object.keys(whitelist_prop).length > 0 && !whitelist_prop.hasOwnProperty(entity) ) ||  ( Object.keys(whitelist_prop).length > 0 && whitelist_prop.hasOwnProperty(entity) && whitelist_prop[entity].includes(it))){
+	//display when whitelist is empty, not exist for this entity or only display items which exist whenspecified
+		if(displayValue == it){
+		res = res + "<option content=\""+content[it]['$Type']+"\" value=\""+it+"\">"+it+"</option>";	
+		
+	}else{
+		res_preferred = res_preferred + "<option content=\""+content[it]['$Type']+"\" value=\""+it+"\">"+displayValue+"</option>";
+	}
+	}
+	
+}
+return res_preferred + res;
+
+function printDisplayName(it){
+	if(alias_prop.hasOwnProperty(entity) && alias_prop[entity].hasOwnProperty(it)){
+		return alias_prop[entity][it];
+	}else{
+		return it;
+	}
+}
+}
+
+
+
+$("p").on("click", ".delete",function(){
+	//if orderby -> toggle add button
+	if($(this).parents('#orderby').length > 0){
+		if($("#orderby").find(".orderbyentry").length == 2){
+			$("#add-orderby").toggle();
+		}	
+	}
+	$(this).parent('p').remove();
+});
+$("#add-orderby").on("click", function(){
+	//check length, otherwise toggle add button
+	$("#orderby").append(generateOrderBy("orderby", $("#orderby").find(".orderbyentry").length+1, prop_filter));
+	if($("#orderby").find(".orderbyentry").length >= 2){
+		$("#add-orderby").toggle();
+	}
+});
+$("#add-filter").on("click", function(){
+	//add new Filter
+	
+	$("#filter").append(generateFilter("filter", $("#filter").find(".filterentry").length+1, prop_filter));
+});
+
+$("#entity").on("change", function(){
+	//if orderby -> toggle add button
+	selectEntity($("#entity").val());
+});
+
+function fetchContainerSetForEntity (ent){
+	//Get Set Representation for the given entity
+	//schema -> Container -> EntityContainer -> Type -> namespace.
+	console.log(ent);
+	if(schema["Container"] && schema["Container"]["\$Kind"] == "EntityContainer"){
+		for(var it in schema["Container"]){
+			if(schema["Container"][it]["\$Type"] == namespace+"."+ent){
+				return it;
+			}
+		}
+	}
+}
+
+function parseFilterToString(val, remain){
+	//input jquery val 
+	var condition = $(val).find(".condition").val();
+	var type = $(val).find(".type").val();
+	var connector = $(val).find(".connector").val();
+	var prop = $(val).find(".prop").val();
+	var result = "";
+	result = prop + " " + type + " " + condition;
+	if(remain == 1){
+		//no connector
+	}else{
+		result = result + " " + connector + " ";
+	}
+	return result;
+};
+
+
+$("#generatequery").on("click", function(){
+	
+	//base Url
+	var result = serviceUrl;
+	if(functionname != ""){
+	var params = [];
+		//Assume order of printinf of parameters is correct
+		$.each($("."+functionname).find(".functionparam"), function(i, val){
+			params.push($(val).attr("name")+"=\'"+$(val).find("input").val()+"\'");
+			});
+		result = result + functionname + "(" + params.join(",") + ")";
+	}else{
+		//Get Single Property
+		console.log("Single Entity");
+		if(!$("#refentitycheck").is(":checked")){
+		result = result + fetchContainerSetForEntity(entity) + "("+$("#refentityid").val()+")";	
+		}else{
+			//Get NavigationPathProperty
+			result = result + $("#refentity > option:selected").val() + "("+$("#refentityid").val()+")/" + fetchContainerSetForEntity(entity);
+			//no need to fetch reference, already written as set.
+		}
+	}
+	
+	//add Options ?
+	var options = [];		
+	//add Filter $filter
+	var optionsfilter = "";
+	var filterstotal = $("#filter").find(".filterentry").length;
+	$.each($("#filter").find(".filterentry"), function(i, val){
+		//get Values(Property, Condition, Type, Connector)
+		optionsfilter = optionsfilter + parseFilterToString($(val), (filterstotal - i));
+		//Parse String
+		//Remove last connector
+		
+	});
+	options.push("$filter=" + optionsfilter); 
+	
+	//add OrderBy $orderby
+	var optionsorderby = [];
+	$.each($("#orderby").find(".orderbyentry"), function(i, val){
+		optionsorderby.push($(val).find(".prop").val() + " " + $(val).find(".type").val());
+	});
+	options.push("$orderby=" + optionsorderby.join(",")); 
+	
+	//add Top
+	if($("#top").val() > 0){
+		
+		options.push("$top=" + $("#top").val()); 
+	}
+	if(options.length > 1){
+	result = result + "?"+options.join("&");
+	}
+	alert(result);
+	$("#fullurl").val(result);
+});
+
+$("#idcheck > button").on("click", function(){
+	//check function -> not possible,  entityset1 researcher not in schema, just Publications
+	var result = serviceUrl;
+	
+	//check single entity
+	if(!$("#refentitycheck").is(":checked")){
+		result = result + fetchContainerSetForEntity(entity) + "("+$("#refentityid").val()+")";	
+	}else{
+	//Get NavigationPathProperty
+		result = result + $("#refentity > option:selected").val() + "("+$("#refentityid").val()+")";
+	//no need to fetch reference, already written as set.
+	}				
+	
+	   var idcheck = $.get(result);
+	   idcheck.done(function(data, status){
+		   console.log(data);
+		   console.log(status);
+		   if (status == 'success'){
+	    	$("#idcheck-result").html("").append(generateDataFromResult(data));
+	    	$("#idcheck-result").css("border", "3px solid green");
+	    }else{
+	    	$("#idcheck-result").html("Nicht gefunden").css("border", "3px solid red");	
+	    }
+	   }).catch(function(err){
+	    	$("#idcheck-result").html("Nicht gefunden").css("border", "3px solid red");	
+		   console.log(err);
+	   });
+	//check series
+	
+	   function generateDataFromResult(data){
+		var todisplayifExist = ["cris-id", "id", "handle", "displayName", "name", "title"];
+		var result = [];
+		for(var it in todisplayifExist){
+			var elem = todisplayifExist[it];
+			if(data[elem])	{
+				result.push(data[elem]);
+			}
+		}
+		return result.join(" ; ");
+		}
+	
+	});
+	
+	
+
+$("#refentityid").on("change", function(){
+	//if orderby -> toggle add button
+	$("#idcheck-result").html("");
+});
+$("#entity").on("change", function(){
+	//if orderby -> toggle add button
+	$("#idcheck-result").html("");
+});
+
+$("#refentity").on("change", function(){
+	//if orderby -> toggle add button
+	$("#idcheck-result").html("");
+});
+
+
+});
+
+</script>
+
+</div>
+</body>
+
+</html>
