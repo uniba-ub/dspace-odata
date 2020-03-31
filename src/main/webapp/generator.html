@@ -4,55 +4,95 @@
 <head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<style>
+div {
+padding: 5px;
+border: 2px solid grey;
+}
+
+.action {
+background-color : darkgrey;
+color: white;
+padding: 5px;
+border: 2px solid black;
+}
+
+</style>
 </head>
 
 <body>
 <div>
-Generator for Query:
-- Parses OData-Schema and provide functionality for simple building Querys 
+<h2>OData-Query-Generator for Dspace</h2>
+<p>Dieses Tool parst das OData-Schema, stellt eine Übersicht über entsprechende Query-Möglichkeiten zusammen und erstellt einen Query.</p>
+<p>Eine Einschränkung der angezeigten Entitäten und Attribute der Entitäten ist über eine Whitelist bzw. Blacklist möglich.
+Andere (menschenlesbarere) Bezeichnungen von Entitäten und Attribute für die Anzeige können über ein Alias vergeben werden.
+</p>
+<p>Wählen Sie hier die gewünschte Option aus. Der Link wird anschließend unten generiert- Über den zweiten Button können sie die Existenz des eingegebenen Identifikators prüfen. </p>
+<p>Universität Bamberg - 2020</p>
 
 <div>
 Entität / Funktion:
 <select id="entity">
 </select>
+<label for="entityid">mit Identifikator</label>
+<input type="text" id="entityid" placeholder="id oder leer für alle"></input>
 </div>
+
 <div id="refentitypicker">
-einer Entität: <input type="checkbox" id="refentitycheck"></input>
-<select id="refentity">
+<input type="checkbox" id="refentitycheck"> einer Entität: </input>
+
+<select id="refentity" disabled>
 </select>
-<input type="text" id="refentityid"></input>
-<label for="refentityid">Identifikator</label>
+
+<label for="refentityid" disabled> mit Identifikator</label>
+<input type="text" id="refentityid" placeholder="id oder leer für alle"></input>
+
+
+
+<input type="checkbox" id="expand" diabled></input>
+<label for="expand">Expand (Inkludiere in erste Entität)</label>
 </div>
 <div id="functionpicker"></div>
+</div>
 
 <div>
 Filterung <button id="add-filter">[+]</button>
 <p id="filter"></p>
-
 </div>
+
 <div>
 Sortierung
 <button id="add-orderby">[+]</button>
 <p id="orderby"></p>
 </div>
+<div>
+Selektion (Wähle bestimmte Attribute aus)
+<button id="add-select">[+]</button>
+<p id="select"></p>
+</div>
+
 <p id="">
 <input type="number" id="top"></input>
 <label for="top">maximale Anzahl Ergebnisse</label>
 </p>
+
+<div id="idcheck"><button type="submit" class="action">Überprüfe Existenz der eingegebenen ID</button><p id="idcheck-result"></p></div>
+
+<div>
+<button type="submit" id="generatequery" class="action">Generiere Link</button>
 <p>
-<button type="submit" id="generatequery">Generiere Link</button>
-<div id="idcheck"><button type="submit">Überprüfe Existenz der eingegebenen ID</button><p id="idcheck-result"></p></div>
-<p>
-<input type="text" id="fullurl"></input>
+<textarea id="fullurl" placeholder="Ergebnis" rows=4 cols=100></textarea>
 <label for="fullurl">Gesamtergebnis</label>
 </p>
+</div>
+
+</div>
 
 <script>
 
-	
-
 $(document).ready(function(){
-
+	
+	const returnUrl = "https://odata.fis.uni-bamberg.de/";
 	const serviceUrl = "ODataService.svc/";
 	const schemaquery = serviceUrl + "$metadata?$format=application/json";
 	const namespace = "dspace";
@@ -60,7 +100,6 @@ $(document).ready(function(){
 	var ref_entities = {};
 	var entity = "Publication";
 	var functionname = "";
-	var entity_shortcode = "publ";
 	var prop_filter = {};
 	var nav_filter = {};
 	var schema = {};	
@@ -73,6 +112,7 @@ $(document).ready(function(){
 	
 	var alias_prop = {
 		//alias for property
+		//these Properties are listed before other Properties
 		//Entity Name -> Property Name
 		"Publication" : {
 			"title" : "Titel"
@@ -85,33 +125,37 @@ $(document).ready(function(){
 		//Schema Key : [Val]
 		//"Publication" : ["title","author", "completedyear"]
 	}
+	var blacklist_prop = {
+			//blacklist for Properties	
+			//props are not shown. Not compatible with use of whitelist
+			//Schema Key : [Val]
+			//"Publication" : ["title","author", "completedyear"]
+		}
 	
-	var whitelist_entity = {
-	//only display entities and functions in whitelist
-	//Schema Properties schema: Key :Val -> [] filters referenced entitites
-			/*"Publication" : ["Researchers","Journals"],
-			"cslforproject" : [],
-			"cslforjournal" : []*/
+	var blacklist_entity = {
+	//blacklis for entities
+	//Entities are not shown. Not compatible with use of whitelist
+	"Award" : "",
+	"Awardseries" : "",
+	"Container" : "",
+	"Funding" : "",
+	"Partnership" : ""
 	}
+	var whitelist_entity = {
+			//only display entities and functions in whitelist
+			//Schema Properties schema: Key :Val -> [] filters referenced entitites
+					/*"Publication" : ["Researchers","Journals"],
+					"cslforproject" : [],
+					"cslforjournal" : []*/
+			}
+	
 	
 $.get( schemaquery, function(response){
 	console.log(response);	
 	schema = response['dspace'];
-	fillEntityList(response['dspace']);
+	generateEntityPicker(response['dspace']);	
 	selectEntity("Publication"); // Default Publication
 });	
-
-function fillEntityList(entries){
-	//apply Whitelist
-	
-	generateEntityPicker(entries);
-}
-
-function fillRefEntityList(entries){
-	//apply Whitelist
-	
-	generateRefEntityPicker(entries);
-}
 
 function fillPropFilter(prop_total){
 	prop_filter = {};
@@ -121,7 +165,7 @@ function fillPropFilter(prop_total){
 	//For Functions: get Corresponding Result entity and their properties
 	for(const it in prop_total){
 		//filter navigation properties and other attributes
-	if(!(it.startsWith('\$') || it.startsWith(entity_shortcode) || prop_total[it]["\$Kind"])){
+	if(!(it.startsWith('\$') || prop_total[it]["\$Kind"])){
 		prop_filter[it] = prop_total[it];
 	}else if(prop_total[it]["\$Kind"] && prop_total[it]["\$Kind"] == "NavigationProperty"){
 		nav_filter[it] = prop_total[it];
@@ -143,28 +187,31 @@ function selectEntity(name){
 		entity = returntype;
 		functionname = name;
 		fillPropFilter(schema[entity]);
-		console.log("Function selected!");
-		console.log("name");
 		$("#functionpicker").html("").append(generateFunctionPicker(schema[name], name)).show();
 		$("#refentitypicker").hide();
 		$("#idcheck").hide();
-	
+		$("#entityid").removeAttr("disabled");
 	}else{
 		//Property
 		functionname = "";
 		fillPropFilter(schema[entity]);
-		fillRefEntityList(nav_filter);
+		generateRefEntityPicker(nav_filter);
 		$("#functionpicker").html("").hide();
 		$("#refentitypicker").show();
 		$("#idcheck").show();
 	}
 	
+	//Default: Set one Orderby and one filter-Option
+	addFilter();
+	addOrderBy();
+}
+
+function addOrderBy(){
 	$("#orderby").append(generateOrderBy("orderby", 1, prop_filter));
-	$("#filter").append(generateFilter("filter", 1, prop_filter));
-	
 }
 
 function generateFunctionPicker(functionschema, name){
+	//Generate Selection for Function based on their attributes
 	console.log(functionschema);
 	console.log(name);
 	var res = $('<p class="functionheader '+name+'"/>');
@@ -176,21 +223,35 @@ function generateFunctionPicker(functionschema, name){
 }
 
 function resetOptions(){
+	//reset all entries
 	$("#filter > p").remove();
 	$("#orderby > p").remove();
 	$("#top").val(0);
 	$("#entityid").val(0);
+	$("#refentityid").val(0);
 }
 
 
 function generateEntityPicker(entries){
 	var res = "";
-	for(var it in entries){
-		//TODO: Get Mapping Name
-	if( ( Object.keys(whitelist_entity).length == 0 ) ||( Object.keys(whitelist_entity).length > 0 && whitelist_entity.hasOwnProperty(it) )){
-		if(!(entries[it]["\$Kind"] && ( entries[it]["\$Kind"] == "ComplexType" || entries[it]["\$Kind"] == "EntityContainer" ) )){
+	for(var it in entries){	
+	var display = false;
+	if((Object.keys(whitelist_entity).length > 0 && whitelist_entity.hasOwnProperty(it))){
+	//check for whitelist
+	display = true;
+	}else if((Object.keys(blacklist_entity).length > 0 && blacklist_entity.hasOwnProperty(it))){
+		//check for blacklist
+		display = false;
+	//check for blacklist
+	}else{
+		//no lists
+		display = true;
+	}
+	//else no list, print
+	if(display){
+		//if(!(entries[it]["\$Kind"] && ( entries[it]["\$Kind"] == "ComplexType" || entries[it]["\$Kind"] == "EntityContainer" ) )){
 			res = res + "<option value=\""+it+"\">"+printDisplayName(it)+"</option>";
-			}		
+			//}		
 	}
 	}
 	
@@ -198,6 +259,7 @@ function generateEntityPicker(entries){
 }
 
 function printDisplayName(it){
+	//look at alias table and get Display Name
 	if(alias_entity.hasOwnProperty(it)){
 		return alias_entity[it];
 	}else{
@@ -209,10 +271,24 @@ function generateRefEntityPicker(entries){
 	var res = "";
 	for(var it in entries){
 		//TODO: print displays on whitelist (How to handle other things)
-	if( ( Object.keys(whitelist_entity).length == 0 ) ||( Object.keys(whitelist_entity).length > 0 && !whitelist_entity.hasOwnProperty(entity) ) ||  ( Object.keys(whitelist_entity).length > 0 && whitelist_entity.hasOwnProperty(entity) && whitelist_entity[entity].includes(it))){	
-		res = res + "<option value=\""+it+"\">"+printDisplayName(it)+"</option>";
+	
+	var display = false;
+	if((Object.keys(whitelist_entity).length > 0 && whitelist_entity.hasOwnProperty(entity) && whitelist_entity[entity].includes(it))){
+	//check for whitelist
+	display = true;
+	}else if((Object.keys(blacklist_entity).length > 0 && blacklist_entity.hasOwnProperty(entity) && blacklist_entity[entity].includes(it))){
+		//check for blacklist
+		display = false;
+	//check for blacklist
+	}else{
+		//no lists
+		display = true;
 	}
+	//else no list, print
+	if(display){
+			res = res + "<option value=\""+it+"\">"+printDisplayName(it)+"</option>";
 	}
+
 	if(entries.length == 0){
 		$("#refentitypicker").hide();
 	}else{
@@ -220,7 +296,7 @@ function generateRefEntityPicker(entries){
 	}
 	$("#refentity").html("").append(res);
 	
-	
+}
 }
 
 function generateFilter(type, id, content){
@@ -241,6 +317,14 @@ function generateOrderBy(type, id, content){
 	return res;
 }
 
+function generateSelect(type, id, content){
+	var res = $('<p class="selectentry" />', { id : type+""+id});
+	$(res).append(generateDropdownListWithEntry(content));
+	$(res).append(generateDeleteButton());
+	return res;
+}
+
+
 function generateDeleteButton(){
 	return "<button class='delete'>x</button>";
 }
@@ -258,7 +342,6 @@ function generateFilterConnector(){
 	return $('<select class="connector" />').append("<option value='and'>und</option>").append("<option value='or'>oder</option>");
 }
 
-
 function generateDropdownListWithEntry(content){
 //generate Dropdown list
 	return $('<select class="prop" />').append(generateDropdownwithAttributes(content));
@@ -271,18 +354,33 @@ var res_preferred = "";
 for(const it in content){
 	//TODO: Get Mapping Name
 	var displayValue = printDisplayName(it);
-	if( ( Object.keys(whitelist_prop).length == 0 ) ||( Object.keys(whitelist_prop).length > 0 && !whitelist_prop.hasOwnProperty(entity) ) ||  ( Object.keys(whitelist_prop).length > 0 && whitelist_prop.hasOwnProperty(entity) && whitelist_prop[entity].includes(it))){
-	//display when whitelist is empty, not exist for this entity or only display items which exist whenspecified
-		if(displayValue == it){
-		res = res + "<option content=\""+content[it]['$Type']+"\" value=\""+it+"\">"+it+"</option>";	
-		
-	}else{
-		res_preferred = res_preferred + "<option content=\""+content[it]['$Type']+"\" value=\""+it+"\">"+displayValue+"</option>";
-	}
-	}
+	
+	var display = false;
+		if((Object.keys(whitelist_entity).length > 0 && whitelist_entity.hasOwnProperty(entity) && whitelist_entity[entity].includes(it))){
+		//check for whitelist
+		display = true;
+		}else if((Object.keys(blacklist_entity).length > 0 && blacklist_entity.hasOwnProperty(entity) && blacklist_entity[entity].includes(it))){
+			//check for blacklist
+			display = false;
+			
+		//check for blacklist
+		}else{
+			//no lists
+			display = true;
+		}
+		//else no list, print
+		if(display){
+			if(displayValue == it){
+				res = res + "<option content=\""+content[it]['$Type']+"\" value=\""+it+"\">"+it+"</option>";	
+				
+			}else{
+				res_preferred = res_preferred + "<option content=\""+content[it]['$Type']+"\" value=\""+it+"\">"+displayValue+"</option>";
+			}		
+		}
 	
 }
 return res_preferred + res;
+
 
 function printDisplayName(it){
 	if(alias_prop.hasOwnProperty(entity) && alias_prop[entity].hasOwnProperty(it)){
@@ -293,29 +391,48 @@ function printDisplayName(it){
 }
 }
 
-
-
 $("p").on("click", ".delete",function(){
 	//if orderby -> toggle add button
 	if($(this).parents('#orderby').length > 0){
+		//Toggle orderby-add, when max is achieved
 		if($("#orderby").find(".orderbyentry").length == 2){
 			$("#add-orderby").toggle();
 		}	
 	}
+	if($(this).parents('#filter').length > 0){
+		//disable last - 1 element
+		if($("#filter").find(".filterentry").length > 1){
+			$("#filter").find(".filterentry > .connector").eq(-2).attr("disabled", "true");
+			console.log("last diabled");
+		}	
+	}
 	$(this).parent('p').remove();
+	
 });
 $("#add-orderby").on("click", function(){
 	//check length, otherwise toggle add button
-	$("#orderby").append(generateOrderBy("orderby", $("#orderby").find(".orderbyentry").length+1, prop_filter));
+	addOrderBy();
 	if($("#orderby").find(".orderbyentry").length >= 2){
 		$("#add-orderby").toggle();
 	}
 });
 $("#add-filter").on("click", function(){
-	//add new Filter
-	
-	$("#filter").append(generateFilter("filter", $("#filter").find(".filterentry").length+1, prop_filter));
+	addFilter();
 });
+
+$("#add-select").on("click", function(){
+	//check length, otherwise toggle add button
+	$("#select").append(generateSelect("select", $("#select").find(".selectentry").length+1, prop_filter));
+	
+});
+
+function addFilter(){
+	$("#filter").append(generateFilter("filter", $("#filter").find(".filterentry").length+1, prop_filter));
+//add new Filter
+	
+	//disable last entry
+	$("#filter").find(".filterentry > .connector").removeAttr("disabled").last().attr("disabled", "true");	
+}
 
 $("#entity").on("change", function(){
 	//if orderby -> toggle add button
@@ -342,8 +459,14 @@ function parseFilterToString(val, remain){
 	var connector = $(val).find(".connector").val();
 	var prop = $(val).find(".prop").val();
 	var result = "";
+	if(condition == undefined || condition == "" || condition == " "){
+		//remove unused filter from display.
+		console.log("debug no property value, thus remove")
+		$(val).remove();
+		return result;
+	}
 	result = prop + " " + type + " " + condition;
-	if(remain == 1){
+	if(remain == 1 || $(val).find(".connector").attr("disabled)")){
 		//no connector
 	}else{
 		result = result + " " + connector + " ";
@@ -353,12 +476,13 @@ function parseFilterToString(val, remain){
 
 
 $("#generatequery").on("click", function(){
+	//Parsing the Content can also be done by other libraries
 	
 	//base Url
-	var result = serviceUrl;
+	var result = returnUrl + serviceUrl;
 	if(functionname != ""){
 	var params = [];
-		//Assume order of printinf of parameters is correct
+		//Assume order of printing of parameters is correct
 		$.each($("."+functionname).find(".functionparam"), function(i, val){
 			params.push($(val).attr("name")+"=\'"+$(val).find("input").val()+"\'");
 			});
@@ -366,42 +490,72 @@ $("#generatequery").on("click", function(){
 	}else{
 		//Get Single Property
 		console.log("Single Entity");
+		
 		if(!$("#refentitycheck").is(":checked")){
-		result = result + fetchContainerSetForEntity(entity) + "("+$("#refentityid").val()+")";	
+			var ent_id = $("#entityid").val();
+			if(ent_id != ""){ //Not fetching set
+				ent_id = "(" + ent_id +")";
+			}
+		result = result + fetchContainerSetForEntity(entity) + ent_id;	
 		}else{
 			//Get NavigationPathProperty
-			result = result + $("#refentity > option:selected").val() + "("+$("#refentityid").val()+")/" + fetchContainerSetForEntity(entity);
+			var ref_ent_id = $("#refentityid").val();
+			if(ref_ent_id != ""){ //Not fetching set
+				ref_ent_id = "(" + ref_ent_id +")";
+			}
+			if($("#expand").is(":checked")){
+				result = result + $("#refentity > option:selected").val() + ref_ent_id;
+			}else{
+				result = result + $("#refentity > option:selected").val() + ref_ent_id +"/" + fetchContainerSetForEntity(entity);	
+			}
 			//no need to fetch reference, already written as set.
 		}
 	}
-	
 	//add Options ?
-	var options = [];		
+	var options = [];	
+	
+	//add expand funciton, if set
+	if($("#expand").is(":checked") && $("#refentitycheck").is(":checked") && functionname == ""){
+		options.push("$expand=" + fetchContainerSetForEntity(entity));
+	}
+	
+	
+	
 	//add Filter $filter
 	var optionsfilter = "";
 	var filterstotal = $("#filter").find(".filterentry").length;
 	$.each($("#filter").find(".filterentry"), function(i, val){
 		//get Values(Property, Condition, Type, Connector)
-		optionsfilter = optionsfilter + parseFilterToString($(val), (filterstotal - i));
-		//Parse String
-		//Remove last connector
-		
+		optionsfilter = optionsfilter + parseFilterToString($(val), (filterstotal - i));		
 	});
-	options.push("$filter=" + optionsfilter); 
+	
+	if(optionsfilter != ""){
+	options.push("$filter=" + optionsfilter);
+	}
 	
 	//add OrderBy $orderby
 	var optionsorderby = [];
 	$.each($("#orderby").find(".orderbyentry"), function(i, val){
 		optionsorderby.push($(val).find(".prop").val() + " " + $(val).find(".type").val());
 	});
+	if(optionsorderby != ""){
 	options.push("$orderby=" + optionsorderby.join(",")); 
+	}
+	
+	//add Select $select
+	var optionsselect = [];
+	$.each($("#select").find(".selectentry"), function(i, val){
+	optionsselect.push($(val).find(".prop").val());
+	});
+	if(optionsselect != ""){
+	options.push("$select=" + optionsselect.join(",")); 
+	}
 	
 	//add Top
 	if($("#top").val() > 0){
-		
 		options.push("$top=" + $("#top").val()); 
 	}
-	if(options.length > 1){
+	if(options.length > 0){
 	result = result + "?"+options.join("&");
 	}
 	alert(result);
@@ -410,7 +564,7 @@ $("#generatequery").on("click", function(){
 
 $("#idcheck > button").on("click", function(){
 	//check function -> not possible,  entityset1 researcher not in schema, just Publications
-	var result = serviceUrl;
+	var result = returnUrl + serviceUrl;
 	
 	//check single entity
 	if(!$("#refentitycheck").is(":checked")){
@@ -451,28 +605,41 @@ $("#idcheck > button").on("click", function(){
 	
 	});
 	
+$("#refentityid").on("change", function(){
+	//if orderby -> toggle add button
+	$("#idcheck-result").html("");
+});
+
+$("#refentitycheck").on("change", function(){
+	//if orderby -> toggle add button
+	$("#idcheck-result").html("");
+	if($("#refentitycheck").is(":checked")){
+		$("#refentityid").removeAttr("disabled");
+		$("#expand").removeAttr("disabled");
+		$("#refentity").removeAttr("disabled");
+		$("#entityid").attr("disabled", true);
+	}else{
+		$("#entityid").removeAttr("disabled");
+		$("#refentityid").attr("disabled", true);
+		$("#expand").attr("disabled", true);
+		$("#refentity").attr("disabled", true);
+	}
 	
+});
+
+$("#entityid").on("change", function(){
+	//if orderby -> toggle add button
+	$("#idcheck-result").html("");
+});
 
 $("#refentityid").on("change", function(){
 	//if orderby -> toggle add button
 	$("#idcheck-result").html("");
 });
-$("#entity").on("change", function(){
-	//if orderby -> toggle add button
-	$("#idcheck-result").html("");
-});
-
-$("#refentity").on("change", function(){
-	//if orderby -> toggle add button
-	$("#idcheck-result").html("");
-});
-
 
 });
 
 </script>
-
-</div>
 </body>
 
 </html>
