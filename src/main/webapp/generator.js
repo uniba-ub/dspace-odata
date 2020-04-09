@@ -10,10 +10,14 @@
  * - define div where Generator is parsed and define id as jquery
  * - follow the steps below
  * - options can be made in this file
+ * To include in html, provide jquery attribute with element's unique id
+ * call the functions as shown below to providefull functionality
+ * Example: 
+ * 
  * var generator = new Generator($("#generator"));
-	generator.loadSchema();
-generator.createGUI();
-generator.registerEvents();
+ * generator.loadSchema();
+ * generator.createGUI();
+ * generator.registerEvents();
  */
 
 var Generator = function(options){
@@ -91,6 +95,9 @@ var Generator = function(options){
         divelem = options;
     };
     
+    /*
+     * fetch the schema from url
+     * */
     this.loadSchema = function (){
     	$.get( schemaquery, function(response){
     		console.log(response);	
