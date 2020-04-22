@@ -159,6 +159,72 @@ var Generator = function(options){
     				</p>
     				</div>`);
     }
+    
+    this.renderQuery = function(query){
+    	//renders query to options
+    	try{
+    		let query = query.replace(returnUrl + serviceUrl, "");
+    		var queryparts = query.split("?");
+    		//split by paths
+        	//check query Path (after Base Url)
+        	//isfunction or is entity
+    		//contains comma or = => function
+    		//TODO: select correct Entity (also from Schema)
+    		
+    		
+    	//for entities
+    	//get Identifier of Entities
+    		$("#entityid").val(0);
+        	$("#refentityid").val(0);	
+    	//for options -> split by ?
+    	
+    	if(querparts[1] != null){
+    		resetOrderOptions();
+    	var options = queryparts[1].split("$");
+    	for(let option of options){
+    		let optionentry = option.split("=");
+    		if(optionentry[0] == "filter"){
+    			//TODO: split by two 
+				let filters = optionentry[1].split("and"|"or");
+    			for(let filter in filters){
+    				let filterval = filter.split(" ");
+    			//TODO: split by " " -> complexfilters (with brackets) are not supported by now
+    			//dropdowntype condition connector
+    			$("#filter").append(generateAndFillFilter("filter", filter, prop_filter, filterval[0] , filterval[1] , filterval[2] , filterval[3]));
+    			//disable last connector
+    			}
+    			
+    		}else if(optionentry[0] == "orderby"){
+    		//split by , -> two orderby?
+    			let optionsorderbys = optionentry[1].split(",");
+    			for(let orderby in optionsorderbys){
+    				let orderval = optionsorderbys[orderby].split(" ");
+    		    	$("#orderby").append(generateAndFillOrderBy("orderby", orderby, prop_filter, orderval[0], orderval[1]));
+    			}
+    			//disableoptionsadd if one is showns
+    			
+    		}else if(optionentry[0] == "top"){
+    			$("#top").val(optionentry[1]);		
+    		}else if(optionentry[0] == "select"){
+    			let optionselects = optionentry[1].split(",");
+    			for(let select in optionselects){
+    				$("#select").append(generateAndFillSelect("select", select, prop_filter, optionselects[select]));
+    			}
+    		}
+    		}
+    	}else{
+    		//else reset to empty
+    		resetOrderOptions();
+    	}		
+    	
+    	}catch(e){
+    		resetOptions();
+    		console.log("Error while parsingQuery");
+    		console.log(e);
+    	}finally{
+    		console.log("Query Parsing ended");
+    	}
+    }
 
     function fillPropFilter(prop_total){
     	prop_filter = {};
@@ -227,11 +293,14 @@ var Generator = function(options){
 
     function resetOptions(){
     	//reset all entries
-    	$("#filter > p").remove();
-    	$("#orderby > p").remove();
-    	$("#top").val(0);
+    	resetOrderOptions();
     	$("#entityid").val(0);
     	$("#refentityid").val(0);
+    }
+    function resetOrderOptions(){
+    	$("#filter > p").remove();
+    	$("#orderby > p").remove();
+    	$("#top").val(0); 	
     }
 
     function generateEntityPicker(entries){
@@ -311,12 +380,28 @@ var Generator = function(options){
     	return res;
     }
 
+    function generateAndFillOrderBy(type, id, content, value1, value2, value3, value4){
+    	var elem = generateFilter(type, id, content);
+		$(elem).find("select.prop").val(value1);
+		$(elem).find("select.type").val(value2);
+		$(elem).find("select.condition").val(value3);
+		$(elem).find("select.connector").val(value4);
+    }
+    
     function generateOrderBy(type, id, content){
     	var res = $('<p class="orderbyentry" />', { id : type+""+id});
     	$(res).append(generateDropdownListWithEntry(content));
     	$(res).append(generateOrderByTypes());
     	$(res).append(generateDeleteButton());
     	return res;
+    }
+    
+    function generateAndFillOrderBy(type, id, content, value1, value2){
+    	var elem = generateOrderBy(type, id, content);
+		$(elem).find("select.prop").val(value1);
+		if(value2 != null){ //sorting is optional
+		$(elem).find("select.type").val(value2);
+		}
     }
 
     function generateSelect(type, id, content){
@@ -325,7 +410,10 @@ var Generator = function(options){
     	$(res).append(generateDeleteButton());
     	return res;
     }
-
+    function generateAndFillSelect(type, id, content, value){
+    	var elem = generateSelect(type, id, content);
+    		$(elem).find("select.prop").val(value);
+    }
 
     function generateDeleteButton(){
     	return "<button class='delete'>x</button>";
