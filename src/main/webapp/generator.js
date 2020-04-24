@@ -2,7 +2,8 @@
  * OData Schema Parser and Query Generator
  * florian.gantner@uni-bamberg.de - Universität Bamberg 2020
  * This tool fetches some OData-Schema and fills the Form with possibily options regarding a subset of the official odata syntax. Finally it allows the Creation of valid Query Links.
- * This tool was developed and Perfored for the Dspace Odata API.
+ * This tool was developed and opimized for the needs of the Dspace Odata API and our Data Model.
+ * It does not support all functions.
  * 
  * How to start?
  * - include jquery
@@ -84,8 +85,6 @@ var Generator = function(options){
 					"cslforproject" : [],
 					"cslforjournal" : []*/
 			}
-	
-	 
 	 
 	/*
      * Constructor
@@ -113,7 +112,7 @@ var Generator = function(options){
     				<select id="entity">
     				</select>
     				<label for="entityid">mit Identifikator</label>
-    				<input type="text" id="entityid" placeholder="id oder leer für alle"></input>
+    				<input type="text" id="entityid" name="entityid" placeholder="id oder leer für alle"></input>
     				</div>
 
     				<div id="refentitypicker">
@@ -152,7 +151,7 @@ var Generator = function(options){
     				<div id="idcheck"><button type="submit" class="action">Überprüfe Existenz der eingegebenen ID</button><p id="idcheck-result"></p></div>
 
     				<div>
-    				<button type="submit" id="generatequery" class="action">Generiere Link</button>
+    				<button type="submit" id="generatequery" class="action">Generiere Link aus Formular</button><button type="submit" id="parsequery" class="action" disabled>Übertrage Link auf Formular</button>
     				<p>
     				<textarea id="fullurl" placeholder="Ergebnis" rows=4 cols=100></textarea>
     				<label for="fullurl">Gesamtergebnis</label>
@@ -160,72 +159,142 @@ var Generator = function(options){
     				</div>`);
     }
     
-    this.renderQuery = function(query){
-    	//renders query to options
-    	try{
-    		let query = query.replace(returnUrl + serviceUrl, "");
-    		var queryparts = query.split("?");
-    		//split by paths
-        	//check query Path (after Base Url)
-        	//isfunction or is entity
-    		//contains comma or = => function
-    		//TODO: select correct Entity (also from Schema)
-    		
-    		
-    	//for entities
-    	//get Identifier of Entities
-    		$("#entityid").val(0);
-        	$("#refentityid").val(0);	
-    	//for options -> split by ?
-    	
-    	if(querparts[1] != null){
-    		resetOrderOptions();
-    	var options = queryparts[1].split("$");
-    	for(let option of options){
-    		let optionentry = option.split("=");
-    		if(optionentry[0] == "filter"){
-    			//TODO: split by two 
-				let filters = optionentry[1].split("and"|"or");
-    			for(let filter in filters){
-    				let filterval = filter.split(" ");
-    			//TODO: split by " " -> complexfilters (with brackets) are not supported by now
-    			//dropdowntype condition connector
-    			$("#filter").append(generateAndFillFilter("filter", filter, prop_filter, filterval[0] , filterval[1] , filterval[2] , filterval[3]));
-    			//disable last connector
-    			}
-    			
-    		}else if(optionentry[0] == "orderby"){
-    		//split by , -> two orderby?
-    			let optionsorderbys = optionentry[1].split(",");
-    			for(let orderby in optionsorderbys){
-    				let orderval = optionsorderbys[orderby].split(" ");
-    		    	$("#orderby").append(generateAndFillOrderBy("orderby", orderby, prop_filter, orderval[0], orderval[1]));
-    			}
-    			//disableoptionsadd if one is showns
-    			
-    		}else if(optionentry[0] == "top"){
-    			$("#top").val(optionentry[1]);		
-    		}else if(optionentry[0] == "select"){
-    			let optionselects = optionentry[1].split(",");
-    			for(let select in optionselects){
-    				$("#select").append(generateAndFillSelect("select", select, prop_filter, optionselects[select]));
-    			}
-    		}
-    		}
-    	}else{
-    		//else reset to empty
-    		resetOrderOptions();
-    	}		
-    	
-    	}catch(e){
-    		resetOptions();
-    		console.log("Error while parsingQuery");
-    		console.log(e);
-    	}finally{
-    		console.log("Query Parsing ended");
-    	}
+    this.parseQuery = function(query){
+    	//renders/parses query and select option on form
+    	parseQueryInt(query);
     }
 
+    function parseQueryInt(querys){
+    	try{
+		let query = querys.replace(returnUrl + serviceUrl, "");
+		let queryparts = query.split("?");
+		//split by paths
+    	//check query Path (after Base Url)
+    	//isfunction or is entity
+		//contains comma or = => function
+		//TODO: select correct Entity (also from Schema)
+		//-> Split Paths
+		//Determine Function or First Entity Set
+		//Determine second Entity Set
+		let paths = queryparts[0].split("/");
+		console.log("paths" + paths);
+		if(paths.length == 1){
+		
+		let pathparts = paths[0].split("(");
+		let isFunction = isContainerFunction(pathparts[0]);
+		if(!isFunction){
+		console.log("entity" + fetchEntityForContainer(pathparts[0]));	
+		selectEntity(fetchEntityForContainer(pathparts[0]));
+		$(divelem).find("select#entity").val(fetchEntityForContainer(pathparts[0]));
+		//set Entity id
+		let varid = pathparts[1].replace(")", "")
+		console.log(varid);
+		$(divelem).find("input#entityid").html(varid).val(varid);
+		
+		}else{
+		selectEntity(fetchEntityForContainer(pathparts[0]));
+		//set Function parameters
+		//assign attributes of function
+		let functionparam = pathparts[0]
+		//for every function param -> set value
+		//TOOD:
+		//MISSING:
+		console.log("function" + functionparam);
+		
+		$("#entityid").val(0);
+    	$("#refentityid").val(0);
+		}
+		
+		}else if(paths.length == 2){
+			//multiple Paths, no functions
+    		let pathparts0 = paths[0].split("(");
+    		let pathparts1 = paths[1].split("(");
+    		let varid = pathparts0[1].replace(")", "");
+    		
+    		console.log("varid" + varid);
+    		console.log(pathparts0);
+    		console.log(pathparts1);
+    		selectEntity(fetchEntityForContainer(pathparts1[0]));
+    		$(divelem).find("input#refentityid").html(varid).val(varid);
+    		
+    		$(divelem).find("select#refentity").val(pathparts0[0]);
+    		//$("#entityid").val(0);
+    		//enable 
+        	enableRefEntity();
+        	$(divelem).find("#refentitycheck").prop('checked', 'true');
+
+		}
+		
+		
+	//for entities
+	//get Identifier of Entities
+			
+	//for options -> split by ?
+	
+	if(queryparts[1] != null){
+		resetOrderOptions();
+	var options = queryparts[1].split("$");
+	
+	for(let option of options){
+		console.log("option" + option);
+		option = option.replace(/&/g, ""); //replace connector option
+		let optionentry = option.split("=");
+		
+		console.log(optionentry);
+		if(optionentry[0] == "filter"){
+			//TODO: split by two Connector is not included
+			let filters = optionentry[1].split(/\b(and|or)/);
+			for(let filter in filters){
+				let filterval = filters[filter].split(" ").filter( e => e.trim().length > 0);
+			//TODO: split by " " -> complexfilters (with brackets) are not supported by now
+			//dropdowntype condition connector
+				console.log(filterval);
+			$(divelem).find("#filter").append(generateAndFillFilter("filter", filter, prop_filter, filterval[0] , filterval[1] , filterval[2] , filterval[3]));
+			//TODO: disable last connector
+	    	$(divelem).find(".filterentry > .connector").removeAttr("disabled").last().attr("disabled", "true");	
+			}
+			
+			
+		}else if(optionentry[0] == "orderby"){
+		//split by , -> two orderby?
+			console.log("ORDERBY");
+			
+			let optionsorderbys = optionentry[1].split(",");
+			for(let orderby in optionsorderbys){
+				let orderval = optionsorderbys[orderby].split(" ");
+				console.log(orderval);
+		    	$(divelem).find("#orderby").append(generateAndFillOrderBy("orderby", orderby, prop_filter, orderval[0], orderval[1]));
+			}
+			//disableoptionsadd if one is showns
+			
+		}else if(optionentry[0] == "top"){
+			$(divelem).find("#top").val(optionentry[1]);		
+		}else if(optionentry[0] == "select"){
+			let optionselects = optionentry[1].split(",");
+			for(let select in optionselects){
+				$(divelem).find("#select").append(generateAndFillSelect("select", select, prop_filter, optionselects[select]));
+			}
+		}else if(optionentry[0] == "expand"){
+			$(divelem).find("#expand").prop('checked', 'true');
+        	enableRefEntity();
+			selectEntity(optionentry[1]);
+		}
+		}
+	}else{
+		//else reset to empty
+		resetOrderOptions();
+	}		
+	
+	}catch(e){
+		//resetOptions();
+		console.log("Error while parsingQuery");
+		console.log(e);
+	}finally{
+		console.log("Query Parsing ended");
+	}
+    }
+ 
+    
     function fillPropFilter(prop_total){
     	prop_filter = {};
     	nav_filter = {};
@@ -274,6 +343,7 @@ var Generator = function(options){
     	addFilter();
     	addOrderBy();
     }
+    
 
     function addOrderBy(){
     	$("#orderby").append(generateOrderBy("orderby", 1, prop_filter));
@@ -300,6 +370,7 @@ var Generator = function(options){
     function resetOrderOptions(){
     	$("#filter > p").remove();
     	$("#orderby > p").remove();
+    	$("#select > p").remove();
     	$("#top").val(0); 	
     }
 
@@ -380,12 +451,14 @@ var Generator = function(options){
     	return res;
     }
 
-    function generateAndFillOrderBy(type, id, content, value1, value2, value3, value4){
+    function generateAndFillFilter(type, id, content, value1, value2, value3, value4){
     	var elem = generateFilter(type, id, content);
 		$(elem).find("select.prop").val(value1);
 		$(elem).find("select.type").val(value2);
-		$(elem).find("select.condition").val(value3);
+		$(elem).find("input.condition").val(value3).html(value3);
 		$(elem).find("select.connector").val(value4);
+		console.log(elem);
+		return elem;
     }
     
     function generateOrderBy(type, id, content){
@@ -402,6 +475,8 @@ var Generator = function(options){
 		if(value2 != null){ //sorting is optional
 		$(elem).find("select.type").val(value2);
 		}
+		console.log(elem);
+		return elem;
     }
 
     function generateSelect(type, id, content){
@@ -413,6 +488,7 @@ var Generator = function(options){
     function generateAndFillSelect(type, id, content, value){
     	var elem = generateSelect(type, id, content);
     		$(elem).find("select.prop").val(value);
+    		return elem;
     }
 
     function generateDeleteButton(){
@@ -527,6 +603,7 @@ var Generator = function(options){
 
     $("#refentitycheck").on("change", function(){
     	//if orderby -> toggle add button
+    	enableRefEntity();
     	$("#idcheck-result").html("");
     	if($("#refentitycheck").is(":checked")){
     		$("#refentityid").removeAttr("disabled");
@@ -559,8 +636,13 @@ var Generator = function(options){
     
     $("#generatequery").on("click", function(){
     	//Parsing the Content can also be done by other libraries
+    	try{
     	console.log("generating query");
     	generateQuery()
+    	checkfullUrl();
+    	}catch(ex){
+    		console.log("Error while generating query: " + ex);
+    	}
         });
 
     $("#idcheck > button").on("click", function(){
@@ -568,7 +650,44 @@ var Generator = function(options){
 		idcheck();
     	});
     
+    $("#parsequery").on("click", function(){
+    	//Parsing the Content can also be done by other libraries
+    	console.log("parsing query");
+    	parseQueryInt($("#fullurl").val());
+        });
+    
+    $("#fullurl").on("change", function(){
+    	console.log("change on fullurl" + $("#fullurl").val());
+    	console.log(serviceUrl);
+    	checkfullUrl();
+    })
+    
+    
     } //end registerEvents
+    
+    function enableRefEntity(){
+	$("#idcheck-result").html("");
+	if($("#refentitycheck").is(":checked")){
+		$("#refentityid").removeAttr("disabled");
+		$("#expand").removeAttr("disabled");
+		$("#refentity").removeAttr("disabled");
+		$("#entityid").attr("disabled", true);
+	}else{
+		$("#entityid").removeAttr("disabled");
+		$("#refentityid").attr("disabled", true);
+		$("#expand").attr("disabled", true);
+		$("#refentity").attr("disabled", true);
+	}
+}
+    function checkfullUrl(){
+    	if($(divelem).find("#fullurl").val().includes(serviceUrl)){ //TODO: startswith baseUrl + serviceUrl	
+    		$("#parsequery").removeAttr("disabled");
+    		console.log("change on fullurl - removed");
+    	}else{
+    		$(divelem).find("#parsequery").attr("disabled", true);
+    		console.log("change on fullurl - disabled");
+    	}
+    }
     
     function addFilter(){
     	$("#filter").append(generateFilter("filter", $("#filter").find(".filterentry").length+1, prop_filter));
@@ -580,7 +699,7 @@ var Generator = function(options){
 
 
     function fetchContainerSetForEntity (ent){
-    	//Get Set Representation for the given entity
+    	//Get Set Representation for the given entity (e.g. Publication -> Publications)
     	//schema -> Container -> EntityContainer -> Type -> namespace.
     	console.log(ent);
     	if(schema["Container"] && schema["Container"]["\$Kind"] == "EntityContainer"){
@@ -589,6 +708,26 @@ var Generator = function(options){
     				return it;
     			}
     		}
+    	}
+    }
+    function fetchEntityForContainer(cont){
+    	//Get Entity for the fiven Container (e.g. Publications -> Publication)
+    	//schema -> Container -> EntityContainer -> Type -> namespace.
+    	if(schema["Container"] && schema["Container"]["\$Kind"] == "EntityContainer"){
+    		for(var it in schema["Container"]){
+    			if(it == cont){
+    				return schema["Container"][it]["\$Type"].replace(namespace+".", "");
+    			}
+    		}
+    	}
+    }
+    
+    function isContainerFunction(cont){
+    	//check, if given Container is Function
+    	if(schema[cont] && schema[cont]["\$Kind"] == "FunctionImport"){
+    		return true;
+    	}else{
+    		return false;
     	}
     }
 
@@ -613,8 +752,9 @@ var Generator = function(options){
     	}
     	return result;
     };
+    
 function generateQuery(){
-	
+	//Functions for Generating Query
 	//base Url
 	var result = returnUrl + serviceUrl;
 	if(functionname != ""){
@@ -656,8 +796,6 @@ function generateQuery(){
 		options.push("$expand=" + fetchContainerSetForEntity(entity));
 	}
 	
-	
-	
 	//add Filter $filter
 	var optionsfilter = "";
 	var filterstotal = $("#filter").find(".filterentry").length;
@@ -695,9 +833,7 @@ function generateQuery(){
 	if(options.length > 0){
 	result = result + "?"+options.join("&");
 	}
-	alert(result);
 	$("#fullurl").val(result);
-
 }
 
 function idcheck(){
@@ -742,7 +878,6 @@ function idcheck(){
 	
 }
    
-    
     /*
      * Pass options when class instantiated
      */
