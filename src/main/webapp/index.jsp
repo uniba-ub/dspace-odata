@@ -46,7 +46,7 @@ h6    {color: #002a4d;}
 <img src="schema.svg" alt="Entities and their Relations" height="400px">
 <p>Visual overview on entities and their relations. Coming up entities are marked with <code>*</code> . All relations can also be traversed in their inverse relationship, e.g. Researchers/Publications and Publications/Researchers. Relations can only be traversed by a depth of 2.</p>
 	
-	<h6>Complete overview of metadata (all entities, properties and relations= om tje se,a.</h6>
+	<h6>Complete overview of metadata (all entities, properties and relations</h6>
 	<a href="/ODataService.svc/$metadata?$format=application/json">
 		<p><%=baseurl %>ODataService.svc/$metadata?$format=application/json</p>
 	</a>
