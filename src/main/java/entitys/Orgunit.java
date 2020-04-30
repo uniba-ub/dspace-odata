@@ -48,6 +48,8 @@ public class Orgunit implements EntityModel{
 	
 	CsdlProperty parentorgunit = new CsdlProperty().setName("parentorgunit")
 			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+	
+	
 
 	CsdlPropertyRef propertyRef = new CsdlPropertyRef();
 	propertyRef.setName("id");
