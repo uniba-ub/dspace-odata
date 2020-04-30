@@ -25,7 +25,7 @@ h6    {color: #002a4d;}
 	<p>This API offer read-access to contents of the FIS. 
 	It is based on the <a href="https://docs.oasis-open.org/odata/odata/v4.01/">OASIS OData Specification</a>, Version 4.0.1. 
 	The standard response format is JSON. </p>
-	
+	<p><a href="generator.html">Query-Generator (Alpha)</a></p>
 	<p>Table of Content:
 	<ul>
 	<li><a href='#top'>OData API for fis.uni-bamberg.de</a></li>

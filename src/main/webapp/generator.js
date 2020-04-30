@@ -1,19 +1,31 @@
 /**
  * OData Schema Parser and Query Generator
  * florian.gantner@uni-bamberg.de - Universität Bamberg 2020
- * This tool fetches some OData-Schema and fills the Form with possibily options regarding a subset of the official odata syntax. Finally it allows the Creation of valid Query Links.
- * This tool was developed and opimized for the needs of the Dspace Odata API and our Data Model.
- * It does not support all functions.
+ * 
+ * This tool fetches the OData-Schema and generates forms for building querys to odata-databases.
+ * It allows the building of Querys-URL by parsing existing Querys or building completly new. 
+ * Configurations can be modified by defining the urls, adding white/blacklist and module options and human-readable aliases for schema-syntax names. 
+ * 
+ * This tool was and opimized for the needs and use with our Dspace Odata API and our Data Model.
+ * Therefore it does not support all functions of OData, only those .
+ * What is known to the author and is not supported by the tool:
+ * - Entity()/Entity() Selections
+ * - Selections over more than two Paths Entity/Entity/Entity
+ * - other Data-types apart from Int/String
+ * - skip-options
+ * - complex filters (those with brackets) 
  * 
  * How to start?
- * - include jquery
- * - include generator
- * - define div where Generator is parsed and define id as jquery
- * - follow the steps below
- * - options can be made in this file
+ * - include jquery (We build the tool with the latest, 3.4.1)
+ * - include generator.js file
+ * - modify options in generator.js file //TODO: add complex  
+ * - define div where Generator-Content is parsed
+ * - follow the steps below:
  * To include in html, provide jquery attribute with element's unique id
  * call the functions as shown below to providefull functionality
+ * 
  * Example: 
+ * <div id="generator></div>
  * 
  * var generator = new Generator($("#generator"));
  * generator.loadSchema();
@@ -22,91 +34,124 @@
  */
 
 var Generator = function(options){
+	/*This is the main function called for initializing functions. it provide internal and external (.this) available function and variables.
+	 * Constructor Class is called at end
+	 */
 	
-	 /*
-     * Variables accessible
-     * in the class
-     */
+	/* Urls:
+	 * serviceUrl is checked. Because of missing CORS-Headers in the OData-Response access to foreign servers might not be available
+	 * */
 	const returnUrl = "https://odata.fis.uni-bamberg.de/";
 	const serviceUrl = "ODataService.svc/";
 	const schemaquery = serviceUrl + "$metadata?$format=application/json";
 	const namespace = "dspace";
 	
-	var divelem = "";//div being hijacked
-	var entities = {}; // available entities
-	var ref_entities = {}; //available ref_entities for this entity
-	var entity = "Publication"; //actually selected entity
+	/* TODO:List of allowed functions and modules being displayed.
+	 * Allows Hiding of certain functions 
+	 * */
+	var modules_active = [];
+	var modules_all = ["parse", "query", "checkid" , "refentity", "entity" ,  "functions" , "expand" , "filter" , "orderby" , "selection" , "top"]; 
+	
+	/* Main Entities for displaying and fetching informations.
+	 * */
+	var divelem = "";//name of div being hijacked. Used for registering events 
+	var entities = {}; // available entities (after white/blacklist)
+	var ref_entities = {}; //available ref_entities for this entity (after white/blacklist))
+	var entity = "Publication"; //actually selected entity. The one set here is selected by default after fetching the schema 
 	var functionname = ""; //actually selected function
 	var prop_filter = {}; //allowed properties
 	var nav_filter = {}; //allowed navigationproperties
-	var schema = {}; //completly fetched schema 
+	var schema = {}; //copy of fetched Schema
 	
+	/* alias for entity
+	 * Key-Value:Schema: "Publication" : "Publikation",
+	 */
 	var alias_entity = {
 		"Publication" : "Publikation",
 		"Series" : "Schriftenreihe",
-		//alias for entity (perhaps define also sets)
+		"Projects" : "Projekte",
+		"OrgUnit" : "Einrichtungen",
+		"Researcher" : "Forschende"
 	}
-	
+	/* Alias for Properties
+	 * - in dropdowns these Properties are listed before other Properties
+	 *	Key-Value:Schema: { "Publication" : { "title" : "Titel" }}
+	 */
 	var alias_prop = {
-		//alias for property
-		//these Properties are listed before other Properties
-		//Entity Name -> Property Name
 		"Publication" : {
 			"title" : "Titel"
 		}
 	}
 	
-	var whitelist_prop = {
-		//whitelist for Properties	
-		//if contains property only these are displayed in dropdown
-		//Schema Key : [Val]
-		//"Publication" : ["title","author", "completedyear"]
+	/* whitelist for Properties
+	 * if contains property only these are displayed in dropdown
+		Schema Key : [Val]
+		"Publication" : ["title","author", "completedyear"]
+	 */
+	var whitelist_prop = {	
 	}
+	
+	/* blacklist for Properties	
+	 * props are not shown. Not compatible with use of whitelist
+	 * Schema Key : [Val]
+	 * "Publication" : ["title","author", "completedyear"]
+	 * */
 	var blacklist_prop = {
-			//blacklist for Properties	
-			//props are not shown. Not compatible with use of whitelist
-			//Schema Key : [Val]
-			//"Publication" : ["title","author", "completedyear"]
 		}
 	
+	/* blacklist for entities
+	 * entities are not shown. Not compatible with use of whitelist
+	 * f.e. for complex objects withour own id's a.k.a. nested entities in dspace
+	 * */
 	var blacklist_entity = {
-	//blacklis for entities
-	//Entities are not shown. Not compatible with use of whitelist
 	"Award" : "",
 	"Awardseries" : "",
 	"Container" : "",
 	"Funding" : "",
 	"Partnership" : ""
 	}
+	
+	/* whitelist for entities
+	 * only display entities and functions in whitelist
+	 * Schema Properties schema: Key :Val -> [] filters referenced entitites
+	 * "Publication" : ["Researchers","Journals"],
+	 *				"cslforproject" : [],
+	 *				"cslforjournal" : []
+	  */
 	var whitelist_entity = {
-			//only display entities and functions in whitelist
-			//Schema Properties schema: Key :Val -> [] filters referenced entitites
-					/*"Publication" : ["Researchers","Journals"],
-					"cslforproject" : [],
-					"cslforjournal" : []*/
 			}
 	 
 	/*
      * Constructor
+     * TODO: add further options apart from divelem here. Overloading constructors is not possible
      */
     this.construct = function(options){
-        //$.extend(divelem , options);
+        //external constructor
+		//$.extend(divelem , options);
         divelem = options;
     };
     
-    /*
-     * fetch the schema from url
-     * */
     this.loadSchema = function (){
+    	//external function, fetches the Schema from Url and sets the schemaand generate Picker
+    	//TODO: bad response or schema not accessible/readable?
+    	try{
     	$.get( schemaquery, function(response){
     		console.log(response);	
-    		schema = response['dspace'];
-    		generateEntityPicker(response['dspace']);	
-    		selectEntity("Publication"); // Default Publication
-    	});	    
+    		schema = response[namespace];
+    		if(schema == null || schema == undefined){
+    			throw "Schema not available";
+    		}
+    		generateEntityPicker(response[namespace]);	
+    		selectEntity(entity);
+    	});	
+    	}catch(msg){
+    		console.log(msg);
+    	}
     };
     
     this.createGUI = function(){
+    	//Text for generating the forms
+    	//TODO: add selected options for modules here
     	$(divelem).html(`<div>
     			Entität / Funktion:
     				<select id="entity">
@@ -114,42 +159,32 @@ var Generator = function(options){
     				<label for="entityid">mit Identifikator</label>
     				<input type="text" id="entityid" name="entityid" placeholder="id oder leer für alle"></input>
     				</div>
-
     				<div id="refentitypicker">
     				<input type="checkbox" id="refentitycheck"> einer Entität: </input>
-
     				<select id="refentity" disabled></select>
-
     				<label for="refentityid" disabled> mit Identifikator</label>
     				<input type="text" id="refentityid" placeholder="id oder leer für alle"></input>
-
     				<input type="checkbox" id="expand" disabled></input>
     				<label for="expand">Expand (Inkludiere in erste Entität)</label>
     				</div>
     				<div id="functionpicker"></div>
-
     				<div>
     				Filterung <button id="add-filter">[+]</button><p id="filter"></p>
     				</div>
-
     				<div>
     				Sortierung
     				<button id="add-orderby">[+]</button>
     				<p id="orderby"></p>
     				</div>
-    				
     				<div>
     				Selektion (Wähle bestimmte Attribute aus)
     				<button id="add-select">[+]</button>
     				<p id="select"></p>
     				</div>
-
     				<p><input type="number" id="top"></input>
     				<label for="top">maximale Anzahl Ergebnisse</label>
     				</p>
-
     				<div id="idcheck"><button type="submit" class="action">Überprüfe Existenz der eingegebenen ID</button><p id="idcheck-result"></p></div>
-
     				<div>
     				<button type="submit" id="generatequery" class="action">Generiere Link aus Formular</button><button type="submit" id="parsequery" class="action" disabled>Übertrage Link auf Formular</button>
     				<p>
@@ -160,146 +195,135 @@ var Generator = function(options){
     }
     
     this.parseQuery = function(query){
-    	//renders/parses query and select option on form
-    	parseQueryInt(query);
+    	//external function -> renders/parses query and select option on form
+    	parseQueryToForm(query);
     }
 
-    function parseQueryInt(querys){
+    function parseQueryToForm(querys){
+    	//internal function
+    	//this assumes gui has been build
     	try{
+    	if(querys == "" || querys == undefined){
+    		throw "No Query to parse found";
+    	}
+    	// break URI From Query into parts and distinguish options.
+    	// replace returnUrl and serviceUrl 
 		let query = querys.replace(returnUrl + serviceUrl, "");
 		let queryparts = query.split("?");
-		//split by paths
-    	//check query Path (after Base Url)
-    	//isfunction or is entity
-		//contains comma or = => function
-		//TODO: select correct Entity (also from Schema)
+		
 		//-> Split Paths
-		//Determine Function or First Entity Set
-		//Determine second Entity Set
+		//Determine if first Pathelement is more likely a Function or Entity Set
+		//Allows up to two Entity-Sets
 		let paths = queryparts[0].split("/");
-		console.log("paths" + paths);
 		if(paths.length == 1){
-		
-		let pathparts = paths[0].split("(");
-		let isFunction = isContainerFunction(pathparts[0]);
-		if(!isFunction){
-		console.log("entity" + fetchEntityForContainer(pathparts[0]));	
-		selectEntity(fetchEntityForContainer(pathparts[0]));
-		$(divelem).find("select#entity").val(fetchEntityForContainer(pathparts[0]));
-		//set Entity id
-		let varid = pathparts[1].replace(")", "")
-		console.log(varid);
-		$(divelem).find("input#entityid").html(varid).val(varid);
-		
-		}else{
-		selectEntity(fetchEntityForContainer(pathparts[0]));
-		//set Function parameters
-		//assign attributes of function
-		let functionparam = pathparts[0]
-		//for every function param -> set value
-		//TOOD:
-		//MISSING:
-		console.log("function" + functionparam);
-		
-		$("#entityid").val(0);
-    	$("#refentityid").val(0);
-		}
+			let pathparts = paths[0].split("(");
+			//Check if is Function
+			var isFunction = isContainerFunction(pathparts[0]);
+			if(!isFunction){
+				//Get Response Entity Name for Container ans delect these
+				selectEntity(fetchEntityForContainer(pathparts[0]));
+				$(divelem).find("select#entity").val(fetchEntityForContainer(pathparts[0]));
+				//set Entity id
+				let varid = pathparts[1].replace(")", "")
+				$(divelem).find("input#entityid").html(varid).val(varid);
+				
+			}else{
+				//set Function as Entity and parse parameters 
+				selectEntity(pathparts[0]);
+				// parameters
+				let functionparam = pathparts[0]
+				var params = schema[pathparts[0]][0]["\$Parameter"];	
+				//Parse the Parameter of the Function
+				fillFunctionPicker(params, pathparts[1].replace(")", "") , functionparam);
+				$("#entityid").val();
+				$("#refentityid").val();
+			}
 		
 		}else if(paths.length == 2){
-			//multiple Paths, no functions
+			//Two Entity-Sets, the first one with id
     		let pathparts0 = paths[0].split("(");
     		let pathparts1 = paths[1].split("(");
     		let varid = pathparts0[1].replace(")", "");
     		
-    		console.log("varid" + varid);
-    		console.log(pathparts0);
-    		console.log(pathparts1);
     		selectEntity(fetchEntityForContainer(pathparts1[0]));
     		$(divelem).find("input#refentityid").html(varid).val(varid);
-    		
     		$(divelem).find("select#refentity").val(pathparts0[0]);
-    		//$("#entityid").val(0);
-    		//enable 
-        	enableRefEntity();
-        	$(divelem).find("#refentitycheck").prop('checked', 'true');
-
-		}
-		
-		
-	//for entities
-	//get Identifier of Entities
-			
-	//for options -> split by ?
+    		
+    		enableRefEntity();
+    		$(divelem).find("#refentitycheck").prop('checked', 'true');
+    		//For Two EntitySets with ID, also consider second identifier
+    		if(pathparty1[1] != undefined){
+    		let varid2 = pathparts1[1].replace(")", "");
+       		$(divelem).find("input#entityid").html(varid2).val(varid2);
+     		$(divelem).find("input#entityid").attr("disabled", false);
+    		}
+		}	
 	
+		// Parse Options, as Parameter on URI
+		//Options are already separated from Query by ?
 	if(queryparts[1] != null){
-		resetOrderOptions();
-	var options = queryparts[1].split("$");
-	
+	resetOrderOptions();
+	var options = queryparts[1].split("$"); //TODO: checkif $ as part of query content is considered
 	for(let option of options){
-		console.log("option" + option);
-		option = option.replace(/&/g, ""); //replace connector option
+		option = option.replace(/&/g, ""); //replace connector option of option
 		let optionentry = option.split("=");
 		
-		console.log(optionentry);
 		if(optionentry[0] == "filter"){
-			//TODO: split by two Connector is not included
+			//TODO: split by two Connector is not included correctly.and / or is part of result when using regex
 			let filters = optionentry[1].split(/\b(and|or)/);
 			for(let filter in filters){
 				let filterval = filters[filter].split(" ").filter( e => e.trim().length > 0);
 			//TODO: split by " " -> complexfilters (with brackets) are not supported by now
 			//dropdowntype condition connector
-				console.log(filterval);
-			$(divelem).find("#filter").append(generateAndFillFilter("filter", filter, prop_filter, filterval[0] , filterval[1] , filterval[2] , filterval[3]));
-			//TODO: disable last connector
+			$(divelem).find("#filter").append(generateAndFillFilter("filter", filter, prop_filter, filterval[0] , filterval[1] , filterval[2] , filterval[3]));		
 	    	$(divelem).find(".filterentry > .connector").removeAttr("disabled").last().attr("disabled", "true");	
 			}
 			
-			
 		}else if(optionentry[0] == "orderby"){
-		//split by , -> two orderby?
-			console.log("ORDERBY");
-			
+		//split by , -> allowing up to two orderby's
 			let optionsorderbys = optionentry[1].split(",");
 			for(let orderby in optionsorderbys){
 				let orderval = optionsorderbys[orderby].split(" ");
-				console.log(orderval);
 		    	$(divelem).find("#orderby").append(generateAndFillOrderBy("orderby", orderby, prop_filter, orderval[0], orderval[1]));
-			}
-			//disableoptionsadd if one is showns
+		    	//TODO disable options add if one is showns
+			}			
 			
 		}else if(optionentry[0] == "top"){
-			$(divelem).find("#top").val(optionentry[1]);		
+			$(divelem).find("#top").val(optionentry[1]);
+			
 		}else if(optionentry[0] == "select"){
 			let optionselects = optionentry[1].split(",");
 			for(let select in optionselects){
 				$(divelem).find("#select").append(generateAndFillSelect("select", select, prop_filter, optionselects[select]));
 			}
+			
 		}else if(optionentry[0] == "expand"){
 			$(divelem).find("#expand").prop('checked', 'true');
         	enableRefEntity();
-			selectEntity(optionentry[1]);
+			//TODO: expand has to be considered in Path as Well,because only one path is selected. Not Working properly, wrong entity is selected 
+        	//selectEntity(optionentry[0]);
+        	selectRefEntity(fetchEntityForContainer(optionentry[0]));
 		}
+		
 		}
 	}else{
-		//else reset to empty
+		// reset to empty
 		resetOrderOptions();
 	}		
 	
 	}catch(e){
 		//resetOptions();
-		console.log("Error while parsingQuery");
-		console.log(e);
+		console.log("Error while parsingQuery" + e);
 	}finally{
 		console.log("Query Parsing ended");
 	}
     }
  
-    
     function fillPropFilter(prop_total){
+    	// Fills Properties and NavigationFilter from all Filters
+    	try{
     	prop_filter = {};
     	nav_filter = {};
-    	
-    	console.log(prop_total);
     	//For Functions: get Corresponding Result entity and their properties
     	for(const it in prop_total){
     		//filter navigation properties and other attributes
@@ -309,14 +333,15 @@ var Generator = function(options){
     		nav_filter[it] = prop_total[it];
     	}
     	}	
-    	console.log(prop_filter);
+    	}catch(e){console.log(e)};
     }
 
     function selectEntity(name){
+    	//select one entity by it's name and changeGUI based on informations
+    	try{
     	resetOptions();
-    	//set new Prop Filter
     	entity = name;
-    	//getEntityShortname
+    	//Get Information form Schema
     	if(schema[entity][0] && schema[entity][0]["\$Kind"] == "Function"){
     		//Function
     		var returntype = schema[entity][0]["\$ReturnType"]["\$Type"];
@@ -329,6 +354,7 @@ var Generator = function(options){
     		$("#refentitypicker").hide();
     		$("#idcheck").hide();
     		$("#entityid").removeAttr("disabled");
+    		setEntityIDType($("#entityid"), schema[entity]);
     	}else{
     		//Property
     		functionname = "";
@@ -337,28 +363,75 @@ var Generator = function(options){
     		$("#functionpicker").html("").hide();
     		$("#refentitypicker").show();
     		$("#idcheck").show();
+    		setEntityIDType($("#entityid"), schema[entity]);
     	}
     	
     	//Default: Set one Orderby and one filter-Option
     	addFilter();
     	addOrderBy();
+    	}catch(e){console.log(e)};
     }
     
-
-    function addOrderBy(){
-    	$("#orderby").append(generateOrderBy("orderby", 1, prop_filter));
+    
+    function selectRefEntity(val){
+    	//Selecte Referenced/Second Entityset by it's name
+    	$("#refentity").html(val).val(val);
     }
 
+    function addOrderBy(){
+    	try{
+    	//Adds OrderBy-Option
+    	$("#orderby").append(generateOrderBy("orderby", 1, prop_filter));
+    	}catch(e){console.log(e)};s
+    }
+    function setEntityIDType(elem, schemaentry){
+    	//sets the Type of the input of the entityid (String/ID)
+    	try{
+    	$(elem).attr("type", setEntityType(schemaentry));
+    	}catch(e){console.log(e)};s
+    }
+    
+    function setEntityType(schemaentry){
+    	//returns type of input box based on schema-identifier for entity-id (refentity and entity)
+    	try{
+    	//get ID
+    	let keyAttr = schemaentry["\$Key"][0]; 
+    	if(schemaentry[keyAttr]["\$Type"].startsWith("Edm.Int")){
+    		return "number";
+    	}else if(schemaentry[keyAttr]["\$Type"] == "Edm.String"){
+    		return "text";
+    	}
+    	//default:
+    	return "text";
+	}catch(e){console.log(e)};
+    }
+    
     function generateFunctionPicker(functionschema, name){
     	//Generate Selection for Function based on their attributes
-    	console.log(functionschema);
-    	console.log(name);
+    	try{
     	var res = $('<p class="functionheader '+name+'"/>');
     	for(var it in functionschema[0]["\$Parameter"]){
     		var param = functionschema[0]["\$Parameter"][it];
-    		$(res).append("<p class='functionparam param-"+it+"' name=\""+param['\$Name']+"\">"+param['\$Name']+": <input type=\'text\' content=\'"+param['\$Type']+"\'></input><p>");		
+    		let type = "text";
+    		if(param["\$Type"].startsWith("Edm.Int")){
+    		type = "number";	
+    		}
+    		$(res).append("<p class='functionparam param-"+it+"' name=\""+param['\$Name']+"\">"+param['\$Name']+": <input type=\'"+type+"\'></input><p>");		
     	}
     	return res;
+    	}catch(e){console.log(e)};s
+    }
+    
+    function fillFunctionPicker(functionschema, values, nameofFunction){
+    	//fills Values into Functionschema
+    	//Fiter has been generated before
+    	//TODO: Check if Int/String is correctly parsed
+    	let valuessplit = values.split(",");
+    	for(let value of valuessplit){
+    		let valueentry = value.split("=");
+    		let valueentry2 = valueentry[1].replace(/["']/g, "");
+    		$(divelem).find("p[name="+valueentry[0]+"] > input").html(valueentry2).val(valueentry2);
+    	}
     }
 
     function resetOptions(){
@@ -368,6 +441,7 @@ var Generator = function(options){
     	$("#refentityid").val(0);
     }
     function resetOrderOptions(){
+    	//reset all OrderOptions
     	$("#filter > p").remove();
     	$("#orderby > p").remove();
     	$("#select > p").remove();
@@ -375,16 +449,16 @@ var Generator = function(options){
     }
 
     function generateEntityPicker(entries){
+    	//Generates main dropdown of entity selector based on whitelist and blacklist.UsesDisplayName as Alias
+    	try{
     	var res = "";
     	for(var it in entries){	
     	var display = false;
     	if((Object.keys(whitelist_entity).length > 0 && whitelist_entity.hasOwnProperty(it))){
-    	//check for whitelist
+    	//check for whitelist and blacklise-entries
     	display = true;
     	}else if((Object.keys(blacklist_entity).length > 0 && blacklist_entity.hasOwnProperty(it))){
-    		//check for blacklist
     		display = false;
-    	//check for blacklist
     	}else{
     		//no lists
     		display = true;
@@ -394,34 +468,24 @@ var Generator = function(options){
     		//if(!(entries[it]["\$Kind"] && ( entries[it]["\$Kind"] == "ComplexType" || entries[it]["\$Kind"] == "EntityContainer" ) )){
     			res = res + "<option value=\""+it+"\">"+printDisplayName(it)+"</option>";
     			//}		
+    		}
     	}
-    	}
-    	
     	$("#entity").append(res);
+    	}catch(e){console.log(e)};
     }
 
-    function printDisplayName(it){
-    	//look at alias table and get Display Name
-    	if(alias_entity.hasOwnProperty(it)){
-    		return alias_entity[it];
-    	}else{
-    		return it;
-    	}
-    }
 
     function generateRefEntityPicker(entries){
+    	//Generates main dropdown of entity selector based on whitelist and blacklist.UsesDisplayName as Alias
+    	try{
     	var res = "";
     	for(var it in entries){
-    		//TODO: print displays on whitelist (How to handle other things)
-    	
     	var display = false;
+    	//check for whitelist and blacklist
     	if((Object.keys(whitelist_entity).length > 0 && whitelist_entity.hasOwnProperty(entity) && whitelist_entity[entity].includes(it))){
-    	//check for whitelist
     	display = true;
     	}else if((Object.keys(blacklist_entity).length > 0 && blacklist_entity.hasOwnProperty(entity) && blacklist_entity[entity].includes(it))){
-    		//check for blacklist
     		display = false;
-    	//check for blacklist
     	}else{
     		//no lists
     		display = true;
@@ -437,11 +501,21 @@ var Generator = function(options){
     		$("#refentitypicker").show();
     	}
     	$("#refentity").html("").append(res);
-    	
+    	}
+    }catch(e){console.log(e)};
     }
+   
+    function printDisplayName(it){
+    	//look at alias table and get Display Name
+    	if(alias_entity.hasOwnProperty(it)){
+    		return alias_entity[it];
+    	}else{
+    		return it;
+    	}
     }
-
+    
     function generateFilter(type, id, content){
+    	//generate Filter Function
     	var res = $('<p class="filterentry" />' , { id : type+""+id });
     	$(res).append(generateDropdownListWithEntry(content));
     	$(res).append(generateFilterTypes());
@@ -452,6 +526,7 @@ var Generator = function(options){
     }
 
     function generateAndFillFilter(type, id, content, value1, value2, value3, value4){
+    	//generate Filter Function and set Values
     	var elem = generateFilter(type, id, content);
 		$(elem).find("select.prop").val(value1);
 		$(elem).find("select.type").val(value2);
@@ -462,6 +537,7 @@ var Generator = function(options){
     }
     
     function generateOrderBy(type, id, content){
+    	//generate OrderBy
     	var res = $('<p class="orderbyentry" />', { id : type+""+id});
     	$(res).append(generateDropdownListWithEntry(content));
     	$(res).append(generateOrderByTypes());
@@ -470,6 +546,7 @@ var Generator = function(options){
     }
     
     function generateAndFillOrderBy(type, id, content, value1, value2){
+    	//generate OrderBy And Set Values
     	var elem = generateOrderBy(type, id, content);
 		$(elem).find("select.prop").val(value1);
 		if(value2 != null){ //sorting is optional
@@ -480,12 +557,14 @@ var Generator = function(options){
     }
 
     function generateSelect(type, id, content){
+    	//generate Select
     	var res = $('<p class="selectentry" />', { id : type+""+id});
     	$(res).append(generateDropdownListWithEntry(content));
     	$(res).append(generateDeleteButton());
     	return res;
     }
     function generateAndFillSelect(type, id, content, value){
+    	//generate Select and fill Value
     	var elem = generateSelect(type, id, content);
     		$(elem).find("select.prop").val(value);
     		return elem;
@@ -514,7 +593,8 @@ var Generator = function(options){
     }
 
     function generateDropdownwithAttributes(content){
-    //Generate options
+    //Generate dropdown form given attributes. Check white/blacklist and check alias
+    	try{
     var res = "";
     var res_preferred = "";
     for(const it in content){
@@ -527,9 +607,7 @@ var Generator = function(options){
     		display = true;
     		}else if((Object.keys(blacklist_entity).length > 0 && blacklist_entity.hasOwnProperty(entity) && blacklist_entity[entity].includes(it))){
     			//check for blacklist
-    			display = false;
-    			
-    		//check for blacklist
+    			display = false;    			
     		}else{
     			//no lists
     			display = true;
@@ -543,10 +621,9 @@ var Generator = function(options){
     				res_preferred = res_preferred + "<option content=\""+content[it]['$Type']+"\" value=\""+it+"\">"+displayValue+"</option>";
     			}		
     		}
-    	
+    
     }
     return res_preferred + res;
-
 
     function printDisplayName(it){
     	if(alias_prop.hasOwnProperty(entity) && alias_prop[entity].hasOwnProperty(it)){
@@ -555,12 +632,13 @@ var Generator = function(options){
     		return it;
     	}
     }
+    	}catch(e){console.log(e)};
     }
 
     this.registerEvents = function(){
-    
+    //external Function. Register Events on Created Elements
+    	try{
     $(divelem).on("click", ".delete", function(){
-    	console.log("click");
     	//if orderby -> toggle add button
     	if($(this).parents('#orderby').length > 0){
     		//Toggle orderby-add, when max is achieved
@@ -572,7 +650,6 @@ var Generator = function(options){
     		//disable last - 1 element
     		if($("#filter").find(".filterentry").length > 1){
     			$("#filter").find(".filterentry > .connector").eq(-2).attr("disabled", "true");
-    			console.log("last diabled");
     		}	
     	}
     	$(this).parent('p').remove();
@@ -610,6 +687,11 @@ var Generator = function(options){
     		$("#expand").removeAttr("disabled");
     		$("#refentity").removeAttr("disabled");
     		$("#entityid").attr("disabled", true);
+    		
+    		let val = $("#refentity").val();
+        	val = fetchEntityForContainer(val);
+        	setEntityIDType($("#refentityid"), schema[val])
+    		
     	}else{
     		$("#entityid").removeAttr("disabled");
     		$("#refentityid").attr("disabled", true);
@@ -628,6 +710,15 @@ var Generator = function(options){
     	//if orderby -> toggle add button
     	$("#idcheck-result").html("");
     });
+    $("#refentity").on("change", function(){
+    	//if orderby -> toggle add button
+    	//Ref-Entity uses containers
+    	let val = $("#refentity").val();
+    	val = fetchEntityForContainer(val);
+    	setEntityIDType($("#refentityid"), schema[val])
+    	$("#idcheck-result").html("");
+    });
+    
 
     $("#entity").on("change", function(){
     	//if orderby -> toggle add button
@@ -637,9 +728,9 @@ var Generator = function(options){
     $("#generatequery").on("click", function(){
     	//Parsing the Content can also be done by other libraries
     	try{
-    	console.log("generating query");
     	generateQuery()
     	checkfullUrl();
+    	console.log("Query generated");
     	}catch(ex){
     		console.log("Error while generating query: " + ex);
     	}
@@ -647,13 +738,22 @@ var Generator = function(options){
 
     $("#idcheck > button").on("click", function(){
     	//check function -> not possible,  entityset1 researcher not in schema, just Publications
+    	try{
 		idcheck();
+		console.log("id checked");
+    	}catch(e){
+    		console.log("Error while checking existence of id: " + e);
+    	}
     	});
     
     $("#parsequery").on("click", function(){
     	//Parsing the Content can also be done by other libraries
-    	console.log("parsing query");
-    	parseQueryInt($("#fullurl").val());
+    	try{
+    	parseQueryToForm($("#fullurl").val());
+    	console.log("Querys parsed");
+    	}catch(e){
+    		console.log("Error while parsing query" + e);
+    	}
         });
     
     $("#fullurl").on("change", function(){
@@ -662,10 +762,11 @@ var Generator = function(options){
     	checkfullUrl();
     })
     
-    
+    	}catch(e){console.log(e)};
     } //end registerEvents
     
     function enableRefEntity(){
+    	//Enables Reference Entity Set Elements
 	$("#idcheck-result").html("");
 	if($("#refentitycheck").is(":checked")){
 		$("#refentityid").removeAttr("disabled");
@@ -680,19 +781,17 @@ var Generator = function(options){
 	}
 }
     function checkfullUrl(){
+    	//enable/disable ParseQuery Functionality based on fullurl information
     	if($(divelem).find("#fullurl").val().includes(serviceUrl)){ //TODO: startswith baseUrl + serviceUrl	
     		$("#parsequery").removeAttr("disabled");
-    		console.log("change on fullurl - removed");
     	}else{
     		$(divelem).find("#parsequery").attr("disabled", true);
-    		console.log("change on fullurl - disabled");
     	}
     }
     
     function addFilter(){
+    	 //add new Filter
     	$("#filter").append(generateFilter("filter", $("#filter").find(".filterentry").length+1, prop_filter));
-    //add new Filter
-    	
     	//disable last entry
     	$("#filter").find(".filterentry > .connector").removeAttr("disabled").last().attr("disabled", "true");	
     }
@@ -701,7 +800,6 @@ var Generator = function(options){
     function fetchContainerSetForEntity (ent){
     	//Get Set Representation for the given entity (e.g. Publication -> Publications)
     	//schema -> Container -> EntityContainer -> Type -> namespace.
-    	console.log(ent);
     	if(schema["Container"] && schema["Container"]["\$Kind"] == "EntityContainer"){
     		for(var it in schema["Container"]){
     			if(schema["Container"][it]["\$Type"] == namespace+"."+ent){
@@ -724,7 +822,8 @@ var Generator = function(options){
     
     function isContainerFunction(cont){
     	//check, if given Container is Function
-    	if(schema[cont] && schema[cont]["\$Kind"] == "FunctionImport"){
+    	console.log(schema[cont]);
+    	if(schema[cont] && schema[cont][0]["\$Kind"] == "Function"){
     		return true;
     	}else{
     		return false;
@@ -732,7 +831,8 @@ var Generator = function(options){
     }
 
     function parseFilterToString(val, remain){
-    	//input jquery val 
+    	//input jquery val and serialize these filter contents to string
+    	try{
     	var condition = $(val).find(".condition").val();
     	var type = $(val).find(".type").val();
     	var connector = $(val).find(".connector").val();
@@ -751,11 +851,13 @@ var Generator = function(options){
     		result = result + " " + connector + " ";
     	}
     	return result;
+    	}catch(e){console.log(e)};
     };
     
 function generateQuery(){
 	//Functions for Generating Query
 	//base Url
+	try{
 	var result = returnUrl + serviceUrl;
 	if(functionname != ""){
 	var params = [];
@@ -765,12 +867,22 @@ function generateQuery(){
 			});
 		result = result + functionname + "(" + params.join(",") + ")";
 	}else{
-		//Get Single Property
-		console.log("Single Entity");
 		
+	}
+		//Get Single Property		
 		if(!$("#refentitycheck").is(":checked")){
 			var ent_id = $("#entityid").val();
 			if(ent_id != ""){ //Not fetching set
+				//get first id-key and Format: Int (Default) or String
+				let keyAttr = schema[entity]["\$Key"][0]; 
+				if(schema[entity][keyAttr]["\$Type"] == "Edm.String"){
+					//if String, replace Quotes around it
+					ent_id = ent_id.replace(/["']/g, "");
+					 ent_id = "'" + ent_id +  "'";
+				}else if(schema[entity][keyAttr]["\$Type"].startsWith("Edm.Int")){
+					//replace non-numeric values
+					ent_id = ent_id.replace(/\D/g,'');
+				}
 				ent_id = "(" + ent_id +")";
 			}
 		result = result + fetchContainerSetForEntity(entity) + ent_id;	
@@ -787,7 +899,7 @@ function generateQuery(){
 			}
 			//no need to fetch reference, already written as set.
 		}
-	}
+	
 	//add Options ?
 	var options = [];	
 	
@@ -834,9 +946,11 @@ function generateQuery(){
 	result = result + "?"+options.join("&");
 	}
 	$("#fullurl").val(result);
+}catch(e){console.log(e)}finally{console.log($("#fullurl").val())}
 }
 
 function idcheck(){
+	try{
 	var result = returnUrl + serviceUrl;
 	
 	//check single entity
@@ -845,13 +959,11 @@ function idcheck(){
 	}else{
 	//Get NavigationPathProperty
 		result = result + $("#refentity > option:selected").val() + "("+$("#refentityid").val()+")";
-	//no need to fetch reference, already written as set.
 	}				
 	
 	   var idcheck = $.get(result);
 	   idcheck.done(function(data, status){
 		   console.log(data);
-		   console.log(status);
 		   if (status == 'success'){
 	    	$("#idcheck-result").html("").append(generateDataFromResult(data));
 	    	$("#idcheck-result").css("border", "3px solid green");
@@ -860,7 +972,7 @@ function idcheck(){
 	    }
 	   }).catch(function(err){
 	    	$("#idcheck-result").html("Nicht gefunden").css("border", "3px solid red");	
-		   console.log(err);
+		   console.log("Error occured fetching information for id: " + err);
 	   });
 	//check series
 	
@@ -875,11 +987,11 @@ function idcheck(){
 		}
 		return result.join(" ; ");
 		}
-	
+	}catch(e){console.log(e)};
 }
    
     /*
-     * Pass options when class instantiated
+     * Pass options to construct when class instantiated
      */
     this.construct(options);
 }
