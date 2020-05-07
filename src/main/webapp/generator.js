@@ -156,7 +156,7 @@ var Generator = function(options){
     			Entität / Funktion:
     				<select id="entity">
     				</select>
-    				<label for="entityid">mit Identifikator</label>
+    				<label for="entityid" id="labelforentityid">mit Identifikator</label>
     				<input type="text" id="entityid" name="entityid" placeholder="id oder leer für alle"></input>
     				</div>
     				<div id="refentitypicker">
@@ -167,7 +167,7 @@ var Generator = function(options){
     				<input type="checkbox" id="expand" disabled></input>
     				<label for="expand">Expand (Inkludiere in erste Entität)</label>
     				</div>
-    				<div id="functionpicker"></div>
+    				<div id="functionpicker">Parameter:</div>
     				<div>
     				Filterung <button id="add-filter">[+]</button><p id="filter"></p>
     				</div>
@@ -236,6 +236,8 @@ var Generator = function(options){
 				//Parse the Parameter of the Function
 				fillFunctionPicker(params, pathparts[1].replace(")", "") , functionparam);
 				$("#entityid").val();
+				$("#entityid").hide();
+				$("#labelforentityid").hide();
 				$("#refentityid").val();
 			}
 		
@@ -353,7 +355,10 @@ var Generator = function(options){
     		$("#functionpicker").html("").append(generateFunctionPicker(schema[name], name)).show();
     		$("#refentitypicker").hide();
     		$("#idcheck").hide();
-    		$("#entityid").removeAttr("disabled");
+    		$("#entityid").attr("disabled");
+    		$("#labelforentityid").hide();
+    		$("#entityid").hide()
+    		
     		setEntityIDType($("#entityid"), schema[entity]);
     	}else{
     		//Property
@@ -363,6 +368,10 @@ var Generator = function(options){
     		$("#functionpicker").html("").hide();
     		$("#refentitypicker").show();
     		$("#idcheck").show();
+    		$("#labelforentityid").hide();
+    		$("#entityid").removeAttr("disabled");
+    		$("#entityid").show();
+
     		setEntityIDType($("#entityid"), schema[entity]);
     	}
     	
@@ -382,13 +391,13 @@ var Generator = function(options){
     	try{
     	//Adds OrderBy-Option
     	$("#orderby").append(generateOrderBy("orderby", 1, prop_filter));
-    	}catch(e){console.log(e)};s
+    	}catch(e){console.log(e)};
     }
     function setEntityIDType(elem, schemaentry){
     	//sets the Type of the input of the entityid (String/ID)
     	try{
     	$(elem).attr("type", setEntityType(schemaentry));
-    	}catch(e){console.log(e)};s
+    	}catch(e){console.log(e)};
     }
     
     function setEntityType(schemaentry){
@@ -410,6 +419,7 @@ var Generator = function(options){
     	//Generate Selection for Function based on their attributes
     	try{
     	var res = $('<p class="functionheader '+name+'"/>');
+    	$(res).append("<p>Parameter</p>")
     	for(var it in functionschema[0]["\$Parameter"]){
     		var param = functionschema[0]["\$Parameter"][it];
     		let type = "text";
@@ -419,7 +429,7 @@ var Generator = function(options){
     		$(res).append("<p class='functionparam param-"+it+"' name=\""+param['\$Name']+"\">"+param['\$Name']+": <input type=\'"+type+"\'></input><p>");		
     	}
     	return res;
-    	}catch(e){console.log(e)};s
+    	}catch(e){console.log(e)};
     }
     
     function fillFunctionPicker(functionschema, values, nameofFunction){
@@ -859,18 +869,25 @@ function generateQuery(){
 	//base Url
 	try{
 	var result = returnUrl + serviceUrl;
-	if(functionname != ""){
+	if(functionname != "" && $("#functionpicker").is(":visible")){
 	var params = [];
 		//Assume order of printing of parameters is correct
 		$.each($("."+functionname).find(".functionparam"), function(i, val){
-			params.push($(val).attr("name")+"=\'"+$(val).find("input").val()+"\'");
+			//Print regarding to uses input box
+			if($(val).find("input").attr("type") == "text"){
+				params.push($(val).attr("name")+"=\'"+$(val).find("input").val()+"\'");	
+			}else if ($(val).find("input").attr("type") == "number"){
+				params.push($(val).attr("name")+"="+$(val).find("input").val()+"");
+			}
+			
+			//check type of param
 			});
 		result = result + functionname + "(" + params.join(",") + ")";
 	}else{
 		
 	}
 		//Get Single Property		
-		if(!$("#refentitycheck").is(":checked")){
+		if(!$("#refentitycheck").is(":checked") && $("#entityid").is(":visible")){
 			var ent_id = $("#entityid").val();
 			if(ent_id != ""){ //Not fetching set
 				//get first id-key and Format: Int (Default) or String
@@ -886,7 +903,7 @@ function generateQuery(){
 				ent_id = "(" + ent_id +")";
 			}
 		result = result + fetchContainerSetForEntity(entity) + ent_id;	
-		}else{
+		}else if($("#refentitycheck").is(":checked") && $("#entityid").is(":visible")){
 			//Get NavigationPathProperty
 			var ref_ent_id = $("#refentityid").val();
 			if(ref_ent_id != ""){ //Not fetching set
