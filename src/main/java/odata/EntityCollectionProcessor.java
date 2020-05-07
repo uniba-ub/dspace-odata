@@ -134,7 +134,7 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 					Entity sourceEntity;
 					try {
 						sourceEntity = datahandler.readEntityData(startEdmEntitySet, keyPredicates);
-						entityCollection = datahandler.getRelatedEntityCollection(sourceEntity, targetEntityType);
+						entityCollection = datahandler.getRelatedEntityCollection(sourceEntity, targetEntityType, "");
 
 					} catch (SolrServerException e) {
 						// TODO Auto-generated catch block
@@ -169,6 +169,7 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 			responseEdmEntitySet = datahandler.readFunctionImportEntitySet(uriResourceFunction, serviceMetadata);
 			List<UriParameter> keyPredicates = datahandler.readFunctionImportId(uriResourceFunction);
 			EdmEntitySet startEntitySet=null;
+			String relation = ""; //special String to refine navigationproperty for certain functions
 			if(EdmProviderDSpace.FUNCTION_CSL_FOR_RESEARCHER.equals(uriResourceFunction.getFunctionImport().getName())) {
 				startEntitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Researcher.ES_RESEARCHERS_NAME);
 			} else if(EdmProviderDSpace.FUNCTION_CSL_FOR_ORGUNIT.equals(uriResourceFunction.getFunctionImport().getName())) {
@@ -179,12 +180,15 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 				startEntitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Journal.ES_JOURNALS_NAME);
 			}else if(EdmProviderDSpace.FUNCTION_CSL_FOR_SERIES.equals(uriResourceFunction.getFunctionImport().getName())) {
 				startEntitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Series.ES_SERIES_NAME);
+			}else if(EdmProviderDSpace.FUNCTION_CSL_FOR_SUPERVISOR.equals(uriResourceFunction.getFunctionImport().getName())) {
+				startEntitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Researcher.ES_RESEARCHERS_NAME);
+				relation = "_SUPERVISOR";
 			}
 			EdmEntityType targetEntityType = serviceMetadata.getEdm().getEntityType(Publication.ET_PUBLICATION_FQN);
 			Entity sourceEntity;
 			try {
 				sourceEntity = datahandler.readEntityData(startEntitySet, keyPredicates);
-				entityCollection = datahandler.getRelatedEntityCollection(sourceEntity, targetEntityType);
+				entityCollection = datahandler.getRelatedEntityCollection(sourceEntity, targetEntityType, relation);
 
 					} catch (SolrServerException e) {
 						// TODO Auto-generated catch block

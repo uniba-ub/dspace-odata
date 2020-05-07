@@ -143,7 +143,7 @@ public class QueryOptionService {
 
 							if (navProp.isCollection()) {
 								EntityCollection expandEntityCollection = entityDatabase
-										.getRelatedEntityCollection(entity, expandEdmEntityType);
+										.getRelatedEntityCollection(entity, expandEdmEntityType, "");
 								FilterOption filterItemOption = expandItem.getFilterOption();
 								if (filterItemOption != null) {
 									List<Entity> expandedEntityList = expandEntityCollection.getEntities();
@@ -220,7 +220,7 @@ public class QueryOptionService {
 
 						if (navProp.isCollection()) {
 							EntityCollection expandEntityCollection = entityDatabase
-									.getRelatedEntityCollection(responseEntity, expandEdmEntityType);
+									.getRelatedEntityCollection(responseEntity, expandEdmEntityType, "");
 							ExpandOption expandItemOption = expandItem.getExpandOption();
 
 							FilterOption filterItemOption = expandItem.getFilterOption();

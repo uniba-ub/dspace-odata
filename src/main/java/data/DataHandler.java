@@ -246,7 +246,7 @@ public class DataHandler {
 	
 	// Navigation from EntityCollection to corresponding Entity
 	public Entity getRelatedEntity(Entity entity, EdmEntityType relatedEntityType) throws SolrServerException, IOException {
-		EntityCollection collection = getRelatedEntityCollection(entity, relatedEntityType);
+		EntityCollection collection = getRelatedEntityCollection(entity, relatedEntityType, "");
 		if (collection.getEntities().isEmpty()) {
 			return null;
 		}
@@ -255,11 +255,11 @@ public class DataHandler {
 
 	public Entity getRelatedEntity(Entity entity, EdmEntityType relatedEntityType, List<UriParameter> keyPredicates) throws SolrServerException, IOException {
 
-		EntityCollection relatedEntities = getRelatedEntityCollection(entity, relatedEntityType);
+		EntityCollection relatedEntities = getRelatedEntityCollection(entity, relatedEntityType, "");
 		return Util.findEntity(relatedEntityType, relatedEntities, keyPredicates);
 	}
 
-	public EntityCollection getRelatedEntityCollection(Entity sourceEntity, EdmEntityType targetEntityType) throws SolrServerException, IOException {
+	public EntityCollection getRelatedEntityCollection(Entity sourceEntity, EdmEntityType targetEntityType, String relation) throws SolrServerException, IOException {
 		EntityCollection navigationTargetEntityCollection = new EntityCollection();
 
 			// get ID from Entitiy Source
@@ -280,11 +280,11 @@ public class DataHandler {
 			}
 			
 			String dspaceId = converter.convertODataIDToDSpaceID(entityID, sourceModel.getIDConverterTyp());
-			queryMaker.addSearchFilter((targetModel.getNavigationFilter(sourceModel.getEntitySetName(), dspaceId)));
+			queryMaker.addSearchFilter((targetModel.getNavigationFilter(sourceModel.getEntitySetName()+relation, dspaceId)));
 			String[] reverseRelationArr = Util.calculatereverseRelation(sourceModel, targetModel, sourceEntity, dspaceId,  "reverse");
 			if(reverseRelationArr != null && reverseRelationArr.length > 0 && reverseRelationArr[0] != null && !reverseRelationArr[0].contentEquals("")) {
-			List<String> reverseRelation = Arrays.asList(reverseRelationArr);
-			filterList.addAll(reverseRelation);
+				List<String> reverseRelation = Arrays.asList(reverseRelationArr);
+				filterList.addAll(reverseRelation);
 			}
 			responseDocuments = getQuerriedDataFromSolr(targetModel.getEntitySetName(), keyParams, isEntityCollection, filterList);	
 			navigationTargetEntityCollection = createEntitySet(responseDocuments, targetModel);
@@ -319,6 +319,9 @@ public class DataHandler {
 			  EdmEntitySet entitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Publication.ES_PUBLICATIONS_NAME);
 			  return entitySet;
 		} else if(EdmProviderDSpace.FUNCTION_CSL_FOR_SERIES.equals(uriResourceFunction.getFunctionImport().getName())){
+			  EdmEntitySet entitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Publication.ES_PUBLICATIONS_NAME);
+			  return entitySet;
+		}else if(EdmProviderDSpace.FUNCTION_CSL_FOR_SUPERVISOR.equals(uriResourceFunction.getFunctionImport().getName())){
 			  EdmEntitySet entitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Publication.ES_PUBLICATIONS_NAME);
 			  return entitySet;
 		}
