@@ -92,7 +92,7 @@ public class Researcher implements EntityModel {
 		mapping.put("contact", "crisrp.contact");
 		mapping.put("contacturl", "crisrp.contacturl");
 		mapping.put("contactemail", "crisrp.contactemail");
-		mapping.put("displayname", "crisrp.displayName");
+		mapping.put("displayname", "crisrp.this");
 		mapping.put("description", "crisrp.description");
 		mapping.put("dept", "crisrp.dept");
 		mapping.put("email", "crisrp.email");
