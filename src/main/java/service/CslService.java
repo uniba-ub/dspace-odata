@@ -54,7 +54,6 @@ public class CslService {
 				.language((String) checkValueNull(entity.getProperty("language")))
 				.publisher((String)checkValueNull(entity.getProperty("publisher")))
 				.publisherPlace((String) checkValueNull(entity.getProperty("publisherplace")))
-			
 				.ISSN((String) checkValueNull(entity.getProperty("issn")))
 				.page((String) checkValueNull(entity.getProperty("pages")))
 				.keyword((String) checkValueNull(entity.getProperty("gndsw")))
@@ -87,6 +86,13 @@ public class CslService {
 			} else if((String)checkValueNull(entity.getProperty("multipartTitel"))!=null) {
 				builder.volume((String)entity.getProperty("multipartTitel").getValue());
 			}
+			//
+			if(entity.getProperty("type").getValue().toString().equals("book") && checkValueNull(entity.getProperty("author")) == null) {
+				builder.editor(authorNameSpliter((String) checkValueNull(entity.getProperty("editor"))));
+			}
+			/*
+			 * corporation -> dc.contributor.corporation
+			 * */
 			
 			//TODO: Container Author und Editor (wie kommen die Namen an, müssen diese gesplittet werden?)
 			

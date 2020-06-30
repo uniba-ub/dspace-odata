@@ -92,6 +92,8 @@ public class Publication implements EntityModel {
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty volume= new CsdlProperty().setName("volume")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty editor= new CsdlProperty().setName("editor")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		
 		CsdlProperty publ2rp= new CsdlProperty().setName("publ2rp")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
@@ -112,7 +114,7 @@ public class Publication implements EntityModel {
 
 		entityType = new CsdlEntityType();	
 		entityType.setName(ET_PUBLICATION_NAME);
-		entityType.setProperties(Arrays.asList(id, handle, title, description, type, language, publisher, series, seriesnumber, volume, articlecollectionEditor, articlecollectionTitle, ispartofotherseries, fulltext,subject,publisherPlace,issued,faculty,uriIdentifier,authors,journal,issn,multipartTitel,issue, pages,gndsw, corporation, edition, isbn, thesis, peerreview, csl, publ2journals, publ2ou, publ2pj, publ2rp, publ2series));
+		entityType.setProperties(Arrays.asList(id, handle, title, description, type, language, publisher, series, seriesnumber, volume, articlecollectionEditor, articlecollectionTitle, ispartofotherseries, fulltext,subject,publisherPlace,issued,faculty,uriIdentifier,authors,journal,issn,multipartTitel,issue, pages,gndsw, corporation, edition, isbn, thesis, peerreview, csl, publ2journals, publ2ou, publ2pj, publ2rp, publ2series, editor));
 		entityType.setKey(Collections.singletonList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
@@ -129,6 +131,7 @@ public class Publication implements EntityModel {
 		mapping.put("corporation", "dc.contributor.corporation");
 		mapping.put("description", "dc.description.abstract");
 		mapping.put("edition", "dc.relation.edition");
+		mapping.put("editor", "dc.contributor.editor");
 		mapping.put("faculty","ubg.faculty.org");
 		mapping.put("fulltext", "infofulltext");
 		mapping.put("gndsw","ubg.subject.gndsw");
