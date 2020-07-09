@@ -132,6 +132,12 @@ public class Util {
 		}else if(sourceType.contentEquals("Researchers") && targetType.contentEquals("Orgunits")) {
 			String filterquery = sourceEntity.getProperty("rp2ou").getValue().toString();
 			navigationFilter = reverseQueryGenerator(filterquery, "cris-id");			
+		}else if(sourceType.contentEquals("Awards") && targetType.contentEquals("Awardseries")) {
+			String filterquery = sourceEntity.getProperty("award2awardseries").getValue().toString();
+			navigationFilter = reverseQueryGenerator(filterquery, "cris-id");			
+		}else if(sourceType.contentEquals("Awards") && targetType.contentEquals("Researchers")) {
+			String filterquery = sourceEntity.getProperty("award2rp").getValue().toString();
+			navigationFilter = reverseQueryGenerator(filterquery, "cris-id");			
 		}	
 		}catch(Exception e) {
 			e.printStackTrace();

@@ -15,7 +15,7 @@ public class Awardseries implements EntityModel {
 	
 	public final static String NAMESPACE = "dspace";
 	
-	public static final String ET_AWARDSERIES_NAME = "Awardseries";
+	public static final String ET_AWARDSERIES_NAME = "Awardserie";
 	public static final FullQualifiedName ET_AWARDSERIES_FQN = new FullQualifiedName(NAMESPACE, ET_AWARDSERIES_NAME);
 	public static final String ES_AWARDSERIES_NAME = "Awardseries";
 	public final static String RECOURCE_TYPE_FILTER= "resourcetype_filter:\"awardseries\n|||\nawardseries###crisawardseries\"";
@@ -29,15 +29,15 @@ public class Awardseries implements EntityModel {
 				.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
 		CsdlProperty crisId = new CsdlProperty().setName("cris-id")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty category = new CsdlProperty().setName("category")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty description = new CsdlProperty().setName("description")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty institution = new CsdlProperty().setName("institution")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty name = new CsdlProperty().setName("name")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty url = new CsdlProperty().setName("url")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty year = new CsdlProperty().setName("year")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty category = new CsdlProperty().setName("category")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		
 		// creation of PropertyRef for the key Element
@@ -47,7 +47,7 @@ public class Awardseries implements EntityModel {
 		// configuration of the Entity Type and adding of properties		
 		entityType = new CsdlEntityType();
 		entityType.setName(ET_AWARDSERIES_NAME);
-		entityType.setProperties(Arrays.asList(id, crisId));
+		entityType.setProperties(Arrays.asList(id, crisId, category, description, institution, name, url));
 		entityType.setKey(Collections.singletonList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
@@ -58,10 +58,10 @@ public class Awardseries implements EntityModel {
 		mapping.put("cris-id", "cris-id");
 		mapping.put("description", "crisawardseries.awardseriesdescription");
 		mapping.put("category", "crisawardseries.awardseriescategory");
+		mapping.put("institution", "crisawardseries.awardseriesinstitution");
 		mapping.put("name", "crisawardseries.awardseriesname");
-		mapping.put("url", "crisawardseries.awardseriessurl");
-		mapping.put("year", "crisawardseries.awardseriesinstitution");
-
+		mapping.put("url", "crisawardseries.awardseriesurl");
+		
 	}
 	
 	@Override
