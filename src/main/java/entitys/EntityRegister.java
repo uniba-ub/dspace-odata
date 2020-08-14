@@ -37,68 +37,73 @@ public class EntityRegister {
 		public void registerEntitys() {
 			entityList = new LinkedList<EntityModel>();
 			List<EntityModel> navEntityList = new LinkedList<EntityModel>();
-			Person person = new Person();
-		    entityList.add(person);
+
+			Publication publication = new Publication();
+		    entityList.add(publication);
 		    
-		    Place place = new Place();
-		    entityList.add(place);
-		    
-		    Corporation corp = new Corporation();
-		    entityList.add(corp);
-		    
-		    Family family = new Family();
-		    entityList.add(family);
-		    
-		    navEntityList.add(person);
-		    navEntityList.add(place);
-		    setNavigationPropertyForEntity(corp, navEntityList);
-		    navEntityList = new LinkedList<EntityModel>();
-		    
-		    navEntityList.add(corp);
-		    navEntityList.add(person);
-		    setNavigationPropertyForEntity(place, navEntityList);
-		    navEntityList = new LinkedList<EntityModel>();
-		    
-		    navEntityList.add(corp);
-		    navEntityList.add(place);
-		    navEntityList.add(family);
-		    setNavigationPropertyForEntity(person, navEntityList);
-		    navEntityList = new LinkedList<EntityModel>();
-		    
-		    navEntityList.add(person);
-		    setNavigationPropertyForEntity(family, navEntityList);
-	
-		    Orgunit orgunit = new Orgunit();
+			Researcher researcher = new Researcher();
+			entityList.add(researcher);
+			
+			Orgunit orgunit = new Orgunit();
 		    entityList.add(orgunit);
-    
+		    
+		    Project project = new Project();
+		    entityList.add(project);
+		    
+		    Journal journal = new Journal();
+		    entityList.add(journal);
+		    
+		    Award award = new Award();
+		    entityList.add(award);
+		    
+		    Awardseries awardseries = new Awardseries();
+		    entityList.add(awardseries);
+		    
+		    Series series = new Series();
+		    entityList.add(series);
+		    
+		    navEntityList.add(publication);
+		    navEntityList.add(project);
+		    navEntityList.add(orgunit);
+		    setNavigationPropertyForEntity(researcher, navEntityList);
+		    
+		    navEntityList = new LinkedList<EntityModel>();
+		    navEntityList.add(project);
+		    navEntityList.add(researcher);
+		    navEntityList.add(publication);
+		    navEntityList.add(orgunit);
+		    setNavigationPropertyForEntity(orgunit, navEntityList);
+		    
+		    navEntityList = new LinkedList<EntityModel>();
+		    navEntityList.add(orgunit);
+		    navEntityList.add(researcher);
+		    navEntityList.add(publication);
+		    setNavigationPropertyForEntity(project, navEntityList);
+		    
+		    navEntityList = new LinkedList<EntityModel>();
+		    navEntityList.add(publication);
+		    setNavigationPropertyForEntity(journal, navEntityList);
+		    
+		    navEntityList = new LinkedList<EntityModel>();
+		    navEntityList.add(publication);
+		    setNavigationPropertyForEntity(series, navEntityList);
+		    
+		    navEntityList = new LinkedList<EntityModel>();
+		    navEntityList.add(series);
+		    navEntityList.add(journal);
+		    navEntityList.add(researcher);
+		    navEntityList.add(orgunit);
+		    navEntityList.add(project);
+		    setNavigationPropertyForEntity(publication, navEntityList);
+		    
 		}
 
 		private void registerComplexTypes() {
 			complexPropertyList = new LinkedList<ComplexModel>();
-			
-			Biography biography = new Biography();
-			Publications publications = new Publications();
-			Career career = new Career();
-			Graduation graduation = new Graduation();
-			Home home = new Home();
-			Life life = new Life();
-			Membership membership = new Membership();
-			PeriodOfLife periodOfLife = new PeriodOfLife();
-			SocialRole socialRole = new SocialRole();
-			Study study = new Study();
-			Awards awards = new Awards();
-
-			complexPropertyList.add(biography);
-			complexPropertyList.add(publications);
-			complexPropertyList.add(career);
-			complexPropertyList.add(graduation);
-			complexPropertyList.add(home);
-			complexPropertyList.add(life);
-			complexPropertyList.add(membership);
-			complexPropertyList.add(periodOfLife);
-			complexPropertyList.add(socialRole);
-			complexPropertyList.add(study);
-			complexPropertyList.add(awards);
+			Funding funding = new Funding();
+			Partnership partnership = new Partnership();
+			complexPropertyList.add(funding);
+			complexPropertyList.add(partnership);
 		}
 		
 		public List<CsdlEntityType> getEntityTypeList() {
