@@ -147,6 +147,7 @@ public class DataHandler {
 		HashMap<String, String> mapping = entity.getMapping();
 		StringBuilder builder = new StringBuilder();
 		String itemType;
+
 		for(CsdlProperty item: entity.getEntityType().getProperties()) {
 			if(item.getName().equals("id")) {
 				if(entity.getEntityType().getName().toString().equals("Publication")) {
@@ -306,6 +307,7 @@ public class DataHandler {
 	}	
 	
 	public EdmEntitySet readFunctionImportEntitySet(final UriResourceFunction uriResourceFunction, final ServiceMetadata serviceMetadata) throws ODataApplicationException {
+		/*
 		if(EdmProviderDSpace.FUNCTION_CSL_FOR_RESEARCHER.equals(uriResourceFunction.getFunctionImport().getName())){
 			  EdmEntitySet entitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Publication.ES_PUBLICATIONS_NAME);
 			  return entitySet;
@@ -325,6 +327,7 @@ public class DataHandler {
 			  EdmEntitySet entitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Publication.ES_PUBLICATIONS_NAME);
 			  return entitySet;
 		}
+		*/
 		return null;
 	}	
 	
