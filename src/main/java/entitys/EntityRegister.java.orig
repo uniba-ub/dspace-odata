@@ -67,14 +67,102 @@ public class EntityRegister {
 		    
 		    navEntityList.add(person);
 		    setNavigationPropertyForEntity(family, navEntityList);
-	
-		    Orgunit orgunit = new Orgunit();
+		    
+		    
+		    
+			/*
+			 *
+			 
+
+<<<<<<< HEAD
+			Publication publication = new Publication();
+		    entityList.add(publication);
+		    
+			Researcher researcher = new Researcher();
+			entityList.add(researcher);
+=======
+			Person person = new Person();
+			entityList.add(person);
+			
+			Place place = new Place();
+			entityList.add(place);
+>>>>>>> refs/remotes/origin/profkat
+			
+			Orgunit orgunit = new Orgunit();
+<<<<<<< HEAD
 		    entityList.add(orgunit);
-    
+		    
+		    Project project = new Project();
+		    entityList.add(project);
+		    
+		    Journal journal = new Journal();
+		    entityList.add(journal);
+		    
+		    Award award = new Award();
+		    entityList.add(award);
+		    
+		    Awardseries awardseries = new Awardseries();
+		    entityList.add(awardseries);
+		    
+		    Series series = new Series();
+		    entityList.add(series);
+		    
+=======
+			entityList.add(orgunit);
+		
+/*		    
+>>>>>>> refs/remotes/origin/profkat
+		    navEntityList.add(publication);
+		    navEntityList.add(project);
+		    navEntityList.add(orgunit);
+		    setNavigationPropertyForEntity(researcher, navEntityList);
+		    
+		    navEntityList = new LinkedList<EntityModel>();
+		    navEntityList.add(project);
+		    navEntityList.add(researcher);
+		    navEntityList.add(publication);
+		    navEntityList.add(orgunit);
+		    setNavigationPropertyForEntity(orgunit, navEntityList);
+<<<<<<< HEAD
+		    
+		    navEntityList = new LinkedList<EntityModel>();
+		    navEntityList.add(orgunit);
+		    navEntityList.add(researcher);
+		    navEntityList.add(publication);
+		    setNavigationPropertyForEntity(project, navEntityList);
+		    
+		    navEntityList = new LinkedList<EntityModel>();
+		    navEntityList.add(publication);
+		    setNavigationPropertyForEntity(journal, navEntityList);
+		    
+		    navEntityList = new LinkedList<EntityModel>();
+		    navEntityList.add(publication);
+		    setNavigationPropertyForEntity(series, navEntityList);
+		    
+		    navEntityList = new LinkedList<EntityModel>();
+		    navEntityList.add(series);
+		    navEntityList.add(journal);
+		    navEntityList.add(researcher);
+		    navEntityList.add(orgunit);
+		    navEntityList.add(project);
+		    setNavigationPropertyForEntity(publication, navEntityList);
+		    */
+=======
+*/		    
+>>>>>>> refs/remotes/origin/profkat
 		}
 
 		private void registerComplexTypes() {
 			complexPropertyList = new LinkedList<ComplexModel>();
+<<<<<<< HEAD
+			//TODO: register comlex types for profkat
+			/*
+			Funding funding = new Funding();
+			Partnership partnership = new Partnership();
+			complexPropertyList.add(funding);
+			complexPropertyList.add(partnership)
+			*/
+=======
 			
 			Biography biography = new Biography();
 			Publications publications = new Publications();
@@ -99,6 +187,7 @@ public class EntityRegister {
 			complexPropertyList.add(socialRole);
 			complexPropertyList.add(study);
 			complexPropertyList.add(awards);
+>>>>>>> refs/remotes/origin/profkat
 		}
 		
 		public List<CsdlEntityType> getEntityTypeList() {

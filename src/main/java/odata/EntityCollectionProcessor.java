@@ -162,14 +162,17 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 			
 			
 
-		}
+		} //uncomment total function stuff
+		/*
 		else if(firstUriResourceSegment instanceof UriResourceFunction) {
 			final UriResourceFunction uriResourceFunction = (UriResourceFunction) firstUriResourceSegment;	
+			
 			String cslStyle = datahandler.readFunctionImportStyle(uriResourceFunction);
 			responseEdmEntitySet = datahandler.readFunctionImportEntitySet(uriResourceFunction, serviceMetadata);
 			List<UriParameter> keyPredicates = datahandler.readFunctionImportId(uriResourceFunction);
 			EdmEntitySet startEntitySet=null;
 			String relation = ""; //special String to refine navigationproperty for certain functions
+			
 			if(EdmProviderDSpace.FUNCTION_CSL_FOR_RESEARCHER.equals(uriResourceFunction.getFunctionImport().getName())) {
 				startEntitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Researcher.ES_RESEARCHERS_NAME);
 			} else if(EdmProviderDSpace.FUNCTION_CSL_FOR_ORGUNIT.equals(uriResourceFunction.getFunctionImport().getName())) {
@@ -185,7 +188,9 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 				relation = "_SUPERVISOR";
 			}
 			EdmEntityType targetEntityType = serviceMetadata.getEdm().getEntityType(Publication.ET_PUBLICATION_FQN);
+			
 			Entity sourceEntity;
+			
 			try {
 				sourceEntity = datahandler.readEntityData(startEntitySet, keyPredicates);
 				entityCollection = datahandler.getRelatedEntityCollection(sourceEntity, targetEntityType, relation);
@@ -215,7 +220,7 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 						e.printStackTrace();
 					}		
 				
-			} 	
+			} */	
 		else {
 			throw new ODataApplicationException("Only EntitySet is supported",
 					HttpStatusCode.NOT_IMPLEMENTED.getStatusCode(), Locale.ROOT);
@@ -233,6 +238,7 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 			e.printStackTrace();
 		}
 		 
+
 
 		EdmEntityType edmEntityType = responseEdmEntitySet.getEntityType();
 		String selectList = odata.createUriHelper().buildContextURLSelectList(edmEntityType, expandOption,
@@ -254,7 +260,6 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 		response.setContent(serializedContent);
 		response.setStatusCode(HttpStatusCode.OK.getStatusCode());
 		response.setHeader(HttpHeader.CONTENT_TYPE, responseFormat.toContentTypeString());
-
 	}
 
 }

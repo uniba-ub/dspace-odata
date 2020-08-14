@@ -108,6 +108,7 @@ public class Util {
 		}
 		String sourceType = sourceModel.getEntitySetName();
 		String targetType = targetModel.getEntitySetName();
+		/*
 		if(sourceType.contentEquals("Projects") && targetType.contentEquals("Researchers")) {
 			String filterquery = sourceEntity.getProperty("pj2rp").getValue().toString();
 			navigationFilter = reverseQueryGenerator(filterquery, "cris-id");			
@@ -132,7 +133,35 @@ public class Util {
 		}else if(sourceType.contentEquals("Researchers") && targetType.contentEquals("Orgunits")) {
 			String filterquery = sourceEntity.getProperty("rp2ou").getValue().toString();
 			navigationFilter = reverseQueryGenerator(filterquery, "cris-id");			
-		}	
+		}
+		*/	
+		//TODO: define reverse navigationPaths
+		/*
+		if(sourceType.contentEquals("") && targetType.contentEquals("Orgunits")) {
+			String filterquery = sourceEntity.getProperty("pj2rp").getValue().toString();
+			navigationFilter = reverseQueryGenerator(filterquery, "cris-id");			
+		}else if(sourceType.contentEquals("Orgunits") && targetType.contentEquals("Places")) {
+			String filterquery = sourceEntity.getProperty("pj2ou").getValue().toString();
+			navigationFilter = reverseQueryGenerator(filterquery, "cris-id");				
+		}else if(sourceType.contentEquals("Persons") && targetType.contentEquals("Places")) {
+			String filterquery = sourceEntity.getProperty("publ2rp").getValue().toString();
+			navigationFilter = reverseQueryGenerator(filterquery, "cris-id");			
+		}*/
+		if(sourceType.contentEquals("Corporations") && targetType.contentEquals("Places")) {
+			String filterquery = sourceEntity.getProperty("ou2place").getValue().toString();
+			navigationFilter = reverseQueryGenerator(filterquery, "cris-id");			
+		}
+		/*else if(sourceType.contentEquals("Corporations") && targetType.contentEquals("Persons")) {
+			String filterquery = sourceEntity.getProperty("person2ou").getValue().toString();
+			navigationFilter = reverseQueryGenerator(filterquery, "cris-id");			
+		}*/else if(sourceType.contentEquals("Persons") && targetType.contentEquals("Places")) {
+			String filterquery = sourceEntity.getProperty("person2place").getValue().toString();
+			navigationFilter = reverseQueryGenerator(filterquery, "cris-id");			
+		}else if(sourceType.contentEquals("Persons") && targetType.contentEquals("Corporations")) {
+			String filterquery = sourceEntity.getProperty("person2ou").getValue().toString();
+			navigationFilter = reverseQueryGenerator(filterquery, "cris-id");			
+		}
+		
 		}catch(Exception e) {
 			e.printStackTrace();
 			return null;
