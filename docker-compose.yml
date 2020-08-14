@@ -12,10 +12,10 @@ services:
 #    build:
 #      context: ./
 #      dockerfile: Dockerfile
-    image: ${CI_REGISTRY_IMAGE:-docker-registry.rz.uni-bamberg.de/itfl-service/fis/professorenkatalog/deploy_profkat/odata:latest}
+    image: ${CI_REGISTRY_IMAGE:-docker-registry.rz.uni-bamberg.de/itfl-service/hydra/odata:latest}
     environment:
       CATALINA_OPTS: "-Dorg.apache.el.parser.SKIP_IDENTIFIER_CHECK=true -Xmx2048m -Xms2048m -XX:MaxPermSize=512m"
-	  SOLR_URL: "https://professorenkatalog.uni-bamberg.de/solr/search"
+	  SOLR_URL: "https://fis.uni-bamberg.de/solr/search"
     ports:
       - "8080:8080"
 

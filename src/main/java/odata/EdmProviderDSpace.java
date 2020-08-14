@@ -26,14 +26,13 @@ import entitys.Publication;
 public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 
 	// Service Namespace
-	public final static String NAMESPACE = "profkat";
+	public final static String NAMESPACE = "dspace";
 
 	// EDM Container
 	public final static String CONTAINER_NAME = "Container";
 	public static final FullQualifiedName CONTAINER = new FullQualifiedName(NAMESPACE, CONTAINER_NAME);
 	
 	//Functions
-	/*
 	public static final String FUNCTION_CSL_FOR_RESEARCHER = "cslforresearcher";
 	public static final FullQualifiedName FUNCTION_CSL_FOR_RESEARCHER_FQN = new FullQualifiedName(NAMESPACE, FUNCTION_CSL_FOR_RESEARCHER);
 
@@ -51,7 +50,7 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 
 	public static final String FUNCTION_CSL_FOR_SUPERVISOR = "cslforsupervisor";
 	public static final FullQualifiedName FUNCTION_CSL_FOR_SUPERVISOR_FQN = new FullQualifiedName(NAMESPACE, FUNCTION_CSL_FOR_SUPERVISOR);
-*/
+
 	
 	public EntityRegister entityRegister;
 	
@@ -73,14 +72,13 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 		entityContainer.setName(CONTAINER_NAME);
 		entityContainer.setEntitySets(entitySets);
 		
-		/*
 		//create function
 		List<CsdlFunctionImport> functionImports = new LinkedList<CsdlFunctionImport>();
 		functionImports.add(getFunctionImport(CONTAINER, FUNCTION_CSL_FOR_RESEARCHER));
 		
 
 		entityContainer.setFunctionImports(functionImports);
-		*/
+		
 		return entityContainer;
 	}
 
@@ -143,14 +141,13 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 		
 		//add function
 		List<CsdlFunction> functions = new LinkedList<CsdlFunction>();
-		/*
 		functions.addAll(getFunctions(FUNCTION_CSL_FOR_RESEARCHER_FQN));
 		functions.addAll(getFunctions(FUNCTION_CSL_FOR_ORGUNIT_FQN));
 		functions.addAll(getFunctions(FUNCTION_CSL_FOR_PROJECT_FQN));
 		functions.addAll(getFunctions(FUNCTION_CSL_FOR_JOURNAL_FQN));
 		functions.addAll(getFunctions(FUNCTION_CSL_FOR_SERIES_FQN));
 		functions.addAll(getFunctions(FUNCTION_CSL_FOR_SUPERVISOR_FQN));
-*/
+
 		schema.setFunctions(functions);
 		
 		
@@ -165,7 +162,6 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 	
 	@Override 
 	public List<CsdlFunction> getFunctions(final FullQualifiedName functionName){
-		/*
 		if(functionName.equals(FUNCTION_CSL_FOR_RESEARCHER_FQN)) {
 			
 			final List<CsdlFunction> functions = new LinkedList<CsdlFunction>();
@@ -353,13 +349,11 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 			
 			return functions;
 		}
-		*/
 		return null;
 	}
 	
 	@Override
 	public CsdlFunctionImport getFunctionImport(FullQualifiedName entityContainer, String functionImportName) {
-		/*
 		if(entityContainer.equals(CONTAINER)) {
 			if(functionImportName.equals(FUNCTION_CSL_FOR_RESEARCHER_FQN.getName())) {
 				return new CsdlFunctionImport()
@@ -398,7 +392,7 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 						.setEntitySet(Publication.ES_PUBLICATIONS_NAME)
 						.setIncludeInServiceDocument(true);		
 			}
-		}*/
+		}
 		return null;
 	}
 }
