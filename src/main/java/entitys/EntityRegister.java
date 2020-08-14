@@ -37,6 +37,42 @@ public class EntityRegister {
 		public void registerEntitys() {
 			entityList = new LinkedList<EntityModel>();
 			List<EntityModel> navEntityList = new LinkedList<EntityModel>();
+			Person person = new Person();
+		    entityList.add(person);
+		    
+		    Place place = new Place();
+		    entityList.add(place);
+		    
+		    Corporation corp = new Corporation();
+		    entityList.add(corp);
+		    
+		    Family family = new Family();
+		    entityList.add(family);
+		    
+		    navEntityList.add(person);
+		    navEntityList.add(place);
+		    setNavigationPropertyForEntity(corp, navEntityList);
+		    navEntityList = new LinkedList<EntityModel>();
+		    
+		    navEntityList.add(corp);
+		    navEntityList.add(person);
+		    setNavigationPropertyForEntity(place, navEntityList);
+		    navEntityList = new LinkedList<EntityModel>();
+		    
+		    navEntityList.add(corp);
+		    navEntityList.add(place);
+		    navEntityList.add(family);
+		    setNavigationPropertyForEntity(person, navEntityList);
+		    navEntityList = new LinkedList<EntityModel>();
+		    
+		    navEntityList.add(person);
+		    setNavigationPropertyForEntity(family, navEntityList);
+		    
+		    
+		    
+			/*
+			 *
+			 
 
 			Publication publication = new Publication();
 		    entityList.add(publication);
@@ -95,15 +131,18 @@ public class EntityRegister {
 		    navEntityList.add(orgunit);
 		    navEntityList.add(project);
 		    setNavigationPropertyForEntity(publication, navEntityList);
-		    
+		    */
 		}
 
 		private void registerComplexTypes() {
 			complexPropertyList = new LinkedList<ComplexModel>();
+			//TODO: register comlex types for profkat
+			/*
 			Funding funding = new Funding();
 			Partnership partnership = new Partnership();
 			complexPropertyList.add(funding);
-			complexPropertyList.add(partnership);
+			complexPropertyList.add(partnership)
+			*/
 		}
 		
 		public List<CsdlEntityType> getEntityTypeList() {
