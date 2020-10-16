@@ -95,11 +95,13 @@ public class EntityRegister {
 		    navEntityList.add(researcher);
 		    navEntityList.add(orgunit);
 		    navEntityList.add(project);
+		    navEntityList.add(awards);
 		    setNavigationPropertyForEntity(publication, navEntityList);
 		    
 		    navEntityList = new LinkedList<EntityModel>();
 		    navEntityList.add(researcher);
 		    navEntityList.add(awardseries);
+		    navEntityList.add(publication);
 		    setNavigationPropertyForEntity(awards, navEntityList);
 		    
 		    navEntityList = new LinkedList<EntityModel>();
