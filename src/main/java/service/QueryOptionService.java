@@ -1,8 +1,12 @@
 package service;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -294,6 +298,33 @@ public class QueryOptionService {
 									propertyValue2 = prop2.getValue().toString();
 								}
 								compareResult = propertyValue1.compareTo(propertyValue2);
+							} else if(type.contentEquals("Edm.DateTimeOffset")) {
+								Date propertyValue1 = null;  
+								Date propertyValue2 = null;
+								Property prop1 = entity1.getProperty(sortPropertyName);
+								Property prop2 = entity2.getProperty(sortPropertyName);
+								
+								DateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+								if(prop1 != null && !prop1.isNull()) {
+								try {
+									propertyValue1 = sdf.parse(prop1.getValue().toString());
+								} catch(ParseException pe) {
+									pe.printStackTrace();
+								}
+								}
+								
+								if(prop2 != null && !prop2.isNull()) {
+								try {
+									propertyValue2 = sdf.parse(prop2.getValue().toString());
+								}catch(ParseException pe) {
+									pe.printStackTrace();
+								}
+								}
+								
+								if(propertyValue1 != null && propertyValue2 != null) {
+								compareResult = propertyValue1.compareTo(propertyValue2);
+								}
+								
 							}
 							if (orderByItem.isDescending()) {
 								return -compareResult;
@@ -351,6 +382,31 @@ public class QueryOptionService {
 									propertyValue2 = prop2.getValue().toString();
 								}
 								compareResult = propertyValue1.compareTo(propertyValue2);
+							}else if(type.contentEquals("Edm.DateTimeOffset")) {
+								Date propertyValue1 = null;  
+								Date propertyValue2 = null;
+								Property prop1 = entity1.getProperty(sortPropertyName);
+								Property prop2 = entity2.getProperty(sortPropertyName);
+								
+								DateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+								if(prop1 != null && !prop1.isNull()) {
+								try {
+									propertyValue1 = sdf.parse(prop1.getValue().toString());
+								} catch(ParseException pe) {
+									pe.printStackTrace();
+								}
+								}
+								if(prop2 != null && !prop2.isNull()) {
+								try {
+									propertyValue2 = sdf.parse(prop2.getValue().toString());
+								}catch(ParseException pe) {
+									pe.printStackTrace();
+								}
+								}
+								if(propertyValue1 != null && propertyValue2 != null) {
+								compareResult = propertyValue1.compareTo(propertyValue2);
+								}
+								
 							}
 							if (compareResult == 0) {
 								// first value is the same, compare second value
@@ -375,6 +431,33 @@ public class QueryOptionService {
 										return -compareResult;
 									}
 									return compareResult;
+								}else if(type.contentEquals("Edm.DateTimeOffset")) {
+									Date propertyValue3 = null;  
+									Date propertyValue4 = null;
+									Property prop3 = entity1.getProperty(sortPropertyName);
+									Property prop4 = entity2.getProperty(sortPropertyName);
+									
+									DateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+									if(prop3 != null && !prop3.isNull()) {
+									try {
+										propertyValue3 = sdf.parse(prop3.getValue().toString());
+									} catch(ParseException pe) {
+										pe.printStackTrace();
+									}
+									}
+									
+									if(prop4 != null && !prop4.isNull()) {
+									try {
+										propertyValue4 = sdf.parse(prop4.getValue().toString());
+									}catch(ParseException pe) {
+										pe.printStackTrace();
+									}
+									}
+									
+									if(propertyValue3 != null && propertyValue4 != null) {
+									compareResult = propertyValue3.compareTo(propertyValue4);
+									}
+									
 								}
 							}
 							if (orderByItem.isDescending()) {
