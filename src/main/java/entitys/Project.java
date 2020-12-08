@@ -74,7 +74,7 @@ public class Project implements EntityModel{
 
 		entityType = new CsdlEntityType();
 		entityType.setName(ET_PROJECT_NAME);
-		entityType.setProperties(Arrays.asList(id,crisId, title, abstracts, principalinvestigator, coinvestigators, budget, startDate, endDate, projectarea,acronym,keywords,status, url,funding, partnership, researchprofile, createdate pj2rp, pj2ou));
+		entityType.setProperties(Arrays.asList(id,crisId, title, abstracts, principalinvestigator, coinvestigators, budget, startDate, endDate, projectarea,acronym,keywords,status, url,funding, partnership, researchprofile, createdate, pj2rp, pj2ou));
 		entityType.setKey(Arrays.asList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
