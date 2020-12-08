@@ -3,10 +3,15 @@ package data;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.olingo.commons.api.data.ComplexValue;
 import org.apache.olingo.commons.api.data.Entity;
@@ -181,7 +186,20 @@ public class DataHandler {
 					} else if(itemType.equals("Int32")|itemType.equals("Int16")| itemType.equals("Boolean")) {
 						property = new Property(null, item.getName(), ValueType.PRIMITIVE, solrDocument.getFirstValue(mapping.get(item.getName())));
 						propertyList.add(property);
-					} 
+					} else if(itemType.equals("DateTimeOffset") | itemType.contentEquals("DateTime")) {
+						//transform from Solr-value to datetime
+						try {
+						DateFormat dateFormat = new SimpleDateFormat(
+					            "EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
+						Date date = dateFormat.parse((solrDocument.getFirstValue(mapping.get(item.getName()))).toString());
+						property = new Property(null, item.getName(), ValueType.PRIMITIVE, date);
+						propertyList.add(property);
+						}catch (ParseException e) {
+							// TODO: handle exception
+						}catch(Exception e) {
+							
+						}
+					}
 				} else if(entityRegister.getComplexTypeNameList().contains(itemType)){
 					int idOfSolrObject = (Integer) solrDocument.getFieldValue("search.resourceid");
 					for (ComplexModel complexProperty:entityRegister.getComplexProperties()) {
