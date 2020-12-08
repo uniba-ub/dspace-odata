@@ -5,7 +5,7 @@
 	<groupId>api</groupId>
 	<artifactId>ODataService</artifactId>
 	<packaging>war</packaging>
-	<version>4.6.0</version>
+	<version>4.7.1</version>
 	<name>ODataService Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 	<properties>
@@ -92,7 +92,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
+			<version>4.13.1</version>
 			<scope>test</scope>
 		</dependency>
 				
