@@ -37,7 +37,7 @@ public class Project implements EntityModel{
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
 		CsdlProperty coinvestigators = new CsdlProperty().setName("coinvestigators")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty code = new CsdlProperty().setName("code")
+		CsdlProperty acronym = new CsdlProperty().setName("acronym")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
 		CsdlProperty endDate = new CsdlProperty().setName("expdate")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
@@ -54,6 +54,8 @@ public class Project implements EntityModel{
 		CsdlProperty title = new CsdlProperty().setName("title")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty url = new CsdlProperty().setName("url")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty researchprofile = new CsdlProperty().setName("researchprofile")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty createdate = new CsdlProperty().setName("createdate")
 				.setType(EdmPrimitiveTypeKind.DateTimeOffset.getFullQualifiedName());
@@ -72,7 +74,7 @@ public class Project implements EntityModel{
 
 		entityType = new CsdlEntityType();
 		entityType.setName(ET_PROJECT_NAME);
-		entityType.setProperties(Arrays.asList(id,crisId, title, abstracts, principalinvestigator, coinvestigators, budget, startDate, endDate, projectarea,code,keywords,status, url,funding, partnership, createdate, pj2rp, pj2ou));
+		entityType.setProperties(Arrays.asList(id,crisId, title, abstracts, principalinvestigator, coinvestigators, budget, startDate, endDate, projectarea,acronym,keywords,status, url,funding, partnership, researchprofile, createdate pj2rp, pj2ou));
 		entityType.setKey(Arrays.asList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
@@ -83,12 +85,13 @@ public class Project implements EntityModel{
 		mapping.put("cris-id", "cris-id");
 		mapping.put("abstract", "crisproject.abstract");
 		mapping.put("budget", "crisproject.budget");
-		mapping.put("code", "crisproject.code");
+		mapping.put("acronym", "crisproject.acronym");
 		mapping.put("coinvestigators", "crisproject.coinvestigators");
 		mapping.put("expdate", "crisproject.expdate");
 		mapping.put("keywords", "crisproject.keywords");
 		mapping.put("principalinvestigator", "crisproject.principalinvestigator");
 		mapping.put("projectarea", "crisproject.projectArea");
+		mapping.put("researchprofile", "crisproject.researchProfileUniBa");
 		mapping.put("startdate", "crisproject.startdate");
 		mapping.put("status", "crisproject.status");
 		mapping.put("title", "crisproject.title");

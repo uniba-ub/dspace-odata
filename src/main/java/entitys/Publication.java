@@ -105,6 +105,8 @@ public class Publication implements EntityModel {
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty publ2ou= new CsdlProperty().setName("publ2ou")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty publ2awards= new CsdlProperty().setName("publ2award")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		//creation of PropertyRef for the key Element
 
 		CsdlPropertyRef propertyRef = new CsdlPropertyRef();
@@ -114,7 +116,7 @@ public class Publication implements EntityModel {
 
 		entityType = new CsdlEntityType();	
 		entityType.setName(ET_PUBLICATION_NAME);
-		entityType.setProperties(Arrays.asList(id, handle, title, description, type, language, publisher, series, seriesnumber, volume, articlecollectionEditor, articlecollectionTitle, ispartofotherseries, fulltext,subject,publisherPlace,issued,faculty,uriIdentifier,authors,journal,issn,multipartTitel,issue, pages,gndsw, corporation, edition, isbn, thesis, peerreview, csl, publ2journals, publ2ou, publ2pj, publ2rp, publ2series, editor));
+		entityType.setProperties(Arrays.asList(id, handle, title, description, type, language, publisher, series, seriesnumber, volume, articlecollectionEditor, articlecollectionTitle, ispartofotherseries, fulltext,subject,publisherPlace,issued,faculty,uriIdentifier,authors,journal,issn,multipartTitel,issue, pages,gndsw, corporation, edition, isbn, thesis, peerreview, csl, publ2journals, publ2ou, publ2pj, publ2rp, publ2series, publ2awards, editor));
 		entityType.setKey(Collections.singletonList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
@@ -160,9 +162,8 @@ public class Publication implements EntityModel {
 		mapping.put("publ2journals", "dc.relation.ispartofseries_authority");
 		mapping.put("publ2pj", "ubg.relation.project_authority");
 		mapping.put("publ2ou", "ubg.faculty.org_authority");
+		mapping.put("publ2award", "ubg.relation.award_authority");
 
-
-	
 	}
 
 	public CsdlEntityType getEntityType() {
@@ -211,7 +212,10 @@ public class Publication implements EntityModel {
 		} else if(sourceType.equals("Projects")) {
 			navigationFilter = ("ubg.relation.project_authority:\"");
 			navigationFilter = (navigationFilter+id+"\"");
-		} 
+		} else if(sourceType.equals("Awards")) {
+			navigationFilter = ("ubg.relation.award_authority:\"");
+			navigationFilter = (navigationFilter+id+"\"");
+		}  
 		
 			return navigationFilter;
 	}

@@ -11,7 +11,7 @@ import org.apache.olingo.commons.api.edm.provider.CsdlEntityType;
 import org.apache.olingo.commons.api.edm.provider.CsdlProperty;
 import org.apache.olingo.commons.api.edm.provider.CsdlPropertyRef;
 
-public class Award implements EntityModel {
+public class Awards implements EntityModel {
 	
 	public final static String NAMESPACE = "dspace";
 	
@@ -24,18 +24,31 @@ public class Award implements EntityModel {
 	private CsdlEntitySet entitySet;
 	private HashMap<String, String> mapping;
 	
-	public Award() {
+	public Awards() {
 		CsdlProperty id = new CsdlProperty().setName("id")
 				.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
 		CsdlProperty crisId = new CsdlProperty().setName("cris-id")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty awardseries = new CsdlProperty().setName("awardseries")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty category = new CsdlProperty().setName("category")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty description = new CsdlProperty().setName("description")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty name = new CsdlProperty().setName("name")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty person = new CsdlProperty().setName("person")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty publication = new CsdlProperty().setName("publication")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty url = new CsdlProperty().setName("url")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty year = new CsdlProperty().setName("year")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		//The following properties are used for holding authority Keys to other entities
+		CsdlProperty award2awardseries = new CsdlProperty().setName("award2awardseries")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty award2rp = new CsdlProperty().setName("award2rp")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		
 		
@@ -46,7 +59,7 @@ public class Award implements EntityModel {
 		// configuration of the Entity Type and adding of properties		
 		entityType = new CsdlEntityType();
 		entityType.setName(ET_AWARD_NAME);
-		entityType.setProperties(Arrays.asList(id, crisId));
+		entityType.setProperties(Arrays.asList(id, crisId, awardseries, category, description, person, publication, name, url, year, award2rp, award2awardseries));
 		entityType.setKey(Collections.singletonList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
@@ -55,10 +68,19 @@ public class Award implements EntityModel {
 			
 		mapping = new HashMap<String, String>();
 		mapping.put("cris-id", "cris-id");
+		mapping.put("category", "crisawards.awardseries.category");
 		mapping.put("description", "crisawards.awardsdescription");
 		mapping.put("name", "crisawards.awardsname");
 		mapping.put("url", "crisawards.awardsurl");
 		mapping.put("year", "crisawards.awardsyear");
+		mapping.put("person", "crisawards.awardsperson");
+		mapping.put("publication", "crisawards.awardspublication");
+		mapping.put("awardseries", "crisawards.awardseries");
+		mapping.put("publication", "crisawards.awardspublication");
+		
+		mapping.put("award2awardseries", "crisawards.awardseries_authority");
+		mapping.put("award2rp", "crisawards.awardsperson_authority");
+		//mapping.put("award2publ", "crisawards.awardsperson_authority");
 
 	}
 	
@@ -95,7 +117,14 @@ public class Award implements EntityModel {
 	@Override
 	public String getNavigationFilter(String sourceType, String id) {
 		// TODO Auto-generated method stub
-		return null;
+		String navigationFilter = "";
+		if(sourceType.equals("Awardseries")) {
+			navigationFilter = ("crisawards.awardseries_authority:\""+id+"\"");
+		}
+		if(sourceType.equals("Researchers")) {
+			navigationFilter = ("crisawards.awardsperson_authority:\""+id+"\"");
+		}	
+		return navigationFilter;
 	}
 
 	@Override

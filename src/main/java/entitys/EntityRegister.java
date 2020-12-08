@@ -53,8 +53,8 @@ public class EntityRegister {
 		    Journal journal = new Journal();
 		    entityList.add(journal);
 		    
-		    Award award = new Award();
-		    entityList.add(award);
+		    Awards awards = new Awards();
+		    entityList.add(awards);
 		    
 		    Awardseries awardseries = new Awardseries();
 		    entityList.add(awardseries);
@@ -65,6 +65,7 @@ public class EntityRegister {
 		    navEntityList.add(publication);
 		    navEntityList.add(project);
 		    navEntityList.add(orgunit);
+		    navEntityList.add(awards);
 		    setNavigationPropertyForEntity(researcher, navEntityList);
 		    
 		    navEntityList = new LinkedList<EntityModel>();
@@ -94,7 +95,18 @@ public class EntityRegister {
 		    navEntityList.add(researcher);
 		    navEntityList.add(orgunit);
 		    navEntityList.add(project);
+		    navEntityList.add(awards);
 		    setNavigationPropertyForEntity(publication, navEntityList);
+		    
+		    navEntityList = new LinkedList<EntityModel>();
+		    navEntityList.add(researcher);
+		    navEntityList.add(awardseries);
+		    navEntityList.add(publication);
+		    setNavigationPropertyForEntity(awards, navEntityList);
+		    
+		    navEntityList = new LinkedList<EntityModel>();
+		    navEntityList.add(awards);
+		    setNavigationPropertyForEntity(awardseries, navEntityList);
 		    
 		}
 
