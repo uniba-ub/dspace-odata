@@ -116,6 +116,14 @@ public class EntityRegister {
 			Partnership partnership = new Partnership();
 			complexPropertyList.add(funding);
 			complexPropertyList.add(partnership);
+			Affiliation affiliation = new Affiliation();
+			Activity activity = new Activity();
+			Career career = new Career();
+			Education education = new Education();
+			complexPropertyList.add(affiliation);
+			complexPropertyList.add(activity);
+			complexPropertyList.add(career);
+			complexPropertyList.add(education);
 		}
 		
 		public List<CsdlEntityType> getEntityTypeList() {
