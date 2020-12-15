@@ -202,7 +202,9 @@ public class Publication implements EntityModel {
 			navigationFilter = ("ubg.faculty.org_authority:\"");
 			navigationFilter = (navigationFilter+id+"\"");
 			navigationFilter = (navigationFilter+ "OR ");
-			navigationFilter = (navigationFilter+ "dc.relation.authororgunit_authority\""+ id+"\"");
+			navigationFilter = (navigationFilter+ "dc.relation.authororgunit_authority:\""+ id+"\"");
+			navigationFilter = (navigationFilter+ "OR ");
+			navigationFilter = (navigationFilter+ "dc.relation.contributororgunit_authority:\""+ id+"\"");
 		} else if(sourceType.equals("Series")) {
 			navigationFilter = ("dc.relation.ispartofseries_authority:\"");
 			navigationFilter = (navigationFilter+id+"\"");
