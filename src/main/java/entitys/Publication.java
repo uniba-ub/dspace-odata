@@ -195,6 +195,11 @@ public class Publication implements EntityModel {
 		if(sourceType.equals("Researchers")) {
 			navigationFilter = ("dc.contributor.author_authority:\"");
 			navigationFilter = (navigationFilter+id+"\"");
+			navigationFilter = (navigationFilter+ "OR ");
+			navigationFilter = (navigationFilter+ "dc.contributor.editor_authority:\""+ id+"\"");
+		} else if(sourceType.equals("Researchers_AUTHOR")) {
+			navigationFilter = ("dc.contributor.author_authority:\"");
+			navigationFilter = (navigationFilter+id+"\"");
 		} else if(sourceType.equals("Researchers_SUPERVISOR")) {
 			navigationFilter = ("dc.contributor.supervisor_authority:\"");
 			navigationFilter = (navigationFilter+id+"\"");
