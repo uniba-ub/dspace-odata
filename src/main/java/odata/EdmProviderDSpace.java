@@ -36,6 +36,9 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 	public static final String FUNCTION_CSL_FOR_RESEARCHER = "cslforresearcher";
 	public static final FullQualifiedName FUNCTION_CSL_FOR_RESEARCHER_FQN = new FullQualifiedName(NAMESPACE, FUNCTION_CSL_FOR_RESEARCHER);
 
+	public static final String FUNCTION_CSL_FOR_RESEARCHER_SELECTED = "cslforresearcherselected";
+	public static final FullQualifiedName FUNCTION_CSL_FOR_RESEARCHER_SELECTED_FQN = new FullQualifiedName(NAMESPACE, FUNCTION_CSL_FOR_RESEARCHER_SELECTED);
+	
 	public static final String FUNCTION_CSL_FOR_ORGUNIT = "cslfororgunit";
 	public static final FullQualifiedName FUNCTION_CSL_FOR_ORGUNIT_FQN = new FullQualifiedName(NAMESPACE, FUNCTION_CSL_FOR_ORGUNIT);
 	
@@ -147,6 +150,7 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 		functions.addAll(getFunctions(FUNCTION_CSL_FOR_JOURNAL_FQN));
 		functions.addAll(getFunctions(FUNCTION_CSL_FOR_SERIES_FQN));
 		functions.addAll(getFunctions(FUNCTION_CSL_FOR_SUPERVISOR_FQN));
+		functions.addAll(getFunctions(FUNCTION_CSL_FOR_RESEARCHER_SELECTED_FQN));
 
 		schema.setFunctions(functions);
 		
@@ -348,6 +352,37 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 			functions.add(function);
 			
 			return functions;
+		}else if(functionName.equals(FUNCTION_CSL_FOR_RESEARCHER_SELECTED_FQN)){
+			
+			final List<CsdlFunction> functions = new LinkedList<CsdlFunction>();
+			final List<CsdlParameter> parameterList = new ArrayList<CsdlParameter>();
+			
+			final CsdlParameter parameterStyle = new CsdlParameter();
+			parameterStyle.setName("style");
+			parameterStyle.setNullable(false);
+			parameterStyle.setCollection(false);
+			parameterStyle.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+			parameterList.add(parameterStyle);
+			
+			final CsdlParameter parameterSupervId = new CsdlParameter()
+							.setName("id")
+							.setNullable(false)
+							.setCollection(false)
+							.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
+			parameterList.add(parameterSupervId);
+			
+			final CsdlReturnType returnType = new CsdlReturnType();
+			returnType.setCollection(true);
+			returnType.setType(Publication.ET_PUBLICATION_FQN);
+			
+			final CsdlFunction function = new CsdlFunction();
+			function.setName(FUNCTION_CSL_FOR_RESEARCHER_FQN.getName())
+					.setParameters(parameterList)
+					.setReturnType(returnType)
+					.setComposable(true);
+			functions.add(function);
+			
+			return functions;
 		}
 		return null;
 	}
@@ -389,6 +424,12 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 				return new CsdlFunctionImport()
 						.setName(functionImportName)
 						.setFunction(FUNCTION_CSL_FOR_SUPERVISOR_FQN)
+						.setEntitySet(Publication.ES_PUBLICATIONS_NAME)
+						.setIncludeInServiceDocument(true);		
+			}if(functionImportName.equals(FUNCTION_CSL_FOR_RESEARCHER_SELECTED_FQN.getName())) {
+				return new CsdlFunctionImport()
+						.setName(functionImportName)
+						.setFunction(FUNCTION_CSL_FOR_RESEARCHER_SELECTED_FQN)
 						.setEntitySet(Publication.ES_PUBLICATIONS_NAME)
 						.setIncludeInServiceDocument(true);		
 			}

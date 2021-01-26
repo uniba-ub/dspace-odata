@@ -198,6 +198,10 @@ public class Publication implements EntityModel {
 		} else if(sourceType.equals("Researchers_SUPERVISOR")) {
 			navigationFilter = ("dc.contributor.supervisor_authority:\"");
 			navigationFilter = (navigationFilter+id+"\"");
+		} else if(sourceType.equals("Researchers_SELECTED")) {
+			/*See DataHandler Function for selectedPublications where this Key is also defined for sorting*/
+			navigationFilter = ("relationpreferences.crisrp.publications.selected:\"");
+			navigationFilter = (navigationFilter+id+"\"");
 		} else if(sourceType.equals("Orgunits")) {
 			navigationFilter = ("ubg.faculty.org_authority:\"");
 			navigationFilter = (navigationFilter+id+"\"");
@@ -215,7 +219,7 @@ public class Publication implements EntityModel {
 		} else if(sourceType.equals("Awards")) {
 			navigationFilter = ("ubg.relation.award_authority:\"");
 			navigationFilter = (navigationFilter+id+"\"");
-		}  
+		} 
 		
 			return navigationFilter;
 	}
