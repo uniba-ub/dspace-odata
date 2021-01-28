@@ -7,11 +7,15 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.apache.olingo.commons.api.data.ComplexValue;
 import org.apache.olingo.commons.api.data.Entity;
@@ -313,6 +317,93 @@ public class DataHandler {
 		return navigationTargetEntityCollection;
 	}
 	
+	public List<Entity> getRelatedSelectedEntityCollection(Entity sourceEntity, EdmEntityType targetEntityType,
+			String relation) throws SolrServerException, IOException {
+			/* Returns a already ordered List for this EntityCollection
+			 * The List is ordered after the amount of the occurence of the dspaceId (here uuid) in some  solr-field.
+			 * This selected preferences field is not part of the odata entity, only of the solrdocument. 
+			 * Combines several Logic from other functions here.
+			 * */
+		if(relation.isEmpty() || !relation.endsWith("_SELECTED")){
+			//For Selected Lists, we have to use the uuid value instead of the id
+			return getRelatedEntityCollection(sourceEntity, targetEntityType, relation).getEntities();
+		}
+			// get ID from from Entity Source
+			String entityID = sourceEntity.getProperty("id").getValue().toString();
+			List<UriParameter> keyParams = null;
+			SolrDocumentList responseDocuments = null;
+			boolean isEntityCollection = true;
+			List<String> filterList = new LinkedList<String>();
+			EntityModel sourceModel = null;
+			EntityModel targetModel = null;
+			for(EntityModel item: entityRegister.getEntityList()) {
+				if(item.getFullQualifiedName().getFullQualifiedNameAsString().equals(sourceEntity.getType())){					
+					sourceModel = item;
+				}		
+				if(item.getFullQualifiedName().equals(targetEntityType.getFullQualifiedName())) {
+					targetModel= item;	
+				}
+			}
+			
+			String dspaceId = converter.convertODataIDToDSpaceID(entityID, sourceModel.getIDConverterTyp());
+			dspaceId = sourceEntity.getProperty("uuid").getValue().toString();
+			if(dspaceId == null) return null;
+			queryMaker.addSearchFilter((targetModel.getNavigationFilter(sourceModel.getEntitySetName()+relation, dspaceId)));
+			responseDocuments = getQuerriedDataFromSolr(targetModel.getEntitySetName(), keyParams, isEntityCollection, filterList);
+	
+			if(responseDocuments == null || responseDocuments.isEmpty()) return null;
+
+			String selectedfield = "";
+			//This Relation is also configured in Publication. It's used here for sorting
+			if((sourceModel.getEntitySetName()+relation).contentEquals("Researchers_SELECTED")) {
+				selectedfield = "relationpreferences.crisrp.publications.selected";
+			}
+			Map<String, Integer> priority = new HashMap<String, Integer>(); // Map holding primary key of entity and Priority Value
+
+			String idproperty = targetEntityType.getKeyPredicateNames().get(0).toString();
+			EntityCollection navigationTargetEntityCollection = new EntityCollection();
+			for (SolrDocument solrDocument : responseDocuments) {
+				if(solrDocument.getFirstValue("withdrawn").equals("false")) {
+					try {
+					int cnt = 0;
+					Collection<Object> fieldvals = solrDocument.getFieldValues(selectedfield);
+					//Determine Position of selected fields
+					for(Object v : fieldvals) {
+						if(((String) v).contentEquals(dspaceId)) {
+							cnt++;
+						}
+					}
+					
+					Entity ent = createEntity(createPropertyList(solrDocument, targetModel), targetModel.getEntitySetName());
+					navigationTargetEntityCollection.getEntities().add(ent);
+					priority.put(ent.getProperty(idproperty).getValue().toString(), cnt);
+					}catch(Exception e) {
+
+					}
+				}
+			}
+			if (navigationTargetEntityCollection.getEntities().isEmpty()) {
+				return null;
+			}
+			
+			//sort entitySet by priority value determined in Map priority. higher priorityvalue = higher Position in List
+			List<Entity> result = navigationTargetEntityCollection.getEntities();
+			Collections.sort(result, new Comparator<Entity>() {
+				public int compare(Entity entity1, Entity entity2) {
+					int compareResult = 0;
+					try {
+					compareResult = priority.get(entity2.getProperty(idproperty).
+						getValue().toString()).compareTo(
+						priority.get(entity1.getProperty(idproperty).
+						getValue().toString()));
+					}catch(Exception e) {
+						
+					}
+					return compareResult;
+				}
+			});
+		return result;
+	}
 	
 	public String readFunctionImportStyle(final UriResourceFunction uriResourceFunction) throws ODataApplicationException {	
 				List<UriParameter> parameters = uriResourceFunction.getParameters();
@@ -343,6 +434,9 @@ public class DataHandler {
 			  EdmEntitySet entitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Publication.ES_PUBLICATIONS_NAME);
 			  return entitySet;
 		}else if(EdmProviderDSpace.FUNCTION_CSL_FOR_AUTHOR.equals(uriResourceFunction.getFunctionImport().getName())){
+			  EdmEntitySet entitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Publication.ES_PUBLICATIONS_NAME);
+			  return entitySet;
+		}else if(EdmProviderDSpace.FUNCTION_CSL_FOR_RESEARCHER_SELECTED.equals(uriResourceFunction.getFunctionImport().getName())){
 			  EdmEntitySet entitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Publication.ES_PUBLICATIONS_NAME);
 			  return entitySet;
 		}

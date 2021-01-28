@@ -186,13 +186,21 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 			}else if(EdmProviderDSpace.FUNCTION_CSL_FOR_AUTHOR.equals(uriResourceFunction.getFunctionImport().getName())) {
 				startEntitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Researcher.ES_RESEARCHERS_NAME);
 				relation = "_AUTHOR";
+			}else if(EdmProviderDSpace.FUNCTION_CSL_FOR_RESEARCHER_SELECTED.equals(uriResourceFunction.getFunctionImport().getName())) {
+				startEntitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Researcher.ES_RESEARCHERS_NAME);
+				relation = "_SELECTED";
 			}
 			EdmEntityType targetEntityType = serviceMetadata.getEdm().getEntityType(Publication.ET_PUBLICATION_FQN);
 			Entity sourceEntity;
+			List<Entity> entityList = null;
 			try {
 				sourceEntity = datahandler.readEntityData(startEntitySet, keyPredicates);
-				entityCollection = datahandler.getRelatedEntityCollection(sourceEntity, targetEntityType, relation);
-
+				if(!relation.endsWith("SELECTED")) {
+					entityCollection = datahandler.getRelatedEntityCollection(sourceEntity, targetEntityType, relation);
+					entityList = entityCollection.getEntities();
+				}else {
+					entityList = datahandler.getRelatedSelectedEntityCollection(sourceEntity, targetEntityType, relation);
+				}
 					} catch (SolrServerException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -200,7 +208,7 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					List<Entity> entityList = entityCollection.getEntities();
+					
 					responseEntityCollection = queryOptionService.applyCountOption(countOption, entityList);
 					entityList = queryOptionService.applySkipOption(skipOption, entityList);
 					entityList = queryOptionService.applyTopOption(topOption, entityList);

@@ -6,21 +6,10 @@ import java.util.HashMap;
 
 import org.apache.olingo.commons.api.edm.EdmPrimitiveTypeKind;
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
-import org.apache.olingo.commons.api.edm.provider.CsdlAnnotation;
 import org.apache.olingo.commons.api.edm.provider.CsdlEntitySet;
 import org.apache.olingo.commons.api.edm.provider.CsdlEntityType;
-import org.apache.olingo.commons.api.edm.provider.CsdlNavigationProperty;
-import org.apache.olingo.commons.api.edm.provider.CsdlNavigationPropertyBinding;
 import org.apache.olingo.commons.api.edm.provider.CsdlProperty;
 import org.apache.olingo.commons.api.edm.provider.CsdlPropertyRef;
-import org.apache.olingo.commons.api.edm.provider.annotation.CsdlAnnotationPath;
-import org.apache.olingo.commons.api.edm.provider.annotation.CsdlExpression;
-
-
-
-
-
-
 
 public class Researcher implements EntityModel {
 	
@@ -41,6 +30,8 @@ public class Researcher implements EntityModel {
 		CsdlProperty id = new CsdlProperty().setName("id")
 				.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
 		CsdlProperty crisId = new CsdlProperty().setName("cris-id")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty uuid = new CsdlProperty().setName("uuid")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		
 		CsdlProperty biography = new CsdlProperty().setName("biography")
@@ -85,7 +76,7 @@ public class Researcher implements EntityModel {
 		// configuration of the Entity Type and adding of properties
 		entityType = new CsdlEntityType();
 		entityType.setName(ET_RESEARCHER_NAME);
-		entityType.setProperties(Arrays.asList(id, crisId, displayName, researchinterests, description, title, email, biography, researcharea, contacturl, contactemail, orcid, dept, contact, affiliation, career, education, activity, rp2ou));
+		entityType.setProperties(Arrays.asList(id, crisId, uuid, displayName, researchinterests, description, title, email, biography, researcharea, contacturl, contactemail, orcid, dept, contact, affiliation, career, education, activity, rp2ou));
 		entityType.setKey(Collections.singletonList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
@@ -93,7 +84,7 @@ public class Researcher implements EntityModel {
 		entitySet.setType(ET_RESEARCHER_FQN);
 			
 		mapping = new HashMap<String, String>();
-		
+		mapping.put("uuid", "cris-uuid");
 		mapping.put("cris-id", "cris-id");
 		mapping.put("biography", "biography");
 		mapping.put("contact", "crisrp.contact");
