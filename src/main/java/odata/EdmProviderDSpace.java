@@ -80,8 +80,14 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 		//create function
 		List<CsdlFunctionImport> functionImports = new LinkedList<CsdlFunctionImport>();
 		functionImports.add(getFunctionImport(CONTAINER, FUNCTION_CSL_FOR_RESEARCHER));
+		functionImports.add(getFunctionImport(CONTAINER, FUNCTION_CSL_FOR_RESEARCHER_SELECTED));
+		functionImports.add(getFunctionImport(CONTAINER, FUNCTION_CSL_FOR_SUPERVISOR));
+		functionImports.add(getFunctionImport(CONTAINER, FUNCTION_CSL_FOR_AUTHOR));
+		functionImports.add(getFunctionImport(CONTAINER, FUNCTION_CSL_FOR_PROJECT));
+		functionImports.add(getFunctionImport(CONTAINER, FUNCTION_CSL_FOR_ORGUNIT));
+		functionImports.add(getFunctionImport(CONTAINER, FUNCTION_CSL_FOR_JOURNAL));
+		functionImports.add(getFunctionImport(CONTAINER, FUNCTION_CSL_FOR_SERIES));
 		
-
 		entityContainer.setFunctionImports(functionImports);
 		
 		return entityContainer;
@@ -410,7 +416,7 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 			returnType.setType(Publication.ET_PUBLICATION_FQN);
 			
 			final CsdlFunction function = new CsdlFunction();
-			function.setName(FUNCTION_CSL_FOR_RESEARCHER_FQN.getName())
+			function.setName(FUNCTION_CSL_FOR_RESEARCHER_SELECTED_FQN.getName())
 					.setParameters(parameterList)
 					.setReturnType(returnType)
 					.setComposable(true);
