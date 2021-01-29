@@ -392,10 +392,13 @@ public class DataHandler {
 				public int compare(Entity entity1, Entity entity2) {
 					int compareResult = 0;
 					try {
-					compareResult = priority.get(entity2.getProperty(idproperty).
-						getValue().toString()).compareTo(
-						priority.get(entity1.getProperty(idproperty).
-						getValue().toString()));
+					//Issue with Priority and RelationPreferencesSolrIndexPlugin in Dspace-Cris: 
+					//first Element has Priority 1, following 100 desc
+					Integer prio1 = priority.get(entity1.getProperty(idproperty).getValue().toString());
+					Integer prio2 = priority.get(entity2.getProperty(idproperty).getValue().toString());
+					if(prio1 == 1) return -1;
+					if(prio2 == 1) return 1;
+					compareResult = prio2.compareTo(prio1);
 					}catch(Exception e) {
 						
 					}
