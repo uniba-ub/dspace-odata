@@ -94,6 +94,8 @@ public class Publication implements EntityModel {
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty editor= new CsdlProperty().setName("editor")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty supervisorname= new CsdlProperty().setName("supervisorname")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		
 		CsdlProperty publ2rp= new CsdlProperty().setName("publ2rp")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
@@ -116,7 +118,7 @@ public class Publication implements EntityModel {
 
 		entityType = new CsdlEntityType();	
 		entityType.setName(ET_PUBLICATION_NAME);
-		entityType.setProperties(Arrays.asList(id, handle, title, description, type, language, publisher, series, seriesnumber, volume, articlecollectionEditor, articlecollectionTitle, ispartofotherseries, fulltext,subject,publisherPlace,issued,faculty,uriIdentifier,authors,journal,issn,multipartTitel,issue, pages,gndsw, corporation, edition, isbn, thesis, peerreview, csl, publ2journals, publ2ou, publ2pj, publ2rp, publ2series, publ2awards, editor));
+		entityType.setProperties(Arrays.asList(id, handle, title, description, type, language, publisher, series, seriesnumber, volume, articlecollectionEditor, articlecollectionTitle, ispartofotherseries, fulltext,subject,publisherPlace,issued,faculty,uriIdentifier,authors,journal,issn,multipartTitel,issue, pages,gndsw, corporation, edition, isbn, thesis, peerreview, csl, supervisorname, publ2journals, publ2ou, publ2pj, publ2rp, publ2series, publ2awards, editor));
 		entityType.setKey(Collections.singletonList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
@@ -134,6 +136,7 @@ public class Publication implements EntityModel {
 		mapping.put("description", "dc.description.abstract");
 		mapping.put("edition", "dc.relation.edition");
 		mapping.put("editor", "dc.contributor.editor");
+		mapping.put("supervisorname", "dc.contributor.supervisor");
 		mapping.put("faculty","ubg.faculty.org");
 		mapping.put("fulltext", "infofulltext");
 		mapping.put("gndsw","ubg.subject.gndsw");
