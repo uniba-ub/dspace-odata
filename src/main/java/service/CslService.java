@@ -55,6 +55,7 @@ public class CslService {
 				.publisher((String)checkValueNull(entity.getProperty("publisher")))
 				.publisherPlace((String) checkValueNull(entity.getProperty("publisherplace")))
 				.ISSN((String) checkValueNull(entity.getProperty("issn")))
+				.page((String) checkValueNull(entity.getProperty("pages")))
 				.numberOfPages((String) checkValueNull(entity.getProperty("numpages")))
 				.medium((String) checkValueNull(entity.getProperty("medium")))
 				.keyword((String) checkValueNull(entity.getProperty("gndsw")))
@@ -71,15 +72,6 @@ public class CslService {
 		}else if(checkValueNull(entity.getProperty("articlecollectionTitle")) != null) {
 			builder.containerTitle((String) checkValueNull(entity.getProperty("articlecollectionTitle")));
 		}
-		
-		//Fallback for oldpages, can be removed when all are transferred
-		if(checkValueNull(entity.getProperty("pages")) != null) {
-			builder.page((String) checkValueNull(entity.getProperty("pages")));
-		}else if(checkValueNull(entity.getProperty("oldpages")) != null) {
-			builder.page((String) checkValueNull(entity.getProperty("oldpages")));
-		}
-		
-
 		
 			if(entity.getProperty("ispartofseries")!=null) {
 				builder.collectionTitle((String) checkValueNull(entity.getProperty("ispartofseries")));
