@@ -74,6 +74,10 @@ public class Publication implements EntityModel {
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty pages= new CsdlProperty().setName("pages")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty numpages= new CsdlProperty().setName("numpages")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty medium= new CsdlProperty().setName("medium")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty peerreview= new CsdlProperty().setName("peerreview")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty publisherPlace = new CsdlProperty().setName("publisherplace")
@@ -118,7 +122,7 @@ public class Publication implements EntityModel {
 
 		entityType = new CsdlEntityType();	
 		entityType.setName(ET_PUBLICATION_NAME);
-		entityType.setProperties(Arrays.asList(id, handle, title, description, type, language, publisher, series, seriesnumber, volume, articlecollectionEditor, articlecollectionTitle, ispartofotherseries, fulltext,subject,publisherPlace,issued,faculty,uriIdentifier,authors,journal,issn,multipartTitel,issue, pages,gndsw, corporation, edition, isbn, thesis, peerreview, csl, supervisorname, publ2journals, publ2ou, publ2pj, publ2rp, publ2series, publ2awards, editor));
+		entityType.setProperties(Arrays.asList(id, handle, title, description, type, language, publisher, series, seriesnumber, volume, articlecollectionEditor, articlecollectionTitle, ispartofotherseries, fulltext,subject,publisherPlace,issued,faculty,uriIdentifier,authors,journal,issn,multipartTitel,issue, pages, numpages, medium, gndsw, corporation, edition, isbn, thesis, peerreview, csl, supervisorname, publ2journals, publ2ou, publ2pj, publ2rp, publ2series, publ2awards, editor));
 		entityType.setKey(Collections.singletonList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
@@ -148,7 +152,9 @@ public class Publication implements EntityModel {
 		mapping.put("journal", "ubg.titleparent.journal");
 		mapping.put("language", "dc.language.iso");
 		mapping.put("multipart", "ubg.multipartTitel");
-		mapping.put("pages", "dc.description.pages");
+		mapping.put("pages", "ubg.pages.range");
+		mapping.put("numpages", "ubg.pages.count");
+		mapping.put("medium", "ubg.pages.medium");
 		mapping.put("peerreview", "ubg.peerreview");
 		mapping.put("publisher", "dc.publisher");
 		mapping.put("publisherplace", "dc.publisher.place");

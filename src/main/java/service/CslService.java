@@ -56,6 +56,8 @@ public class CslService {
 				.publisherPlace((String) checkValueNull(entity.getProperty("publisherplace")))
 				.ISSN((String) checkValueNull(entity.getProperty("issn")))
 				.page((String) checkValueNull(entity.getProperty("pages")))
+				.numberOfPages((String) checkValueNull(entity.getProperty("numpages")))
+				.medium((String) checkValueNull(entity.getProperty("medium")))
 				.keyword((String) checkValueNull(entity.getProperty("gndsw")))
 				.abstrct((String) checkValueNull(entity.getProperty("description")))
 //				.editor(authorNameSpliter((String) checkValueNull(entity.getProperty("corporation"))))
