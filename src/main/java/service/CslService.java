@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.lang3.RegExUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.olingo.commons.api.data.Entity;
 import org.apache.olingo.commons.api.data.EntityCollection;
 import org.apache.olingo.commons.api.data.Property;
@@ -179,6 +181,16 @@ public class CslService {
 		return titleField;
 	}
 	
+	private String replaceWhitespaceColon(String val) {
+		/* Replace Whitespace before first colon */
+		try {
+			return RegExUtils.replaceFirst(val, " : ", ": ");
+		}catch(Exception e) {
+			//
+		}
+		return val;
+	}
+	
 	private Object checkValueNull(Property property) {
 		if(property==null) {
 			return null;
@@ -188,7 +200,7 @@ public class CslService {
 	}
 	
 	private String enhanceTitleWithUrl(Entity entity) {
-		String title = (String) checkValueNull(entity.getProperty("title"))+ "</a>";
+		String title = replaceWhitespaceColon((String) checkValueNull(entity.getProperty("title")))+ "</a>";
 		String url = "<a href="+(String) checkValueNull(entity.getProperty("uri"))+ ">";	
 		String result = url + title;
 		return result;
