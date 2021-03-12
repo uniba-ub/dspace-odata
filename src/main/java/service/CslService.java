@@ -93,7 +93,10 @@ public class CslService {
 			//
 			if(entity.getProperty("type").getValue().toString().equals("book") && checkValueNull(entity.getProperty("author")) == null) {
 				builder.editor(authorNameSpliter((String) checkValueNull(entity.getProperty("editor"))));
+			}else if(entity.getProperty("type").getValue().toString().equals("bookpart")) {
+				builder.editor(authorNameSpliter((String) checkValueNull(entity.getProperty("editor"))));
 			}
+			
 			/*
 			 * corporation -> dc.contributor.corporation
 			 * */
