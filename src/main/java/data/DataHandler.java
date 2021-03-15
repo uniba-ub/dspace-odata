@@ -38,6 +38,7 @@ import org.apache.solr.common.SolrDocumentList;
 import entitys.ComplexModel;
 import entitys.EntityModel;
 import entitys.EntityRegister;
+import entitys.Project;
 import entitys.Publication;
 import odata.EdmProviderDSpace;
 import service.IdConverter;
@@ -442,13 +443,21 @@ public class DataHandler {
 		}else if(EdmProviderDSpace.FUNCTION_CSL_FOR_RESEARCHER_SELECTED.equals(uriResourceFunction.getFunctionImport().getName())){
 			  EdmEntitySet entitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Publication.ES_PUBLICATIONS_NAME);
 			  return entitySet;
+		}else if(EdmProviderDSpace.FUNCTION_PJ_FOR_OU.equals(uriResourceFunction.getFunctionImport().getName())){
+			  EdmEntitySet entitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Project.ES_PROJECTS_NAME);
+			  return entitySet;
 		}
 		return null;
 	}	
 	
 	public List<UriParameter> readFunctionImportId(final UriResourceFunction uriResourceFunction){
 		List<UriParameter> parameters = new LinkedList<UriParameter>();
+		if(uriResourceFunction.getParameters().size() == 2) {
+			//csl functions with two parameters
 		parameters.add(uriResourceFunction.getParameters().get(1));
+		}else {
+		parameters.add(uriResourceFunction.getParameters().get(0));
+		}
 		return parameters;
 
 	}
