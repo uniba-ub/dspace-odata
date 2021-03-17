@@ -70,7 +70,7 @@ public class CslService {
 				.collectionNumber((String) checkValueNull(entity.getProperty("seriesnumber")));
 		
 		if(checkValueNull(entity.getProperty("journal")) != null) {
-			builder.containerTitle(replaceWhitespaceColon((String) checkValueNull(entity.getProperty("journal"))));
+			builder.containerTitle(journalTitleSplitter((String) checkValueNull(entity.getProperty("journal"))));
 		}else if(checkValueNull(entity.getProperty("articlecollectionTitle")) != null) {
 			builder.containerTitle(replaceWhitespaceColon((String) checkValueNull(entity.getProperty("articlecollectionTitle"))));
 		}
@@ -175,13 +175,26 @@ public class CslService {
 	private String replaceWhitespaceColon(String val) {
 		/* Replace Whitespace before first colon */
 		try {
-			return RegExUtils.replaceFirst(val, " : ", ": ");
+			val = RegExUtils.replaceAll(val, " : ", ": ");
+			val = RegExUtils.replaceAll(val, " ; ", "; ");
 		}catch(Exception e) {
 			//
 		}
 		return val;
 	}
 	
+	private String journalTitleSplitter(String titleField){
+		//split journal/articlecollection title by first colon, if any and take the part on the left
+		try {
+			int poscolon = titleField.indexOf(":");
+			if(poscolon < 1) return titleField;
+			return (titleField.substring(0, (poscolon))).trim();		
+		}catch(Exception e) {
+			//return default value
+		}
+		return titleField;
+	}
+
 	private Object checkValueNull(Property property) {
 		if(property==null) {
 			return null;
