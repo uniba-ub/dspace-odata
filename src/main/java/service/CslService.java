@@ -96,6 +96,12 @@ public class CslService {
 			}else if(entity.getProperty("type").getValue().toString().equals("bookpart")) {
 				builder.editor(authorNameSpliter((String) checkValueNull(entity.getProperty("articlecollectionEditor"))));
 			}
+			//Use doi (registered by us) preferred or external doi's
+			if(entity.getProperty("doiour")!=null) {
+				builder.DOI((String) checkValueNull(entity.getProperty("doiour")));
+			} else if(entity.getProperty("doi")!=null){
+				builder.DOI((String) checkValueNull(entity.getProperty("doi")));
+			}
 			
 			/*
 			 * corporation -> dc.contributor.corporation

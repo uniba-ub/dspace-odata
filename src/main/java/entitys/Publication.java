@@ -42,7 +42,11 @@ public class Publication implements EntityModel {
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());	
 		CsdlProperty description = new CsdlProperty().setName("description")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-	CsdlProperty edition= new CsdlProperty().setName("edition")
+		CsdlProperty doi = new CsdlProperty().setName("doi")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty doiour = new CsdlProperty().setName("doiour")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty edition= new CsdlProperty().setName("edition")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty faculty= new CsdlProperty().setName("faculty")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
@@ -122,7 +126,7 @@ public class Publication implements EntityModel {
 
 		entityType = new CsdlEntityType();	
 		entityType.setName(ET_PUBLICATION_NAME);
-		entityType.setProperties(Arrays.asList(id, handle, title, description, type, language, publisher, series, seriesnumber, volume, articlecollectionEditor, articlecollectionTitle, ispartofotherseries, fulltext,subject,publisherPlace,issued,faculty,uriIdentifier,authors,journal,issn,multipartTitel,issue, pages, numpages, medium, gndsw, corporation, edition, isbn, thesis, peerreview, csl, supervisorname, publ2journals, publ2ou, publ2pj, publ2rp, publ2series, publ2awards, editor));
+		entityType.setProperties(Arrays.asList(id, handle, title, description, doi, doiour, type, language, publisher, series, seriesnumber, volume, articlecollectionEditor, articlecollectionTitle, ispartofotherseries, fulltext,subject,publisherPlace,issued,faculty,uriIdentifier,authors,journal,issn,multipartTitel,issue, pages, numpages, medium, gndsw, corporation, edition, isbn, thesis, peerreview, csl, supervisorname, publ2journals, publ2ou, publ2pj, publ2rp, publ2series, publ2awards, editor));
 		entityType.setKey(Collections.singletonList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
@@ -138,6 +142,8 @@ public class Publication implements EntityModel {
 		mapping.put("completedyear", "dateIssued.year_sort");
 		mapping.put("corporation", "dc.contributor.corporation");
 		mapping.put("description", "dc.description.abstract");
+		mapping.put("doi", "dc.identifier.doi");
+		mapping.put("doiour", "ubg.identifier.doi");
 		mapping.put("edition", "dc.relation.edition");
 		mapping.put("editor", "dc.contributor.editor");
 		mapping.put("supervisorname", "dc.contributor.supervisor");
