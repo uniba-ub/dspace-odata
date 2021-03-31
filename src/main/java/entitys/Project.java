@@ -136,6 +136,8 @@ public class Project implements EntityModel{
 			
 		} else if(sourceType.equals("Orgunits")) {
 			navigationFilter = ("crisproject.deptproject_authority:\""+ id+"\"");
+		} else if(sourceType.equals("Projects")) {
+			navigationFilter = ("crisproject.parentproject_authority:\""+ id+"\"");
 		} else if(sourceType.equals("Orgunits_CHILD")) {
 			/* special function: returns all projects which belong to the specified ou and all children ou's and their projects. Use some special field being indexed in Dspace.*/
 			navigationFilter = ("projectchildoforgunits:\""+ id+"\"");
