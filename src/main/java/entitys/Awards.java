@@ -52,6 +52,8 @@ public class Awards implements EntityModel {
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty award2rp = new CsdlProperty().setName("award2rp")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty award2pj = new CsdlProperty().setName("award2pj")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		
 		
 		// creation of PropertyRef for the key Element
@@ -61,7 +63,7 @@ public class Awards implements EntityModel {
 		// configuration of the Entity Type and adding of properties		
 		entityType = new CsdlEntityType();
 		entityType.setName(ET_AWARD_NAME);
-		entityType.setProperties(Arrays.asList(id, crisId, awardseries, category, description, person, persontitle, publication, name, url, year, award2rp, award2awardseries));
+		entityType.setProperties(Arrays.asList(id, crisId, awardseries, category, description, person, persontitle, publication, name, url, year, award2rp, award2awardseries, award2pj));
 		entityType.setKey(Collections.singletonList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
@@ -83,7 +85,7 @@ public class Awards implements EntityModel {
 		
 		mapping.put("award2awardseries", "crisawards.awardseries_authority");
 		mapping.put("award2rp", "crisawards.awardsperson_authority");
-		//mapping.put("award2publ", "crisawards.awardsperson_authority");
+		mapping.put("award2pj", "crisawards.awardsproject_authority");
 
 	}
 	
@@ -123,7 +125,9 @@ public class Awards implements EntityModel {
 		String navigationFilter = "";
 		if(sourceType.equals("Awardseries")) {
 			navigationFilter = ("crisawards.awardseries_authority:\""+id+"\"");
-		}
+		} else if(sourceType.equals("Projects")) {
+			navigationFilter = ("crisawards.awardsproject_authority:\""+ id+"\"");
+		} else
 		if(sourceType.equals("Researchers")) {
 			navigationFilter = ("crisawards.awardsperson_authority:\""+id+"\"");
 		}	

@@ -141,7 +141,10 @@ public class Util {
 		}else if(sourceType.contentEquals("Publications") && targetType.contentEquals("Awards")) { //TODO: delete entry later, when journals isn't used
 			String filterquery = sourceEntity.getProperty("publ2award").getValue().toString();
 			navigationFilter = reverseQueryGenerator(filterquery, "cris-id");				
-		}	
+		}else if(sourceType.contentEquals("Awards") && targetType.contentEquals("Projects")) {
+			String filterquery = sourceEntity.getProperty("award2pj").getValue().toString();
+			navigationFilter = reverseQueryGenerator(filterquery, "cris-id");		
+		}
 		}catch(Exception e) {
 			e.printStackTrace();
 			return null;
