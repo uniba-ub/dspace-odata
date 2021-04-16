@@ -177,7 +177,7 @@ public class DataHandler {
 					if(itemType.equals("String")) {
 						for(Object value: solrDocument.getFieldValues(mapping.get(item.getName()))) {
 							if(builder.toString().length()!=0) {
-								if(item.getName().equals("author")) {
+								if(item.getName().equals("author") || item.getName().equals("articlecollectionEditor") || item.getName().contentEquals("editor")) {
 									builder.append("; ");
 								} else {
 									builder.append(", ");
