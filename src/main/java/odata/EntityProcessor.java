@@ -116,7 +116,8 @@ public class EntityProcessor implements org.apache.olingo.server.api.processor.E
 				List<UriParameter> keyPredicates = uriResourceEntitySet.getKeyPredicates();
 				Entity sourceEntity;
 				try {
-					sourceEntity = datahandler.readEntityData(startEdmEntitySet, keyPredicates);
+					/*For multiple segments ignore privacy status of invisible entities*/
+					sourceEntity = datahandler.readEntityData(startEdmEntitySet, keyPredicates, true);
 					List<UriParameter> navKeyPredicates = uriResourceNavigation.getKeyPredicates();
 					if (navKeyPredicates.isEmpty()) {
 						responseEntity = datahandler.getRelatedEntity(sourceEntity, responseEdmEntityType);

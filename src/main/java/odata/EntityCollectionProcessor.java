@@ -133,7 +133,7 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 					List<UriParameter> keyPredicates = uriResourceEntitySet.getKeyPredicates();
 					Entity sourceEntity;
 					try {
-						sourceEntity = datahandler.readEntityData(startEdmEntitySet, keyPredicates);
+						sourceEntity = datahandler.readEntityData(startEdmEntitySet, keyPredicates, true);
 						entityCollection = datahandler.getRelatedEntityCollection(sourceEntity, targetEntityType, "");
 
 					} catch (SolrServerException e) {
@@ -207,7 +207,7 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 			Entity sourceEntity;
 			List<Entity> entityList = null;
 			try {
-				sourceEntity = datahandler.readEntityData(startEntitySet, keyPredicates);
+				sourceEntity = datahandler.readEntityData(startEntitySet, keyPredicates, true);
 				if(!relation.endsWith("SELECTED")) {
 					entityCollection = datahandler.getRelatedEntityCollection(sourceEntity, targetEntityType, relation);
 					entityList = entityCollection.getEntities();

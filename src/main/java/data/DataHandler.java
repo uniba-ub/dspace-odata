@@ -78,6 +78,11 @@ public class DataHandler {
 
 	public Entity readEntityData(EdmEntitySet edmEntitySet, List<UriParameter> keyParams)
 			throws SolrServerException, IOException {
+		return readEntityData(edmEntitySet, keyParams, false);
+	}
+	
+	public Entity readEntityData(EdmEntitySet edmEntitySet, List<UriParameter> keyParams, boolean ignoreprivacy)
+			throws SolrServerException, IOException {
 		Entity entity = null;
 		EntityCollection entitySet;
 		SolrDocumentList responseDocuments;
@@ -87,7 +92,7 @@ public class DataHandler {
 				boolean isEntityCollection = false;
 				List<String> filterList = new LinkedList<String>();
 				responseDocuments = getQuerriedDataFromSolr(item.getEntitySetName(), keyParams, isEntityCollection, filterList);
-				entitySet = createEntitySet(responseDocuments, item);
+				entitySet = createEntitySet(responseDocuments, item, ignoreprivacy);
 				entity = entitySet.getEntities().get(0);
 				}
 
@@ -130,21 +135,42 @@ public class DataHandler {
 		}
 
 	public EntityCollection createEntitySet(SolrDocumentList documentList, EntityModel entity) throws SolrServerException, IOException {
+		return createEntitySet(documentList, entity, false);	
+	}
+
+	public EntityCollection createEntitySet(SolrDocumentList documentList, EntityModel entity, boolean ignoreprivacy) throws SolrServerException, IOException {
 		EntityCollection entitySet = new EntityCollection();
 		for (SolrDocument solrDocument : documentList) {
 			if(solrDocument.getFirstValue("withdrawn").equals("false")) {
 				entitySet.getEntities()
-				.add(createEntity(createPropertyList(solrDocument, entity), entity.getEntitySetName()));
+				.add(createEntity(createPropertyList(solrDocument, entity), entity.getEntitySetName(), false));
+			}else if(ignoreprivacy) {
+				//ignore privacystatus for entity set
+				entitySet.getEntities()
+				.add(createEntity(createPropertyList(solrDocument, entity), entity.getEntitySetName(), true));
 			}
 		}
 		return entitySet;
 	}
-
+	
 	public Entity createEntity(List<Property> propertyList, String entitySetName) {
+		return createEntity(propertyList, entitySetName, false);
+	}
+	
+	public Entity createEntity(List<Property> propertyList, String entitySetName, boolean anonymized) {
 		Entity entity = new Entity();
 		String type = (EdmProviderDSpace.NAMESPACE + "." + entitySetName.replaceAll("s$", ""));
-		for (Property item : propertyList) {
-			entity.addProperty(item);
+		if(!anonymized) {
+			for (Property item : propertyList) {
+				entity.addProperty(item);
+			}
+		}else {
+			for (Property item : propertyList) {
+				if(item.getName().contentEquals("id")) {
+				entity.addProperty(item);
+				break;
+				}
+			}
 		}
 		entity.setType(type);
 		entity.setId(createId(entity, "id"));
