@@ -92,20 +92,25 @@ public class CslService {
 			}
 			//
 			if(entity.getProperty("type").getValue().toString().equals("book") && checkValueNull(entity.getProperty("author")) == null) {
-				builder.editor(authorNameSpliter((String) checkValueNull(entity.getProperty("editor"))));
+				if(checkValueNull(entity.getProperty("editor")) != null) {
+					builder.editor(authorNameSpliter((String) checkValueNull(entity.getProperty("editor"))));
+				}else if(checkValueNull(entity.getProperty("corporation")) != null) {
+					builder.editor(authorNameSpliter((String) checkValueNull(entity.getProperty("corporation"))));
+				}
 			}else if(entity.getProperty("type").getValue().toString().equals("bookpart")) {
-				builder.editor(authorNameSpliter((String) checkValueNull(entity.getProperty("articlecollectionEditor"))));
+				if(checkValueNull(entity.getProperty("articlecollectionEditor")) != null) {
+					builder.editor(authorNameSpliter((String) checkValueNull(entity.getProperty("articlecollectionEditor"))));
+				}else if(checkValueNull(entity.getProperty("corporation")) != null) {
+					builder.editor(authorNameSpliter((String) checkValueNull(entity.getProperty("corporation"))));
+				}
 			}
+			
 			//Use doi (registered by us) preferred or external doi's
 			if(entity.getProperty("doiour")!=null) {
 				builder.DOI((String) checkValueNull(entity.getProperty("doiour")));
 			} else if(entity.getProperty("doi")!=null){
 				builder.DOI((String) checkValueNull(entity.getProperty("doi")));
 			}
-			
-			/*
-			 * corporation -> dc.contributor.corporation
-			 * */
 			
 			//TODO: Container Author und Editor (wie kommen die Namen an, müssen diese gesplittet werden?)
 			
