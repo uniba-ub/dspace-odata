@@ -157,7 +157,7 @@ public class Publication implements EntityModel {
 		mapping.put("issue", "ubg.relation.issue");
 		mapping.put("journal", "ubg.titleparent.journal");
 		mapping.put("language", "dc.language.iso");
-		mapping.put("multipart", "ubg.multipartTitel");
+		mapping.put("multipartTitel", "ubg.multipartTitel");
 		mapping.put("pages", "ubg.pages.range");
 		mapping.put("numpages", "ubg.pages.count");
 		mapping.put("medium", "ubg.pages.medium");
