@@ -31,6 +31,7 @@ import org.apache.olingo.server.api.ODataApplicationException;
 import org.apache.olingo.server.api.ServiceMetadata;
 import org.apache.olingo.server.api.uri.UriParameter;
 import org.apache.olingo.server.api.uri.UriResourceFunction;
+import org.apache.olingo.server.api.uri.queryoption.SearchOption;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
@@ -75,6 +76,21 @@ public class DataHandler {
 		}
 		return entitySet;
 	}
+	
+	public EntityCollection searchEntitySetData(EdmEntitySet edmEntitySet, SearchOption search) throws SolrServerException, IOException {
+		EntityCollection entitySet = new EntityCollection();
+		SolrDocumentList responseDocuments;
+		for (EntityModel item : entityRegister.getEntityList()) {
+			if (edmEntitySet.getName().equals(item.getEntitySetName())) {
+				List<UriParameter> keyParams = null;
+				boolean isEntityCollection=true;
+				List<String> filterList = new LinkedList<String>();
+				responseDocuments = getQuerriedDataFromSolr(item.getEntitySetName(), keyParams, isEntityCollection, filterList, search);
+				entitySet = createEntitySet(responseDocuments, item);
+			}
+		}
+		return entitySet;
+	}
 
 	public Entity readEntityData(EdmEntitySet edmEntitySet, List<UriParameter> keyParams)
 			throws SolrServerException, IOException {
@@ -100,13 +116,24 @@ public class DataHandler {
 		
 		return entity;
 	}
-
+	
 	public SolrDocumentList getQuerriedDataFromSolr(String entitySetName, List<UriParameter> keyParams, boolean isEntityCollection, List<String> filterList) throws SolrServerException, IOException {
+		return getQuerriedDataFromSolr(entitySetName, keyParams, isEntityCollection, filterList, null);
+	}
+
+	public SolrDocumentList getQuerriedDataFromSolr(String entitySetName, List<UriParameter> keyParams, boolean isEntityCollection, List<String> filterList, SearchOption search) throws SolrServerException, IOException {
 		try {
 		for(EntityModel item: entityRegister.getEntityList()) {
 			if(item.getEntitySetName().equals(entitySetName)) {
 				if(isEntityCollection) {
+					//enable searchOption for entityset only.
+					if(search != null) {
+						queryMaker.setODataSearchTerm(search.getText());
+						queryMaker.setQuerySearchTerm(item.getRecourceTypeFilter());
+
+					}else {
 					queryMaker.setQuerySearchTerm(item.getRecourceTypeFilter());
+					}
 					if(!filterList.isEmpty()) {
 						for(String filter: filterList) {
 							queryMaker.addSearchFilter(filter);	

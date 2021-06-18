@@ -33,6 +33,7 @@ import org.apache.olingo.server.api.uri.queryoption.CountOption;
 import org.apache.olingo.server.api.uri.queryoption.ExpandOption;
 import org.apache.olingo.server.api.uri.queryoption.FilterOption;
 import org.apache.olingo.server.api.uri.queryoption.OrderByOption;
+import org.apache.olingo.server.api.uri.queryoption.SearchOption;
 import org.apache.olingo.server.api.uri.queryoption.SelectOption;
 import org.apache.olingo.server.api.uri.queryoption.SkipOption;
 import org.apache.olingo.server.api.uri.queryoption.TopOption;
@@ -89,7 +90,9 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 		ExpandOption expandOption = uriInfo.getExpandOption();
 		OrderByOption orderByOption = uriInfo.getOrderByOption();
 		FilterOption filterOption = uriInfo.getFilterOption();
+		SearchOption searchOption = uriInfo.getSearchOption();
 		EntityCollection entityCollection = new EntityCollection();
+		
 		
 
 		UriResource firstUriResourceSegment = resourceParts.get(0);
@@ -103,7 +106,11 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 				// get the data from EntityDatabase for this requested EntitySetName and deliver
 				// as EntitySet
 				try {
-					entityCollection = datahandler.readEntitySetData(startEdmEntitySet);
+					if(searchOption != null && !searchOption.getName().isEmpty()) {
+						entityCollection = datahandler.searchEntitySetData(startEdmEntitySet, searchOption);
+					}else {
+						entityCollection = datahandler.readEntitySetData(startEdmEntitySet);
+					}
 				} catch (SolrServerException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

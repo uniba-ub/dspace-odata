@@ -27,6 +27,12 @@ public class SolrQueryMaker {
 		
 		query.setQuery(term);
 	}
+	
+	public void setODataSearchTerm(String search) {
+		//Transform OData $search Expression to Solr Syntax
+		//see $search in https://docs.oasis-open.org/odata/odata/v4.01/os/abnf/odata-abnf-construction-rules.txt
+		query.addFilterQuery(search);
+	}
 
 
 	public void limitResultAttributes(List<String> attributeList) {
