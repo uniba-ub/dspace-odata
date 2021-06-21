@@ -52,6 +52,8 @@ public class Researcher implements EntityModel {
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty orcid = new CsdlProperty().setName("orcid")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty gnd = new CsdlProperty().setName("gnd")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty researcharea = new CsdlProperty().setName("researcharea")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty researchinterests = new CsdlProperty().setName("researchinterests")
@@ -76,7 +78,7 @@ public class Researcher implements EntityModel {
 		// configuration of the Entity Type and adding of properties
 		entityType = new CsdlEntityType();
 		entityType.setName(ET_RESEARCHER_NAME);
-		entityType.setProperties(Arrays.asList(id, crisId, uuid, displayName, researchinterests, description, title, email, biography, researcharea, contacturl, contactemail, orcid, dept, contact, affiliation, career, education, activity, rp2ou));
+		entityType.setProperties(Arrays.asList(id, crisId, uuid, displayName, researchinterests, description, title, email, biography, researcharea, contacturl, contactemail, orcid, gnd, dept, contact, affiliation, career, education, activity, rp2ou));
 		entityType.setKey(Collections.singletonList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
@@ -95,6 +97,7 @@ public class Researcher implements EntityModel {
 		mapping.put("dept", "crisrp.dept");
 		mapping.put("email", "crisrp.email");
 		mapping.put("orcid", "crisrp.orcid");
+		mapping.put("gnd", "crisrp.gndId");
 		mapping.put("researcharea", "crisrp.researcharea");
 		mapping.put("researchinterests", "crisrp.researchinterests");
 		mapping.put("title", "crisrp.title");
