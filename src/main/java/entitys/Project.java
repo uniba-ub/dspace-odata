@@ -35,6 +35,8 @@ public class Project implements EntityModel{
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty budget = new CsdlProperty().setName("budget")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
+		CsdlProperty dept = new CsdlProperty().setName("dept")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty coinvestigators = new CsdlProperty().setName("coinvestigators")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty acronym = new CsdlProperty().setName("acronym")
@@ -57,6 +59,8 @@ public class Project implements EntityModel{
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty researchprofile = new CsdlProperty().setName("researchprofile")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty potentialfield = new CsdlProperty().setName("potentialfield")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty createdate = new CsdlProperty().setName("createdate")
 				.setType(EdmPrimitiveTypeKind.DateTimeOffset.getFullQualifiedName());
 		//The following properties are used for holding authority Keys to other entities
@@ -74,7 +78,7 @@ public class Project implements EntityModel{
 
 		entityType = new CsdlEntityType();
 		entityType.setName(ET_PROJECT_NAME);
-		entityType.setProperties(Arrays.asList(id,crisId, title, abstracts, principalinvestigator, coinvestigators, budget, startDate, endDate, projectarea,acronym,keywords,status, url,funding, partnership, researchprofile, createdate, pj2rp, pj2ou));
+		entityType.setProperties(Arrays.asList(id,crisId, title, abstracts, principalinvestigator, coinvestigators, budget, startDate, endDate, projectarea,acronym,keywords,status, url,funding, partnership, researchprofile, potentialfield, createdate, dept, pj2rp, pj2ou));
 		entityType.setKey(Arrays.asList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
@@ -92,10 +96,12 @@ public class Project implements EntityModel{
 		mapping.put("principalinvestigator", "crisproject.principalinvestigator");
 		mapping.put("projectarea", "crisproject.projectArea");
 		mapping.put("researchprofile", "crisproject.researchProfileUniBa");
+		mapping.put("potentialfield", "crisproject.potentialfield");
 		mapping.put("startdate", "crisproject.startdate");
 		mapping.put("status", "crisproject.status");
 		mapping.put("title", "crisproject.title");
 		mapping.put("url", "crisproject.projectURL");
+		mapping.put("dept", "crisproject.deptproject");
 		mapping.put("createdate", "crisproject.time_creation_dt"); //Creation-Time of Entity
 		
 		mapping.put("pj2rp", "projectinvestigators_authority");
