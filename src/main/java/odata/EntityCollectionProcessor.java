@@ -121,9 +121,9 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 				List<Entity> entityList = entityCollection.getEntities();
 				responseEntityCollection = queryOptionService.applyCountOption(countOption, entityList);
 				entityList = queryOptionService.applySkipOption(skipOption, entityList);
-				entityList = queryOptionService.applyTopOption(topOption, entityList);
 				entityList = queryOptionService.applyOrderByOption(orderByOption, entityList);
 				entityList = queryOptionService.applyFilterOption(entityList, filterOption);
+				entityList = queryOptionService.applyTopOption(topOption, entityList);
 
 				for (Entity entity : entityList) {
 					responseEntityCollection.getEntities().add(entity);
@@ -154,9 +154,9 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 					List<Entity> entityList = entityCollection.getEntities();
 					responseEntityCollection = queryOptionService.applyCountOption(countOption, entityList);
 					entityList = queryOptionService.applySkipOption(skipOption, entityList);
-					entityList = queryOptionService.applyTopOption(topOption, entityList);
 					entityList = queryOptionService.applyOrderByOption(orderByOption, entityList);
 					entityList = queryOptionService.applyFilterOption(entityList, filterOption);
+					entityList = queryOptionService.applyTopOption(topOption, entityList);
 
 					for (Entity entity : entityList) {
 						responseEntityCollection.getEntities().add(entity);
