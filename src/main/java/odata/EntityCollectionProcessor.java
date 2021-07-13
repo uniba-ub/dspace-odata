@@ -150,7 +150,12 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-
+					
+					if(entityCollection == null) {
+						throw new ODataApplicationException("Nothing found.", HttpStatusCode.NOT_FOUND.getStatusCode(),
+								Locale.ROOT);
+					}
+					
 					List<Entity> entityList = entityCollection.getEntities();
 					responseEntityCollection = queryOptionService.applyCountOption(countOption, entityList);
 					entityList = queryOptionService.applyFilterOption(entityList, filterOption);
@@ -158,9 +163,16 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 					entityList = queryOptionService.applySkipOption(skipOption, entityList);
 					entityList = queryOptionService.applyTopOption(topOption, entityList);
 
+					if(entityList.size() == 0) {
+						throw new ODataApplicationException("Nothing found.", HttpStatusCode.NOT_FOUND.getStatusCode(),
+								Locale.ROOT);
+					}
+					
 					for (Entity entity : entityList) {
 						responseEntityCollection.getEntities().add(entity);
 					}
+					
+					
 				}
 			} else {
 				throw new ODataApplicationException("Not supported", HttpStatusCode.NOT_IMPLEMENTED.getStatusCode(),
@@ -215,11 +227,20 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 			List<Entity> entityList = null;
 			try {
 				sourceEntity = datahandler.readEntityData(startEntitySet, keyPredicates, true);
+				
+				if(sourceEntity == null) {
+					throw new ODataApplicationException("Nothing found.", HttpStatusCode.NOT_FOUND.getStatusCode(),
+							Locale.ROOT);
+				}
 				if(!relation.endsWith("SELECTED")) {
 					entityCollection = datahandler.getRelatedEntityCollection(sourceEntity, targetEntityType, relation);
 					entityList = entityCollection.getEntities();
 				}else {
 					entityList = datahandler.getRelatedSelectedEntityCollection(sourceEntity, targetEntityType, relation);
+				}
+				if(entityList == null) {
+					throw new ODataApplicationException("Nothing found.", HttpStatusCode.NOT_FOUND.getStatusCode(),
+							Locale.ROOT);
 				}
 					} catch (SolrServerException e) {
 						// TODO Auto-generated catch block
@@ -235,6 +256,10 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 					entityList = queryOptionService.applyOrderByOption(orderByOption, entityList);
 					entityList = queryOptionService.applyFilterOption(entityList, filterOption);
 	
+					if(entityList.size() == 0) {
+						throw new ODataApplicationException("Nothing found.", HttpStatusCode.NOT_FOUND.getStatusCode(),
+								Locale.ROOT);
+					}
 					for (Entity entity : entityList) {
 						responseEntityCollection.getEntities().add(entity);
 					}

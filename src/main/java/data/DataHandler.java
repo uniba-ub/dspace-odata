@@ -109,7 +109,9 @@ public class DataHandler {
 				List<String> filterList = new LinkedList<String>();
 				responseDocuments = getQuerriedDataFromSolr(item.getEntitySetName(), keyParams, isEntityCollection, filterList);
 				entitySet = createEntitySet(responseDocuments, item, ignoreprivacy);
-				entity = entitySet.getEntities().get(0);
+					if(entitySet.getCount() > 0) {
+						entity = entitySet.getEntities().get(0);
+					}
 				}
 
 		}
@@ -177,6 +179,7 @@ public class DataHandler {
 				.add(createEntity(createPropertyList(solrDocument, entity), entity.getEntitySetName(), true));
 			}
 		}
+		entitySet.setCount(entitySet.getEntities().size());
 		return entitySet;
 	}
 	
