@@ -33,7 +33,6 @@ public class Researcher implements EntityModel {
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty uuid = new CsdlProperty().setName("uuid")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		
 		CsdlProperty biography = new CsdlProperty().setName("biography")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty contact = new CsdlProperty().setName("contact")
@@ -86,8 +85,8 @@ public class Researcher implements EntityModel {
 		entitySet.setType(ET_RESEARCHER_FQN);
 			
 		mapping = new HashMap<String, String>();
-		mapping.put("uuid", "cris-uuid");
 		mapping.put("cris-id", "cris-id");
+		mapping.put("uuid", "cris-uuid");
 		mapping.put("biography", "biography");
 		mapping.put("contact", "crisrp.contact");
 		mapping.put("contacturl", "crisrp.contacturl");

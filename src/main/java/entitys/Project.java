@@ -31,6 +31,8 @@ public class Project implements EntityModel{
 				.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
 		CsdlProperty crisId = new CsdlProperty().setName("cris-id")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty uuid = new CsdlProperty().setName("uuid")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty abstracts = new CsdlProperty().setName("abstract")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty budget = new CsdlProperty().setName("budget")
@@ -78,7 +80,7 @@ public class Project implements EntityModel{
 
 		entityType = new CsdlEntityType();
 		entityType.setName(ET_PROJECT_NAME);
-		entityType.setProperties(Arrays.asList(id,crisId, title, abstracts, principalinvestigator, coinvestigators, budget, startDate, endDate, projectarea,acronym,keywords,status, url,funding, partnership, researchprofile, potentialfield, createdate, dept, pj2rp, pj2ou));
+		entityType.setProperties(Arrays.asList(id,crisId,uuid, title, abstracts, principalinvestigator, coinvestigators, budget, startDate, endDate, projectarea,acronym,keywords,status, url,funding, partnership, researchprofile, potentialfield, createdate, dept, pj2rp, pj2ou));
 		entityType.setKey(Arrays.asList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
@@ -87,6 +89,7 @@ public class Project implements EntityModel{
 		
 		mapping = new HashMap<String, String>();
 		mapping.put("cris-id", "cris-id");
+		mapping.put("uuid", "cris-uuid");
 		mapping.put("abstract", "crisproject.abstract");
 		mapping.put("budget", "crisproject.budget");
 		mapping.put("acronym", "crisproject.acronym");

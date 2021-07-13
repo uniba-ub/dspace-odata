@@ -27,6 +27,8 @@ public class Orgunit implements EntityModel{
 		
 	CsdlProperty id = new CsdlProperty().setName("id")
 			.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
+	CsdlProperty uuid = new CsdlProperty().setName("uuid")
+			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 	CsdlProperty active = new CsdlProperty().setName("active")
 			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 	CsdlProperty idmKey = new CsdlProperty().setName("cris-id")
@@ -56,7 +58,7 @@ public class Orgunit implements EntityModel{
 
 	entityType = new CsdlEntityType();
 	entityType.setName(ET_ORGUNIT_NAME);
-	entityType.setProperties(Arrays.asList(id, idmKey, name, description, url, director, date, endDate,active,crossrefid, parentorgunit));
+	entityType.setProperties(Arrays.asList(id, uuid, idmKey, name, description, url, director, date, endDate,active,crossrefid, parentorgunit));
 	entityType.setKey(Arrays.asList(propertyRef));
 	
 	entitySet = new CsdlEntitySet();
@@ -65,6 +67,7 @@ public class Orgunit implements EntityModel{
 	
 	mapping = new HashMap<String, String>();
 	mapping.put("cris-id", "cris-id");
+	mapping.put("uuid", "cris-uuid");
 	mapping.put("active", "crisou.active");
 	mapping.put("crossrefid", "crisou.crossrefid");
 	mapping.put("director","crisou.director");

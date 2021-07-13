@@ -30,6 +30,8 @@ public class Journal implements EntityModel {
 				.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
 		CsdlProperty crisId = new CsdlProperty().setName("cris-id")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty uuid = new CsdlProperty().setName("uuid")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty name = new CsdlProperty().setName("name")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty issn = new CsdlProperty().setName("issn")
@@ -49,7 +51,7 @@ public class Journal implements EntityModel {
 		
 		entityType = new CsdlEntityType();
 		entityType.setName(ET_JOURNAL_NAME);
-		entityType.setProperties(Arrays.asList(id, crisId, name, issn, abbrevation, homepage, description));
+		entityType.setProperties(Arrays.asList(id, crisId, uuid, name, issn, abbrevation, homepage, description));
 		entityType.setKey(Collections.singletonList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
@@ -58,6 +60,7 @@ public class Journal implements EntityModel {
 			
 		mapping = new HashMap<String, String>();
 		mapping.put("cris-id", "cris-id");
+		mapping.put("uuid", "cris-uuid");
 		mapping.put("abbreviation", "crisseries.journalsabbreviation");
 		mapping.put("description", "crisseries.journalsdescription");
 		mapping.put("homepage", "crisseries.journalshomepage");
