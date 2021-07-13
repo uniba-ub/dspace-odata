@@ -1,0 +1,4395 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.citationstyles</groupId>
+  <artifactId>styles</artifactId>
+  <version>21.3</version>
+  <name>Citation Style Language (CSL) citation styles</name>
+  <description>Citation Style Language (CSL) citation styles packaged as a Maven artifact</description>
+  <url>http://citationstyles.org/</url>
+  <organization>
+    <name>CitationStyles.org</name>
+    <url>http://citationstyles.org/</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>Creative Commons Attribution-ShareAlike 3.0 Unported license</name>
+      <url>https://creativecommons.org/licenses/by-sa/3.0/</url>
+      <distribution>repo</distribution>
+      <comments>All the styles in this repository are released under the Creative
+Commons Attribution-ShareAlike 3.0 Unported license. For attribution,
+any software using CSL styles from this repository must include a clear
+mention of the CSL project and a link to CitationStyles.org. When
+distributing these styles, the listings of authors and contributors in
+the style metadata must be kept as is.</comments>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>michel-kraemer</id>
+      <name>Michel Kraemer</name>
+      <email>michel@undercouch.de</email>
+      <url>https://michelkraemer.com</url>
+    </developer>
+  </developers>
+  <contributors>
+    <contributor>
+      <name> Brenton M. Wiernik</name>
+      <email>zotero@wiernik.org</email>
+    </contributor>
+    <contributor>
+      <name>A. M. Weber</name>
+      <email>info@akincano.net</email>
+    </contributor>
+    <contributor>
+      <name>Aaron Timoshanko</name>
+      <email>aaron.timoshanko@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Abhijit Biswas</name>
+      <email>abhi_tech_2004@yahoo.co.uk</email>
+    </contributor>
+    <contributor>
+      <name>Adam Izdebski</name>
+    </contributor>
+    <contributor>
+      <name>Adam Leelossy</name>
+      <email>leeladam@elte.hu</email>
+    </contributor>
+    <contributor>
+      <name>Adam Mark</name>
+      <email>a.mark@uoguelph.ca</email>
+    </contributor>
+    <contributor>
+      <name>Adam Rabinowitz</name>
+      <email>adam.rabinowitz@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Adam Tunis</name>
+      <email>atunis@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Adam Zeilinger</name>
+      <email>arzeilinger@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Adhemar Zerlotini, Ph.D</name>
+      <email>adhemar.zerlotini@embrapa.br</email>
+      <url>http://github.com/azneto</url>
+    </contributor>
+    <contributor>
+      <name>Adina Ehm</name>
+      <email>adina.ehm@destatis.de</email>
+      <url>http://www.sachverstaendigenrat-wirtschaft.de/index.html</url>
+    </contributor>
+    <contributor>
+      <name>Aditi Bhaskar</name>
+      <email>abhaskar@usgs.gov</email>
+    </contributor>
+    <contributor>
+      <name>Adrian Drabik</name>
+      <email>adriandrabik@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Adrien Cascarino</name>
+      <email>adrien.cascarino@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>AEgir Orn Sveinsson</name>
+      <email>aegirorn@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Agustín Alesso</name>
+      <email>calesso@fca.unl.edu.ar</email>
+    </contributor>
+    <contributor>
+      <name>Ahmad Bahauddin</name>
+      <email>ahmad.bahauddin2016@student.uny.ac.id</email>
+    </contributor>
+    <contributor>
+      <name>Aida Negrete</name>
+    </contributor>
+    <contributor>
+      <name>Aine Ni Bhreasail</name>
+      <email>an409@ic.ac.uk</email>
+    </contributor>
+    <contributor>
+      <name>Akos Kokai</name>
+      <email>akokai@berkeley.edu</email>
+    </contributor>
+    <contributor>
+      <name>Akseli Nurmio</name>
+      <email>akseli@nurmio.fi</email>
+    </contributor>
+    <contributor>
+      <name>Aku Lampinen</name>
+      <url>http://www.mendeley.com/profiles/aku-lampinen/</url>
+    </contributor>
+    <contributor>
+      <name>Aku Valtakoski</name>
+      <email>aku.valtakoski@tkk.fi</email>
+    </contributor>
+    <contributor>
+      <name>Al-Jamiah</name>
+      <email>editor@aljamiah.org</email>
+      <url>www.aljamiah.org</url>
+    </contributor>
+    <contributor>
+      <name>Alafate Julaiti</name>
+      <email>arapat@arap.at</email>
+      <url>http://arap.at</url>
+    </contributor>
+    <contributor>
+      <name>Alain Queffelec</name>
+      <email>a.queffelec@pacea.u-bordeaux1.fr</email>
+    </contributor>
+    <contributor>
+      <name>Alberto Kawai</name>
+      <email>alberto.kawai@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Alberto Krishna Ksatria Winning Kusuma</name>
+      <email>wilbur.weasley.wizard@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Alberto Marinello</name>
+      <email>am@qeios.com</email>
+    </contributor>
+    <contributor>
+      <name>Alberto Massao Kawai</name>
+      <email>alberto.kawai@gmail.com</email>
+      <url>http://www.mendeley.com/profiles/alberto-kawai/</url>
+    </contributor>
+    <contributor>
+      <name>Albi Odendaal</name>
+      <email>albi.odendaal@nwu.ac.za</email>
+    </contributor>
+    <contributor>
+      <name>Alejandro Meruelo</name>
+      <email>ameruelo@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Alejandro Sáiz-Rivera</name>
+      <email>asaizrivera@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Aleksandar Dekanski</name>
+      <email>jscs@shd.org.rs</email>
+      <url>http://www.shd.org.rs/JSCS/</url>
+    </contributor>
+    <contributor>
+      <name>Alessandro Bausi</name>
+      <email>alessandro.bausi@uni-hamburg.de</email>
+    </contributor>
+    <contributor>
+      <name>Alex Ball</name>
+      <email>ab318@bath.ac.uk</email>
+    </contributor>
+    <contributor>
+      <name>Alex Chubaty</name>
+      <email>achubaty@sfu.ca</email>
+    </contributor>
+    <contributor>
+      <name>Alex Diment</name>
+      <url>http://alex.diment.org</url>
+    </contributor>
+    <contributor>
+      <name>Alex Watkins</name>
+    </contributor>
+    <contributor>
+      <name>Alexander Favorov</name>
+      <email>favorov@sensi.org</email>
+    </contributor>
+    <contributor>
+      <name>Alexandre Delahaye</name>
+    </contributor>
+    <contributor>
+      <name>Alexandre Pinlou</name>
+      <email>alexandre.pinlou@univ-montp3.fr</email>
+    </contributor>
+    <contributor>
+      <name>Alexandre Racine</name>
+      <email>alexandre.racine@chuv.ch</email>
+      <url>https://www.linkedin.com/in/racilex</url>
+    </contributor>
+    <contributor>
+      <name>Alexandru Ghita</name>
+    </contributor>
+    <contributor>
+      <name>Ali Ekber ÇINAR</name>
+      <email>aliekbercinar45@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Aline Rodrigues</name>
+    </contributor>
+    <contributor>
+      <name>Allison Grunwald</name>
+      <email>agrunwa1@uwyo.edu</email>
+    </contributor>
+    <contributor>
+      <name>Alphonsus Chong</name>
+      <email>alfchong@gmail.com</email>
+      <url>alfchong.blogspot.com</url>
+    </contributor>
+    <contributor>
+      <name>ALRichards</name>
+    </contributor>
+    <contributor>
+      <name>Alvaro Mozo</name>
+      <url>http://twitter.com/amozog</url>
+    </contributor>
+    <contributor>
+      <name>amaraun</name>
+      <email>amaraun@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Amelia Boaks</name>
+      <email>amboaksy@bu.edu</email>
+    </contributor>
+    <contributor>
+      <name>Amit Parekh</name>
+      <email>amitparekh89@hotmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Ammar Memari</name>
+      <email>memari@wi-ol.de</email>
+    </contributor>
+    <contributor>
+      <name>Amy Bekkerman</name>
+      <email>amy@precisionedits.com</email>
+    </contributor>
+    <contributor>
+      <name>Ana Bela Martins</name>
+      <email>abela@ua.pt</email>
+    </contributor>
+    <contributor>
+      <name>Ana Delciellos</name>
+      <email>anadelciellos@yahoo.com.br</email>
+    </contributor>
+    <contributor>
+      <name>Anatole Lucet</name>
+      <email>anatole.lucet@ens-lyon.fr</email>
+    </contributor>
+    <contributor>
+      <name>Anders Johansson</name>
+      <email>mejlaandersj@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Andre Prause</name>
+    </contributor>
+    <contributor>
+      <name>Andrea Ghoneim</name>
+      <email>andrea.ghoneim@donau-uni.ac.at</email>
+    </contributor>
+    <contributor>
+      <name>Andreas Paul</name>
+      <email>apaul@posteo.de</email>
+    </contributor>
+    <contributor>
+      <name>Andreas Recke</name>
+      <email>Andreas.Recke@uksh.de</email>
+    </contributor>
+    <contributor>
+      <name>Andreas Schulz</name>
+      <email>andreas.schulz@soziologiemagazin.de</email>
+      <url>http://www.soziologiemagazin.de</url>
+    </contributor>
+    <contributor>
+      <name>Andres Jimenez Galisteo Jr</name>
+      <email>galisteo@usp.br</email>
+    </contributor>
+    <contributor>
+      <name>Andrew Dunning</name>
+      <email>andunning+zotero@gmail.com</email>
+      <url>http://individual.utoronto.ca/dunning/</url>
+    </contributor>
+    <contributor>
+      <name>Andrew H. Lee</name>
+      <email>alee712@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Andrew Novikoff</name>
+      <email>novikoffav@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Andrew Priest</name>
+    </contributor>
+    <contributor>
+      <name>Andrew R. Brown</name>
+      <email>algorithmicmusic@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Andrey Chetverikov</name>
+      <email>andrey@chetvericov.ru</email>
+      <url>http://chetvericov.ru</url>
+    </contributor>
+    <contributor>
+      <name>André Luiz Appel</name>
+      <email>andreappel@ibict.br</email>
+    </contributor>
+    <contributor>
+      <name>Andy Hartland</name>
+    </contributor>
+    <contributor>
+      <name>Andy Wales</name>
+      <email>research@andy.wales</email>
+    </contributor>
+    <contributor>
+      <name>Anna Couthures-Idrizi</name>
+      <email>anna.couthuresidrizi@sciencespo.fr</email>
+    </contributor>
+    <contributor>
+      <name>Anna Simon</name>
+      <email>simonanna@gmx.net</email>
+    </contributor>
+    <contributor>
+      <name>Anna Tassinari</name>
+      <email>aniat@bu.edu</email>
+    </contributor>
+    <contributor>
+      <name>Anne Le-Huu Pineault</name>
+      <email>anne-gabrielle.le-huu.pineault@umontreal.ca</email>
+    </contributor>
+    <contributor>
+      <name>Anne Mabille</name>
+      <email>anne.mabille@mnhn.fr</email>
+    </contributor>
+    <contributor>
+      <name>Anne-Sophie Bessero</name>
+    </contributor>
+    <contributor>
+      <name>Annie Fourny</name>
+      <email>annie.fourny@uclouvain.be</email>
+    </contributor>
+    <contributor>
+      <name>Anritsu Polii</name>
+      <email>anritsupolii@gmail.com</email>
+      <url>https://www.mendeley.com/profiles/anritsu-polii</url>
+    </contributor>
+    <contributor>
+      <name>Anton Hughes</name>
+      <email>antonh@lawtec.net</email>
+    </contributor>
+    <contributor>
+      <name>Anton Perdoncin</name>
+      <email>anton.perdoncin@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Antonio Mendes da Silva</name>
+      <email>mendes@mmsh.univ-aix.fr</email>
+    </contributor>
+    <contributor>
+      <name>Antonio Mendes Da Silva</name>
+      <email>antonio.mendes@inha.fr</email>
+    </contributor>
+    <contributor>
+      <name>Anuj Sharma</name>
+      <email>rknx@outlook.com</email>
+    </contributor>
+    <contributor>
+      <name>Arash Zeini</name>
+    </contributor>
+    <contributor>
+      <name>Ari Cooper-Davis</name>
+      <email>asc223@exeter.ac.uk</email>
+    </contributor>
+    <contributor>
+      <name>Arkanty Septyvergy</name>
+      <email>arkanty.septyvergy@gmail.com</email>
+      <url>https://www.linkedin.com/in/arkanty-septyvergy-032770a2/</url>
+    </contributor>
+    <contributor>
+      <name>Arnau Serra-Cayuela</name>
+      <email>arnau.ub@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Arturo Ocampo Ramírez</name>
+      <email>ingaor@hotmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Arunkumar R</name>
+      <url>http://www.mendeley.com/profiles/arunkumar-r1/</url>
+    </contributor>
+    <contributor>
+      <name>Arya Bratasena Alhaq</name>
+      <email>baraktt30@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Asahiko Matsuda</name>
+      <url>https://www.zotero.org/asahiko/</url>
+    </contributor>
+    <contributor>
+      <name>Augustin CHARTIER</name>
+    </contributor>
+    <contributor>
+      <name>Aurimas Vinckevicius</name>
+      <email>aurimas.dev@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Auriza Rahmad Akbar</name>
+      <email>auriza.akbar@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Austin Mason</name>
+      <email>austinpjohnson@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>AVSz</name>
+      <email>avszaba@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Aymeric Fassier</name>
+      <email>fassier.aymeric@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Aziz Souizi</name>
+      <email>contact@medjchem.com</email>
+      <url>http://www.medjchem.com</url>
+    </contributor>
+    <contributor>
+      <name>B S Chhikara</name>
+      <email>bschhikara@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>BABA Web Design</name>
+      <email>babawebdesign@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Barbara Ieger Vianna</name>
+      <email>barbara.vianna@ufrgs.br</email>
+      <url>http://www.ufrgs.br/bibdir/</url>
+    </contributor>
+    <contributor>
+      <name>Barbara Williams</name>
+      <email>bwilli@osa.org</email>
+    </contributor>
+    <contributor>
+      <name>Bastian Drolshagen</name>
+      <email>bdrolshagen@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Beate Baldauf</name>
+      <email>baldaufb@ph-heidelberg.de</email>
+    </contributor>
+    <contributor>
+      <name>Beilstein-Institut zur Foerderung der Chemischen Wissenschaften</name>
+      <email>journals-support@beilstein-institut.de</email>
+    </contributor>
+    <contributor>
+      <name>Bela Hausmann</name>
+      <url>https://github.com/and3k</url>
+    </contributor>
+    <contributor>
+      <name>Bella Nolasco</name>
+      <email>bellanolasco@ua.pt</email>
+    </contributor>
+    <contributor>
+      <name>Ben</name>
+      <email>bodxp@163.com</email>
+    </contributor>
+    <contributor>
+      <name>Ben Gilna</name>
+      <email>bengilna@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Benedicte MacGregor</name>
+    </contributor>
+    <contributor>
+      <name>Benedicte Macgregor</name>
+      <email>benedicte.macgregor@mae.u-paris10.fr</email>
+    </contributor>
+    <contributor>
+      <name>Benjamin C. Moon</name>
+      <email>benjamin.c.moon@bristol.ac.uk</email>
+    </contributor>
+    <contributor>
+      <name>Benjamin Hollister</name>
+      <email>ben@rootsandbranches.com.au</email>
+      <url>http://www.mendeley.com/profiles/benjamin-hollister2/</url>
+    </contributor>
+    <contributor>
+      <name>Benjamin Paul</name>
+      <email>Benjamin.Paul@unige.ch</email>
+    </contributor>
+    <contributor>
+      <name>Bernhard Hoiss</name>
+      <email>bernhard.hoiss@uni-wuerzburg.de</email>
+    </contributor>
+    <contributor>
+      <name>Bernhard Hoiß</name>
+      <email>bernhard.hoiss@uni-wuerzburg.de</email>
+    </contributor>
+    <contributor>
+      <name>Bernhard Knorn SJ</name>
+      <email>bksj AT gmx DOT net</email>
+    </contributor>
+    <contributor>
+      <name>Bin Liu</name>
+      <email>lieubean@gmail.com</email>
+      <url>https://www.linkedin.com/in/lieubean/</url>
+    </contributor>
+    <contributor>
+      <name>Björn Ekström</name>
+      <email>bjorn.ekstrom@ub.gu.se</email>
+    </contributor>
+    <contributor>
+      <name>Brand van Sittert</name>
+      <email>sybrandvs@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Brandon Maki</name>
+      <email>brandonmaki@outlook.com</email>
+    </contributor>
+    <contributor>
+      <name>Brenda J. Baker</name>
+      <email>BrendaJ.Baker@asu.edu</email>
+    </contributor>
+    <contributor>
+      <name>Brenton M. Wiernik</name>
+      <email>zotero@wiernik.org</email>
+    </contributor>
+    <contributor>
+      <name>Brenton Wiernik</name>
+      <email>wiernik@workpsy.ch</email>
+    </contributor>
+    <contributor>
+      <name>Brian McLaughlin</name>
+      <email>brian.mclaughlin.2009@live.rhul.ac.uk</email>
+    </contributor>
+    <contributor>
+      <name>Brian Plimley</name>
+      <email>brian.plimley@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Brian Stucky</name>
+      <email>stuckyb@colorado.edu</email>
+    </contributor>
+    <contributor>
+      <name>Brian Vegas</name>
+      <url>http://www.copsac.com/</url>
+    </contributor>
+    <contributor>
+      <name>Bruce D'Arcus</name>
+      <email>bdarcus@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Bruno Milanez</name>
+      <email>bruno.milanez@ufjf.edu.br</email>
+    </contributor>
+    <contributor>
+      <name>Bruno Tovar Falciano</name>
+      <email>bruno@tovar.com.br</email>
+    </contributor>
+    <contributor>
+      <name>Bruno Wipfler</name>
+      <email>bruno.wipfler@googlemail.com</email>
+    </contributor>
+    <contributor>
+      <name>Buletin Agrohorti</name>
+      <url>https://www.mendeley.com/profiles/buletin-agrohorti/</url>
+    </contributor>
+    <contributor>
+      <name>burak izgi</name>
+      <email>burak.izgi@bozok.edu.tr</email>
+    </contributor>
+    <contributor>
+      <name>Burnmeister</name>
+      <email>sybrandvs@yahoo.com</email>
+    </contributor>
+    <contributor>
+      <name>Bùi Phương Linh</name>
+      <email>linh.bui@fsh.org.vn</email>
+      <url>http://fsh.org.vn</url>
+    </contributor>
+    <contributor>
+      <name>Caio Graco-Roza, PhD Candidate</name>
+      <email>caiogracor@gmail.com</email>
+      <url>http://www.mendeley.com/profiles/caio-graco-roza2/</url>
+    </contributor>
+    <contributor>
+      <name>Caitlin Rottler</name>
+      <email>caitlin.m.rottler@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Cameron Hill</name>
+    </contributor>
+    <contributor>
+      <name>Camilla K. Andresen</name>
+      <email>ckan1@ucl.dk</email>
+    </contributor>
+    <contributor>
+      <name>Carl J. Schreck, III</name>
+      <email>carl.schreck@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Carl Johan Berglund</name>
+      <email>cajo@cajo.nu</email>
+    </contributor>
+    <contributor>
+      <name>Carl Oliveros</name>
+    </contributor>
+    <contributor>
+      <name>Carles Pina i Estany</name>
+      <email>carles@pina.cat</email>
+      <url>https://carles.pina.cat</url>
+    </contributor>
+    <contributor>
+      <name>Carlos A. Neves</name>
+      <email>caneves@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Carlos Balmaseda Espinosa</name>
+      <email>balmaseda.espinosa@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Carlos Eduardo Guerra Silva</name>
+      <email>carlosegs@ufmg.br</email>
+    </contributor>
+    <contributor>
+      <name>Carlos Razo</name>
+      <email>carlos.razo@unctad.org</email>
+    </contributor>
+    <contributor>
+      <name>Carole Boulai</name>
+      <url>http://triangle.ens-lyon.fr/spip.php?article202</url>
+    </contributor>
+    <contributor>
+      <name>Carolin Mayer</name>
+      <email>carolin.mayer@pollinationecology.org</email>
+    </contributor>
+    <contributor>
+      <name>Carsten Hellmann</name>
+    </contributor>
+    <contributor>
+      <name>Cassian Sitaru</name>
+    </contributor>
+    <contributor>
+      <name>Catherine Brendow</name>
+      <email>catherine.brendow@graduateinstitute.ch</email>
+    </contributor>
+    <contributor>
+      <name>Cecile Laube</name>
+      <url>http://triangle.ens-lyon.fr/spip.php?article206</url>
+    </contributor>
+    <contributor>
+      <name>Center for Research on Media, Technology, and Health</name>
+      <email>crmth@pitt.edu</email>
+      <url>http://crmth.pitt.edu</url>
+    </contributor>
+    <contributor>
+      <name>Charles Mercier-Paquin</name>
+      <email>charles.mercier.paquin@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Charles Parnot</name>
+      <email>charles.parnot@gmail.com</email>
+      <url>http://twitter.com/cparnot</url>
+    </contributor>
+    <contributor>
+      <name>Charlie Kim</name>
+      <email>cckim47@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Chase Cimina</name>
+    </contributor>
+    <contributor>
+      <name>Chiara Colombo</name>
+      <email>chiara.colombo@unicatt.it</email>
+    </contributor>
+    <contributor>
+      <name>Chris Forden</name>
+      <email>cforden@comcast.net</email>
+    </contributor>
+    <contributor>
+      <name>Chris Hastie</name>
+      <url>http://www.oak-wood.co.uk</url>
+    </contributor>
+    <contributor>
+      <name>Chris Horn</name>
+      <email>chris.horn@securedecisions.com</email>
+    </contributor>
+    <contributor>
+      <name>Chris James</name>
+      <email>cjames@cochlear.com</email>
+    </contributor>
+    <contributor>
+      <name>Chris Lowder</name>
+      <email>clowder@solar.physics.montana.edu</email>
+    </contributor>
+    <contributor>
+      <name>Chris Maugino</name>
+      <email>christophe.maugino@st-patricks.ac.uk</email>
+    </contributor>
+    <contributor>
+      <name>Chris Parker</name>
+      <email>c.parker@lboro.ac.uk</email>
+    </contributor>
+    <contributor>
+      <name>Chris-Gabriel Islam</name>
+      <email>chris-gabriel.islam@destatis.de</email>
+      <url>http://www.sachverstaendigenrat-wirtschaft.de/index.html</url>
+    </contributor>
+    <contributor>
+      <name>Christian Fertl</name>
+      <email>christian.fertl@donau-uni.ac.at</email>
+    </contributor>
+    <contributor>
+      <name>Christian Focke</name>
+      <email>christian.focke@mail.fernfh.ac.at</email>
+    </contributor>
+    <contributor>
+      <name>Christian Henriot</name>
+      <email>campumoru@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Christian Pietsch</name>
+      <url>http://purl.org/net/pietsch</url>
+    </contributor>
+    <contributor>
+      <name>Christian Rainer</name>
+      <email>christian.rainer@outlook.com</email>
+    </contributor>
+    <contributor>
+      <name>Christian Rubbert</name>
+      <email>christian.rubbert@med.uni-duesseldorf.de</email>
+    </contributor>
+    <contributor>
+      <name>Christian Werthschulte</name>
+      <email>Christian.Werthschulte@rub.de</email>
+    </contributor>
+    <contributor>
+      <name>Christina Wenzel</name>
+      <email>christina.wenzel@slub-dresden.de</email>
+      <url>http://www.slub-dresden.de</url>
+    </contributor>
+    <contributor>
+      <name>Christine Daussin</name>
+      <email>christine.daussin@cnrs.fr</email>
+      <url>http://www.cresppa.cnrs.fr/</url>
+    </contributor>
+    <contributor>
+      <name>Christof Pearce</name>
+      <email>christofpearce@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Christoph Jungbauer</name>
+      <email>christoph.jungbauer@fernfh.ac.at</email>
+    </contributor>
+    <contributor>
+      <name>Christoph Mann</name>
+      <email>rounzli@googlemail.com</email>
+    </contributor>
+    <contributor>
+      <name>Christopher Hill</name>
+      <url>http://www.mendeley.com/profiles/christopher-hill7/</url>
+    </contributor>
+    <contributor>
+      <name>Christopher Rüther</name>
+      <email>dcruether@web.de</email>
+    </contributor>
+    <contributor>
+      <name>Christos Kannas</name>
+      <email>kannas.christos@ucy.ac.cy</email>
+    </contributor>
+    <contributor>
+      <name>Cirad-Dist</name>
+    </contributor>
+    <contributor>
+      <name>Claire Fox</name>
+      <email>claire.fox@dkit.ie</email>
+      <url>http://www.mendeley.com/profiles/claire-fox1/</url>
+    </contributor>
+    <contributor>
+      <name>Clarisse Lachat</name>
+      <email>clarisse.lachat@mom.fr</email>
+    </contributor>
+    <contributor>
+      <name>Claudia Heitz</name>
+      <email>frau.heitz@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Claudio Notz</name>
+      <email>claudio@notz.cc</email>
+    </contributor>
+    <contributor>
+      <name>Claus Pelikan</name>
+    </contributor>
+    <contributor>
+      <name>cleber barreto</name>
+      <url>http://www.mendeley.com/profiles/cleber-barreto/</url>
+    </contributor>
+    <contributor>
+      <name>Cleber Barreto</name>
+      <email>cleber.barreto@yahoo.com.br</email>
+      <url>http://www.mendeley.com/profiles/cleber-barreto/</url>
+    </contributor>
+    <contributor>
+      <name>Clint Hall</name>
+      <email>bclinthall@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Clément Féliu</name>
+      <email>clement.feliu@inrap.fr</email>
+    </contributor>
+    <contributor>
+      <name>Colin A Stewart</name>
+      <email>colinstewart@engineering.ucsb.edu</email>
+    </contributor>
+    <contributor>
+      <name>CompTask</name>
+      <email>contato@comptask.com.br</email>
+    </contributor>
+    <contributor>
+      <name>Connor Skennerton</name>
+    </contributor>
+    <contributor>
+      <name>Cornelius Lipponer</name>
+      <email>clipponer at gmail dot com</email>
+    </contributor>
+    <contributor>
+      <name>Courtney Shirley</name>
+      <email>courtneymarieshirley@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Cristian Moreno</name>
+      <email>moreno.grassland@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Cristiano Diamanti</name>
+      <url>http://www.mendeley.com/profiles/cristiano-diamanti1/</url>
+    </contributor>
+    <contributor>
+      <name>Cristina Cortês</name>
+      <email>ccortes@ua.pt</email>
+      <url>http://www.mendeley.com/profiles/cristina-cortes/</url>
+    </contributor>
+    <contributor>
+      <name>Crystal Edler Schiller</name>
+      <email>crystal_schiller@med.unc.edu</email>
+    </contributor>
+    <contributor>
+      <name>Crystal Ruff</name>
+      <email>Crystal.Ruff@ucl.ac.uk</email>
+    </contributor>
+    <contributor>
+      <name>cumuleaus</name>
+      <email>cummuluss@gmx.net</email>
+    </contributor>
+    <contributor>
+      <name>Curtis M. Humphrey</name>
+    </contributor>
+    <contributor>
+      <name>DAI - Bibliothek</name>
+      <email>zenondai@dainst.de</email>
+    </contributor>
+    <contributor>
+      <name>Dallas Card</name>
+      <email>dallas.card@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Damodaran S E</name>
+      <email>damodaran.se@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Dani Bodor</name>
+      <email>dbodor@igc.gulbenkian.pt</email>
+    </contributor>
+    <contributor>
+      <name>Daniel Black</name>
+      <email>daniel.black@monash.edu</email>
+    </contributor>
+    <contributor>
+      <name>Daniel Burgett</name>
+    </contributor>
+    <contributor>
+      <name>Daniel Hirsbrunner</name>
+      <email>dhirsbrunner@gmx.ch</email>
+    </contributor>
+    <contributor>
+      <name>Daniel Kraus</name>
+      <email>daniel.kraus@uni-wuerzburg.de</email>
+      <url>http://github.com/bovender</url>
+    </contributor>
+    <contributor>
+      <name>Daniel Kufner</name>
+      <email>daniel.kufner@wu.ac.at</email>
+      <url>https://www.wu.ac.at/bibliothek</url>
+    </contributor>
+    <contributor>
+      <name>Daniel Owens</name>
+      <email>dhowens@pmbx.net</email>
+    </contributor>
+    <contributor>
+      <name>Daniel Ponce de León</name>
+      <email>dponcelima@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Daniel Probst</name>
+      <email>daenuprobst@gmail.com</email>
+      <url>http://danielprobst.net</url>
+    </contributor>
+    <contributor>
+      <name>Daniel Saunders</name>
+      <email>daniel.saunders@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Daniel Scarnecchia</name>
+      <email>dscarnecchia@hsph.harvard.edu</email>
+    </contributor>
+    <contributor>
+      <name>Daniel Sharp</name>
+      <email>daniel.sharp@oregonstate.edu</email>
+    </contributor>
+    <contributor>
+      <name>Daniel Simon</name>
+      <email>daniel.simon@liu.se</email>
+    </contributor>
+    <contributor>
+      <name>Daniel Stjepanovic</name>
+      <email>daniel.stjepanovic@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Daniel W Chan</name>
+      <email>danwchan@protonmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Daniela Rodriguez</name>
+    </contributor>
+    <contributor>
+      <name>Danny Balanta</name>
+      <url>https://www.mendeley.com/profiles/danny-balanta1/</url>
+    </contributor>
+    <contributor>
+      <name>Dany Thibault</name>
+      <email>dany.thibault@cmontmorency.qc.ca</email>
+    </contributor>
+    <contributor>
+      <name>Daphné Mathelier</name>
+      <email>daphne.mathelier@cnrs.fr</email>
+    </contributor>
+    <contributor>
+      <name>Darin Russell</name>
+      <email>darin.russell@moore.edu.au</email>
+    </contributor>
+    <contributor>
+      <name>Dariusz Bobak</name>
+      <email>dbobak@lithics.eu</email>
+    </contributor>
+    <contributor>
+      <name>Daryoush Daniel Vaziri</name>
+      <email>daryoush.vaziri@h-brs.de</email>
+    </contributor>
+    <contributor>
+      <name>Dave Elder-Vass</name>
+      <email>d.elder-vass@lboro.ac.uk</email>
+    </contributor>
+    <contributor>
+      <name>David Bajusz</name>
+    </contributor>
+    <contributor>
+      <name>David Bueno Vallejo</name>
+      <email>bueno@lcc.uma.es</email>
+    </contributor>
+    <contributor>
+      <name>David Kane</name>
+    </contributor>
+    <contributor>
+      <name>David Kaplan</name>
+      <email>david.kaplan@ird.fr</email>
+    </contributor>
+    <contributor>
+      <name>David M. Kaplan</name>
+      <email>david.kaplan@ird.fr</email>
+      <url>http://www.crh-eme.ird.fr/team/dkaplan/index.html</url>
+    </contributor>
+    <contributor>
+      <name>David M. Miller</name>
+      <email>dmiller@briercrest.ca</email>
+    </contributor>
+    <contributor>
+      <name>David Nicolas Hopmann</name>
+      <email>dnh@gmx.net</email>
+    </contributor>
+    <contributor>
+      <name>David Pérez Solís</name>
+      <email>david@perezsolis.es</email>
+    </contributor>
+    <contributor>
+      <name>David Spacil</name>
+    </contributor>
+    <contributor>
+      <name>David Venema</name>
+      <email>dvenema@ltu.edu.au</email>
+    </contributor>
+    <contributor>
+      <name>David Weise</name>
+      <email>dweise@fs.fed.us</email>
+    </contributor>
+    <contributor>
+      <name>Daybelis Fernández Valdés</name>
+      <email>dfernandez@unah.edu.cu</email>
+    </contributor>
+    <contributor>
+      <name>Dayvis Fernández Valdés</name>
+      <email>dayvis86@hotmail.com</email>
+    </contributor>
+    <contributor>
+      <name>ddanangaw</name>
+    </contributor>
+    <contributor>
+      <name>Dean Watters</name>
+    </contributor>
+    <contributor>
+      <name>Debkalpa Goswami</name>
+    </contributor>
+    <contributor>
+      <name>Deepankar Datta</name>
+      <email>deepankardatta@nhs.net</email>
+    </contributor>
+    <contributor>
+      <name>Deivdy Willian Silva</name>
+      <email>deivdysilva@ibict.br</email>
+    </contributor>
+    <contributor>
+      <name>Denis Maier</name>
+    </contributor>
+    <contributor>
+      <name>Denis Sleptsov</name>
+      <email>denis@galenos.com.tr</email>
+    </contributor>
+    <contributor>
+      <name>Dennis Fujita</name>
+      <email>dmfujita@usp.br</email>
+    </contributor>
+    <contributor>
+      <name>Dennis Lau</name>
+    </contributor>
+    <contributor>
+      <name>Dennis Riehle</name>
+    </contributor>
+    <contributor>
+      <name>Devin Roza LC</name>
+      <email>devin (.) roza (@) legionaries {.} org  (remove spaces and parenthesis/brackets but leave periods to get email)</email>
+    </contributor>
+    <contributor>
+      <name>Diah Meilany</name>
+      <email>diah.meilany@polinema.ac.id</email>
+      <url>https://www.researchgate.net/profile/Diah_Meilany</url>
+    </contributor>
+    <contributor>
+      <name>Diana Silva</name>
+      <email>dianasilva@ua.pt</email>
+    </contributor>
+    <contributor>
+      <name>Didier Davin</name>
+      <email>didierdavin@yahoo.co.jp</email>
+    </contributor>
+    <contributor>
+      <name>Didier Voisin</name>
+    </contributor>
+    <contributor>
+      <name>Diego Balseiro</name>
+      <email>balsedie@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Diego José Macêdo</name>
+      <email>diegomacedo@ibict.br</email>
+    </contributor>
+    <contributor>
+      <name>Diego Zaccariotto</name>
+      <email>d.zaccariotto@bradford.ac.uk</email>
+    </contributor>
+    <contributor>
+      <name>Dietmar Grabher</name>
+      <email>dietmar.grabher@fhv.at</email>
+    </contributor>
+    <contributor>
+      <name>Dimitri Forero</name>
+      <email>idf2@cornell.edu</email>
+    </contributor>
+    <contributor>
+      <name>Dimitris Tambakopoulos</name>
+    </contributor>
+    <contributor>
+      <name>Dirk Kellner</name>
+      <email>dirk.kellner@arcor.de</email>
+    </contributor>
+    <contributor>
+      <name>Dmitrijs Lvovs</name>
+      <email>dmitrijs.lvovs@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Dmontier Aragão</name>
+      <email>dmontier@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Dmytro Vovk</name>
+      <email>dimavovk@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Dominic Villeneuve</name>
+      <email>dominicvilleneuve@live.ca</email>
+      <url>http://dominicvilleneuve.ca</url>
+    </contributor>
+    <contributor>
+      <name>Dominik Bláha</name>
+      <email>blahad@sic.czu.cz</email>
+    </contributor>
+    <contributor>
+      <name>Dominique Commelin</name>
+      <email>commelin@mmsh.univ-aix.fr</email>
+    </contributor>
+    <contributor>
+      <name>Dounia Salamé</name>
+      <email>dounia.salame@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>dozent</name>
+      <url>https://www.hs-osnabrueck.de/aul/</url>
+    </contributor>
+    <contributor>
+      <name>Dr D. Pylarinos</name>
+      <email>editor@etasr.com</email>
+    </contributor>
+    <contributor>
+      <name>Drew Schiller</name>
+      <email>drew@drewschiller.com</email>
+    </contributor>
+    <contributor>
+      <name>Duncan Belk</name>
+    </contributor>
+    <contributor>
+      <name>Dusit Laohasinnarong</name>
+      <email>vsdlh@mahidol.ac.th</email>
+      <url>http://www.vs.mahidol.ac.th/dusit</url>
+    </contributor>
+    <contributor>
+      <name>Eddy yobo</name>
+    </contributor>
+    <contributor>
+      <name>Edgar Guevara</name>
+      <email>edgar[dot]guevara[at]uaslp[dot]com</email>
+      <url>https://sites.google.com/site/edgarguevara/</url>
+    </contributor>
+    <contributor>
+      <name>Eduardo Bettoni</name>
+      <email>webtur @ ufpr dot br</email>
+    </contributor>
+    <contributor>
+      <name>Eduardo Michelotti Bettoni</name>
+      <email>webtur@ufpr.br</email>
+    </contributor>
+    <contributor>
+      <name>Eduardo Vilches</name>
+      <email>e2.vilches@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Ehouman Evans, PhD</name>
+      <email>ehoumanevans@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Ekaphan Kraichak</name>
+      <email>ekraichak@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Elena Razlogova</name>
+      <email>elena.razlogova@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Elena Roglia</name>
+    </contributor>
+    <contributor>
+      <name>Eli Dourado</name>
+      <email>elidourado@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Eliot Miller</name>
+      <email>eliotmiller@umsl.edu</email>
+    </contributor>
+    <contributor>
+      <name>Elisabet Batlle</name>
+      <email>elisabet.batlle@unece.org</email>
+    </contributor>
+    <contributor>
+      <name>Emil A. Sobottka</name>
+      <email>sobottka@pucrs.br</email>
+    </contributor>
+    <contributor>
+      <name>Emma Reisz</name>
+      <email>emma.reisz@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Emmanuel Charpentier</name>
+      <email>emm.charpentier@free.fr</email>
+    </contributor>
+    <contributor>
+      <name>Enrico Natale</name>
+      <email>enrico.natale@infoclio.ch</email>
+    </contributor>
+    <contributor>
+      <name>Enzo Cappelluti</name>
+      <email>e.cappelluti@seedstm.com</email>
+    </contributor>
+    <contributor>
+      <name>Eric Amaral</name>
+    </contributor>
+    <contributor>
+      <name>Eric Baumer</name>
+      <email>ebaumer@ics.uci.edu</email>
+    </contributor>
+    <contributor>
+      <name>Eric Fuchs</name>
+      <email>eric.fuchs@ucr.ac.cr</email>
+    </contributor>
+    <contributor>
+      <name>Erik Marsh</name>
+      <email>erik.marsh@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Erik Rose</name>
+      <email>erik.rose@spi-aquarius.de</email>
+    </contributor>
+    <contributor>
+      <name>Eriko Amano</name>
+      <url>http://www.mendeley.com/profiles/eriko-amano/</url>
+    </contributor>
+    <contributor>
+      <name>Erin McNerny</name>
+      <email>erinmcnerny@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Erin Simonds</name>
+      <email>fisslefink@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Ernesto de Bernardis</name>
+    </contributor>
+    <contributor>
+      <name>Estudios de Fonética Experimental</name>
+      <email>labphon@ub.edu</email>
+      <url>http://stel.ub.edu/labfon/en/content/publication-estudios-de-fonetica-experimental</url>
+    </contributor>
+    <contributor>
+      <name>Eszter L. Toth</name>
+      <email>toth.eszter@itk.ppke.hu</email>
+    </contributor>
+    <contributor>
+      <name>Etienne Gaudrain</name>
+      <email>egaudrain@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Eugen Eisler</name>
+      <email>eoeisler@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Eugenia Sokolinski</name>
+      <email>eugenia.sokolinski@uni-hamburg.de</email>
+    </contributor>
+    <contributor>
+      <name>Evan Leventhal</name>
+      <email>eleventhal@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Evgeny Baraboshkin</name>
+      <url>https://www.mendeley.com/profiles/evgeny-baraboshkin2/</url>
+    </contributor>
+    <contributor>
+      <name>Fabien Ors</name>
+      <email>fabien.ors@mines-paristech.fr</email>
+    </contributor>
+    <contributor>
+      <name>Fabio Baqueiro Figueiredo</name>
+      <email>fabiobaq@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Fabio Motoki</name>
+    </contributor>
+    <contributor>
+      <name>Fabio Sampaio Rosas </name>
+      <email>fabio.rosas@unesp.br</email>
+    </contributor>
+    <contributor>
+      <name>Fabio Silva</name>
+      <email>fdescartes@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Fareed Sairi</name>
+      <url>http://www.mendeley.com/profiles/fareed-sairi/</url>
+    </contributor>
+    <contributor>
+      <name>Federico Pianzola</name>
+    </contributor>
+    <contributor>
+      <name>Felipe Ferreira de Oliveira </name>
+      <email>felipe.oliveira@engenharia.ufjf.br</email>
+    </contributor>
+    <contributor>
+      <name>Felipe Martínez-Pastor</name>
+      <email>f.martinez.pastor@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Felipe Reyes Z.</name>
+      <email>freyes@pm.me</email>
+    </contributor>
+    <contributor>
+      <name>Fernando Bruno</name>
+      <email>fernando.bruno@ufrgs.br</email>
+      <url>http://www.pgdesign.ufrgs.br/</url>
+    </contributor>
+    <contributor>
+      <name>Fernando de Farias Martins</name>
+      <email>fernandof_martins@hotmail.com</email>
+      <url>https://orthoptera.wixsite.com/unioeste</url>
+    </contributor>
+    <contributor>
+      <name>Fernando Gomes</name>
+      <email>fgsj@ufrj.br</email>
+    </contributor>
+    <contributor>
+      <name>Fernando Molina</name>
+    </contributor>
+    <contributor>
+      <name>Fernando V. Molina</name>
+      <email>fmolina@qi.fcen.uba.ar</email>
+    </contributor>
+    <contributor>
+      <name>Fiachra Byrne</name>
+      <email>fiachrapbyrne@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Firas Khalil Khana</name>
+      <email>firasuke@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Firdan Machda</name>
+      <email>firdan.machda@gmail.com</email>
+      <url>https://www.linkedin.com/in/firdan-machda-b7595b78/</url>
+    </contributor>
+    <contributor>
+      <name>Firdausy Amalina Esya</name>
+      <email>firdausyamalinaesya@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Flavio Pendolino</name>
+      <email>flavio.pendolino@icloud.com</email>
+    </contributor>
+    <contributor>
+      <name>Florencia Fernandez C.</name>
+      <email>clara.archi@ulb.ac.be</email>
+    </contributor>
+    <contributor>
+      <name>Florent Angly</name>
+      <email>florent.angly@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Florent Mercey</name>
+      <email>florent.mercey@inrap.fr</email>
+    </contributor>
+    <contributor>
+      <name>Florian M. Steiner</name>
+    </contributor>
+    <contributor>
+      <name>Florian Martin-Bariteau</name>
+      <email>f.martin-bariteau@umontreal.ca</email>
+      <url>http://f-mb.github.io/cslegal/</url>
+    </contributor>
+    <contributor>
+      <name>Floris Vanderhaeghe</name>
+      <url>https://github.com/florisvdh</url>
+    </contributor>
+    <contributor>
+      <name>Forden C A</name>
+      <email>cforden at-sigil comcast.net</email>
+    </contributor>
+    <contributor>
+      <name>Francesco Caiazza</name>
+      <email>francesco.caiazza@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Francesco Santini</name>
+    </contributor>
+    <contributor>
+      <name>Francesco Vidotto</name>
+      <email>francesco.vidotto@unito.it</email>
+      <url>http://www.mendeley.com/profiles/francesco-vidotto/</url>
+    </contributor>
+    <contributor>
+      <name>Francisco Fernández Labastida</name>
+      <email>ffernandez@pusc.it</email>
+    </contributor>
+    <contributor>
+      <name>Francisco Rodriguez-Sanchez</name>
+      <email>f.rodriguez.sanc@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Francisco-Javier Calzada-Prado</name>
+      <email>fcalzada@bib.uc3m.es</email>
+    </contributor>
+    <contributor>
+      <name>Franck Stefani</name>
+      <email>fopstefani@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Franco Romani</name>
+      <email>fromani@ins.gob.pe</email>
+    </contributor>
+    <contributor>
+      <name>Francois Capron</name>
+      <email>f.capron37@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Francois-Xavier Lesage</name>
+    </contributor>
+    <contributor>
+      <name>Frank Bennett</name>
+      <email>biercenator@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Frank Weber</name>
+      <email>newsfranklin66@gmx.net</email>
+    </contributor>
+    <contributor>
+      <name>Franziska Heimburger</name>
+      <email>zotero@franziska.fr</email>
+    </contributor>
+    <contributor>
+      <name>François Capron</name>
+      <email>f.capron37@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>François Desseilles</name>
+    </contributor>
+    <contributor>
+      <name>François Thibeault</name>
+    </contributor>
+    <contributor>
+      <name>Fred01</name>
+    </contributor>
+    <contributor>
+      <name>Frederic Spycher</name>
+      <email>spycher.frederic@gmail.com</email>
+      <url>http://lib.fyi</url>
+    </contributor>
+    <contributor>
+      <name>Frederic Y. Bois</name>
+      <email>frederic.bois@ineris.fr</email>
+    </contributor>
+    <contributor>
+      <name>Frederik Elwert</name>
+      <email>frederik.elwert@rub.de</email>
+    </contributor>
+    <contributor>
+      <name>Fredrikku Bölske</name>
+    </contributor>
+    <contributor>
+      <name>Frédérique Flamerie</name>
+      <email>frederique.flamerie-de-lachapelle@u-bordeaux.fr</email>
+    </contributor>
+    <contributor>
+      <name>Félix Langevin Harnois</name>
+      <email>felix.langevin-harnois@etsmtl.ca</email>
+    </contributor>
+    <contributor>
+      <name>Gabriel de Azevedo Limeira</name>
+      <email>gabriel.limeira@peb.ufrj.br</email>
+    </contributor>
+    <contributor>
+      <name>Gabriele Ciuti</name>
+      <email>gabriele.ciuti@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Gabriele Marinello</name>
+    </contributor>
+    <contributor>
+      <name>Gabriele Schachinger</name>
+      <email>gs@i-gs.at</email>
+    </contributor>
+    <contributor>
+      <name>Gal Haspel</name>
+      <email>gal.haspel@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Gareth Spanglett</name>
+      <email>gspanglett@gmail.com</email>
+      <url>https://gspanglett.github.io</url>
+    </contributor>
+    <contributor>
+      <name>Garrett Foster</name>
+      <email>garrett.d.foster@gmail.com</email>
+      <url>http://sdoresearch.com</url>
+    </contributor>
+    <contributor>
+      <name>Gautier Metmer</name>
+      <email>gautiermetmer@yahoo.fr</email>
+    </contributor>
+    <contributor>
+      <name>Gavin Koh</name>
+    </contributor>
+    <contributor>
+      <name>Genki Takano</name>
+      <email>Genki.Takano@ulb.ac.be</email>
+      <url>http://www.zotero.org/gtakano</url>
+    </contributor>
+    <contributor>
+      <name>Georg Duffner</name>
+      <email>georg.duffner@wu.ac.at</email>
+    </contributor>
+    <contributor>
+      <name>Georg Link</name>
+      <email>glink@unomaha.edu</email>
+    </contributor>
+    <contributor>
+      <name>Georg Mayr-Duffner</name>
+      <email>georg.mayr-duffner@wu.ac.at</email>
+      <url>https://www.wu.ac.at/bibliothek</url>
+    </contributor>
+    <contributor>
+      <name>Gerit Wagner</name>
+    </contributor>
+    <contributor>
+      <name>Germain Rousselet</name>
+      <url>http://www.mendeley.com/profiles/germain-rousselet/</url>
+    </contributor>
+    <contributor>
+      <name>Gerrit Hirschfeld</name>
+      <email>g.hirschfeld@deutsches-kinderschmerzzentrum.de</email>
+      <url>gerrithirschfeld.de</url>
+    </contributor>
+    <contributor>
+      <name>Gilberto MARANI</name>
+      <email>gilberto.marani@mnhn.fr</email>
+    </contributor>
+    <contributor>
+      <name>Gilberto Mendes</name>
+      <email>gilbertomendes@ufu.br</email>
+    </contributor>
+    <contributor>
+      <name>Giles Walters</name>
+      <email>giles.walters@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Gilmer Solis-Sánchez</name>
+      <email>remlig@outlook.com</email>
+    </contributor>
+    <contributor>
+      <name>Giovanni Maltee</name>
+      <email>Giovanni.Maltese@uni-hamburg.de</email>
+    </contributor>
+    <contributor>
+      <name>Giuseppe Silano</name>
+      <email>g.silano89@gmail.com</email>
+      <url>http://giuseppesilano.net</url>
+    </contributor>
+    <contributor>
+      <name>GOUDEZ Raphael</name>
+      <email>rgoudez@laposte.net</email>
+    </contributor>
+    <contributor>
+      <name>Greg Barendt</name>
+    </contributor>
+    <contributor>
+      <name>Greg Whittick</name>
+      <email>greg.whittick@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Gregory Goltsov</name>
+      <email>gregory@goltsov.info</email>
+      <url>http://www.mendeley.com/profiles/gregory-goltsov/</url>
+    </contributor>
+    <contributor>
+      <name>Gregory Reimond</name>
+      <email>gregoryreimond1984@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Greig</name>
+      <email>mcgreig2000@googlemail.com</email>
+    </contributor>
+    <contributor>
+      <name>Grzegorz Balcerowski</name>
+      <email>grzegorz.balcerowski@sejm.gov.pl</email>
+    </contributor>
+    <contributor>
+      <name>Gudryan J. Barônio</name>
+      <email>gudryan@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Guillaume Durand</name>
+    </contributor>
+    <contributor>
+      <name>Guillaume Majeau-Bettez</name>
+      <email>joie.bill@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Guillermo Castellano</name>
+      <email>gcastellano@protonmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Gunnar Mertz</name>
+      <email>gunnar.mertz@univie.ac.at</email>
+    </contributor>
+    <contributor>
+      <name>Gustavo Cavagnari</name>
+    </contributor>
+    <contributor>
+      <name>Gustavo Rola Mol</name>
+      <email>gustavo.mol@engenharia.ufjf.br</email>
+    </contributor>
+    <contributor>
+      <name>Gérald Baril</name>
+    </contributor>
+    <contributor>
+      <name>Hajime Senuma</name>
+      <email>hajime.senuma@gmail.com</email>
+      <url>https://github.com/hajimes</url>
+    </contributor>
+    <contributor>
+      <name>Hakan Kocoglu</name>
+      <email>hakan@pooltext.com</email>
+    </contributor>
+    <contributor>
+      <name>Hamed Heydari</name>
+      <email>hamedheydari@live.com</email>
+      <url>http://www.mendeley.com/profiles/hamed-heydari5/</url>
+    </contributor>
+    <contributor>
+      <name>Hans Gunnar Slokvik Lian</name>
+      <email>h.g.s.lian@ub.uio.no</email>
+    </contributor>
+    <contributor>
+      <name>Harsha Ramaraju</name>
+      <email>harsha.ramaraju@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>hbien</name>
+    </contributor>
+    <contributor>
+      <name>Heather Malloy</name>
+    </contributor>
+    <contributor>
+      <name>Heinrich Mallison</name>
+      <email>heinrich.mallison@mfn-berlin.de</email>
+    </contributor>
+    <contributor>
+      <name>Helbert Rubén Borja García</name>
+      <email>hrborjag@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Hendrik Erz</name>
+      <email>hendrik.erz@soziologiemagazin.de</email>
+      <url>http://www.soziologiemagazin.de</url>
+    </contributor>
+    <contributor>
+      <name>Hendrys Tobar</name>
+      <email>u1918137@udg.edu</email>
+      <url>http://twitter.com/HendrysTobar</url>
+    </contributor>
+    <contributor>
+      <name>Hendy Irawan</name>
+      <email>hendy@hendyirawan.com</email>
+      <url>https://hendyirawan.com/</url>
+    </contributor>
+    <contributor>
+      <name>Henning Lorenz</name>
+      <email>henning.lorenz@geo.uu.se</email>
+    </contributor>
+    <contributor>
+      <name>Henning Meyer</name>
+      <email>tutmann@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Henrike Friche</name>
+      <email>henrike.fricke@hab.de</email>
+    </contributor>
+    <contributor>
+      <name>Henrique Maia</name>
+      <email>henrique.maia@ufpe.br</email>
+    </contributor>
+    <contributor>
+      <name>Herivanildo Lopes</name>
+    </contributor>
+    <contributor>
+      <name>heromyth</name>
+      <email>zxpmyth@yahoo.com.cn</email>
+    </contributor>
+    <contributor>
+      <name>Hojae Yi</name>
+      <email>huy1@psu.edu</email>
+    </contributor>
+    <contributor>
+      <name>Howard Hall</name>
+      <email>howard.hall@utk.edu</email>
+    </contributor>
+    <contributor>
+      <name>Hui Gao</name>
+      <email>snail.hui@163.com</email>
+    </contributor>
+    <contributor>
+      <name>Hélène Réveillas</name>
+      <email>hreveillas@bordeaux-metropole.fr</email>
+    </contributor>
+    <contributor>
+      <name>Iain Gallagher</name>
+      <email>iaingallagher@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Ian Badger</name>
+      <email>ibadger@ucreative.ac.uk</email>
+    </contributor>
+    <contributor>
+      <name>Ian Cornelius</name>
+      <email>icornelius@luc.edu</email>
+    </contributor>
+    <contributor>
+      <name>Ignacio Estevan</name>
+    </contributor>
+    <contributor>
+      <name>Igor Krejčí</name>
+      <email>krejcii@pef.czu.cz</email>
+    </contributor>
+    <contributor>
+      <name>Igor Steinmacher</name>
+    </contributor>
+    <contributor>
+      <name>Ilan Levy</name>
+    </contributor>
+    <contributor>
+      <name>Ilouise S. Bradford</name>
+      <email>isbradford@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Ilya Kashnitsky</name>
+      <email>ilya.kashnitsky@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Ines Bouguerra</name>
+      <email>IBouguerra@laurentienne.ca</email>
+    </contributor>
+    <contributor>
+      <name>Infoliteracia FEUP</name>
+      <email>infoliteracia@fe.up.pt</email>
+    </contributor>
+    <contributor>
+      <name>Information Systems</name>
+      <email>ced(@) unigre{.} it  (remove spaces and parenthesis/brackets but leave periods to get email)</email>
+    </contributor>
+    <contributor>
+      <name>Ingrid Wahl</name>
+      <email>ingrid.wahl@fernfh.ac.at</email>
+    </contributor>
+    <contributor>
+      <name>Inés Segovia Camelo</name>
+      <email>publicaciones.enah@inah.gob.mx</email>
+      <url>http://www.enah.edu.mx/index.php/difu-cul/publicaciones</url>
+    </contributor>
+    <contributor>
+      <name>Irena Brcic Karaconji</name>
+    </contributor>
+    <contributor>
+      <name>Iris Starnberger</name>
+      <email>iris.starnberger@univie.ac.at</email>
+    </contributor>
+    <contributor>
+      <name>Isabelly Silva</name>
+      <email>isabelly@ufs.br</email>
+      <url>http://lattes.cnpq.br/5665164456760737</url>
+    </contributor>
+    <contributor>
+      <name>Isak Bergdahl</name>
+      <email>isak.bergdahl@oru.se</email>
+      <url>http://www.oru.se/jps/isak_bergdahl</url>
+    </contributor>
+    <contributor>
+      <name>Iuri Gavronski</name>
+      <email>iuri at ufrgs dot br</email>
+    </contributor>
+    <contributor>
+      <name>Ivan Bushmarinov</name>
+      <email>ib@ineos.ac.ru</email>
+    </contributor>
+    <contributor>
+      <name>Ivo Rakovac</name>
+      <email>irk@euro.who.int</email>
+    </contributor>
+    <contributor>
+      <name>Iván Castro Lizazo</name>
+      <email>ivanc@unah.edu.cu</email>
+    </contributor>
+    <contributor>
+      <name>Iwan Kridasantausa Hadihardaja</name>
+      <email>iwanhadihardaja@gmail.com</email>
+      <url>http://alsi-itb.org/ir-iwan-kridasantausa-m-sc-ph-d-dosen-teknik-sipil-itb/</url>
+    </contributor>
+    <contributor>
+      <name>J Brown</name>
+    </contributor>
+    <contributor>
+      <name>J Richard Snape</name>
+      <url>http://twitter.com/snapey1979</url>
+    </contributor>
+    <contributor>
+      <name>Jacolize Meiring</name>
+      <email>jacolize@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Jada Thompson</name>
+      <email>thompson.jadam@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Jafet Andersson</name>
+      <url>http://www.smhi.se/en/research/research-departments/hydrology/jafet-andersson-1.18716</url>
+    </contributor>
+    <contributor>
+      <name>Jakob Behrends</name>
+    </contributor>
+    <contributor>
+      <name>Jakub J. Szczerbowski</name>
+      <email>jszczerbowski@swps.edu.pl</email>
+    </contributor>
+    <contributor>
+      <name>Jakubczik, Andreas</name>
+    </contributor>
+    <contributor>
+      <name>James Fetzner</name>
+      <email>FetznerJ@CarnegieMNH.Org</email>
+    </contributor>
+    <contributor>
+      <name>James Gamble</name>
+    </contributor>
+    <contributor>
+      <name>James Haddow</name>
+      <email>jbh78@me.com</email>
+    </contributor>
+    <contributor>
+      <name>James Howison</name>
+      <email>james@howison.name</email>
+      <url>http://james.howison.name</url>
+    </contributor>
+    <contributor>
+      <name>James Johnston</name>
+      <email>thejamesjohnston@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>James Stroud</name>
+      <email>jstroud@mbi.ucla.edu</email>
+    </contributor>
+    <contributor>
+      <name>James W. Gillespie</name>
+      <email>gillejw@auburn.edu</email>
+    </contributor>
+    <contributor>
+      <name>Jamie Dow</name>
+      <email>j.dow@leeds.ac.uk</email>
+    </contributor>
+    <contributor>
+      <name>Jan Baumann</name>
+      <email>jan.baumann@infoclio.ch</email>
+    </contributor>
+    <contributor>
+      <name>Jan Drees</name>
+      <email>jdrees@mail.uni-paderborn.de</email>
+    </contributor>
+    <contributor>
+      <name>Jan Kaluza</name>
+      <email>jkaluza@gwdg.de</email>
+    </contributor>
+    <contributor>
+      <name>Jana Kucerova</name>
+      <email>jan.kuc@centrum.cz</email>
+    </contributor>
+    <contributor>
+      <name>Janos Binder</name>
+      <email>janos@binder.hu</email>
+    </contributor>
+    <contributor>
+      <name>Jaromír Švasta</name>
+      <email>jaromir.svasta@geology.sk</email>
+    </contributor>
+    <contributor>
+      <name>Jasmin Zimmermann</name>
+      <email>zim32079@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Jason Bellino</name>
+    </contributor>
+    <contributor>
+      <name>Jason Colditz</name>
+      <email>colditzjb@upmc.edu</email>
+    </contributor>
+    <contributor>
+      <name>jd-s</name>
+      <url>https://github.com/jd-s</url>
+    </contributor>
+    <contributor>
+      <name>Jean-Hugues Roy</name>
+      <email>jh@jhroy.ca</email>
+    </contributor>
+    <contributor>
+      <name>Jean-Jacques Rondeau</name>
+      <email>rondeau.jean-jacques@uqam.ca</email>
+    </contributor>
+    <contributor>
+      <name>Jean-Mark Guérin</name>
+    </contributor>
+    <contributor>
+      <name>Jean-Philippe Giot</name>
+      <email>jp@giot.net</email>
+    </contributor>
+    <contributor>
+      <name>Jean-Sebastien Sauve</name>
+    </contributor>
+    <contributor>
+      <name>Jeff Hemsley</name>
+      <email>jhemsley@uw.edu</email>
+    </contributor>
+    <contributor>
+      <name>Jeffrey Wall</name>
+      <url>http://www.mendeley.com/profiles/jeffrey-wall2/</url>
+    </contributor>
+    <contributor>
+      <name>Jen Thomas</name>
+      <email>jen@falciot.net</email>
+      <url>https://falciot.net</url>
+    </contributor>
+    <contributor>
+      <name>Jennifer Huddleston</name>
+      <email>jrh11a@acu.edu</email>
+    </contributor>
+    <contributor>
+      <name>Jens Allmer</name>
+      <email>jens@allmer.de</email>
+      <url>http://jens.allmer.de</url>
+    </contributor>
+    <contributor>
+      <name>Jens Conradie</name>
+      <email>jensconradie@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Jens Hermes</name>
+    </contributor>
+    <contributor>
+      <name>Jens Mittelbach</name>
+      <email>jens.mittelbach@slub-dresden.de</email>
+      <url>http://www.slub-dresden.de</url>
+    </contributor>
+    <contributor>
+      <name>Jeremy Jones</name>
+      <email>jeremy@radiopaedia.org</email>
+      <url>http://radiopaedia.org</url>
+    </contributor>
+    <contributor>
+      <name>Jeremy Kuhne</name>
+      <email>jakuhne@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Jerome L. Ackerman</name>
+      <email>jerry@nmr.mgh.harvard.edu</email>
+    </contributor>
+    <contributor>
+      <name>Jessica Chong</name>
+      <email>jxchong@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Jessica Leigh</name>
+      <email>blackwednesday@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Jessica Polka</name>
+      <email>jessica.polka@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Ji Young Park</name>
+      <email>mutnauq7@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Jiangbin Zhang</name>
+      <email>jz400@cam.ac.uk</email>
+      <url>http://www.oe.phy.cam.ac.uk</url>
+    </contributor>
+    <contributor>
+      <name>Jim Xiaojin Liu</name>
+      <email>liux1591@umn.edu</email>
+    </contributor>
+    <contributor>
+      <name>Jimmy Lawrence</name>
+      <email>jimmymisc@gmail.com</email>
+      <url>http://pse.umass.edu</url>
+    </contributor>
+    <contributor>
+      <name>Jin-Sung Yuk</name>
+      <email>cnnsbs@naver.com</email>
+    </contributor>
+    <contributor>
+      <name>Jiongdd</name>
+      <email>wangjiang07@foxmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Jiří Kratochvíl</name>
+      <email>kratec@ukb.muni.cz</email>
+    </contributor>
+    <contributor>
+      <name>JMFR</name>
+    </contributor>
+    <contributor>
+      <name>Jo Vermeulen</name>
+      <email>jo.vermeulen@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Jochen Kleres</name>
+      <url>http://www.zotero.org/gitty_k</url>
+    </contributor>
+    <contributor>
+      <name>Joe Joiner</name>
+      <email>work@joejoiner.me</email>
+      <url>http://twitter.com/joejoinerr</url>
+    </contributor>
+    <contributor>
+      <name>Joel Gombin</name>
+      <email>joel.gombin@gmail.com</email>
+      <url>http://www.joelgombin.fr</url>
+    </contributor>
+    <contributor>
+      <name>Johan Asplund</name>
+      <email>asplundj@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Johannes Braegelmann</name>
+      <email>j.braegelmann@gmx.de</email>
+    </contributor>
+    <contributor>
+      <name>Johannes Wagner</name>
+      <email>johannes.wagner@copernicus.org</email>
+    </contributor>
+    <contributor>
+      <name>John B. Cole</name>
+      <email>john.cole@ars.usda.gov</email>
+      <url>http://aipl.arsusda.gov/</url>
+    </contributor>
+    <contributor>
+      <name>John Coburn</name>
+      <email>jscoburn@wisc.edu</email>
+    </contributor>
+    <contributor>
+      <name>John Creech</name>
+    </contributor>
+    <contributor>
+      <name>John Garner</name>
+      <email>docgarner@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>John Go</name>
+      <email>johnwhere2go@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>John Kean</name>
+      <email>webadmin@nzpps.org</email>
+    </contributor>
+    <contributor>
+      <name>John Lenon Santos Nascimento</name>
+      <email>johnhed@live.com</email>
+    </contributor>
+    <contributor>
+      <name>John M Furgason</name>
+      <email>furgason.5@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>John Muccigrosso</name>
+    </contributor>
+    <contributor>
+      <name>John Salter</name>
+      <email>j.salter@leeds.ac.uk</email>
+      <url>https://orcid.org/0000-0002-8611-8266</url>
+    </contributor>
+    <contributor>
+      <name>Jon Rubin</name>
+    </contributor>
+    <contributor>
+      <name>Jonadabe PT</name>
+    </contributor>
+    <contributor>
+      <name>Jonas Bergan</name>
+      <url>http://www.zotero.org/jonas.bergan</url>
+    </contributor>
+    <contributor>
+      <name>Jonas Lähnemann</name>
+      <email>jonas@pdi-berlin.de</email>
+    </contributor>
+    <contributor>
+      <name>Jonas Schneider</name>
+      <email>jonas.schneider@uzh.ch</email>
+    </contributor>
+    <contributor>
+      <name>Jonathan Girón Palau</name>
+      <email>jonathan.giron@unam.mx</email>
+    </contributor>
+    <contributor>
+      <name>Jorge Pinzon</name>
+    </contributor>
+    <contributor>
+      <name>Josefa Bleu</name>
+      <email>josefa.bleu@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Josep-Manuel Rodriguez-Gairin</name>
+      <email>rodriguez.gairin@ub.edu</email>
+    </contributor>
+    <contributor>
+      <name>Joseph</name>
+      <email>joseph@larmarange.net</email>
+    </contributor>
+    <contributor>
+      <name>Joseph Reagle</name>
+      <url>http://reagle.org/joseph</url>
+    </contributor>
+    <contributor>
+      <name>Josh Cole</name>
+      <url>http://www.mendeley.com/profiles/josh-cole7/</url>
+    </contributor>
+    <contributor>
+      <name>Joshua Weber</name>
+      <email>joshua.weber@fhnw.ch</email>
+    </contributor>
+    <contributor>
+      <name>José Antonio Meira da Rocha</name>
+      <email>joseantoniorocha@gmail.com</email>
+      <url>http://meiradarocha.jor.br</url>
+    </contributor>
+    <contributor>
+      <name>José de Jesús Martínez-Manrique</name>
+      <email>jmartinezmd@me.com</email>
+    </contributor>
+    <contributor>
+      <name>José Luis Losada</name>
+      <email>jose-luis.losada@uwr.edu.pl</email>
+    </contributor>
+    <contributor>
+      <name>Journal of Neolithic Archaeology</name>
+      <email>jna@ufg.uni-kiel.de</email>
+    </contributor>
+    <contributor>
+      <name>João Cancela</name>
+      <email>joaocancela@fcsh.unl.pt</email>
+    </contributor>
+    <contributor>
+      <name>Joël Hendriks</name>
+      <email>leidraad.csl@joelhendriks.nl</email>
+    </contributor>
+    <contributor>
+      <name>jstedman</name>
+      <email>jessica.stedman@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>JTLS</name>
+      <email>jtls@ub.ac.id</email>
+    </contributor>
+    <contributor>
+      <name>Juan Ignacio Flores Salgado</name>
+      <email>natch.nacht@gmail.com</email>
+      <url>https://www.mendeley.com/profiles/juan-ignacio-flores-salgado/</url>
+    </contributor>
+    <contributor>
+      <name>Juan Jesús García</name>
+      <email>jacintonp@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>juan perez</name>
+      <url>http://www.mendeley.com/profiles/juan-perez101/</url>
+    </contributor>
+    <contributor>
+      <name>Juho Heinonen</name>
+      <email>juho.aleksi.heinonen@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Jukka Peranto</name>
+      <url>http://www.mendeley.com/profiles/jukka-peranto/</url>
+    </contributor>
+    <contributor>
+      <name>Julia Preis</name>
+      <email>gg-redaktion@fu-berlin.de</email>
+    </contributor>
+    <contributor>
+      <name>Julian Koegel</name>
+      <email>ju.koegel@googlemail.com</email>
+    </contributor>
+    <contributor>
+      <name>Julian Koepff</name>
+      <email>j.koepff@hotmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Julian Onions</name>
+      <email>julian.onions@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Julian Plummer</name>
+      <email>Julian.Plummer@fao.org</email>
+    </contributor>
+    <contributor>
+      <name>Juliana Geyna Régis</name>
+      <email>juliana.regis@ipea.gov.br</email>
+    </contributor>
+    <contributor>
+      <name>Julie Courraud</name>
+    </contributor>
+    <contributor>
+      <name>Julien Charbon</name>
+      <email>julien.charbon@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Julien Rabaud</name>
+      <email>julien.rabaud@college-de-france.fr</email>
+      <url>http://www.zotero.org/cdf-bib</url>
+    </contributor>
+    <contributor>
+      <name>Julien Sicot</name>
+      <email>julien.sicot@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Juliette Hueber</name>
+      <email>juliette.hueber@inha.fr</email>
+    </contributor>
+    <contributor>
+      <name>Jurnal Ilmu dan Teknologi Hasil Ternak</name>
+      <email>jitek@ub.ac.id</email>
+      <url>http://jitek.ub.ac.id</url>
+    </contributor>
+    <contributor>
+      <name>Justin Hartman</name>
+      <email>j.hartman@ctca.co.za</email>
+    </contributor>
+    <contributor>
+      <name>Justine Ancelin</name>
+      <email>jancelin@u-paris10.fr</email>
+    </contributor>
+    <contributor>
+      <name>K. Alexandra Curtis</name>
+      <email>krakatie2000@yahoo.com</email>
+    </contributor>
+    <contributor>
+      <name>Kaisa Piipari</name>
+      <email>kaisa@mekentosj.com</email>
+      <url>http://twitter.com/kaisapii</url>
+    </contributor>
+    <contributor>
+      <name>Karl Peböck</name>
+      <email>karl.peboeck@ph-vorarlberg.ac.at</email>
+    </contributor>
+    <contributor>
+      <name>kasim tasdemir</name>
+      <email>kasimtasdemir@gmail.com</email>
+      <url>https://www.mendeley.com/profiles/kasim-tasdemir/</url>
+    </contributor>
+    <contributor>
+      <name>Kasım Binici</name>
+      <email>kbinici@atauni.edu.tr</email>
+      <url>http://www.atauni.edu.tr/#personel=kasim-binici</url>
+    </contributor>
+    <contributor>
+      <name>Katherine Dike</name>
+      <email>dikek@lsbu.ac.uk</email>
+    </contributor>
+    <contributor>
+      <name>Kathleen Frisch</name>
+      <email>kathleen.frisch@spearway.com</email>
+    </contributor>
+    <contributor>
+      <name>Katie Finch</name>
+      <email>library.systems@rmit.edu.au</email>
+    </contributor>
+    <contributor>
+      <name>KatiGel</name>
+    </contributor>
+    <contributor>
+      <name>Kayode Ayodele</name>
+      <url>http://www.oauife.edu.ng</url>
+    </contributor>
+    <contributor>
+      <name>Keith Larson</name>
+      <email>keith.w.larson@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Keith Miyake</name>
+      <email>keith.miyake@gmail.com</email>
+      <url>https://keithmiyake.info</url>
+    </contributor>
+    <contributor>
+      <name>Keith W. Larson</name>
+      <email>keith.w.larson@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Kelson Anthony de Menezes</name>
+      <email>kanthony@ebsco.com</email>
+      <url>https://www.mendeley.com/profiles/kelson-anthony/</url>
+    </contributor>
+    <contributor>
+      <name>Ken M. Penner</name>
+      <email>kpenner@stfx.ca</email>
+    </contributor>
+    <contributor>
+      <name>Kenneth Mayer</name>
+      <email>ken.i.mayer@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Kevin Chan</name>
+      <email>kevin.chan@student.moore.edu.au</email>
+    </contributor>
+    <contributor>
+      <name>Kevin O'Donovan</name>
+      <email>odonovk2@lsbu.ac.uk</email>
+    </contributor>
+    <contributor>
+      <name>Kimberly Shay</name>
+      <email>kshay@brit.org</email>
+    </contributor>
+    <contributor>
+      <name>Kin Guan Wee</name>
+      <email>wee.kinguan@nus.edu.sg</email>
+      <url>http://www.mendeley.com/profiles/kin-guan-wee2/</url>
+    </contributor>
+    <contributor>
+      <name>Konstantinos Kopanias</name>
+      <email>kkopanias@gmx.de</email>
+    </contributor>
+    <contributor>
+      <name>Kouichi Nakamura</name>
+      <email>kouichi.nakamura@pharm.ox.ac.uk</email>
+    </contributor>
+    <contributor>
+      <name>Krishna Sapkota</name>
+      <url>http://twitter.com/ks_21285</url>
+    </contributor>
+    <contributor>
+      <name>Kristel Uiboaed</name>
+    </contributor>
+    <contributor>
+      <name>Kristene Collins</name>
+      <url>http://www.mendeley.com/profiles/kristene-collins1/</url>
+    </contributor>
+    <contributor>
+      <name>Krzysztof Nowak</name>
+      <email>krzysztof.nowak@ijp-pan.krakow.pl</email>
+    </contributor>
+    <contributor>
+      <name>KSupriya</name>
+      <email>supriyaknair@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Kuldeep Singh</name>
+      <email>kuldeep@orgsyn.in</email>
+    </contributor>
+    <contributor>
+      <name>Kurt Berndt</name>
+      <email>kurt.berndt@sh.se</email>
+    </contributor>
+    <contributor>
+      <name>Lachlan Young</name>
+      <email>Lachlan.Young@unisa.edu.au</email>
+    </contributor>
+    <contributor>
+      <name>Lalu Ganda</name>
+      <email>laluganda@unida.gontor.ac.id</email>
+    </contributor>
+    <contributor>
+      <name>Lara Skelly</name>
+      <email>laralibrarian@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Lara Wiengarten</name>
+      <email>lara.wiengarten@destatis.de</email>
+      <url>http://www.sachverstaendigenrat-wirtschaft.de/index.html</url>
+    </contributor>
+    <contributor>
+      <name>Laura Casares</name>
+      <email>l.casares@elsevier.com</email>
+      <url>http://www.mendeley.com/profiles/laura-casares5/</url>
+    </contributor>
+    <contributor>
+      <name>Laura Invernizzi</name>
+      <email>laura.invernizzi@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Laura Martin</name>
+      <email>leros.martin@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Laura Ramírez Valencia</name>
+      <email>laura.ramirez-valencia@univ-rennes2.fr</email>
+    </contributor>
+    <contributor>
+      <name>Laure Mellifluo</name>
+      <email>laure.melli@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Lauren Phillips</name>
+      <email>lauren@upress.ufl.edu</email>
+    </contributor>
+    <contributor>
+      <name>Laurent Garrigues</name>
+    </contributor>
+    <contributor>
+      <name>Lawrence Greenfield</name>
+    </contributor>
+    <contributor>
+      <name>Lawrence Yip</name>
+      <email>lyip4@uwo.ca</email>
+    </contributor>
+    <contributor>
+      <name>Leonie Twente</name>
+    </contributor>
+    <contributor>
+      <name>Leticia Strehl</name>
+      <url>http://www.mendeley.com/profiles/leticia-strehl/</url>
+    </contributor>
+    <contributor>
+      <name>Lewys Peters</name>
+    </contributor>
+    <contributor>
+      <name>LexisNexis</name>
+      <email>andreas.geyrecker@lexisnexis.at</email>
+    </contributor>
+    <contributor>
+      <name>Liam McHugh-Russell</name>
+      <email>liam.mchugh.russell@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Libby Hemphill</name>
+      <email>libbyh@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Libor Ansorge</name>
+      <email>libor.ansorge@gmail.com</email>
+      <url>http://www.ansorge.website</url>
+    </contributor>
+    <contributor>
+      <name>Lilly Irani</name>
+      <email>lirani@ics.uci.edu</email>
+    </contributor>
+    <contributor>
+      <name>Linas Valiukas</name>
+      <email>shirshegsm@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>linxs</name>
+    </contributor>
+    <contributor>
+      <name>Lisa Klaffki</name>
+      <email>klaffki@hab.de</email>
+    </contributor>
+    <contributor>
+      <name>Liz Leigh</name>
+    </contributor>
+    <contributor>
+      <name>Lo Chin Kim</name>
+      <email>ukwn.cklo@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Lorenzino Vaccari</name>
+      <email>lorenzino.vaccari@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Louis Autin (UGA)</name>
+      <email>ls.autin@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Lubos</name>
+      <email>zothero@hotmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Lubos Vnuk</name>
+      <email>zothero@hotmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Luca Marulli</name>
+      <email>luca.marulli@campusadventiste.edu</email>
+    </contributor>
+    <contributor>
+      <name>Luca Sala</name>
+      <email>biotech.lucasala@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Lucas Mation</name>
+      <email>lucas.mation@ipea.gov.br</email>
+    </contributor>
+    <contributor>
+      <name>Lucio Marinelli</name>
+      <email>lucio.marinelli@unige.it</email>
+      <url>http://www.luciomarinelli.com</url>
+    </contributor>
+    <contributor>
+      <name>Luisa Veras de Sandes-Guimarães</name>
+      <email>luisa.sandes@live.com</email>
+    </contributor>
+    <contributor>
+      <name>Luísia Feichas Alves</name>
+      <email>luisia.alves@bc.ufrgs.br</email>
+      <url>https://www.zotero.org/luisiafalves</url>
+    </contributor>
+    <contributor>
+      <name>Lyle Burgoon</name>
+      <email>burgoon.lyle@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Lyse Roy</name>
+    </contributor>
+    <contributor>
+      <name>Léon Robichaud</name>
+      <email>leon.robichaud@usherbrooke.ca</email>
+      <url>http://www.zotero.org/lrobichaud</url>
+    </contributor>
+    <contributor>
+      <name>M. Rachmatarramadhan</name>
+      <email>rachmatarramadhan@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>M. Schädel</name>
+    </contributor>
+    <contributor>
+      <name>Maarten Stevens</name>
+      <url>https://www.mendeley.com/profiles/maarten-stevens/</url>
+    </contributor>
+    <contributor>
+      <name>Magali Lugnot</name>
+      <email>magali.lugnot@mom.fr</email>
+    </contributor>
+    <contributor>
+      <name>Magnus Hultin</name>
+      <email>magnus.hultin@anestesi.umu.se</email>
+    </contributor>
+    <contributor>
+      <name>Mahdi Maktabdar</name>
+      <email>mahdi_mak2000@yahoo.com</email>
+    </contributor>
+    <contributor>
+      <name>Makoto Hiroi</name>
+      <email>hiroi@iam.u-tokyo.ac.jp</email>
+    </contributor>
+    <contributor>
+      <name>Maksim Ivanov</name>
+      <email>maksim.ivanov@ff.vu.lt</email>
+    </contributor>
+    <contributor>
+      <name>Makso Herman</name>
+      <email>mherman@imi.hr</email>
+      <url>http://www.mendeley.com/profiles/makso-herman2/</url>
+    </contributor>
+    <contributor>
+      <name>Malay K Basu</name>
+      <email>malay@bioinformatics.org</email>
+    </contributor>
+    <contributor>
+      <name>Malcolm Polfreman</name>
+      <email>polfremm@lsbu.ac.uk</email>
+    </contributor>
+    <contributor>
+      <name>Malte Frey</name>
+      <email>freymalte AT gmail DOT com</email>
+    </contributor>
+    <contributor>
+      <name>Manuel Meister</name>
+      <email>manuel@meister.id</email>
+    </contributor>
+    <contributor>
+      <name>Marc Julien</name>
+      <email>marc.julien@cegeplimoilou.ca</email>
+    </contributor>
+    <contributor>
+      <name>Marc-Kevin Daoust</name>
+      <email>marc-kevin.daoust@umontreal.ca</email>
+    </contributor>
+    <contributor>
+      <name>Marcello Fuschi</name>
+    </contributor>
+    <contributor>
+      <name>Marcelo A. O. Malagutti</name>
+      <email>marcelomalagutti@yahoo.com.br</email>
+    </contributor>
+    <contributor>
+      <name>Marcelo LaFleur</name>
+      <email>lafleurm@un.org</email>
+    </contributor>
+    <contributor>
+      <name>Marcelo Leite da Veiga</name>
+      <email>marcelo.lv@ufsm.br</email>
+      <url>https://www.mendeley.com/profiles/marcelo-leite-da-veiga/</url>
+    </contributor>
+    <contributor>
+      <name>Marcelo Wall</name>
+      <email>wa.marc@yahoo.com</email>
+    </contributor>
+    <contributor>
+      <name>Marcin Miłkowski</name>
+    </contributor>
+    <contributor>
+      <name>Marco Ottobelli</name>
+      <email>ottomco@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Marcos Eduardo Sousa</name>
+      <url>https://www.mendeley.com/profiles/marcos-eduardo-sousa/</url>
+    </contributor>
+    <contributor>
+      <name>Marcus Fislage</name>
+      <email>mfislage@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Maria Ribeiro Daibert</name>
+      <email>maria.daibert@engenharia.ufjf.br</email>
+    </contributor>
+    <contributor>
+      <name>Marialice Martins Barroca</name>
+      <email>mmbarroca@hotmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Marie Speare</name>
+      <email>marie.speare@umanitoba.ca</email>
+    </contributor>
+    <contributor>
+      <name>Marie-Eve Dugas</name>
+      <email>marie-eve.dugas@ucs.inrs.ca</email>
+    </contributor>
+    <contributor>
+      <name>Marie-Hélène Benoit-Otis</name>
+    </contributor>
+    <contributor>
+      <name>Marie-Pier Leduc</name>
+    </contributor>
+    <contributor>
+      <name>Mario J.</name>
+    </contributor>
+    <contributor>
+      <name>Mario José</name>
+      <email>gnumario [at-mark] gmail [dot-mark] com</email>
+    </contributor>
+    <contributor>
+      <name>Mario Schädel</name>
+      <email>mario.schaedel@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Mark A. Garland</name>
+      <email>magarland@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Mark Budde</name>
+      <email>markbudde@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Mark Collins</name>
+      <email>tera_1225@hotmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Mark Dingemanse</name>
+      <email>mark.dingemanse@mpi.nl</email>
+      <url>https://orcid.org/0000-0002-3290-5723</url>
+    </contributor>
+    <contributor>
+      <name>Mark Waters</name>
+      <email>watersmt@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Markus Schaffner</name>
+    </contributor>
+    <contributor>
+      <name>Martin Brändle</name>
+      <email>mpbraendle@gmail.com</email>
+      <url>http://www.id.uzh.ch/cl/iframe/org/visitenk/index.php?id=mb</url>
+    </contributor>
+    <contributor>
+      <name>Martin F. Schumann</name>
+      <email>mfs@mfs.name</email>
+    </contributor>
+    <contributor>
+      <name>Martin Grandjean</name>
+      <email>martin.grandjean@unil.ch</email>
+    </contributor>
+    <contributor>
+      <name>Martin Hinz</name>
+      <email>martin.hinz@ufg.uni-kiel.de</email>
+    </contributor>
+    <contributor>
+      <name>Martin Lind</name>
+      <email>martin.lind@emg.umu.se</email>
+    </contributor>
+    <contributor>
+      <name>Martin Novak</name>
+      <email>m.novak@dkfz-heidelberg.de</email>
+    </contributor>
+    <contributor>
+      <name>Martin Picard</name>
+    </contributor>
+    <contributor>
+      <name>Martin R. Smith</name>
+      <email>martins@gmail.com</email>
+      <url>https://community.dur.ac.uk/martin.smith/</url>
+    </contributor>
+    <contributor>
+      <name>Martine Drozdz</name>
+    </contributor>
+    <contributor>
+      <name>Martyna Urbanek-Trzeciak</name>
+      <email>martyna.urbanek@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Masruri</name>
+      <email>masruri123@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Massimo Menichinelli</name>
+      <email>massimo.menichinelli@aalto.fi</email>
+    </contributor>
+    <contributor>
+      <name>Mateusz Pacek</name>
+      <email>mateusz.m.pacek@student.put.poznan.pl</email>
+    </contributor>
+    <contributor>
+      <name>Mateusz Rusiniak</name>
+      <email>m.rusiniak@ifps.org.pl</email>
+    </contributor>
+    <contributor>
+      <name>Mathieu Brisson</name>
+      <email>mathieu.brisson@cegeplimoilou.ca</email>
+    </contributor>
+    <contributor>
+      <name>Mathieu Saby</name>
+      <email>mathsabypro@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Mathilde Lescat</name>
+    </contributor>
+    <contributor>
+      <name>MATSUDA Yoshiro</name>
+      <email>ysmatsud@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Matt Levin</name>
+      <email>mlevin@mlevin.net</email>
+      <url>http://www.mountsinai.org/profiles/matthew-a-levin</url>
+    </contributor>
+    <contributor>
+      <name>Matt Tracy</name>
+    </contributor>
+    <contributor>
+      <name>Matthew Mazzotta</name>
+      <email>mazznet@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Matthew Patton</name>
+      <email>matthewhpatton@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Matthew Roth</name>
+      <email>matthew.g.roth@yale.edu</email>
+      <url> https://orcid.org/0000-0001-7902-6331</url>
+    </contributor>
+    <contributor>
+      <name>Matthew Shirley</name>
+      <url>http://www.mattshirley.com/</url>
+    </contributor>
+    <contributor>
+      <name>Matthew Upson</name>
+      <email>ivyleavedtoadflax@gmail.com</email>
+      <url>http://www.mendeley.com/profiles/matthew-upson/</url>
+    </contributor>
+    <contributor>
+      <name>Matthew Whitfield</name>
+      <email>mbwhitfi@ncsu.edu</email>
+    </contributor>
+    <contributor>
+      <name>Matthias Benjamin Siewert</name>
+      <email>msiewert@uni-bonn.de</email>
+    </contributor>
+    <contributor>
+      <name>Matthias Mailänder</name>
+      <email>matthias.mailaender@studium.uni-hamburg.de</email>
+    </contributor>
+    <contributor>
+      <name>Matthias W.</name>
+    </contributor>
+    <contributor>
+      <name>Matthieu Gaultier</name>
+    </contributor>
+    <contributor>
+      <name>Matti Rajahonka</name>
+      <email>matti.rajahonka@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Matěj Božik</name>
+      <email>bozik@af.czu.cz</email>
+    </contributor>
+    <contributor>
+      <name>Maurício de Paulo</name>
+      <email>mauricio dot dev at gmail dot com</email>
+    </contributor>
+    <contributor>
+      <name>Max Gordon</name>
+      <email>max@gforge.se</email>
+      <url>http://gforge.se</url>
+    </contributor>
+    <contributor>
+      <name>Maximilian Mackh</name>
+    </contributor>
+    <contributor>
+      <name>Maximilian Petras</name>
+    </contributor>
+    <contributor>
+      <name>Maxine Smith</name>
+    </contributor>
+    <contributor>
+      <name>McKenzie Lloyd-Smith</name>
+      <url>http://www.mendeley.com/profiles/mckenzie-lloyd-smith/</url>
+    </contributor>
+    <contributor>
+      <name>Meaghan Miller</name>
+      <email>meaghan.miller@ubc.ca</email>
+    </contributor>
+    <contributor>
+      <name>Megan McCuller</name>
+      <email>mccullermi@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Meijun Huang</name>
+      <email>meijun.huang@uts.edu.au</email>
+    </contributor>
+    <contributor>
+      <name>Melissa Paez</name>
+      <email>paez.melissa@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Mensur Serifovic</name>
+    </contributor>
+    <contributor>
+      <name>Mery Piedad Zamudio Igami</name>
+      <email>mery@ipen.br</email>
+    </contributor>
+    <contributor>
+      <name>Mesut UYANER</name>
+      <email>muyaner@yahoo.com</email>
+      <url>https://www.erbakan.edu.tr/en/havacilikveuzaybilimleri/sayfa/6053</url>
+    </contributor>
+    <contributor>
+      <name>Mette Andersen, MD</name>
+      <email>mette@gundestrup.dk</email>
+      <url>https://www.mendeley.com/profiles/mette-andersen1/</url>
+    </contributor>
+    <contributor>
+      <name>Michael Barton</name>
+      <email>michael.barton@asu.edu</email>
+    </contributor>
+    <contributor>
+      <name>Michael Berkowitz</name>
+      <email>mberkowi@gmu.edu</email>
+    </contributor>
+    <contributor>
+      <name>Michael Castello</name>
+      <email>michael@castello.me</email>
+    </contributor>
+    <contributor>
+      <name>Michael Christian Oberle</name>
+      <email>oberlemc@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Michael Docherty</name>
+      <email>mdocherty@ucsd.edu</email>
+    </contributor>
+    <contributor>
+      <name>Michael Doube</name>
+      <email>mdoube@rvc.ac.uk</email>
+    </contributor>
+    <contributor>
+      <name>Michael Francavilla</name>
+      <email>frycow@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Michael Gorki</name>
+      <email>michael.gorki@gmx.de</email>
+    </contributor>
+    <contributor>
+      <name>Michael Matiu</name>
+      <email>matiu@wzw.tum.de</email>
+    </contributor>
+    <contributor>
+      <name>Michael Pesavento</name>
+      <email>mpesaven@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Michael Zaugg</name>
+    </contributor>
+    <contributor>
+      <name>Michal Droppa</name>
+    </contributor>
+    <contributor>
+      <name>Michal Mochtak</name>
+    </contributor>
+    <contributor>
+      <name>Michel Hardegger</name>
+      <email>hardegger@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Michel Oleynik</name>
+      <url>http://www.mendeley.com/profiles/michel-oleynik/</url>
+    </contributor>
+    <contributor>
+      <name>Michel Rouleau-Dick</name>
+      <email>mrouleau@abo.fi</email>
+    </contributor>
+    <contributor>
+      <name>Michelangelo Viana</name>
+      <email>mviana@ebsco.com</email>
+      <url>http://www.mendeley.com/profiles/michelangelo-viana/</url>
+    </contributor>
+    <contributor>
+      <name>Mihai Constantinescu</name>
+      <email>constantin.mihai.escu@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Mika Rautio</name>
+      <url>https://github.com/mrautio</url>
+    </contributor>
+    <contributor>
+      <name>Mike Borghese</name>
+      <email>mborg031@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Mike P ODonoghue</name>
+    </contributor>
+    <contributor>
+      <name>Mikko Ronkko</name>
+    </contributor>
+    <contributor>
+      <name>Mikko Rönkkö</name>
+      <email>mikko.ronkko@tkk.fi</email>
+    </contributor>
+    <contributor>
+      <name>Milan Bouchet-Valat</name>
+      <email>nalimilan@club.fr</email>
+    </contributor>
+    <contributor>
+      <name>Mira Ducommun</name>
+      <email>mira.ducommun@phbern.ch</email>
+    </contributor>
+    <contributor>
+      <name>Mirjam Weder</name>
+      <email>mirjam.weder@unibas.ch</email>
+    </contributor>
+    <contributor>
+      <name>Mirre Simons</name>
+      <email>mirresimons@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Mitchell T. Paulus</name>
+      <email>paulusm14@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>mlewis</name>
+      <email>martinlewis@melbournepolytechnic.edu.au</email>
+    </contributor>
+    <contributor>
+      <name>Mojtaba Hosseini</name>
+      <email>hoseini451@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>MT</name>
+    </contributor>
+    <contributor>
+      <name>Muhammet Tarakçı</name>
+      <email>muhammettarakci@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Mélanie Tremblay</name>
+      <email>melanie.tremblay@hepato-neuro.ca</email>
+    </contributor>
+    <contributor>
+      <name>N.S. Vitek</name>
+    </contributor>
+    <contributor>
+      <name>Nacer Foudil Smail</name>
+      <email>nacer.smail@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Naeem Esfahani</name>
+      <email>nesfaha2@gmu.edu</email>
+      <url>http://mason.gmu.edu/~nesfaha2/</url>
+    </contributor>
+    <contributor>
+      <name>Naila Zahra</name>
+      <email>nailazahra.nz@gmail.com</email>
+      <url>https://www.researchgate.net/profile/Naila_Zahra</url>
+    </contributor>
+    <contributor>
+      <name>Nancy Sims</name>
+      <email>nsims@umich.edu</email>
+    </contributor>
+    <contributor>
+      <name>Naomi Scott</name>
+      <email>scottnb@mcmaster.ca</email>
+    </contributor>
+    <contributor>
+      <name>Naritatsu Saito</name>
+      <email>naritatsu@gmail.com</email>
+      <url>http://www.mendeley.com/profiles/naritatsu-saito/</url>
+    </contributor>
+    <contributor>
+      <name>Naritatsu Saito, M.D., Ph.D.</name>
+      <url>https://www.mendeley.com/profiles/naritatsu-saito/</url>
+    </contributor>
+    <contributor>
+      <name>Natalie Olifiers</name>
+      <email>natolifiers@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Nate Boland</name>
+      <email>neboland@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Nathalie Prévôt</name>
+      <email>nathalie.prevot@u-bordeaux-montaigne.fr</email>
+    </contributor>
+    <contributor>
+      <name>Nathan LaMontagne</name>
+      <email>nathan.lamontagne@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Nathan Robison</name>
+    </contributor>
+    <contributor>
+      <name>National Documentation Centre</name>
+      <url>http://www.ekt.gr/</url>
+    </contributor>
+    <contributor>
+      <name>Neal Lyon</name>
+      <email>neallyon34@gmail.com/</email>
+    </contributor>
+    <contributor>
+      <name>Nejat Altintas</name>
+      <email>altintasn@upmc.edu</email>
+    </contributor>
+    <contributor>
+      <name>Nelson Grima</name>
+      <email>grima@iufro.org</email>
+    </contributor>
+    <contributor>
+      <name>Nelson Villoria</name>
+      <email>nvilloria@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Neucir Szinwelski</name>
+      <email>neucirufv@gmail.com</email>
+      <url>https://orthoptera.wixsite.com/unioeste</url>
+    </contributor>
+    <contributor>
+      <name>Nic Suzor</name>
+      <email>nic@suzor.com</email>
+    </contributor>
+    <contributor>
+      <name>Nicholas King</name>
+      <url>http://www.zotero.org/cancinc</url>
+    </contributor>
+    <contributor>
+      <name>Nicolae Turcan</name>
+      <email>nturcan@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Nicolas Barreyre</name>
+    </contributor>
+    <contributor>
+      <name>Nicolas Chachereau</name>
+      <email>nicolas.chachereau@unil.ch</email>
+    </contributor>
+    <contributor>
+      <name>Nicolas Frerebeau</name>
+      <email>nicolas.frerebeau@u-bordeaux-montaigne.fr</email>
+    </contributor>
+    <contributor>
+      <name>Nicolas Monteix</name>
+      <email>nicolas.monteix@univ-rouen.fr</email>
+    </contributor>
+    <contributor>
+      <name>Nicolas Souchon</name>
+      <email>souchon.nicolas.ns@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Nicole Webster</name>
+    </contributor>
+    <contributor>
+      <name>Nils Müller-Scheeßel</name>
+      <email>nils.mueller-scheessel@ufg.uni-kiel.de</email>
+    </contributor>
+    <contributor>
+      <name>Nils Potthoff</name>
+      <email>nils.potthoff@tu-dortmund.de</email>
+    </contributor>
+    <contributor>
+      <name>Norman Roscher</name>
+      <email>n.roscher@stud.uni-heidelberg.de</email>
+    </contributor>
+    <contributor>
+      <name>Nuno Rosa</name>
+      <email>nrosa@crb.ucp.pt</email>
+    </contributor>
+    <contributor>
+      <name>Nytanéliah Ranaivoson</name>
+      <email>nytaneliah@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Offa</name>
+      <email>offa@ufg.uni-kiel.de</email>
+    </contributor>
+    <contributor>
+      <name>OIE</name>
+      <email>documentation@oie.int</email>
+    </contributor>
+    <contributor>
+      <name>Oldrich Tristan Florian</name>
+      <email>oldrich.florian@gmail.com</email>
+      <url>http://otristan.com</url>
+    </contributor>
+    <contributor>
+      <name>Olesya Kolmakova </name>
+    </contributor>
+    <contributor>
+      <name>Oliver Wolf</name>
+      <email>wolf.o@gmx.net</email>
+    </contributor>
+    <contributor>
+      <name>Olivier Delouis</name>
+      <email>reb@icp.fr</email>
+    </contributor>
+    <contributor>
+      <name>Olivier Duboc</name>
+      <email>webolive@gmx.com</email>
+      <url>http://oduboc.com</url>
+    </contributor>
+    <contributor>
+      <name>Omar Harb</name>
+      <email>omarharb@hotmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Omar Mian</name>
+      <email>o.mian@ucl.ac.uk</email>
+    </contributor>
+    <contributor>
+      <name>Osman Durmaz</name>
+      <email>osmandurmaz@hotmail.de</email>
+    </contributor>
+    <contributor>
+      <name>Ozhan Saglik</name>
+      <email>ozhansaglik@uludag.edu.tr</email>
+    </contributor>
+    <contributor>
+      <name>Pablo Melchor</name>
+      <url>https://pablomelchor.com/hello/</url>
+    </contributor>
+    <contributor>
+      <name>Pamela Wilson</name>
+      <email>pwilson6@hawaii.edu</email>
+      <url>http://twitter.com/pjoellenw</url>
+    </contributor>
+    <contributor>
+      <name>Pascal Gutknecht</name>
+      <email>literaturverwaltung@zhaw.ch</email>
+    </contributor>
+    <contributor>
+      <name>Patrice Fiset</name>
+      <email>fiset.patrice@courrier.uqam.ca</email>
+    </contributor>
+    <contributor>
+      <name>Patrick </name>
+      <email>obrienpat86@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Patrick Fick</name>
+      <email>patrick.fick@sowi.uni-goettingen.de</email>
+    </contributor>
+    <contributor>
+      <name>Patrick Giraudoux</name>
+      <email>patrick.giraudoux@univ-fcomte.fr</email>
+    </contributor>
+    <contributor>
+      <name>Patrick J. Burns</name>
+      <email>patrick@diyclassics.org</email>
+      <url>https://diyclassics.github.io</url>
+    </contributor>
+    <contributor>
+      <name>Patrick O'Bien</name>
+    </contributor>
+    <contributor>
+      <name>Patrick O'Brien</name>
+      <email>obrienpat86@gmail.com</email>
+      <url>https://twitter.com/patobrien333/</url>
+    </contributor>
+    <contributor>
+      <name>Patrick O'Brien, Ph</name>
+      <email>obrienpat86@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Patrick O'Brien, PhD</name>
+      <email>obrienpat86@gmail.com</email>
+      <url>https://twitter.com/patobrien333</url>
+    </contributor>
+    <contributor>
+      <name>Paul Frappe</name>
+      <email>paul.frappe@univ-st-etienne.fr</email>
+    </contributor>
+    <contributor>
+      <name>Paul Gugger</name>
+      <email>pgugger@umces.edu</email>
+    </contributor>
+    <contributor>
+      <name>Paul Heckler</name>
+      <email>paul.heckler@univ-paris1.fr</email>
+    </contributor>
+    <contributor>
+      <name>Paul Inkenbrandt</name>
+    </contributor>
+    <contributor>
+      <name>Paul Lin</name>
+    </contributor>
+    <contributor>
+      <name>Paul M</name>
+      <email>dryphi@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Paul Millhouse</name>
+      <email>dryphi@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Paula Elizabeth Nogueira Sales</name>
+      <email>paulaens@yahoo.com.br</email>
+    </contributor>
+    <contributor>
+      <name>Paulo Augusto Nascimento</name>
+      <email>paulo.nascimento@ipea.gov.br</email>
+    </contributor>
+    <contributor>
+      <name>Pavel Giverts</name>
+      <email>pavel.giverts@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Pavel Najman</name>
+    </contributor>
+    <contributor>
+      <name>Pavel Vilhan</name>
+      <email>Pavel(dot)Vilhan(at)frcth(dot)uniba(dot)sk</email>
+      <url>http://www.kniznice.eu</url>
+    </contributor>
+    <contributor>
+      <name>Pawel Kuklik</name>
+      <email>pawel.kuklik@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Pedro Brasil</name>
+      <email>pedro.brasil@ini.fiocruz.br</email>
+    </contributor>
+    <contributor>
+      <name>Pedro Herrera</name>
+      <email>pedro.m.herrera@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Per Enström</name>
+      <email>per.enstrom@ibg.uu.se</email>
+    </contributor>
+    <contributor>
+      <name>Per Renstrom</name>
+      <email>thehypermedia@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Peter Baumgartner</name>
+      <email>peter.baumgartner@donau-uni.ac.at</email>
+    </contributor>
+    <contributor>
+      <name>Peter Hedlund</name>
+      <email>peter.hedlund@me.com</email>
+    </contributor>
+    <contributor>
+      <name>Peter L Jones</name>
+      <email>10101833@ex.uwl.ac.uk</email>
+    </contributor>
+    <contributor>
+      <name>Petr Hlustik</name>
+      <email>phlustik@upol.cz</email>
+    </contributor>
+    <contributor>
+      <name>Pham Thanh Tung</name>
+      <email>tung.pham@fsh.org.vn</email>
+      <url>http://fsh.org.vn</url>
+    </contributor>
+    <contributor>
+      <name>Philina English</name>
+    </contributor>
+    <contributor>
+      <name>Philipp S. Thumfart</name>
+      <email>philipp@thumfart.info</email>
+    </contributor>
+    <contributor>
+      <name>Philipp Weisser, M.D.</name>
+      <url>http://www.zotero.org/phweisser</url>
+    </contributor>
+    <contributor>
+      <name>Philipp Zumstein</name>
+      <email>zuphilip@gmail.com</email>
+      <url>https://github.com/zuphilip</url>
+    </contributor>
+    <contributor>
+      <name>Philippe Ngo</name>
+      <email>philippe.ngo@atlande.eu</email>
+    </contributor>
+    <contributor>
+      <name>Philippe Pons</name>
+      <email>philippe.pons@college-de-france.fr</email>
+    </contributor>
+    <contributor>
+      <name>Philippe Tousignant</name>
+      <email>philippe.tousignant@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>phyto</name>
+    </contributor>
+    <contributor>
+      <name>Pierre Bieswal</name>
+      <email>pierre-edouard.bieswal@student.uclouvain.be</email>
+    </contributor>
+    <contributor>
+      <name>Pierre Gilbert</name>
+      <email>pierre.gilb@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Pierre Gravier</name>
+      <email>pierre.gravier@u-bordeaux.fr</email>
+    </contributor>
+    <contributor>
+      <name>Pierre Morlanne-Fendan</name>
+      <email>pierre.morlanne-fendan@ersm-sudest.cnamts.fr</email>
+      <url>http://www.ameli.fr</url>
+    </contributor>
+    <contributor>
+      <name>Pierre-Amiel Giraud</name>
+      <email>pierre-amiel.giraud@u-bordeaux3.fr</email>
+    </contributor>
+    <contributor>
+      <name>Pierre-Carl Langlais</name>
+      <email>pierrecarl.langlais@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Pierre-François Pirlet</name>
+      <email>pfpirlet@ulg.ac.be</email>
+    </contributor>
+    <contributor>
+      <name>Pieter Kubben</name>
+      <email>pieter@kubben.nl</email>
+      <url>http://dign.eu</url>
+    </contributor>
+    <contributor>
+      <name>Pieter van der Wees</name>
+      <email>pieter@vanderwe.es</email>
+    </contributor>
+    <contributor>
+      <name>Pietro Liuzzo</name>
+      <email>pietro.liuzzo@uni-hamburg.de</email>
+    </contributor>
+    <contributor>
+      <name>Piotr Drzewiecki</name>
+      <email>piotr.jozef.drzewiecki@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Piotr Jaskulski</name>
+      <email>piotr.jaskulski@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Piotr Otręba</name>
+      <email>p.otreba@pbsociety.org.pl</email>
+    </contributor>
+    <contributor>
+      <name>Polly Low</name>
+    </contributor>
+    <contributor>
+      <name>Pragadeesh Sekar</name>
+      <email>pragadeeshsekar@gmail.com</email>
+      <url>https://www.linkedin.com/in/pragadeesh-sekar-4a80b828</url>
+    </contributor>
+    <contributor>
+      <name>Praveen S</name>
+    </contributor>
+    <contributor>
+      <name>Priscila Saraiva Jacobsen</name>
+      <email>jacobsen@bc.ufrgs.br</email>
+      <url>https://www.ufrgs.br/bibliotecas/</url>
+    </contributor>
+    <contributor>
+      <name>Quentin Cordier</name>
+    </contributor>
+    <contributor>
+      <name>Quentin Rome</name>
+      <email>rome@mnhn.fr</email>
+    </contributor>
+    <contributor>
+      <name>Rafael Cervantes Beyra</name>
+      <email>cervantes@unah.edu.cu</email>
+    </contributor>
+    <contributor>
+      <name>Rafael Dantas</name>
+      <email>recifersd@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Rafael Loyola</name>
+      <email>rdiasloyola@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Rafael Palomino</name>
+      <email>rpalominolozano@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Rafaël Jafferali</name>
+      <email>Rafael.Jafferali@ulb.be</email>
+    </contributor>
+    <contributor>
+      <name>Ramanathan</name>
+      <email>Ra.Ganapathi@elsevier.com</email>
+    </contributor>
+    <contributor>
+      <name>Raphael Grolimund</name>
+      <email>grolimur@protonmail.ch</email>
+    </contributor>
+    <contributor>
+      <name>Renate Wesselingh</name>
+      <email>renate.wesselingh@uclouvain.be</email>
+    </contributor>
+    <contributor>
+      <name>Renaud Lebrun</name>
+      <email>renaud.lebrun@umontpellier.fr</email>
+      <url>http://www.mendeley.com/profiles/renaud-lebrun/</url>
+    </contributor>
+    <contributor>
+      <name>Res Mezger</name>
+      <email>schreibberatung.ph@fhnw.ch</email>
+    </contributor>
+    <contributor>
+      <name>Research and Education Promotion Association (REPA)</name>
+      <email>editorial@repa.jp</email>
+      <url>www.repa.jp</url>
+    </contributor>
+    <contributor>
+      <name>Reto Mantz</name>
+    </contributor>
+    <contributor>
+      <name>Rhiannon Miller</name>
+      <email>rhiannon.miller@prepress-projects.eu</email>
+    </contributor>
+    <contributor>
+      <name>Riccardo Cerrato</name>
+      <email>riccardo.cerrato@dst.unipi.it</email>
+    </contributor>
+    <contributor>
+      <name>Richard Cross</name>
+      <email>richard.cross@ntu.ac.uk</email>
+      <url>https://www.ntu.ac.uk/staff-profiles/library/richard-cross</url>
+    </contributor>
+    <contributor>
+      <name>Richard Karnesky</name>
+      <email>karnesky+zotero@gmail.com</email>
+      <url>http://arc.nucapt.northwestern.edu/Richard_Karnesky</url>
+    </contributor>
+    <contributor>
+      <name>Richard Smith</name>
+    </contributor>
+    <contributor>
+      <name>Rine le Comte</name>
+      <email>rlcomte@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Rintze Zelle</name>
+      <email>https://twitter.com/rintzezelle</email>
+      <url>http://twitter.com/rintzezelle</url>
+    </contributor>
+    <contributor>
+      <name>Roald Erik Frøsig</name>
+      <email>roaldfrosig@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Rob Caley</name>
+      <email>r.j.caley@ljmu.ac.uk</email>
+    </contributor>
+    <contributor>
+      <name>Rob Fuller</name>
+      <email>rob.fuller1@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Robert Badgett</name>
+      <email>rbadgett@kumc.edu</email>
+    </contributor>
+    <contributor>
+      <name>Robert Lew</name>
+    </contributor>
+    <contributor>
+      <name>Robert M Flight</name>
+      <email>rflight79@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Robert Nikolaus</name>
+      <email>nikolaus@igb-berlin.de</email>
+      <url>https://www.mendeley.com/profiles/robert-nikolaus/</url>
+    </contributor>
+    <contributor>
+      <name>Roberta Poderytė</name>
+      <email>robertapoderyte@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Rodolpho C. Braga</name>
+      <email>rodolpho.braga@icloud.com</email>
+    </contributor>
+    <contributor>
+      <name>Rodrigo Braicovich</name>
+      <email>rbraicovich@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Rodrigo P. Verçosa</name>
+      <email>acta@inpa.gov.br</email>
+    </contributor>
+    <contributor>
+      <name>Roland Bockmann</name>
+      <email>go2roland@gmx.net</email>
+    </contributor>
+    <contributor>
+      <name>Romain Pierronnet</name>
+    </contributor>
+    <contributor>
+      <name>Rombert Stapel</name>
+      <email>rombert.stapel@iisg.nl</email>
+      <url>http://twitter.com/rjstapel</url>
+    </contributor>
+    <contributor>
+      <name>Ronald Petie</name>
+      <email>ronald.petie@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Rosalind Francis</name>
+      <email>r.francis@gre.ac.uk</email>
+      <url>http://www.mendeley.com/profiles/rosalind-francis/</url>
+    </contributor>
+    <contributor>
+      <name>Ross Bricklemyer</name>
+      <email>ross.bricklemyer@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>RS</name>
+      <email>romansos@gazeta.pl</email>
+    </contributor>
+    <contributor>
+      <name>Rui Carlos Sá</name>
+      <email>rui.carlos.sa@gmail.com</email>
+      <url>http://www.ruicarlossa.eu</url>
+    </contributor>
+    <contributor>
+      <name>Rybakov Dmitriy</name>
+    </contributor>
+    <contributor>
+      <name>Ryosuke Nishimura</name>
+      <email>c201756025@tokushima-u.ac.jp</email>
+    </contributor>
+    <contributor>
+      <name>Réseau documentalistes Inrap</name>
+      <email>gestionnaires.documentation@inrap.fr</email>
+    </contributor>
+    <contributor>
+      <name>Sabrina C. Agarwal</name>
+      <email>agarwal@berkeley.edu</email>
+    </contributor>
+    <contributor>
+      <name>Saga Nylund</name>
+      <email>saga_nylund@hotmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Sally Mussared</name>
+    </contributor>
+    <contributor>
+      <name>Sam Thomas</name>
+      <email>Samuel.Thomas@ymail.com</email>
+    </contributor>
+    <contributor>
+      <name>Samantha Franks</name>
+    </contributor>
+    <contributor>
+      <name>Samuel Barsanelli Costa</name>
+      <email>sbcosta@ipt.br</email>
+    </contributor>
+    <contributor>
+      <name>Sander Dumont</name>
+      <url>https://www.mendeley.com/profiles/sander-dumont</url>
+    </contributor>
+    <contributor>
+      <name>Sanjib Bahadur</name>
+    </contributor>
+    <contributor>
+      <name>Sankar</name>
+      <email>s.murugesan@elsevier.com</email>
+    </contributor>
+    <contributor>
+      <name>Santam Chakraborty</name>
+      <email>pgiresident@gmail.com </email>
+    </contributor>
+    <contributor>
+      <name>Santiago Maya-Johnson</name>
+    </contributor>
+    <contributor>
+      <name>Sarah Ficke</name>
+      <email>sficke@email.unc.edu</email>
+    </contributor>
+    <contributor>
+      <name>Sarah Pittaway</name>
+    </contributor>
+    <contributor>
+      <name>Sasa Sekulic</name>
+      <email>ja@sasasekulic.info</email>
+      <url>http://www.sasasekulic.info</url>
+    </contributor>
+    <contributor>
+      <name>Sascha Foerster</name>
+      <email>email@saschafoerster.de</email>
+      <url>http://www.saschafoerster.de</url>
+    </contributor>
+    <contributor>
+      <name>Saskia Mestern</name>
+      <email>saskia.mestern@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Satoshi Hashimoto</name>
+    </contributor>
+    <contributor>
+      <name>Saulo Cakiman Gomes</name>
+      <email>saulocalimangomes@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Saulo Caliman Gomes</name>
+      <email>saulocalimangomes@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Sayyed Mohsen Vazirizade</name>
+      <email>smvazirizade@email.arizona.edu</email>
+    </contributor>
+    <contributor>
+      <name>SBIDM. Universidade de Aveiro</name>
+      <email>sbidm-biblioteca@ua.pt</email>
+      <url>http://www.ua.pt/sbidm/biblioteca/</url>
+    </contributor>
+    <contributor>
+      <name>Scott Cove</name>
+      <email>scott@dewie.net.au</email>
+    </contributor>
+    <contributor>
+      <name>Scott Wagstaff</name>
+      <url>http://www.mendeley.com/profiles/scott-wagstaff/</url>
+    </contributor>
+    <contributor>
+      <name>Sean Takats</name>
+      <email>stakats@gmu.edu</email>
+    </contributor>
+    <contributor>
+      <name>Sebastian Gehmert</name>
+      <email>s.gehmert@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Sebastian Haunss</name>
+      <email>sebastian.haunss@uni-bremen.de</email>
+    </contributor>
+    <contributor>
+      <name>Sebastian Karcher</name>
+      <email>karcher@u.northwestern.edu</email>
+    </contributor>
+    <contributor>
+      <name>Sebastian Knop</name>
+      <email>sebastian.knop@rub.de</email>
+    </contributor>
+    <contributor>
+      <name>Sebastian Kopf</name>
+    </contributor>
+    <contributor>
+      <name>Sebastian Schrader (IMIS)</name>
+    </contributor>
+    <contributor>
+      <name>Sebastian Sitaru</name>
+      <email>sebastian@mail.sitaru.eu</email>
+    </contributor>
+    <contributor>
+      <name>Sebastian Spaeth</name>
+      <email>Sebastian@SSpaeth.de</email>
+      <url>http://sspaeth.de</url>
+    </contributor>
+    <contributor>
+      <name>Sebsatian Karcher</name>
+    </contributor>
+    <contributor>
+      <name>Serge Bibauw</name>
+      <email>sbibauw@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Serhii Lozovyi</name>
+    </contributor>
+    <contributor>
+      <name>Seth McNeill</name>
+      <email>styles@anitracks.com</email>
+    </contributor>
+    <contributor>
+      <name>Seungwon Shin</name>
+      <email>justin0624@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Sfglio</name>
+      <email>sfglio@yahoo.com</email>
+    </contributor>
+    <contributor>
+      <name>Shashwat Mishra</name>
+      <email>gyrusrectus@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Shaun Murdoch</name>
+      <email>shaun.murdoch@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Shawn Day</name>
+    </contributor>
+    <contributor>
+      <name>Sherri Kacinko</name>
+      <email>sherri.kacinko@nmslabs.com</email>
+    </contributor>
+    <contributor>
+      <name>Shoji Takahashi</name>
+      <email>s.takahashi@elsevier.com</email>
+      <url>http://www.mendeley.com/profiles/shoji-takahashi3/</url>
+    </contributor>
+    <contributor>
+      <name>Silas Dean (University of Pisa)</name>
+    </contributor>
+    <contributor>
+      <name>Sima Mehri</name>
+      <url>https://www.linkedin.com/in/sima-mehri-185bb159</url>
+    </contributor>
+    <contributor>
+      <name>Simon Christopher Cropper</name>
+      <email>scropper@botanicusaustralia.com.au</email>
+    </contributor>
+    <contributor>
+      <name>Simon Koblar</name>
+      <email>simon.koblar@uirs.si</email>
+      <url>https://www1.uirs.si/en-gb/Employee?zap_id=simonk</url>
+    </contributor>
+    <contributor>
+      <name>Simon Kornblith</name>
+      <email>simon@simonster.com</email>
+    </contributor>
+    <contributor>
+      <name>Simon Meier-Vieracker</name>
+      <email>simon.meier-vieracker@tu-dresden.de</email>
+      <url>https://tu-dresden.de/gsw/slk/germanistik/al</url>
+    </contributor>
+    <contributor>
+      <name>Simon Polster</name>
+      <email>sidapo@posteo.de</email>
+    </contributor>
+    <contributor>
+      <name>Simon Toupance</name>
+      <email>esphel@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>simtyrell</name>
+    </contributor>
+    <contributor>
+      <name>Sjoerd de Vries</name>
+      <email>sjdv1982@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Sjúrður Hammer</name>
+      <url>http://www.mendeley.com/profiles/sjurur-hammer/</url>
+    </contributor>
+    <contributor>
+      <name>Sociedad Colombiana de Mastozoología</name>
+      <email>mastozoologiacolombia@gmail.com</email>
+      <url>https://www.mendeley.com/profiles/sociedad-colombiana-de-mastozoologa/</url>
+    </contributor>
+    <contributor>
+      <name>Sonal Dey</name>
+      <email>deysonal2012@gmail.com</email>
+      <url>https://sites.google.com/site/deysonal2012</url>
+    </contributor>
+    <contributor>
+      <name>Sorin Marti</name>
+      <email>sorin.marti@stud.unibas.ch</email>
+    </contributor>
+    <contributor>
+      <name>Srinivas B S Kambhampati</name>
+      <email>kbssrinivas@yahoo.com</email>
+    </contributor>
+    <contributor>
+      <name>Stanislaw Koltschin</name>
+      <email>kontakt@staniko.de</email>
+    </contributor>
+    <contributor>
+      <name>Stefania M Gorgopa</name>
+      <email>stefania.gorgopa@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Stefano Peca</name>
+    </contributor>
+    <contributor>
+      <name>Stephan Schlegel</name>
+      <email>stephan.schlegel@unibas.ch</email>
+    </contributor>
+    <contributor>
+      <name>Stephen Frank</name>
+      <url>http://www.zotero.org/sfrank</url>
+    </contributor>
+    <contributor>
+      <name>Steve Kronmiller</name>
+      <email>skronmiller@scisoc.org</email>
+    </contributor>
+    <contributor>
+      <name>Steven Béliveau</name>
+    </contributor>
+    <contributor>
+      <name>Steven Singleton</name>
+      <email>stvn@gmx.ie</email>
+    </contributor>
+    <contributor>
+      <name>Steven Vidovic</name>
+      <email>steven.vidovic@port.ac.uk</email>
+    </contributor>
+    <contributor>
+      <name>Stéphane Eucharis</name>
+      <email>eukastef@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Stéphane Marchand</name>
+      <email>stephane.marchand@ens-lyon.fr</email>
+    </contributor>
+    <contributor>
+      <name>Stéphanie Bouvier</name>
+      <email>stb.bouvier@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Stéphanie Periquet</name>
+      <email>stephanie.periquet@univ-lyon1.fr</email>
+    </contributor>
+    <contributor>
+      <name>Stéphanie Thomas</name>
+    </contributor>
+    <contributor>
+      <name>sumostorm</name>
+      <email>sumostorm@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Sunway College JB Library</name>
+      <email>jblibrary@sunway.edu.my</email>
+    </contributor>
+    <contributor>
+      <name>Susana Dias</name>
+      <email>sdias@ua.pt</email>
+    </contributor>
+    <contributor>
+      <name>Suzane Albino da Silva Guimarães</name>
+      <email>suzane.g-TOPSERVICE@ipen.br</email>
+    </contributor>
+    <contributor>
+      <name>Sven Rothe</name>
+      <email>mmoole@googlemail.com</email>
+    </contributor>
+    <contributor>
+      <name>Svend Gundestrup</name>
+      <email>svend@gundestrup.dk</email>
+      <url>http://www.mendeley.com/profiles/svend-gundestrup/</url>
+    </contributor>
+    <contributor>
+      <name>Svetlana Yarosh</name>
+      <email>lana@cc.gatech.edu</email>
+    </contributor>
+    <contributor>
+      <name>SYCJB</name>
+      <email>jblibrary3@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Sylvère Störmann</name>
+      <email>sylvere.stoermann@med.uni-muenchen.de</email>
+    </contributor>
+    <contributor>
+      <name>Sébastien Plutniak</name>
+      <email>sebastien.plutniak@posteo.net</email>
+    </contributor>
+    <contributor>
+      <name>Sérgio Bernardo</name>
+      <email>sergiob@fe.up.pt</email>
+    </contributor>
+    <contributor>
+      <name>Takaaki AOKI</name>
+      <email>aoki.takaaki@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>taraonco</name>
+    </contributor>
+    <contributor>
+      <name>Ted Moorman</name>
+    </contributor>
+    <contributor>
+      <name>Ten Cel EB Haroldo Patrício Ribeiro Filho</name>
+      <email>haroldo.filho@engenharia.ufjf.br</email>
+    </contributor>
+    <contributor>
+      <name>Teodor Georgiev</name>
+      <email>t.georgiev@pensoft.net</email>
+    </contributor>
+    <contributor>
+      <name>Tetsuya Tabata</name>
+      <email>ttabata@iam.u-tokyo.ac.jp</email>
+    </contributor>
+    <contributor>
+      <name>Tetyana</name>
+      <email>tetyana.loskutova@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Thaise R. Freitas</name>
+    </contributor>
+    <contributor>
+      <name>Thiago Cardoso</name>
+      <email>thgo_cardoso@yahoo.com.br</email>
+    </contributor>
+    <contributor>
+      <name>Thierry Onkelinx</name>
+      <url>https://www.mendeley.com/profiles/thierry-onkelinx/</url>
+    </contributor>
+    <contributor>
+      <name>Thierry Sol</name>
+      <email>t.sol@pusc.it</email>
+    </contributor>
+    <contributor>
+      <name>Thomas Drake-Brockman</name>
+      <email>21150739@student.uwa.edu.au</email>
+    </contributor>
+    <contributor>
+      <name>Thomas Hartung</name>
+      <email>thartung@jhsph.edu</email>
+    </contributor>
+    <contributor>
+      <name>Thomas Kluyver</name>
+      <email>takowl@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Thomas Malenfant</name>
+      <email>thomas.malenfant.1@ulaval.ca</email>
+    </contributor>
+    <contributor>
+      <name>Thomas Ofni Sonny Pratama</name>
+      <email>thomas_9496@apps.ipb.ac.id</email>
+    </contributor>
+    <contributor>
+      <name>Thomas Perrin</name>
+      <email>tperrin@univ-tlse2.fr</email>
+    </contributor>
+    <contributor>
+      <name>Thomas Tunsch</name>
+      <email>thtbln@yahoo.de</email>
+      <url>https://thtbln.solid.community/profile/card#me</url>
+    </contributor>
+    <contributor>
+      <name>Tiago de Oliveira do Carmo</name>
+      <email>ogait_7@yahoo.com.br</email>
+    </contributor>
+    <contributor>
+      <name>Tiago Emmanuel Nunes Braga</name>
+      <email>tiagobraga@ibict.br</email>
+    </contributor>
+    <contributor>
+      <name>Tiago Rodrigo Marçal Murakami</name>
+      <email>trmurakami@usp.br</email>
+      <url>https://www3.eca.usp.br/biblioteca</url>
+    </contributor>
+    <contributor>
+      <name>Tiffany Chua</name>
+      <email>tchua@uci.edu</email>
+    </contributor>
+    <contributor>
+      <name>Tihmir Orehovacki</name>
+      <email>tihomir.orehovacki@foi.hr</email>
+    </contributor>
+    <contributor>
+      <name>Till A. Heilmann</name>
+      <email>mail@tillheilmann.info</email>
+      <url>http://www.tillheilmann.info</url>
+    </contributor>
+    <contributor>
+      <name>Till Grallert</name>
+      <email>till.grallert@fu-berlin.de</email>
+    </contributor>
+    <contributor>
+      <name>Tim Baxter</name>
+      <email>tbaxter1@unimelb.edu.au</email>
+    </contributor>
+    <contributor>
+      <name>Tim Hamilton</name>
+      <email>hamilton.tim@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Tim LPP</name>
+      <email>lpp@unida.gontor.ac.id</email>
+    </contributor>
+    <contributor>
+      <name>Tim Sherratt</name>
+      <email>tim@discontents.com.au</email>
+    </contributor>
+    <contributor>
+      <name>Timo Steyer</name>
+      <email>steyer@hab.de</email>
+      <url>http://timosteyer.de</url>
+    </contributor>
+    <contributor>
+      <name>Timothée Brütsch</name>
+      <email>timbrutsch@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Tobias Röhl</name>
+      <email>tobias.roehl@gmx.net</email>
+    </contributor>
+    <contributor>
+      <name>Tom Gottfried</name>
+      <email>tom.gottfried@tum.de</email>
+    </contributor>
+    <contributor>
+      <name>Tom Meier</name>
+      <email>tom.meier@einstein.yu.edu</email>
+    </contributor>
+    <contributor>
+      <name>Tom Raley</name>
+    </contributor>
+    <contributor>
+      <name>Tomas</name>
+      <email>tomas.klingstrom@slu.se</email>
+    </contributor>
+    <contributor>
+      <name>Tomasz Hryszko</name>
+      <email>tomhry@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Tomás Leal</name>
+      <email>toleal@alumnos.uai.cl</email>
+    </contributor>
+    <contributor>
+      <name>Tomáš (balrog) Bielčík</name>
+      <email>bx.balrog@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Tomáš Ferianc</name>
+      <email>tferianc@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Tony Chuang</name>
+      <email>zcchuang@tiu.edu</email>
+    </contributor>
+    <contributor>
+      <name>Torsten Feurstein</name>
+      <email>torstenfeurstein@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Torsten Heinemann</name>
+      <email>torsten.heinemann@hu-berlin.de</email>
+    </contributor>
+    <contributor>
+      <name>Trevor Porter</name>
+      <email>tjporter@connect.carleton.ca</email>
+      <url>http://www.tjporter.webs.com</url>
+    </contributor>
+    <contributor>
+      <name>Tristan Boyer</name>
+      <email>tristan.boyer@ipag.fr</email>
+    </contributor>
+    <contributor>
+      <name>Tristan Guerra</name>
+      <email>tristan.guerra@iepg.fr</email>
+    </contributor>
+    <contributor>
+      <name>Troels Brynskov</name>
+      <email>tbr@brynskov.com</email>
+    </contributor>
+    <contributor>
+      <name>Tsung-I Hwang</name>
+      <email>mtsungih@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Turkeyphant</name>
+      <email>turkeyphant+zotero@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Tuuli Helminen</name>
+      <email>tuuli.helminen@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Tyler Mykkanen</name>
+    </contributor>
+    <contributor>
+      <name>Ullrich Bartsch</name>
+      <email>ubartsch@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Ulrik Stervbo</name>
+      <email>ulrik.stervbo@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Upinder S. Bhalla</name>
+      <email>bhalla@ncbs.res.in</email>
+    </contributor>
+    <contributor>
+      <name>Valeriya Simeonova</name>
+      <url>http://www.mendeley.com/profiles/valeriya-simeonova/</url>
+    </contributor>
+    <contributor>
+      <name>Valery Mukhin</name>
+      <email>Valery.Mukhin@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Varidh Katiyar</name>
+      <email>katiyar.varidh@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Vebi Nadhira</name>
+      <email>vebi.nadhira@gmail.com</email>
+      <url>https://www.linkedin.com/in/vebi-nadhira-02359344</url>
+    </contributor>
+    <contributor>
+      <name>Venkatesh L. Murthy</name>
+    </contributor>
+    <contributor>
+      <name>Venkatesh Murthy</name>
+    </contributor>
+    <contributor>
+      <name>Victor A. Stoichita</name>
+      <email>victor.stoichita@cnrs.fr</email>
+      <url>http://svictor.net</url>
+    </contributor>
+    <contributor>
+      <name>Victor Gianordoli</name>
+      <email>vgianordoli@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Victor Jimenez Jaimez</name>
+    </contributor>
+    <contributor>
+      <name>Victor V. Terber</name>
+    </contributor>
+    <contributor>
+      <name>Viera Rebolledo-Dhuin</name>
+      <email>viera.rebolledo-dhuin@uvsq.fr</email>
+    </contributor>
+    <contributor>
+      <name>Vincent Auvigne</name>
+      <email>vincent.auvigne@ekipaj.com</email>
+      <url>vincent.auvigne@ekipaj.com</url>
+    </contributor>
+    <contributor>
+      <name>Vincent Demaurex</name>
+      <email>vincent.demaurex@chuv.ch</email>
+    </contributor>
+    <contributor>
+      <name>Vincent Paramanandam</name>
+      <email>vinsu24@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Vital Vialas</name>
+      <email>vvialasf@ucm.com</email>
+    </contributor>
+    <contributor>
+      <name>Vojtěch Zeisek</name>
+      <url>http://trapa.cz/</url>
+    </contributor>
+    <contributor>
+      <name>Víctor Jiménez Jáimez</name>
+    </contributor>
+    <contributor>
+      <name>Víctor Martínez</name>
+    </contributor>
+    <contributor>
+      <name>Waldemar Hamm</name>
+      <email>waldemar.hamm@destatis.de</email>
+      <url>http://www.sachverstaendigenrat-wirtschaft.de/index.html</url>
+    </contributor>
+    <contributor>
+      <name>Waleed Mebane</name>
+    </contributor>
+    <contributor>
+      <name>Walter O'Dell</name>
+      <email>wodel@ufl.edu</email>
+      <url>http://odell/radonc.med.ufl.edu/</url>
+    </contributor>
+    <contributor>
+      <name>Warren Whipple</name>
+      <email>modalrealist@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Wedson Medeiros</name>
+      <url>http://www.mendeley.com/profiles/wedson-medeiros/</url>
+    </contributor>
+    <contributor>
+      <name>Wei Xiong</name>
+      <email>bbbear2002@gmail.com</email>
+      <url>http://fire.csu.edu.cn/news_detail.aspx?id=101</url>
+    </contributor>
+    <contributor>
+      <name>Wellyngton Chaves Monteiro da Silva</name>
+      <email>wellyngton@uneal.edu.br</email>
+      <url>http://www.uneal.edu.br</url>
+    </contributor>
+    <contributor>
+      <name>Wendy Elvira-García</name>
+      <url>https://www.wendyelvira.ga</url>
+    </contributor>
+    <contributor>
+      <name>William J Giddings</name>
+    </contributor>
+    <contributor>
+      <name>Wojciech Kędziora, PhD</name>
+      <email>wkedziora@wl.sggw.pl</email>
+    </contributor>
+    <contributor>
+      <name>Wolfgang Arthofer</name>
+      <email>wolfgang.arthofer@uibk.ac.at</email>
+    </contributor>
+    <contributor>
+      <name>Wouter Boomsma</name>
+      <email>wb@bio.ku.dk</email>
+    </contributor>
+    <contributor>
+      <name>Wouter Potters</name>
+      <email>w.v.potters@amc.nl</email>
+    </contributor>
+    <contributor>
+      <name>Wouter Touw</name>
+      <email>Wouter.Touw@radboudumc.nl</email>
+    </contributor>
+    <contributor>
+      <name>Xavier Matoses</name>
+      <email>xaviermatoses@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Xiaodong Dang</name>
+      <email>dangxdong@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Xiong Wei</name>
+      <email>bbbear2002@icloud.com</email>
+    </contributor>
+    <contributor>
+      <name>Xuhao Fan</name>
+      <email>xuhaofan@hust.edu.cn</email>
+    </contributor>
+    <contributor>
+      <name>Xunhua Guo</name>
+      <email>xunhua.guo@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Yevgeniy Medynskiy</name>
+      <email>eugenem@gatech.edu</email>
+    </contributor>
+    <contributor>
+      <name>Yingbiao Wang</name>
+      <email>yingbiao2000@yahoo.com</email>
+    </contributor>
+    <contributor>
+      <name>Yolanda Elvira Angulo Bazán</name>
+      <email>yangulobazan@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Yori Yuliandra</name>
+      <email>yoriyuliandra@gmail.com</email>
+      <url>https://www.mendeley.com/profiles/yori-yuliandra/</url>
+    </contributor>
+    <contributor>
+      <name>Younsuk Lee</name>
+      <email>ylee@dongguk.edu</email>
+    </contributor>
+    <contributor>
+      <name>Yousef Abdulsalam</name>
+      <email>y.abdulsalam@asu.edu</email>
+    </contributor>
+    <contributor>
+      <name>Yu Gao</name>
+      <email>gaoyu19920914@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Yuncheng Liu</name>
+      <email>yuncheng_liu@outlook.com</email>
+    </contributor>
+    <contributor>
+      <name>Yurkin Maxim</name>
+      <email>yurkin@gmail.com</email>
+      <url>http://sites.google.com/site/yurkin/</url>
+    </contributor>
+    <contributor>
+      <name>Yusuf Ras</name>
+      <email>yr@sun.ac.za</email>
+      <url>http://www.mendeley.com/profiles/yusuf-ras/</url>
+    </contributor>
+    <contributor>
+      <name>Yusuf Yargı Baydilli</name>
+      <email>yrgbydll@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Zhang, Dekun</name>
+      <email>dekun.zhang.20@ucl.ac.uk</email>
+    </contributor>
+    <contributor>
+      <name>Zhengwei Xie</name>
+      <email>xiezhengwei@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Ziyang Mao</name>
+      <email>maoziyang@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Zlatko Stapic</name>
+      <email>zlatko.stapic@foi.hr</email>
+    </contributor>
+    <contributor>
+      <name>Zoe Young</name>
+      <email>youngz@cardiff.ac.uk</email>
+    </contributor>
+    <contributor>
+      <name>Zoran Kracunovic</name>
+      <email>zorank@diplomacy.edu</email>
+    </contributor>
+    <contributor>
+      <name>Zotero Trainer Workshop Atlanta 2012 Participants</name>
+    </contributor>
+    <contributor>
+      <name>Zsuzsa Nagy</name>
+    </contributor>
+    <contributor>
+      <name>Étienne Nadji</name>
+      <email>etnadji@eml.cc</email>
+    </contributor>
+    <contributor>
+      <name>Ömer Faruk Görücü</name>
+      <email>omerfarukgorucu@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Özhan Saglik</name>
+      <email>ozhansaglik@uludag.edu.tr</email>
+    </contributor>
+    <contributor>
+      <name>Özhan Sağlık</name>
+      <email>ozhansaglik@uludag.edu.tr</email>
+    </contributor>
+    <contributor>
+      <name>Øyvind Ege</name>
+      <email>oyvind.ege@gmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Łukasz Borowski</name>
+      <email>l.borowski@pollub.pl</email>
+    </contributor>
+    <contributor>
+      <name>Łukasz Breńkacz</name>
+      <email>brenkacz@gmail.com</email>
+      <url>www.brenkacz.com</url>
+    </contributor>
+    <contributor>
+      <name>牛耕田</name>
+      <email>buffalo_d@163.com</email>
+    </contributor>
+  </contributors>
+  <scm>
+    <connection>scm:git:git://github.com/citation-style-language/styles.git</connection>
+    <developerConnection>scm:git:git://github.com/michel-kraemer/styles.git</developerConnection>
+    <url>https://github.com/citation-style-language/styles</url>
+  </scm>
+</project>
