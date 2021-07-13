@@ -62,6 +62,9 @@ public class EntityRegister {
 		    Series series = new Series();
 		    entityList.add(series);
 		    
+		    Funder funder = new Funder();
+		    entityList.add(funder);
+		    
 		    navEntityList.add(publication);
 		    navEntityList.add(project);
 		    navEntityList.add(orgunit);
@@ -109,7 +112,13 @@ public class EntityRegister {
 		    
 		    navEntityList = new LinkedList<EntityModel>();
 		    navEntityList.add(awards);
+		    navEntityList.add(funder);
 		    setNavigationPropertyForEntity(awardseries, navEntityList);
+		    
+		    navEntityList = new LinkedList<EntityModel>();
+		    navEntityList.add(awardseries);
+		    navEntityList.add(project);
+		    setNavigationPropertyForEntity(funder, navEntityList);
 		    
 		}
 
