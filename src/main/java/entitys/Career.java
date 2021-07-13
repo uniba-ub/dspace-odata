@@ -22,6 +22,8 @@ public class Career implements ComplexModel {
 	
 	public Career() {
 
+		CsdlProperty uuid = new CsdlProperty().setName("uuid")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty startdate = new CsdlProperty().setName("startdate")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
 		CsdlProperty enddate = new CsdlProperty().setName("enddate")
@@ -32,10 +34,11 @@ public class Career implements ComplexModel {
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
 		complexType = new CsdlComplexType();
 		complexType.setName(CT_CAREER_NAME);
-		complexType.setProperties(Arrays.asList(startdate, enddate, desc, place));
+		complexType.setProperties(Arrays.asList(uuid, startdate, enddate, desc, place));
 		
 		mapping = new HashMap<String, String>();
 		
+		mapping.put("uuid", "cris-uuid");
 		mapping.put("startdate", "ncrisrpcareer.careerstartdate");
 		mapping.put("enddate", "ncrisrpcareer.careerenddate");
 		mapping.put("desc","ncrisrpcareer.careerdescription");

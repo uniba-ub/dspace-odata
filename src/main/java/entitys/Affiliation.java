@@ -22,6 +22,8 @@ public class Affiliation implements ComplexModel {
 	
 	public Affiliation() {
 
+		CsdlProperty uuid = new CsdlProperty().setName("uuid")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty startdate = new CsdlProperty().setName("startdate")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
 		CsdlProperty enddate = new CsdlProperty().setName("enddate")
@@ -35,10 +37,11 @@ public class Affiliation implements ComplexModel {
 
 		complexType = new CsdlComplexType();
 		complexType.setName(CT_AFFILIATION_NAME);
-		complexType.setProperties(Arrays.asList(startdate, enddate, role, ouname, aff2ou));
+		complexType.setProperties(Arrays.asList(uuid, startdate, enddate, role, ouname, aff2ou));
 		
 		mapping = new HashMap<String, String>();
 		
+		mapping.put("uuid", "cris-uuid");
 		mapping.put("startdate", "ncrisrpaffiliation.affiliationstartdate");
 		mapping.put("enddate", "ncrisrpaffiliation.affiliationenddate");
 		mapping.put("role","ncrisrpaffiliation.affiliationrole");

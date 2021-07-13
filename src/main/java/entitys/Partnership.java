@@ -22,7 +22,9 @@ public class Partnership implements ComplexModel {
 	
 	
 	public Partnership() {
-
+		
+		CsdlProperty uuid = new CsdlProperty().setName("uuid")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty cooperative = new CsdlProperty().setName("cooperative")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty description = new CsdlProperty().setName("description")
@@ -38,9 +40,11 @@ public class Partnership implements ComplexModel {
 
 		complexType = new CsdlComplexType();
 		complexType.setName(CT_PARTNERSHIP_NAME);
-		complexType.setProperties(Arrays.asList(name, projectpartner, cooperative, description, url, type));
+		complexType.setProperties(Arrays.asList(uuid,name, projectpartner, cooperative, description, url, type));
 		
 		mapping = new HashMap<String, String>();
+		
+		mapping.put("uuid", "cris-uuid");
 		mapping.put("cooperative","ncrisprojectpartnership.partnershipcooperative");
 		mapping.put("description", "ncrisprojectpartnership.partnershipdescription");
 		mapping.put("projectpartner", "ncrisprojectpartnership.partnershipprojectpartner");

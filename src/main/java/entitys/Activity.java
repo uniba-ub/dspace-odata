@@ -22,6 +22,8 @@ public class Activity implements ComplexModel {
 	
 	public Activity() {
 
+		CsdlProperty uuid = new CsdlProperty().setName("uuid")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty startdate = new CsdlProperty().setName("startdate")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
 		CsdlProperty enddate = new CsdlProperty().setName("enddate")
@@ -33,10 +35,11 @@ public class Activity implements ComplexModel {
 
 		complexType = new CsdlComplexType();
 		complexType.setName(CT_ACTIVITY_NAME);
-		complexType.setProperties(Arrays.asList(startdate, enddate, desc, type));
+		complexType.setProperties(Arrays.asList(uuid, startdate, enddate, desc, type));
 		
 		mapping = new HashMap<String, String>();
 		
+		mapping.put("uuid", "cris-uuid");
 		mapping.put("startdate", "ncrisrpactivity.startDate");
 		mapping.put("enddate", "ncrisrpactivity.endDate");
 		mapping.put("desc","ncrisrpactivity.description");
