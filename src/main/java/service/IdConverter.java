@@ -34,7 +34,11 @@ public class IdConverter {
 			type= type + "/";
 		}
 		int dspaceIdAsInt = Integer.valueOf(id);
-		String dspaceId = String.format("%s%05d", type,dspaceIdAsInt);	
+			if(type.equals("uniba/")) {
+				String dspaceId = String.format("%s%d", type,dspaceIdAsInt);
+				return dspaceId;
+			}
+		String dspaceId = String.format("%s%05d", type,dspaceIdAsInt);
 		return dspaceId;
 	}
 	
