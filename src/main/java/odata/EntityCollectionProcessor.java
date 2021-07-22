@@ -165,7 +165,7 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 
 					if(entityList.size() == 0) {
 						throw new ODataApplicationException("Nothing found.", HttpStatusCode.NOT_FOUND.getStatusCode(),
-								Locale.ROOT);
+								Locale.ROOT, null, "emptyoption");
 					}
 					
 					for (Entity entity : entityList) {
@@ -258,7 +258,7 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 	
 					if(entityList.size() == 0) {
 						throw new ODataApplicationException("Nothing found.", HttpStatusCode.NOT_FOUND.getStatusCode(),
-								Locale.ROOT);
+								Locale.ROOT, null, "emptyoption");
 					}
 					for (Entity entity : entityList) {
 						responseEntityCollection.getEntities().add(entity);
