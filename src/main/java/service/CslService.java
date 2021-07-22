@@ -91,13 +91,13 @@ public class CslService {
 				builder.volume((String)entity.getProperty("multipartTitel").getValue());
 			}
 			//
-			if(entity.getProperty("type").getValue().toString().equals("book") && checkValueNull(entity.getProperty("author")) == null) {
+			if(checkValueNull(entity.getProperty("type")) != null && entity.getProperty("type").getValue().toString().equals("book") && checkValueNull(entity.getProperty("author")) == null) {
 				if(checkValueNull(entity.getProperty("editor")) != null) {
 					builder.editor(authorNameSpliter((String) checkValueNull(entity.getProperty("editor"))));
 				}else if(checkValueNull(entity.getProperty("corporation")) != null) {
 					builder.editor(authorNameSpliter((String) checkValueNull(entity.getProperty("corporation"))));
 				}
-			}else if(entity.getProperty("type").getValue().toString().equals("bookpart")) {
+			}else if(checkValueNull(entity.getProperty("type")) != null && entity.getProperty("type").getValue().toString().equals("bookpart")) {
 				if(checkValueNull(entity.getProperty("articlecollectionEditor")) != null) {
 					builder.editor(authorNameSpliter((String) checkValueNull(entity.getProperty("articlecollectionEditor"))));
 				}else if(checkValueNull(entity.getProperty("corporation")) != null) {
