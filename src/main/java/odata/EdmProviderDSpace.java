@@ -46,6 +46,9 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 	public static final String FUNCTION_CSL_FOR_PROJECT = "cslforproject";
 	public static final FullQualifiedName FUNCTION_CSL_FOR_PROJECT_FQN = new FullQualifiedName(NAMESPACE, FUNCTION_CSL_FOR_PROJECT);
 	
+	public static final String FUNCTION_CSL_FOR_PUBLICATION = "cslforitem";
+	public static final FullQualifiedName FUNCTION_CSL_FOR_PUBLICATION_FQN = new FullQualifiedName(NAMESPACE, FUNCTION_CSL_FOR_PUBLICATION);	
+	
 	public static final String FUNCTION_CSL_FOR_JOURNAL = "cslforjournal";
 	public static final FullQualifiedName FUNCTION_CSL_FOR_JOURNAL_FQN = new FullQualifiedName(NAMESPACE, FUNCTION_CSL_FOR_JOURNAL);
 	
@@ -87,6 +90,7 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 		functionImports.add(getFunctionImport(CONTAINER, FUNCTION_CSL_FOR_RESEARCHER_SELECTED));
 		functionImports.add(getFunctionImport(CONTAINER, FUNCTION_CSL_FOR_SUPERVISOR));
 		functionImports.add(getFunctionImport(CONTAINER, FUNCTION_CSL_FOR_AUTHOR));
+		functionImports.add(getFunctionImport(CONTAINER, FUNCTION_CSL_FOR_PUBLICATION));
 		functionImports.add(getFunctionImport(CONTAINER, FUNCTION_CSL_FOR_PROJECT));
 		functionImports.add(getFunctionImport(CONTAINER, FUNCTION_CSL_FOR_ORGUNIT));
 		functionImports.add(getFunctionImport(CONTAINER, FUNCTION_CSL_FOR_JOURNAL));
@@ -164,6 +168,7 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 		functions.addAll(getFunctions(FUNCTION_CSL_FOR_SERIES_FQN));
 		functions.addAll(getFunctions(FUNCTION_CSL_FOR_SUPERVISOR_FQN));
 		functions.addAll(getFunctions(FUNCTION_CSL_FOR_AUTHOR_FQN));
+		functions.addAll(getFunctions(FUNCTION_CSL_FOR_PUBLICATION_FQN));
 		functions.addAll(getFunctions(FUNCTION_CSL_FOR_RESEARCHER_SELECTED_FQN));
 		functions.addAll(getFunctions(FUNCTION_PJ_FOR_OU_FQN));
 
@@ -238,6 +243,37 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 			
 			final CsdlFunction function = new CsdlFunction();
 			function.setName(FUNCTION_CSL_FOR_ORGUNIT_FQN.getName())
+					.setParameters(parameterList)
+					.setReturnType(returnType)
+					.setComposable(true);
+			functions.add(function);
+			
+			return functions;
+		} else if(functionName.equals(FUNCTION_CSL_FOR_PUBLICATION_FQN)){
+			
+			final List<CsdlFunction> functions = new LinkedList<CsdlFunction>();
+			final List<CsdlParameter> parameterList = new ArrayList<CsdlParameter>();
+			
+			final CsdlParameter parameterStyle = new CsdlParameter();
+			parameterStyle.setName("style");
+			parameterStyle.setNullable(false);
+			parameterStyle.setCollection(false);
+			parameterStyle.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+			parameterList.add(parameterStyle);
+			
+			final CsdlParameter parameterOrgunitid = new CsdlParameter()
+							.setName("id")
+							.setNullable(false)
+							.setCollection(false)
+							.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
+			parameterList.add(parameterOrgunitid);
+			
+			final CsdlReturnType returnType = new CsdlReturnType();
+			returnType.setCollection(true);
+			returnType.setType(Publication.ET_PUBLICATION_FQN);
+			
+			final CsdlFunction function = new CsdlFunction();
+			function.setName(FUNCTION_CSL_FOR_PUBLICATION_FQN.getName())
 					.setParameters(parameterList)
 					.setReturnType(returnType)
 					.setComposable(true);
@@ -489,6 +525,12 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 				return new CsdlFunctionImport()
 						.setName(functionImportName)
 						.setFunction(FUNCTION_CSL_FOR_SERIES_FQN)
+						.setEntitySet(Publication.ES_PUBLICATIONS_NAME)
+						.setIncludeInServiceDocument(true);		
+			}else if(functionImportName.equals(FUNCTION_CSL_FOR_PUBLICATION_FQN.getName())) {
+				return new CsdlFunctionImport()
+						.setName(functionImportName)
+						.setFunction(FUNCTION_CSL_FOR_PUBLICATION_FQN)
 						.setEntitySet(Publication.ES_PUBLICATIONS_NAME)
 						.setIncludeInServiceDocument(true);		
 			}else if(functionImportName.equals(FUNCTION_CSL_FOR_SUPERVISOR_FQN.getName())) {

@@ -465,6 +465,32 @@ public class DataHandler {
 		return result;
 	}
 	
+	//returns a entity collection with the source entity
+	public EntityCollection getEntityCollectionWithSourceEntity(Entity sourceEntity, EdmEntityType targetEntityType, String relation) throws SolrServerException, IOException {
+		EntityCollection navigationTargetEntityCollection = new EntityCollection();
+
+			/*List<String> filterList = new LinkedList<String>();
+			EntityModel sourceModel = null;
+			EntityModel targetModel = null;
+			for(EntityModel item: entityRegister.getEntityList()) {
+				if(item.getFullQualifiedName().getFullQualifiedNameAsString().equals(sourceEntity.getType())){					
+					sourceModel = item;
+				}		
+				if(item.getFullQualifiedName().equals(targetEntityType.getFullQualifiedName())) {
+					targetModel= item;	
+				}
+			}*/
+			EntityCollection entityCollection = new EntityCollection();
+			entityCollection.getEntities().add(sourceEntity);
+			entityCollection.setCount(entityCollection.getEntities().size());
+			navigationTargetEntityCollection = entityCollection;
+			
+		if (navigationTargetEntityCollection.getEntities().isEmpty()) {
+			return null;
+		}
+		return navigationTargetEntityCollection;
+	}
+	
 	public String readFunctionImportStyle(final UriResourceFunction uriResourceFunction) throws ODataApplicationException {	
 				List<UriParameter> parameters = uriResourceFunction.getParameters();
 				if(!parameters.isEmpty()) {
@@ -482,6 +508,9 @@ public class DataHandler {
 			  EdmEntitySet entitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Publication.ES_PUBLICATIONS_NAME);
 			  return entitySet;
 		} else if(EdmProviderDSpace.FUNCTION_CSL_FOR_PROJECT.equals(uriResourceFunction.getFunctionImport().getName())){
+			  EdmEntitySet entitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Publication.ES_PUBLICATIONS_NAME);
+			  return entitySet;
+		} else if(EdmProviderDSpace.FUNCTION_CSL_FOR_PUBLICATION.equals(uriResourceFunction.getFunctionImport().getName())){
 			  EdmEntitySet entitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Publication.ES_PUBLICATIONS_NAME);
 			  return entitySet;
 		} else if(EdmProviderDSpace.FUNCTION_CSL_FOR_JOURNAL.equals(uriResourceFunction.getFunctionImport().getName())){

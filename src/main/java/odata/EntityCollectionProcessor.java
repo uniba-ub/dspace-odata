@@ -205,6 +205,10 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 			}else if(EdmProviderDSpace.FUNCTION_CSL_FOR_SERIES.equals(uriResourceFunction.getFunctionImport().getName())) {
 				startEntitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Series.ES_SERIES_NAME);
 				targetEntityType = serviceMetadata.getEdm().getEntityType(Publication.ET_PUBLICATION_FQN);
+			}else if(EdmProviderDSpace.FUNCTION_CSL_FOR_PUBLICATION.equals(uriResourceFunction.getFunctionImport().getName())) {
+				startEntitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Publication.ES_PUBLICATIONS_NAME);
+				relation = "_SELF";
+				targetEntityType = serviceMetadata.getEdm().getEntityType(Publication.ET_PUBLICATION_FQN);
 			}else if(EdmProviderDSpace.FUNCTION_CSL_FOR_SUPERVISOR.equals(uriResourceFunction.getFunctionImport().getName())) {
 				startEntitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Researcher.ES_RESEARCHERS_NAME);
 				relation = "_SUPERVISOR";
@@ -232,7 +236,10 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 					throw new ODataApplicationException("Nothing found.", HttpStatusCode.NOT_FOUND.getStatusCode(),
 							Locale.ROOT);
 				}
-				if(!relation.endsWith("SELECTED")) {
+				if(relation.endsWith("SELF")) {
+					entityCollection = datahandler.getEntityCollectionWithSourceEntity(sourceEntity, targetEntityType, relation);
+					entityList = entityCollection.getEntities();
+				}else if(!relation.endsWith("SELECTED")) {
 					entityCollection = datahandler.getRelatedEntityCollection(sourceEntity, targetEntityType, relation);
 					entityList = entityCollection.getEntities();
 				}else {
