@@ -118,6 +118,7 @@ public class EntityRegister {
 		    navEntityList = new LinkedList<EntityModel>();
 		    navEntityList.add(awardseries);
 		    navEntityList.add(project);
+		    navEntityList.add(funder);
 		    setNavigationPropertyForEntity(funder, navEntityList);
 		    
 		}

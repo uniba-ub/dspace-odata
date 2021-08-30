@@ -26,7 +26,9 @@ public class Funding implements ComplexModel {
 		CsdlProperty uuid = new CsdlProperty().setName("uuid")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty funder = new CsdlProperty().setName("funder")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty funder_auth = new CsdlProperty().setName("funder_authority")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty grant = new CsdlProperty().setName("grant")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
 		CsdlProperty program = new CsdlProperty().setName("program")
@@ -38,12 +40,13 @@ public class Funding implements ComplexModel {
 
 		complexType = new CsdlComplexType();
 		complexType.setName(CT_FUNDING_NAME);
-		complexType.setProperties(Arrays.asList(uuid, funder, period, supportCode, grant, program));
+		complexType.setProperties(Arrays.asList(uuid, funder, funder_auth, period, supportCode, grant, program));
 		
 		mapping = new HashMap<String, String>();
 		
 		mapping.put("uuid", "cris-uuid");
 		mapping.put("funder", "ncrisprojectfunding.fundingfunder");
+		mapping.put("funder_authority", "ncrisprojectfunding.fundingfunder_auth");
 		mapping.put("grant", "ncrisprojectfunding.fundinggrant");
 		mapping.put("period","ncrisprojectfunding.fundingperiod");
 		mapping.put("program", "ncrisprojectfunding.fundingprogram");

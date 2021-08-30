@@ -49,9 +49,15 @@ public class Funder implements EntityModel {
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty ror = new CsdlProperty().setName("identifier_ror")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty doi = new CsdlProperty().setName("identifier_doi")
+		CsdlProperty crossrefid = new CsdlProperty().setName("identifier_crossreffunder")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty gnd = new CsdlProperty().setName("identifier_gnd")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty type = new CsdlProperty().setName("type")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty acronym = new CsdlProperty().setName("acronym")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty parentfunder = new CsdlProperty().setName("funder2funder")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		
 		// creation of PropertyRef for the key Element
@@ -61,7 +67,7 @@ public class Funder implements EntityModel {
 		// configuration of the Entity Type and adding of properties		
 		entityType = new CsdlEntityType();
 		entityType.setName(ET_FUNDER_NAME);
-		entityType.setProperties(Arrays.asList(id, crisId, uuid, name,  country, city, url, description, wikidata, isni, grid, ror, doi, gnd));
+		entityType.setProperties(Arrays.asList(id, crisId, uuid, name,  country, city, url, description, wikidata, isni, grid, ror, crossrefid, gnd, type, acronym, parentfunder));
 		entityType.setKey(Collections.singletonList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
@@ -76,13 +82,15 @@ public class Funder implements EntityModel {
 		mapping.put("city", "crisfunder.fundercity");
 		mapping.put("url", "crisfunder.funderurl");
 		mapping.put("description", "crisfunder.funderdescription");
-		//TODO: type?
+		mapping.put("acronym", "crisfunder.fundershortname");
+		mapping.put("type", "crisfunder.fundertype-cerif");
 		mapping.put("identifier_wikidata", "crisfunder.funderidentifier_wikidata");
 		mapping.put("identifier_isni", "crisfunder.funderidentifier_isni");
 		mapping.put("identifier_grid", "crisfunder.funderidentifier_grid");
 		mapping.put("identifier_gnd", "crisfunder.funderidentifier_gnd");
 		mapping.put("identifier_ror", "crisfunder.funderidentifier_ror");
-		mapping.put("identifier_doi", "crisfunder.funderidentifier_doi");
+		mapping.put("identifier_crossreffunder", "crisfunder.funderidentifier_crossreffunder");
+		mapping.put("funder2funder", "crisfunder.funderparentfunder_authority");
 	}
 	
 	@Override
@@ -123,6 +131,8 @@ public class Funder implements EntityModel {
 			navigationFilter = ("crisawardseries.awardseriesinstitution_authority:\""+id+"\"");
 		} else if(sourceType.equals("Projects")) {
 			navigationFilter = ("crisproject.funding.fundingfunder_authority:\""+ id+"\"");
+		} else if(sourceType.equals("Funders")) {
+			navigationFilter = ("crisfunder.funderparentfunder_authority:\""+ id+"\"");
 		}
 		return navigationFilter;
 	}
