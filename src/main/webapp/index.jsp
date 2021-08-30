@@ -164,6 +164,27 @@ h6    {color: #002a4d;}
 
 	</div>
 	
+	<h4 id="responses">Response Codes</h4>
+	<p>The response codes are mostly the same as in <a href="https://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#_Toc31358891">the OData 4 Specification (#9 Common Response Status Codes)</a>.</p>
+	<p>OData allows the definition of some service-specific code inside error response bodys (=OData Error code)</p> 
+	<p>
+	<table style="border: 1px solid grey;">
+	<thead>
+		<tr><th>HTTP Status Code</th><th>OData Error Code</th><th>Description</th>
+	</thead>
+	<tbody >
+	    <tr><td>...</td><td></td><td></td></tr>
+		<tr><td>200</td><td></td><td>Successful response with at least some entry.</td></tr>
+		<tr><td>400</td><td></td><td>bad request, query syntax is not correct</td></tr>
+		<tr><td>404</td><td></td><td>not found, no results</td></tr>
+		<tr><td>404</td><td>emptyoption</td><td>not found, No results after applying the options </td></tr>
+		<tr><td>500</td><td></td><td>Internal Error</td></tr>
+		<tr><td>501</td><td></td><td>The applied function is not implemented in this service</td></tr>
+		<tr><td>...</td><td></td><td></td></tr>
+	</tbody>
+	</table>
+	</p>
+	
 </body>
 
 </html>
