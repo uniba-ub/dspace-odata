@@ -69,7 +69,7 @@ public class Researcher implements EntityModel {
 		
 		//complex type
 		CsdlProperty affiliation = new CsdlProperty().setName("Affiliation").setType(Affiliation.CT_AFFILIATION_FQN).setCollection(true);
-		CsdlProperty activity = new CsdlProperty().setName("Activity").setType(Activity.CT_ACTIVITY_FQN).setCollection(true);
+		CsdlProperty achievement = new CsdlProperty().setName("Achievement").setType(Achievement.CT_ACHIEVEMENT_FQN).setCollection(true);
 		CsdlProperty education = new CsdlProperty().setName("Education").setType(Education.CT_EDUCATION_FQN).setCollection(true);
 		CsdlProperty career = new CsdlProperty().setName("Career").setType(Career.CT_CAREER_FQN).setCollection(true);
 
@@ -77,7 +77,7 @@ public class Researcher implements EntityModel {
 		// configuration of the Entity Type and adding of properties
 		entityType = new CsdlEntityType();
 		entityType.setName(ET_RESEARCHER_NAME);
-		entityType.setProperties(Arrays.asList(id, crisId, uuid, displayName, researchinterests, description, title, email, biography, researcharea, contacturl, contactemail, orcid, gnd, dept, contact, affiliation, career, education, activity, rp2ou));
+		entityType.setProperties(Arrays.asList(id, crisId, uuid, displayName, researchinterests, description, title, email, biography, researcharea, contacturl, contactemail, orcid, gnd, dept, contact, affiliation, career, education, achievement, rp2ou));
 		entityType.setKey(Collections.singletonList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();

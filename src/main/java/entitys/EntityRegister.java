@@ -130,11 +130,11 @@ public class EntityRegister {
 			complexPropertyList.add(funding);
 			complexPropertyList.add(partnership);
 			Affiliation affiliation = new Affiliation();
-			Activity activity = new Activity();
+			Achievement achievement = new Achievement();
 			Career career = new Career();
 			Education education = new Education();
 			complexPropertyList.add(affiliation);
-			complexPropertyList.add(activity);
+			complexPropertyList.add(achievement);
 			complexPropertyList.add(career);
 			complexPropertyList.add(education);
 		}
