@@ -1,5 +1,6 @@
 package entitys;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -24,6 +25,7 @@ public class Project implements EntityModel{
 	private CsdlEntityType entityType;
 	private CsdlEntitySet entitySet;
 	private HashMap<String, String> mapping;
+	private ArrayList<String> ENTITYFILTER;
 	
 	public Project() {
 		
@@ -110,6 +112,7 @@ public class Project implements EntityModel{
 		mapping.put("pj2rp", "projectinvestigators_authority");
 		mapping.put("pj2ou", "crisproject.deptproject_authority");
 
+		ENTITYFILTER = new ArrayList<String>();
 	}
 	
 	public CsdlEntityType getEntityType() {
@@ -134,6 +137,10 @@ public class Project implements EntityModel{
 
 	public String getIDConverterTyp() {
 		return ID_CONVERTER_TYP;
+	}
+	
+	public ArrayList<String> getEntityFilter() {
+		return ENTITYFILTER;
 	}
 
 	public String getNavigationFilter(String sourceType, String id) {

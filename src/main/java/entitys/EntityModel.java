@@ -1,6 +1,7 @@
 package entitys;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
@@ -17,5 +18,7 @@ public interface EntityModel {
 	public String getIDConverterTyp();
 	public String getNavigationFilter(String sourceType, String id);
 	public HashMap<String, String> getMapping();
+	public ArrayList<String> getEntityFilter();
+
 
 }

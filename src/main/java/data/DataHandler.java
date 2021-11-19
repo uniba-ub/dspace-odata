@@ -70,6 +70,7 @@ public class DataHandler {
 				List<UriParameter> keyParams = null;
 				boolean isEntityCollection=true;
 				List<String> filterList = new LinkedList<String>();
+				filterList.addAll(item.getEntityFilter());
 				responseDocuments = getQuerriedDataFromSolr(item.getEntitySetName(), keyParams, isEntityCollection, filterList);
 				entitySet = createEntitySet(responseDocuments, item);
 			}
@@ -85,6 +86,7 @@ public class DataHandler {
 				List<UriParameter> keyParams = null;
 				boolean isEntityCollection=true;
 				List<String> filterList = new LinkedList<String>();
+				filterList.addAll(item.getEntityFilter());
 				responseDocuments = getQuerriedDataFromSolr(item.getEntitySetName(), keyParams, isEntityCollection, filterList, search);
 				entitySet = createEntitySet(responseDocuments, item);
 			}
@@ -145,10 +147,14 @@ public class DataHandler {
 				}
 				else {
 					queryMaker.setQuerySearchTerm(item.getRecourceTypeFilter());
+					if(!filterList.isEmpty()) {
+						for(String filter: filterList) {
+							queryMaker.addSearchFilter(filter);	
+						}
+					}
 					String id = keyParams.get(0).getText();				
 					String dspaceId = converter.convertODataIDToDSpaceID(id, item.getIDConverterTyp());
-					queryMaker.addSearchFilterForAttribute(converter.getIDSolrFilter(item.getIDConverterTyp()), dspaceId);
-				}
+					queryMaker.addSearchFilterForAttribute(converter.getIDSolrFilter(item.getIDConverterTyp()), dspaceId);				}
 			}		
 		}
 	
@@ -365,6 +371,7 @@ public class DataHandler {
 				List<String> reverseRelation = Arrays.asList(reverseRelationArr);
 				filterList.addAll(reverseRelation);
 			}
+			filterList.addAll(targetModel.getEntityFilter());
 			responseDocuments = getQuerriedDataFromSolr(targetModel.getEntitySetName(), keyParams, isEntityCollection, filterList);	
 			navigationTargetEntityCollection = createEntitySet(responseDocuments, targetModel);
 			
@@ -406,6 +413,7 @@ public class DataHandler {
 			dspaceId = sourceEntity.getProperty("uuid").getValue().toString();
 			if(dspaceId == null) return null;
 			queryMaker.addSearchFilter((targetModel.getNavigationFilter(sourceModel.getEntitySetName()+relation, dspaceId)));
+			filterList.addAll(targetModel.getEntityFilter());
 			responseDocuments = getQuerriedDataFromSolr(targetModel.getEntitySetName(), keyParams, isEntityCollection, filterList);
 	
 			if(responseDocuments == null || responseDocuments.isEmpty()) return null;

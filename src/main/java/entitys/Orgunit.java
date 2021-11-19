@@ -1,5 +1,6 @@
 package entitys;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -22,6 +23,7 @@ public class Orgunit implements EntityModel{
 	private CsdlEntityType entityType;
 	private CsdlEntitySet entitySet;
 	private HashMap<String, String> mapping;
+	private ArrayList<String> ENTITYFILTER;
 
 	public Orgunit(){
 		
@@ -78,6 +80,7 @@ public class Orgunit implements EntityModel{
 	mapping.put("parentorgunit", "crisou.parentorgunit_authority");
 	mapping.put("url", "crisou.url");
 	
+	ENTITYFILTER = new ArrayList<String>();
 	}
 
 	public CsdlEntityType getEntityType() {
@@ -102,6 +105,10 @@ public class Orgunit implements EntityModel{
 
 	public String getIDConverterTyp() {
 		return ID_CONVERTER_TYP;
+	}
+	
+	public ArrayList<String> getEntityFilter() {
+		return ENTITYFILTER;
 	}
 
 	public String getNavigationFilter(String sourceType, String id) {

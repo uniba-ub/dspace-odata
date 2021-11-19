@@ -1,5 +1,6 @@
 package entitys;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -23,6 +24,7 @@ public class Funder implements EntityModel {
 	private CsdlEntityType entityType;
 	private CsdlEntitySet entitySet;
 	private HashMap<String, String> mapping;
+	private ArrayList<String> ENTITYFILTER;
 	
 	public Funder() {
 		CsdlProperty id = new CsdlProperty().setName("id")
@@ -91,6 +93,8 @@ public class Funder implements EntityModel {
 		mapping.put("identifier_ror", "crisfunder.funderidentifier_ror");
 		mapping.put("identifier_crossreffunder", "crisfunder.funderidentifier_crossreffunder");
 		mapping.put("funder2funder", "crisfunder.funderparentfunder_authority");
+		
+		ENTITYFILTER = new ArrayList<String>();
 	}
 	
 	@Override
@@ -121,6 +125,10 @@ public class Funder implements EntityModel {
 	@Override
 	public String getIDConverterTyp() {
 		return ID_CONVERTER_TYP;
+	}
+	
+	public ArrayList<String> getEntityFilter() {
+		return ENTITYFILTER;
 	}
 
 	@Override

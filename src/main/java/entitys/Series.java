@@ -1,5 +1,6 @@
 package entitys;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -24,6 +25,7 @@ public class Series implements EntityModel {
 	private CsdlEntityType entityType;
 	private CsdlEntitySet entitySet;
 	private HashMap<String, String> mapping;
+	private ArrayList<String> ENTITYFILTER;
 	
 	public Series() {
 		CsdlProperty id = new CsdlProperty().setName("id")
@@ -67,6 +69,7 @@ public class Series implements EntityModel {
 		mapping.put("homepage", "crisseries.journalshomepage");
 		mapping.put("description", "crisseries.journalsdescription");
 		
+		ENTITYFILTER = new ArrayList<String>();
 	}
 	
 	@Override
@@ -97,6 +100,10 @@ public class Series implements EntityModel {
 	@Override
 	public String getIDConverterTyp() {
 		return ID_CONVERTER_TYP;
+	}
+	
+	public ArrayList<String> getEntityFilter() {
+		return ENTITYFILTER;
 	}
 
 	@Override

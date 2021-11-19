@@ -1,5 +1,6 @@
 package entitys;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -23,6 +24,7 @@ public class Awards implements EntityModel {
 	private CsdlEntityType entityType;
 	private CsdlEntitySet entitySet;
 	private HashMap<String, String> mapping;
+	private ArrayList<String> ENTITYFILTER;	
 	
 	public Awards() {
 		CsdlProperty id = new CsdlProperty().setName("id")
@@ -90,6 +92,8 @@ public class Awards implements EntityModel {
 		mapping.put("award2rp", "crisawards.awardsperson_authority");
 		mapping.put("award2pj", "crisawards.awardsproject_authority");
 
+		ENTITYFILTER = new ArrayList<String>();
+
 	}
 	
 	@Override
@@ -140,6 +144,12 @@ public class Awards implements EntityModel {
 	@Override
 	public HashMap<String, String> getMapping() {
 		return mapping;
+	}
+
+	@Override
+	public ArrayList<String> getEntityFilter() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -1,5 +1,6 @@
 package entitys;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -21,6 +22,8 @@ public class Researcher implements EntityModel {
 	public final static String RECOURCE_TYPE_FILTER= "resourcetype_filter:\"009researchers\n|||\nResearcher profiles###researcherprofiles\"";
 	public final static String ID_CONVERTER_TYP= "rp";
 	private HashMap<String, String> mapping;
+	private ArrayList<String> ENTITYFILTER;
+
 
 	private CsdlEntityType entityType;
 	private CsdlEntitySet entitySet;
@@ -103,6 +106,8 @@ public class Researcher implements EntityModel {
 		
 		mapping.put("rp2ou", "crisrp.dept_authority");
 		
+		ENTITYFILTER = new ArrayList<String>();
+		ENTITYFILTER.add("-ubg.version.visibility:0");
 	}
 	
 	public CsdlEntityType getEntityType() {	
@@ -128,6 +133,10 @@ public class Researcher implements EntityModel {
 
 	public String getIDConverterTyp() {
 		return ID_CONVERTER_TYP;
+	}
+	
+	public ArrayList<String> getEntityFilter() {
+		return ENTITYFILTER;
 	}
 
 	public String getNavigationFilter(String sourceType, String id) {

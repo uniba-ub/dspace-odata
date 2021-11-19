@@ -1,5 +1,6 @@
 package entitys;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -24,6 +25,8 @@ public class Journal implements EntityModel {
 	private CsdlEntityType entityType;
 	private CsdlEntitySet entitySet;
 	private HashMap<String, String> mapping;
+	private ArrayList<String> ENTITYFILTER;
+
 	
 	public Journal() {
 		CsdlProperty id = new CsdlProperty().setName("id")
@@ -67,6 +70,7 @@ public class Journal implements EntityModel {
 		mapping.put("issn", "crisseries.journalsissn");
 		mapping.put("name", "crisseries.journalsname");
 		
+		ENTITYFILTER = new ArrayList<String>();
 	}
 	
 	@Override
@@ -107,6 +111,10 @@ public class Journal implements EntityModel {
 	@Override
 	public HashMap<String, String> getMapping() {
 		return mapping;
+	}
+	
+	public ArrayList<String> getEntityFilter() {
+		return ENTITYFILTER;
 	}
 
 }
