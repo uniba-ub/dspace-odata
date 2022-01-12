@@ -138,7 +138,7 @@ public class Util {
 		}else if(sourceType.contentEquals("Awards") && targetType.contentEquals("Researchers")) {
 			String filterquery = sourceEntity.getProperty("award2rp").getValue().toString();
 			navigationFilter = reverseQueryGenerator(filterquery, "cris-id");			
-		}else if(sourceType.contentEquals("Publications") && targetType.contentEquals("Awards")) { //TODO: delete entry later, when journals isn't used
+		}else if(sourceType.contentEquals("Publications") && targetType.contentEquals("Awards")) {
 			String filterquery = sourceEntity.getProperty("publ2award").getValue().toString();
 			navigationFilter = reverseQueryGenerator(filterquery, "cris-id");				
 		}else if(sourceType.contentEquals("Awards") && targetType.contentEquals("Projects")) {
@@ -147,6 +147,18 @@ public class Util {
 		}else if(sourceType.contentEquals("Awardseries") && targetType.contentEquals("Funders")) {
 			String filterquery = sourceEntity.getProperty("awardseries2funder").getValue().toString();
 			navigationFilter = reverseQueryGenerator(filterquery, "cris-id");		
+		}else if(sourceType.contentEquals("Products") && targetType.contentEquals("Researchers")) {
+			String filterquery = sourceEntity.getProperty("prod2rp").getValue().toString();
+			navigationFilter = reverseQueryGenerator(filterquery, "cris-id");			
+		}else if(sourceType.contentEquals("Products") && targetType.contentEquals("Projects")) {
+			String filterquery = sourceEntity.getProperty("prod2pj").getValue().toString();
+			navigationFilter = reverseQueryGenerator(filterquery, "cris-id");
+		}else if(sourceType.contentEquals("Products") && targetType.contentEquals("Orgunits")) {
+			String filterquery = sourceEntity.getProperty("prod2ou").getValue().toString();
+			navigationFilter = reverseQueryGenerator(filterquery, "cris-id");			
+		}else if(sourceType.contentEquals("Products") && targetType.contentEquals("Awards")) {
+			String filterquery = sourceEntity.getProperty("prod2award").getValue().toString();
+			navigationFilter = reverseQueryGenerator(filterquery, "cris-id");				
 		}
 		}catch(Exception e) {
 			e.printStackTrace();

@@ -39,6 +39,7 @@ import org.apache.solr.common.SolrDocumentList;
 import entitys.ComplexModel;
 import entitys.EntityModel;
 import entitys.EntityRegister;
+import entitys.Product;
 import entitys.Project;
 import entitys.Publication;
 import odata.EdmProviderDSpace;
@@ -226,6 +227,11 @@ public class DataHandler {
 					int convertedId = converter.convertHandleToId(currentId);
 					property = new Property(null, "id", ValueType.PRIMITIVE, convertedId);
 					propertyList.add(property);
+				}else if(entity.getEntityType().getName().toString().equals("Product")) {
+					String currentId = (String) solrDocument.getFieldValue("handle");
+					int convertedId = converter.convertHandleToId(currentId);
+					property = new Property(null, "id", ValueType.PRIMITIVE, convertedId);
+					propertyList.add(property);
 				} else {
 					String currentId = (String) solrDocument.getFieldValue("cris-id");
 					int convertedId = converter.convertCrisToId(currentId);
@@ -239,7 +245,7 @@ public class DataHandler {
 					if(itemType.equals("String")) {
 						for(Object value: solrDocument.getFieldValues(mapping.get(item.getName()))) {
 							if(builder.toString().length()!=0) {
-								if(item.getName().equals("author") || item.getName().equals("articlecollectionEditor") || item.getName().contentEquals("editor")) {
+								if(item.getName().equals("author") || item.getName().equals("articlecollectionEditor") || item.getName().contentEquals("editor")|| item.getName().contentEquals("creator") || item.getName().contentEquals("contributor")) {
 									builder.append("; ");
 								} else {
 									builder.append(", ");
@@ -538,6 +544,18 @@ public class DataHandler {
 			  return entitySet;
 		}else if(EdmProviderDSpace.FUNCTION_PJ_FOR_OU.equals(uriResourceFunction.getFunctionImport().getName())){
 			  EdmEntitySet entitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Project.ES_PROJECTS_NAME);
+			  return entitySet;
+		}else if(EdmProviderDSpace.FUNCTION_CSL_FOR_PRODUCT.equals(uriResourceFunction.getFunctionImport().getName())){
+			  EdmEntitySet entitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Product.ES_PRODUCTS_NAME);
+			  return entitySet;
+		}else if(EdmProviderDSpace.FUNCTION_CSL_FOR_PRODUCTPERSON.equals(uriResourceFunction.getFunctionImport().getName())){
+			  EdmEntitySet entitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Product.ES_PRODUCTS_NAME);
+			  return entitySet;
+		}else if(EdmProviderDSpace.FUNCTION_CSL_FOR_PRODUCTPROJECT.equals(uriResourceFunction.getFunctionImport().getName())){
+			  EdmEntitySet entitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Product.ES_PRODUCTS_NAME);
+			  return entitySet;
+		}else if(EdmProviderDSpace.FUNCTION_CSL_FOR_PRODUCTORGUNIT.equals(uriResourceFunction.getFunctionImport().getName())){
+			  EdmEntitySet entitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Product.ES_PRODUCTS_NAME);
 			  return entitySet;
 		}
 		return null;

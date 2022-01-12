@@ -21,6 +21,7 @@ import org.apache.olingo.commons.api.edm.provider.CsdlSchema;
 import org.apache.olingo.commons.api.ex.ODataException;
 
 import entitys.EntityRegister;
+import entitys.Product;
 import entitys.Project;
 import entitys.Publication;
 
@@ -48,7 +49,7 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 	
 	public static final String FUNCTION_CSL_FOR_PUBLICATION = "cslforitem";
 	public static final FullQualifiedName FUNCTION_CSL_FOR_PUBLICATION_FQN = new FullQualifiedName(NAMESPACE, FUNCTION_CSL_FOR_PUBLICATION);	
-	
+
 	public static final String FUNCTION_CSL_FOR_JOURNAL = "cslforjournal";
 	public static final FullQualifiedName FUNCTION_CSL_FOR_JOURNAL_FQN = new FullQualifiedName(NAMESPACE, FUNCTION_CSL_FOR_JOURNAL);
 	
@@ -63,6 +64,19 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 	
 	public static final String FUNCTION_PJ_FOR_OU = "pjforouchild";
 	public static final FullQualifiedName FUNCTION_PJ_FOR_OU_FQN = new FullQualifiedName(NAMESPACE, FUNCTION_PJ_FOR_OU);
+	
+	public static final String FUNCTION_CSL_FOR_PRODUCT = "cslforproduct";
+	public static final FullQualifiedName FUNCTION_CSL_FOR_PRODUCT_FQN = new FullQualifiedName(NAMESPACE, FUNCTION_CSL_FOR_PRODUCT);
+	
+	public static final String FUNCTION_CSL_FOR_PRODUCTPERSON = "cslforproductperson";
+	public static final FullQualifiedName FUNCTION_CSL_FOR_PRODUCTPERSON_FQN = new FullQualifiedName(NAMESPACE, FUNCTION_CSL_FOR_PRODUCTPERSON);	
+	
+	public static final String FUNCTION_CSL_FOR_PRODUCTPROJECT = "cslforproductproject";
+	public static final FullQualifiedName FUNCTION_CSL_FOR_PRODUCTPROJECT_FQN = new FullQualifiedName(NAMESPACE, FUNCTION_CSL_FOR_PRODUCTPROJECT);	
+	
+	public static final String FUNCTION_CSL_FOR_PRODUCTORGUNIT = "cslforproductorgunit";
+	public static final FullQualifiedName FUNCTION_CSL_FOR_PRODUCTORGUNIT_FQN = new FullQualifiedName(NAMESPACE, FUNCTION_CSL_FOR_PRODUCTORGUNIT);	
+	
 	
 	public EntityRegister entityRegister;
 	
@@ -96,6 +110,10 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 		functionImports.add(getFunctionImport(CONTAINER, FUNCTION_CSL_FOR_JOURNAL));
 		functionImports.add(getFunctionImport(CONTAINER, FUNCTION_CSL_FOR_SERIES));
 		functionImports.add(getFunctionImport(CONTAINER, FUNCTION_PJ_FOR_OU));
+		functionImports.add(getFunctionImport(CONTAINER, FUNCTION_CSL_FOR_PRODUCT));
+		functionImports.add(getFunctionImport(CONTAINER, FUNCTION_CSL_FOR_PRODUCTPERSON));
+		functionImports.add(getFunctionImport(CONTAINER, FUNCTION_CSL_FOR_PRODUCTPROJECT));
+		functionImports.add(getFunctionImport(CONTAINER, FUNCTION_CSL_FOR_PRODUCTORGUNIT));
 		
 		entityContainer.setFunctionImports(functionImports);
 		
@@ -171,7 +189,10 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 		functions.addAll(getFunctions(FUNCTION_CSL_FOR_PUBLICATION_FQN));
 		functions.addAll(getFunctions(FUNCTION_CSL_FOR_RESEARCHER_SELECTED_FQN));
 		functions.addAll(getFunctions(FUNCTION_PJ_FOR_OU_FQN));
-
+		functions.addAll(getFunctions(FUNCTION_CSL_FOR_PRODUCT_FQN));
+		functions.addAll(getFunctions(FUNCTION_CSL_FOR_PRODUCTPERSON_FQN));
+		functions.addAll(getFunctions(FUNCTION_CSL_FOR_PRODUCTPROJECT_FQN));
+		functions.addAll(getFunctions(FUNCTION_CSL_FOR_PRODUCTORGUNIT_FQN));
 
 		schema.setFunctions(functions);
 		
@@ -490,6 +511,102 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 			functions.add(function);
 			
 			return functions;
+		}else if(functionName.equals(FUNCTION_CSL_FOR_PRODUCT_FQN)){
+			
+			final List<CsdlFunction> functions = new LinkedList<CsdlFunction>();
+			final List<CsdlParameter> parameterList = new ArrayList<CsdlParameter>();
+			
+			final CsdlParameter parameterOuId = new CsdlParameter()
+							.setName("id")
+							.setNullable(false)
+							.setCollection(false)
+							.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
+			parameterList.add(parameterOuId);
+			
+			final CsdlReturnType returnType = new CsdlReturnType();
+			returnType.setCollection(true);
+			returnType.setType(Product.ET_PRODUCT_FQN);
+			
+			final CsdlFunction function = new CsdlFunction();
+			function.setName(FUNCTION_CSL_FOR_PRODUCT_FQN.getName())
+					.setParameters(parameterList)
+					.setReturnType(returnType)
+					.setComposable(true);
+			functions.add(function);
+			
+			return functions;
+		}else if(functionName.equals(FUNCTION_CSL_FOR_PRODUCTPERSON_FQN)){
+			
+			final List<CsdlFunction> functions = new LinkedList<CsdlFunction>();
+			final List<CsdlParameter> parameterList = new ArrayList<CsdlParameter>();
+			
+			final CsdlParameter parameterOuId = new CsdlParameter()
+							.setName("id")
+							.setNullable(false)
+							.setCollection(false)
+							.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
+			parameterList.add(parameterOuId);
+			
+			final CsdlReturnType returnType = new CsdlReturnType();
+			returnType.setCollection(true);
+			returnType.setType(Product.ET_PRODUCT_FQN);
+			
+			final CsdlFunction function = new CsdlFunction();
+			function.setName(FUNCTION_CSL_FOR_PRODUCTPERSON_FQN.getName())
+					.setParameters(parameterList)
+					.setReturnType(returnType)
+					.setComposable(true);
+			functions.add(function);
+			
+			return functions;
+		}else if(functionName.equals(FUNCTION_CSL_FOR_PRODUCTPROJECT_FQN)){
+			
+			final List<CsdlFunction> functions = new LinkedList<CsdlFunction>();
+			final List<CsdlParameter> parameterList = new ArrayList<CsdlParameter>();
+			
+			final CsdlParameter parameterOuId = new CsdlParameter()
+							.setName("id")
+							.setNullable(false)
+							.setCollection(false)
+							.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
+			parameterList.add(parameterOuId);
+			
+			final CsdlReturnType returnType = new CsdlReturnType();
+			returnType.setCollection(true);
+			returnType.setType(Product.ET_PRODUCT_FQN);
+			
+			final CsdlFunction function = new CsdlFunction();
+			function.setName(FUNCTION_CSL_FOR_PRODUCTPROJECT_FQN.getName())
+					.setParameters(parameterList)
+					.setReturnType(returnType)
+					.setComposable(true);
+			functions.add(function);
+			
+			return functions;
+		}else if(functionName.equals(FUNCTION_CSL_FOR_PRODUCTORGUNIT_FQN)){
+			
+			final List<CsdlFunction> functions = new LinkedList<CsdlFunction>();
+			final List<CsdlParameter> parameterList = new ArrayList<CsdlParameter>();
+			
+			final CsdlParameter parameterOuId = new CsdlParameter()
+							.setName("id")
+							.setNullable(false)
+							.setCollection(false)
+							.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
+			parameterList.add(parameterOuId);
+			
+			final CsdlReturnType returnType = new CsdlReturnType();
+			returnType.setCollection(true);
+			returnType.setType(Product.ET_PRODUCT_FQN);
+			
+			final CsdlFunction function = new CsdlFunction();
+			function.setName(FUNCTION_CSL_FOR_PRODUCTORGUNIT_FQN.getName())
+					.setParameters(parameterList)
+					.setReturnType(returnType)
+					.setComposable(true);
+			functions.add(function);
+			
+			return functions;
 		}
 		return null;
 	}
@@ -556,6 +673,30 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 						.setName(functionImportName)
 						.setFunction(FUNCTION_PJ_FOR_OU_FQN)
 						.setEntitySet(Project.ES_PROJECTS_NAME)
+						.setIncludeInServiceDocument(true);		
+			}else if(functionImportName.equals(FUNCTION_CSL_FOR_PRODUCT_FQN.getName())) {
+				return new CsdlFunctionImport()
+						.setName(functionImportName)
+						.setFunction(FUNCTION_CSL_FOR_PRODUCT_FQN)
+						.setEntitySet(Product.ES_PRODUCTS_NAME)
+						.setIncludeInServiceDocument(true);		
+			}else if(functionImportName.equals(FUNCTION_CSL_FOR_PRODUCTPERSON_FQN.getName())) {
+				return new CsdlFunctionImport()
+						.setName(functionImportName)
+						.setFunction(FUNCTION_CSL_FOR_PRODUCTPERSON_FQN)
+						.setEntitySet(Product.ES_PRODUCTS_NAME)
+						.setIncludeInServiceDocument(true);		
+			}else if(functionImportName.equals(FUNCTION_CSL_FOR_PRODUCTPROJECT_FQN.getName())) {
+				return new CsdlFunctionImport()
+						.setName(functionImportName)
+						.setFunction(FUNCTION_CSL_FOR_PRODUCTPROJECT_FQN)
+						.setEntitySet(Product.ES_PRODUCTS_NAME)
+						.setIncludeInServiceDocument(true);		
+			}else if(functionImportName.equals(FUNCTION_CSL_FOR_PRODUCTORGUNIT_FQN.getName())) {
+				return new CsdlFunctionImport()
+						.setName(functionImportName)
+						.setFunction(FUNCTION_CSL_FOR_PRODUCTORGUNIT_FQN)
+						.setEntitySet(Product.ES_PRODUCTS_NAME)
 						.setIncludeInServiceDocument(true);		
 			}
 		}

@@ -182,6 +182,7 @@ public class Publication implements EntityModel {
 
 		ENTITYFILTER = new ArrayList<String>();
 		ENTITYFILTER.add("-ubg.version.visibility:0");
+		ENTITYFILTER.add("-item.isResearchdata:true");
 		
 	}
 

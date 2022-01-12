@@ -43,6 +43,7 @@ import util.Util;
 import data.DataHandler;
 import entitys.Journal;
 import entitys.Orgunit;
+import entitys.Product;
 import entitys.Project;
 import entitys.Publication;
 import entitys.Researcher;
@@ -225,7 +226,21 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 				startEntitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Orgunit.ES_ORGUNITS_NAME);
 				relation = "_CHILD";
 				targetEntityType = serviceMetadata.getEdm().getEntityType(Project.ET_PROJECT_FQN);
-			}
+			}else if(EdmProviderDSpace.FUNCTION_CSL_FOR_PRODUCT.equals(uriResourceFunction.getFunctionImport().getName())) {
+				startEntitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Product.ES_PRODUCTS_NAME);
+				relation = "_SELF";
+				targetEntityType = serviceMetadata.getEdm().getEntityType(Product.ET_PRODUCT_FQN);
+			} else if(EdmProviderDSpace.FUNCTION_CSL_FOR_PRODUCTPERSON.equals(uriResourceFunction.getFunctionImport().getName())) {
+				startEntitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Researcher.ES_RESEARCHERS_NAME);
+				targetEntityType = serviceMetadata.getEdm().getEntityType(Project.ET_PROJECT_FQN);
+			} else if(EdmProviderDSpace.FUNCTION_CSL_FOR_PRODUCTPROJECT.equals(uriResourceFunction.getFunctionImport().getName())) {
+				startEntitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Project.ES_PROJECTS_NAME);
+				targetEntityType = serviceMetadata.getEdm().getEntityType(Product.ET_PRODUCT_FQN);
+			}else if(EdmProviderDSpace.FUNCTION_CSL_FOR_PRODUCTORGUNIT.equals(uriResourceFunction.getFunctionImport().getName())) {
+				startEntitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Orgunit.ES_ORGUNITS_NAME);
+				targetEntityType = serviceMetadata.getEdm().getEntityType(Product.ET_PRODUCT_FQN);
+			}	
+			
 			
 			Entity sourceEntity;
 			List<Entity> entityList = null;
@@ -275,7 +290,10 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 					try {
 						if(targetEntityType.getFullQualifiedName().equals(Publication.ET_PUBLICATION_FQN)) {
 						responseEntityCollection = cslService.enhanceCollection(responseEntityCollection, cslStyle);
-						}
+						}else if(targetEntityType.getFullQualifiedName().equals(Product.ET_PRODUCT_FQN)) {
+							responseEntityCollection = cslService.enhanceCollection(responseEntityCollection, cslStyle);
+							}
+						
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
