@@ -492,12 +492,12 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 			final List<CsdlFunction> functions = new LinkedList<CsdlFunction>();
 			final List<CsdlParameter> parameterList = new ArrayList<CsdlParameter>();
 			
-			final CsdlParameter parameterOuId = new CsdlParameter()
+			final CsdlParameter parameterSelectedId = new CsdlParameter()
 							.setName("id")
 							.setNullable(false)
 							.setCollection(false)
 							.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
-			parameterList.add(parameterOuId);
+			parameterList.add(parameterSelectedId);
 			
 			final CsdlReturnType returnType = new CsdlReturnType();
 			returnType.setCollection(true);
@@ -516,12 +516,19 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 			final List<CsdlFunction> functions = new LinkedList<CsdlFunction>();
 			final List<CsdlParameter> parameterList = new ArrayList<CsdlParameter>();
 			
-			final CsdlParameter parameterOuId = new CsdlParameter()
+			final CsdlParameter parameterStyle = new CsdlParameter();
+			parameterStyle.setName("style");
+			parameterStyle.setNullable(false);
+			parameterStyle.setCollection(false);
+			parameterStyle.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+			parameterList.add(parameterStyle);
+			
+			final CsdlParameter parameterProductId = new CsdlParameter()
 							.setName("id")
 							.setNullable(false)
 							.setCollection(false)
 							.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
-			parameterList.add(parameterOuId);
+			parameterList.add(parameterProductId);
 			
 			final CsdlReturnType returnType = new CsdlReturnType();
 			returnType.setCollection(true);
@@ -540,12 +547,19 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 			final List<CsdlFunction> functions = new LinkedList<CsdlFunction>();
 			final List<CsdlParameter> parameterList = new ArrayList<CsdlParameter>();
 			
-			final CsdlParameter parameterOuId = new CsdlParameter()
+			final CsdlParameter parameterStyle = new CsdlParameter();
+			parameterStyle.setName("style");
+			parameterStyle.setNullable(false);
+			parameterStyle.setCollection(false);
+			parameterStyle.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+			parameterList.add(parameterStyle);
+			
+			final CsdlParameter parameterProductPersonId = new CsdlParameter()
 							.setName("id")
 							.setNullable(false)
 							.setCollection(false)
 							.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
-			parameterList.add(parameterOuId);
+			parameterList.add(parameterProductPersonId);
 			
 			final CsdlReturnType returnType = new CsdlReturnType();
 			returnType.setCollection(true);
@@ -564,12 +578,19 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 			final List<CsdlFunction> functions = new LinkedList<CsdlFunction>();
 			final List<CsdlParameter> parameterList = new ArrayList<CsdlParameter>();
 			
-			final CsdlParameter parameterOuId = new CsdlParameter()
+			final CsdlParameter parameterStyle = new CsdlParameter();
+			parameterStyle.setName("style");
+			parameterStyle.setNullable(false);
+			parameterStyle.setCollection(false);
+			parameterStyle.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+			parameterList.add(parameterStyle);
+			
+			final CsdlParameter parameterProductPjId = new CsdlParameter()
 							.setName("id")
 							.setNullable(false)
 							.setCollection(false)
 							.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
-			parameterList.add(parameterOuId);
+			parameterList.add(parameterProductPjId);
 			
 			final CsdlReturnType returnType = new CsdlReturnType();
 			returnType.setCollection(true);
@@ -588,12 +609,19 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 			final List<CsdlFunction> functions = new LinkedList<CsdlFunction>();
 			final List<CsdlParameter> parameterList = new ArrayList<CsdlParameter>();
 			
-			final CsdlParameter parameterOuId = new CsdlParameter()
+			final CsdlParameter parameterStyle = new CsdlParameter();
+			parameterStyle.setName("style");
+			parameterStyle.setNullable(false);
+			parameterStyle.setCollection(false);
+			parameterStyle.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+			parameterList.add(parameterStyle);
+			
+			final CsdlParameter parameterProductOrgunitId = new CsdlParameter()
 							.setName("id")
 							.setNullable(false)
 							.setCollection(false)
 							.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
-			parameterList.add(parameterOuId);
+			parameterList.add(parameterProductOrgunitId);
 			
 			final CsdlReturnType returnType = new CsdlReturnType();
 			returnType.setCollection(true);
