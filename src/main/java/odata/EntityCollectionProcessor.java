@@ -291,7 +291,7 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 						if(targetEntityType.getFullQualifiedName().equals(Publication.ET_PUBLICATION_FQN)) {
 						responseEntityCollection = cslService.enhanceCollection(responseEntityCollection, cslStyle);
 						}else if(targetEntityType.getFullQualifiedName().equals(Product.ET_PRODUCT_FQN)) {
-							responseEntityCollection = cslService.enhanceCollection(responseEntityCollection, cslStyle);
+							responseEntityCollection = cslService.enhanceProductCollection(responseEntityCollection, cslStyle);
 							}
 						
 					} catch (IOException e) {

@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.lang3.RegExUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.olingo.commons.api.data.Entity;
 import org.apache.olingo.commons.api.data.EntityCollection;
 import org.apache.olingo.commons.api.data.Property;
@@ -47,11 +46,31 @@ public class CslService {
 		return collection;
 	}
 	
+	public EntityCollection enhanceProductCollection(EntityCollection collection, String style) throws IOException {
+		itemdatalist = new LinkedList<CSLItemData>();
+		ids = new LinkedList<String>();
+		for(Entity entity: collection.getEntities()) {
+			itemdatalist.add(buildProductCslItem(entity));
+			ids.add((String) entity.getProperty("id").getValue().toString());
+		}
+		provider = new CslProvider(itemdatalist);
+		createCiteproc(style);
+		String[] entries = citeproc.makeBibliography().getEntries();
+		String[] idscitation =citeproc.makeBibliography().getEntryIds();
+		int counter = 0;
+		for(Entity entity: collection.getEntities()) {
+		       	Property property = new Property(null, "csl", ValueType.PRIMITIVE, replaceEscapedHTML(entries[counter]));
+				entity.addProperty(property);
+		       	counter ++;
+		           }
+		return collection;
+	}
+	
 	private CSLItemData buildCslItem(Entity entity) {
 		CSLItemDataBuilder builder = new CSLItemDataBuilder()
 				.id((String) entity.getProperty("id").getValue().toString())
-				.type((getType((String)checkValueNull(entity.getProperty("type")))))
-				.title(enhanceTitleWithUrl(entity))
+				.type((getPublicationType((String)checkValueNull(entity.getProperty("type")))))
+				.title(enhanceTitleWithHandle(entity))
 				.author(authorNameSpliter((String) checkValueNull(entity.getProperty("author"))))		
 				.language((String) checkValueNull(entity.getProperty("language")))
 				.publisher((String)checkValueNull(entity.getProperty("publisher")))
@@ -117,8 +136,58 @@ public class CslService {
 		return builder.build();
 	}	
 	
+	private CSLItemData buildProductCslItem(Entity entity) {
+		CSLItemDataBuilder builder = new CSLItemDataBuilder()
+				.id((String) entity.getProperty("id").getValue().toString())
+				.type((getProductType((String)checkValueNull(entity.getProperty("type")))))
+				.title(enhanceTitleWithHandle(entity))
+				.language((String) checkValueNull(entity.getProperty("language")))
+				.publisher((String)checkValueNull(entity.getProperty("publisher")))
+				.numberOfPages((String) checkValueNull(entity.getProperty("extent")))
+				//.dimensions((String) checkValueNull(entity.getProperty("extent")))
+				//.scale((String) checkValueNull(entity.getProperty("extent")))
+				//.abstrct((String) checkValueNull(entity.getProperty("description")))
+				.medium((String) checkValueNull(entity.getProperty("format")))
+				.version((String) checkValueNull(entity.getProperty("version")));
+			
+			try {
+				//Not sure if we can expect integer value
+			if((String)checkValueNull(entity.getProperty("completedyear"))!=null) {
+				builder.issued((Integer.valueOf((String)entity.getProperty("completedyear").getValue())));
+			}
+			}catch(Exception e) {
+				
+			}
+			/*
+			try {
+				//Not sure if we can expect integer value
+			if((String)checkValueNull(entity.getProperty("issued"))!=null) {
+				//builder.submitted(Integer.valueOf((String)entity.getProperty("issued").getValue())))
+			}
+			}catch(Exception e) {
+				
+			}*/
+			//Map author and contributor rules
+			if(checkValueNull(entity.getProperty("author")) != null) {
+				builder.author(authorNameSpliter((String) checkValueNull(entity.getProperty("author"))));
+			}else if(checkValueNull(entity.getProperty("corporation")) != null) {
+				builder.author(authorNameSpliter((String) checkValueNull(entity.getProperty("corporation"))));
+			}else if(checkValueNull(entity.getProperty("contributor")) != null) {
+				builder.author(authorNameSpliter((String) checkValueNull(entity.getProperty("contributor"))));
+			}
+			
+			//Use doi (registered by us) preferred or external doi's
+			if(entity.getProperty("doiour")!=null) {
+				builder.DOI((String) checkValueNull(entity.getProperty("doiour")));
+			} else if(entity.getProperty("doi")!=null){
+				builder.DOI((String) checkValueNull(entity.getProperty("doi")));
+			}
+						
+		return builder.build();
+	}	
 	
-	private CSLType getType(String type) {
+	
+	private CSLType getPublicationType(String type) {
 		if(type==null) {
 			return null;
 		}	
@@ -134,8 +203,6 @@ public class CslService {
 		case "doctoralthesis":
 		case "habilitation":
 			return CSLType.THESIS;
-		case "movingimage":
-			return CSLType.MOTION_PICTURE;
 		case "book":
 		case "periodicalpart":
 			return CSLType.BOOK;
@@ -149,10 +216,27 @@ public class CslService {
 			return CSLType.ARTICLE;
 		case "bookpart":
 			return CSLType.CHAPTER;
-		case "sound":
-			return CSLType.SONG;
 		}
 		return null;
+	}
+	
+	private CSLType getProductType(String type) {
+		if(type==null) {
+			return null;
+		}	
+		switch(type) {	
+		case "image":
+			return CSLType.GRAPHIC;
+		/*case "sound":
+			return CSLType.SONG;*/
+		case "dataset":
+			return CSLType.DATASET;
+		case "video":
+		case "movingimage":
+			return CSLType.MOTION_PICTURE;
+		}
+		//return Dataset as default Type
+		return CSLType.DATASET;
 	}
 	
 	private void createCiteproc(String style) throws IOException {
@@ -217,6 +301,13 @@ public class CslService {
 	private String enhanceTitleWithUrl(Entity entity) {
 		String title = replaceWhitespaceColon((String) checkValueNull(entity.getProperty("title")))+ "</a>";
 		String url = "<a href="+(String) checkValueNull(entity.getProperty("uri"))+ ">";	
+		String result = url + title;
+		return result;
+	}
+	
+	private String enhanceTitleWithHandle(Entity entity) {
+		String title = replaceWhitespaceColon((String) checkValueNull(entity.getProperty("title")))+ "</a>";
+		String url = "<a href=\"https://fis.uni-bamberg.de/handle/"+(String) checkValueNull(entity.getProperty("handle"))+ "\">";	
 		String result = url + title;
 		return result;
 	}

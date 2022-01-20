@@ -43,6 +43,8 @@ public class Product implements EntityModel {
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty doi = new CsdlProperty().setName("doi")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty ourdoi = new CsdlProperty().setName("ourdoi")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty extent = new CsdlProperty().setName("extent")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty format = new CsdlProperty().setName("format")
@@ -85,7 +87,7 @@ public class Product implements EntityModel {
 
 		entityType = new CsdlEntityType();	
 		entityType.setName(ET_PRODUCT_NAME);
-		entityType.setProperties(Arrays.asList(id, handle, title, creator, contributor, description, doi, extent, format, type, language, publisher, issued,faculty,uriIdentifier, urlIdentifier, corporation, version, csl, prod2ou, prod2pj, prod2rp, prod2awards));
+		entityType.setProperties(Arrays.asList(id, handle, title, creator, contributor, description, doi, ourdoi, extent, format, type, language, publisher, issued,faculty,uriIdentifier, urlIdentifier, corporation, version, csl, prod2ou, prod2pj, prod2rp, prod2awards));
 		entityType.setKey(Collections.singletonList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
@@ -96,13 +98,15 @@ public class Product implements EntityModel {
 		
 		mapping.put("handle", "handle");
 		mapping.put("creator", "dc.creator");
-		//mapping.put("contributor", "ubg.contributor"); ubg.contributor.*
-		mapping.put("completedyear", "dateIssued.year_sort");
+		mapping.put("contributor", "contributors"); //ubg.contributor.*
+		mapping.put("completedyear", "dc.date.created");
+		mapping.put("issued", "dateIssued.year_sort");
 		mapping.put("corporation", "dc.creator.corporation");
 		mapping.put("description", "ubg.description.abstract");
 		mapping.put("extent", "dcterms.extent");
 		mapping.put("format", "dcterms.format");
 		mapping.put("doi", "dc.identifier.doi");
+		mapping.put("ourdoi", "ubg.identifier.doi");
 		mapping.put("faculty","ubg.researchdata.org");
 		mapping.put("language", "dc.language.iso");
 		mapping.put("publisher", "dc.publisher");
