@@ -232,7 +232,7 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 				targetEntityType = serviceMetadata.getEdm().getEntityType(Product.ET_PRODUCT_FQN);
 			} else if(EdmProviderDSpace.FUNCTION_CSL_FOR_PRODUCTPERSON.equals(uriResourceFunction.getFunctionImport().getName())) {
 				startEntitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Researcher.ES_RESEARCHERS_NAME);
-				targetEntityType = serviceMetadata.getEdm().getEntityType(Project.ET_PROJECT_FQN);
+				targetEntityType = serviceMetadata.getEdm().getEntityType(Product.ET_PRODUCT_FQN);
 			} else if(EdmProviderDSpace.FUNCTION_CSL_FOR_PRODUCTPROJECT.equals(uriResourceFunction.getFunctionImport().getName())) {
 				startEntitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Project.ES_PROJECTS_NAME);
 				targetEntityType = serviceMetadata.getEdm().getEntityType(Product.ET_PRODUCT_FQN);
