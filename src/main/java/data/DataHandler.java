@@ -245,7 +245,7 @@ public class DataHandler {
 					if(itemType.equals("String")) {
 						for(Object value: solrDocument.getFieldValues(mapping.get(item.getName()))) {
 							if(builder.toString().length()!=0) {
-								if(item.getName().equals("author") || item.getName().equals("articlecollectionEditor") || item.getName().contentEquals("editor")|| item.getName().contentEquals("creator") || item.getName().contentEquals("contributor")) {
+								if(item.getName().equals("author") || item.getName().equals("articlecollectionEditor") || item.getName().contentEquals("editor")|| item.getName().contentEquals("creator") || item.getName().contentEquals("contributor") || item.getName().contentEquals("creatorcontributor")) {
 									builder.append("; ");
 								} else {
 									builder.append(", ");
