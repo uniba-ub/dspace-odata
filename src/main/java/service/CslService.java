@@ -168,12 +168,15 @@ public class CslService {
 				
 			}*/
 			//Map author and contributor rules
-			if(checkValueNull(entity.getProperty("author")) != null) {
-				builder.author(authorNameSpliter((String) checkValueNull(entity.getProperty("author"))));
+			if(checkValueNull(entity.getProperty("creator")) != null) {
+				builder.author(authorNameSpliter((String) checkValueNull(entity.getProperty("creator"))));
 			}else if(checkValueNull(entity.getProperty("corporation")) != null) {
 				builder.author(authorNameSpliter((String) checkValueNull(entity.getProperty("corporation"))));
 			}else if(checkValueNull(entity.getProperty("contributor")) != null) {
 				builder.author(authorNameSpliter((String) checkValueNull(entity.getProperty("contributor"))));
+			}else if(checkValueNull(entity.getProperty("creatorcontributor")) != null) {
+				//Für Umstieg. enthält auch author und editor
+				builder.author(authorNameSpliter((String) checkValueNull(entity.getProperty("creatorcontributor"))));
 			}
 			
 			//Use doi (registered by us) preferred or external doi's

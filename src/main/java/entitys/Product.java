@@ -35,6 +35,8 @@ public class Product implements EntityModel {
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty contributor= new CsdlProperty().setName("contributor")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty contributorcreator = new CsdlProperty().setName("creatorcontributor")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty corporation= new CsdlProperty().setName("corporation")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty csl= new CsdlProperty().setName("csl")
@@ -87,7 +89,7 @@ public class Product implements EntityModel {
 
 		entityType = new CsdlEntityType();	
 		entityType.setName(ET_PRODUCT_NAME);
-		entityType.setProperties(Arrays.asList(id, handle, title, creator, contributor, description, doi, ourdoi, extent, format, type, language, publisher, issued,faculty,uriIdentifier, urlIdentifier, corporation, version, csl, prod2ou, prod2pj, prod2rp, prod2awards));
+		entityType.setProperties(Arrays.asList(id, handle, title, creator, contributor, contributorcreator, description, doi, ourdoi, extent, format, type, language, publisher, issued,faculty,uriIdentifier, urlIdentifier, corporation, version, csl, prod2ou, prod2pj, prod2rp, prod2awards));
 		entityType.setKey(Collections.singletonList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
@@ -99,6 +101,7 @@ public class Product implements EntityModel {
 		mapping.put("handle", "handle");
 		mapping.put("creator", "dc.creator");
 		mapping.put("contributor", "contributors"); //ubg.contributor.*
+		mapping.put("creatorcontributor", "creatororcontributor"); //für Umstieg: enthält auch alte Felder, dc.creator und dc.contributor.s
 		mapping.put("completedyear", "dc.date.created");
 		mapping.put("issued", "dateIssued.year_sort");
 		mapping.put("corporation", "dc.creator.corporation");
