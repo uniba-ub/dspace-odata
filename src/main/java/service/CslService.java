@@ -174,9 +174,6 @@ public class CslService {
 				builder.author(authorNameSpliter((String) checkValueNull(entity.getProperty("corporation"))));
 			}else if(checkValueNull(entity.getProperty("contributor")) != null) {
 				builder.author(authorNameSpliter((String) checkValueNull(entity.getProperty("contributor"))));
-			}else if(checkValueNull(entity.getProperty("creatorcontributor")) != null) {
-				//Für Umstieg. enthält auch author und editor
-				builder.author(authorNameSpliter((String) checkValueNull(entity.getProperty("creatorcontributor"))));
 			}
 			
 			//Use doi (registered by us) preferred or external doi's
