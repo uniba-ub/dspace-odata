@@ -102,7 +102,7 @@ public class Product implements EntityModel {
 		mapping.put("creator", "dc.creator");
 		mapping.put("author", "dc.creator");
 		mapping.put("contributor", "contributors"); //ubg.contributor.*
-		mapping.put("completedyear", "dc.date.created");
+		mapping.put("completedyear", "researchdatacompleted"); //using own indexer for this value. uses dc.date.created or dc.date.issued
 		mapping.put("issued", "dateIssued.year_sort");
 		mapping.put("corporation", "dc.creator.corporation");
 		mapping.put("description", "ubg.description.abstract");
