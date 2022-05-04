@@ -83,12 +83,4 @@ public class SolrQueryMaker {
 
 	}
 	
-	public void setSearchFilterForComplexProperty(int idOfSolrObject, int parentfk, String schema) {
-
-		setQuerySearchTerm("resourcetype_filter:\"nobjects\n" + "|||\n" + "N-Object###default\"");
-		String parentFKWithId = (parentfk+"-"+idOfSolrObject);
-		query.addFilterQuery("search.parentfk:"+parentFKWithId);
-		query.addFilterQuery("search.schema_s:"+schema);
-	}
-	
 }

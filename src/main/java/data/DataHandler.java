@@ -16,6 +16,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.apache.olingo.commons.api.data.ComplexValue;
 import org.apache.olingo.commons.api.data.Entity;
@@ -262,10 +264,9 @@ public class DataHandler {
 						}
 					}
 				} else if(entityRegister.getComplexTypeNameList().contains(itemType)){
-					int idOfSolrObject = (Integer) solrDocument.getFieldValue("search.resourceid");
 					for (ComplexModel complexProperty:entityRegister.getComplexProperties()) {
-						if(complexProperty.getName().equals(item.getName())) {
-							loadComplexPropertyFromSolr(complexProperty, idOfSolrObject, propertyList);
+						if(complexProperty.getName().contentEquals(item.getName())) {
+							loadComplexPropertyFromMetadata(complexProperty, solrDocument, propertyList);
 						}
 					}
 				}
@@ -274,25 +275,52 @@ public class DataHandler {
 
 		return propertyList;
 	}
-
-	private void loadComplexPropertyFromSolr(ComplexModel complexProperty, int idOfSolrObject, List<Property> propertyList) throws SolrServerException, IOException {
-		queryMaker.setSearchFilterForComplexProperty(idOfSolrObject, complexProperty.getParentFK(), complexProperty.getSchema());
-		queryMaker.setResponseLimitToMax();
-		SolrDocumentList responseDocumentsForComplexProperty = solr.getData(queryMaker);
+	
+	private void loadComplexPropertyFromMetadata(ComplexModel complexProperty, SolrDocument solrDocument, List<Property> propertyList) throws IOException {
+		
 		HashMap<String, String> mapping = complexProperty.getMapping();
 		List<ComplexValue> complexValueList = new LinkedList<ComplexValue>();
-		for(SolrDocument solrDocument: responseDocumentsForComplexProperty) {
-			ComplexValue complexvalue = new ComplexValue();
-			List <Property> complexSubProperties = complexvalue.getValue();
-			for(CsdlProperty item: complexProperty.getComplexType().getProperties()) {
-				Property complexSubProperty = new Property(null, item.getName(), ValueType.PRIMITIVE, solrDocument.getFirstValue(mapping.get(item.getName())));
+			
+			
+			// Loop through results in metadata fields list and ignore Placeholder Values
+			// Assume all lists have the same length. Otherwise the size of every property must be checked.
+			CsdlProperty item = complexProperty.getComplexType().getProperties().get(0);
+			if(item == null) return;
+			if(solrDocument.getFieldValues(mapping.get(item.getName())) == null) return;
+			//the "parent" field being iterated 
+			for(int i = 0; i < solrDocument.getFieldValues(mapping.get(item.getName())).size(); i++) {
+				ComplexValue complexvalue = new ComplexValue();
+				List <Property> complexSubProperties = complexvalue.getValue();	
+				List<String> vals = solrDocument.getFieldValues(mapping.get(item.getName())).stream()
+						   .map(object -> Objects.toString(object, null))
+						   .collect(Collectors.toList()); 
+				String val = vals.get(i);
+				if(val == null) continue;
+				if(val.equalsIgnoreCase("#PLACEHOLDER_PARENT_METADATA_VALUE#")) val = null;
+				Property complexSubProperty = new Property(null, item.getName(), ValueType.PRIMITIVE, val);
 				complexSubProperties.add(complexSubProperty);
+				
+				//loop through all other values on this position
+				for(CsdlProperty otheritem : complexProperty.getComplexType().getProperties().subList( 1, complexProperty.getComplexType().getProperties().size())) {
+					if(solrDocument.getFirstValue(mapping.get(otheritem.getName()))== null){
+					Property othercomplexSubProperty = new Property(null, otheritem.getName(), ValueType.PRIMITIVE, null);
+					complexSubProperties.add(othercomplexSubProperty);	
+					}else {
+					List<String> othervals = solrDocument.getFieldValues(mapping.get(otheritem.getName())).stream()
+							   .map(object -> Objects.toString(object, null))
+							   .collect(Collectors.toList()); 
+					String otherval = othervals.get(i);
+					if(otherval == null) continue;
+					if(otherval.equalsIgnoreCase("#PLACEHOLDER_PARENT_METADATA_VALUE#")) otherval = null;
+					Property othercomplexSubProperty = new Property(null, otheritem.getName(), ValueType.PRIMITIVE, otherval);
+					complexSubProperties.add(othercomplexSubProperty);
+					}
+					
+				}				
+				complexValueList.add(complexvalue);
 			}
-			complexValueList.add(complexvalue);
-		}
 		Property propertyComplex = new Property(null, complexProperty.getName(), ValueType.COLLECTION_COMPLEX, complexValueList);
 		propertyList.add(propertyComplex);
-		queryMaker.resetQuery();
 	}
 
 	private URI createId(Entity entity, String idPropertyName, String navigationName) {
