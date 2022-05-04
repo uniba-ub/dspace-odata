@@ -36,6 +36,10 @@ public class Researcher implements EntityModel {
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty uuid = new CsdlProperty().setName("uuid")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty entitytype = new CsdlProperty().setName("entitytype")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty handle = new CsdlProperty().setName("handle")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty biography = new CsdlProperty().setName("biography")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty contact = new CsdlProperty().setName("contact")
@@ -80,7 +84,7 @@ public class Researcher implements EntityModel {
 		// configuration of the Entity Type and adding of properties
 		entityType = new CsdlEntityType();
 		entityType.setName(ET_RESEARCHER_NAME);
-		entityType.setProperties(Arrays.asList(id, crisId, uuid, displayName, researchinterests, description, title, email, biography, researcharea, contacturl, contactemail, orcid, gnd, dept, contact, affiliation, career, education, achievement, rp2ou));
+		entityType.setProperties(Arrays.asList(id, crisId, uuid, entitytype, handle, displayName, researchinterests, description, title, email, biography, researcharea, contacturl, contactemail, orcid, gnd, dept, contact, affiliation, career, education, achievement, rp2ou));
 		entityType.setKey(Collections.singletonList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
@@ -88,8 +92,10 @@ public class Researcher implements EntityModel {
 		entitySet.setType(ET_RESEARCHER_FQN);
 			
 		mapping = new HashMap<String, String>();
-		mapping.put("cris-id", "cris-id");
-		mapping.put("uuid", "cris-uuid");
+		mapping.put("cris-id", "cris.legacyId");
+		mapping.put("uuid", "search.resourceid");
+		mapping.put("handle", "handle");
+		mapping.put("entitytype", "search.entitytype");
 		mapping.put("biography", "biography");
 		mapping.put("contact", "crisrp.contact");
 		mapping.put("contacturl", "crisrp.contacturl");

@@ -35,6 +35,10 @@ public class Project implements EntityModel{
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty uuid = new CsdlProperty().setName("uuid")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty entitytype = new CsdlProperty().setName("entitytype")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty handle = new CsdlProperty().setName("handle")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty abstracts = new CsdlProperty().setName("abstract")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty budget = new CsdlProperty().setName("budget")
@@ -82,7 +86,7 @@ public class Project implements EntityModel{
 
 		entityType = new CsdlEntityType();
 		entityType.setName(ET_PROJECT_NAME);
-		entityType.setProperties(Arrays.asList(id,crisId,uuid, title, abstracts, principalinvestigator, coinvestigators, budget, startDate, endDate, projectarea,acronym,keywords,status, url,funding, partnership, researchprofile, potentialfield, createdate, dept, pj2rp, pj2ou));
+		entityType.setProperties(Arrays.asList(id,crisId,uuid, entitytype, handle, title, abstracts, principalinvestigator, coinvestigators, budget, startDate, endDate, projectarea,acronym,keywords,status, url,funding, partnership, researchprofile, potentialfield, createdate, dept, pj2rp, pj2ou));
 		entityType.setKey(Arrays.asList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
@@ -90,8 +94,10 @@ public class Project implements EntityModel{
 		entitySet.setType(ET_PROJECT_FQN);
 		
 		mapping = new HashMap<String, String>();
-		mapping.put("cris-id", "cris-id");
-		mapping.put("uuid", "cris-uuid");
+		mapping.put("cris-id", "cris.legacyId");
+		mapping.put("uuid", "search.resourceid");
+		mapping.put("handle", "handle");
+		mapping.put("entitytype", "search.entitytype");
 		mapping.put("abstract", "crisproject.abstract");
 		mapping.put("budget", "crisproject.budget");
 		mapping.put("acronym", "crisproject.acronym");

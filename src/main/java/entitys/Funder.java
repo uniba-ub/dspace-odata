@@ -33,6 +33,10 @@ public class Funder implements EntityModel {
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty uuid = new CsdlProperty().setName("uuid")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty entitytype = new CsdlProperty().setName("entitytype")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty handle = new CsdlProperty().setName("handle")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty name = new CsdlProperty().setName("name")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty country = new CsdlProperty().setName("country")
@@ -69,7 +73,7 @@ public class Funder implements EntityModel {
 		// configuration of the Entity Type and adding of properties		
 		entityType = new CsdlEntityType();
 		entityType.setName(ET_FUNDER_NAME);
-		entityType.setProperties(Arrays.asList(id, crisId, uuid, name,  country, city, url, description, wikidata, isni, grid, ror, crossrefid, gnd, type, acronym, parentfunder));
+		entityType.setProperties(Arrays.asList(id, crisId, uuid, entitytype, handle, name,  country, city, url, description, wikidata, isni, grid, ror, crossrefid, gnd, type, acronym, parentfunder));
 		entityType.setKey(Collections.singletonList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
@@ -77,8 +81,10 @@ public class Funder implements EntityModel {
 		entitySet.setType(ET_FUNDER_FQN);
 			
 		mapping = new HashMap<String, String>();
-		mapping.put("cris-id", "cris-id");
-		mapping.put("uuid", "cris-uuid");
+		mapping.put("cris-id", "cris.legacyId");
+		mapping.put("uuid", "search.resourceid");
+		mapping.put("handle", "handle");
+		mapping.put("entitytype", "search.entitytype");
 		mapping.put("name", "crisfunder.fundername");
 		mapping.put("country", "crisfunder.funderiso-country");
 		mapping.put("city", "crisfunder.fundercity");

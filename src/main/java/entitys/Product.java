@@ -31,6 +31,10 @@ public class Product implements EntityModel {
 		
 		CsdlProperty id = new CsdlProperty().setName("id")
 				.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
+		CsdlProperty uuid = new CsdlProperty().setName("uuid")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty entitytype = new CsdlProperty().setName("entitytype")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty creator= new CsdlProperty().setName("creator")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty author= new CsdlProperty().setName("author")
@@ -89,7 +93,7 @@ public class Product implements EntityModel {
 
 		entityType = new CsdlEntityType();	
 		entityType.setName(ET_PRODUCT_NAME);
-		entityType.setProperties(Arrays.asList(id, handle, title, creator, contributor, author, description, doi, ourdoi, extent, format, type, language, publisher, issued,faculty,uriIdentifier, urlIdentifier, corporation, version, csl, prod2ou, prod2pj, prod2rp, prod2awards));
+		entityType.setProperties(Arrays.asList(id, uuid, entitytype, handle, title, creator, contributor, author, description, doi, ourdoi, extent, format, type, language, publisher, issued,faculty,uriIdentifier, urlIdentifier, corporation, version, csl, prod2ou, prod2pj, prod2rp, prod2awards));
 		entityType.setKey(Collections.singletonList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
@@ -99,6 +103,9 @@ public class Product implements EntityModel {
 		mapping = new HashMap<String, String>();
 		
 		mapping.put("handle", "handle");
+		mapping.put("uuid", "search.resourceid");
+		mapping.put("entitytype", "search.entitytype");
+		
 		mapping.put("creator", "dc.creator");
 		mapping.put("author", "dc.creator");
 		mapping.put("contributor", "contributors"); //ubg.contributor.*

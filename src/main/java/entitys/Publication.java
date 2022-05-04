@@ -31,6 +31,10 @@ public class Publication implements EntityModel {
 		
 		CsdlProperty id = new CsdlProperty().setName("id")
 				.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
+		CsdlProperty uuid = new CsdlProperty().setName("uuid")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty entitytype = new CsdlProperty().setName("entitytype")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty authors= new CsdlProperty().setName("author")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty articlecollectionEditor= new CsdlProperty().setName("articlecollectionEditor")
@@ -127,7 +131,7 @@ public class Publication implements EntityModel {
 
 		entityType = new CsdlEntityType();	
 		entityType.setName(ET_PUBLICATION_NAME);
-		entityType.setProperties(Arrays.asList(id, handle, title, description, doi, doiour, type, language, publisher, series, seriesnumber, volume, articlecollectionEditor, articlecollectionTitle, ispartofotherseries, fulltext,subject,publisherPlace,issued,faculty,uriIdentifier,authors,journal,issn,multipartTitel,issue, pages, numpages, medium, gndsw, corporation, edition, isbn, thesis, peerreview, csl, supervisorname, publ2journals, publ2ou, publ2pj, publ2rp, publ2series, publ2awards, editor));
+		entityType.setProperties(Arrays.asList(id, uuid, handle, entitytype, title, description, doi, doiour, type, language, publisher, series, seriesnumber, volume, articlecollectionEditor, articlecollectionTitle, ispartofotherseries, fulltext,subject,publisherPlace,issued,faculty,uriIdentifier,authors,journal,issn,multipartTitel,issue, pages, numpages, medium, gndsw, corporation, edition, isbn, thesis, peerreview, csl, supervisorname, publ2journals, publ2ou, publ2pj, publ2rp, publ2series, publ2awards, editor));
 		entityType.setKey(Collections.singletonList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
@@ -137,6 +141,9 @@ public class Publication implements EntityModel {
 		mapping = new HashMap<String, String>();
 		
 		mapping.put("handle", "handle");
+		mapping.put("uuid", "search.resourceid");
+		mapping.put("entitytype", "search.entitytype");
+
 		mapping.put("articlecollectionEditor", "ubg.editor.articlecollection");
 		mapping.put("articlecollectionTitle", "ubg.titleparent.articlecollection");
 		mapping.put("author", "dc.contributor.author");
@@ -182,7 +189,6 @@ public class Publication implements EntityModel {
 
 		ENTITYFILTER = new ArrayList<String>();
 		ENTITYFILTER.add("-ubg.version.visibility:0");
-		ENTITYFILTER.add("-item.isResearchdata:true");
 		
 	}
 

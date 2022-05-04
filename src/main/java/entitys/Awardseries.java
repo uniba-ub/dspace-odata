@@ -33,6 +33,10 @@ public class Awardseries implements EntityModel {
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty uuid = new CsdlProperty().setName("uuid")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty entitytype = new CsdlProperty().setName("entitytype")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty handle = new CsdlProperty().setName("handle")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty category = new CsdlProperty().setName("category")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty description = new CsdlProperty().setName("description")
@@ -53,7 +57,7 @@ public class Awardseries implements EntityModel {
 		// configuration of the Entity Type and adding of properties		
 		entityType = new CsdlEntityType();
 		entityType.setName(ET_AWARDSERIES_NAME);
-		entityType.setProperties(Arrays.asList(id, crisId, uuid, category, description, institution, name, url, awardseries2funder));
+		entityType.setProperties(Arrays.asList(id, crisId, uuid, entitytype, handle, category, description, institution, name, url, awardseries2funder));
 		entityType.setKey(Collections.singletonList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
@@ -61,8 +65,10 @@ public class Awardseries implements EntityModel {
 		entitySet.setType(ET_AWARDSERIES_FQN);
 			
 		mapping = new HashMap<String, String>();
-		mapping.put("cris-id", "cris-id");
-		mapping.put("uuid", "cris-uuid");
+		mapping.put("cris-id", "cris.legacyId");
+		mapping.put("uuid", "search.resourceid");
+		mapping.put("handle", "handle");
+		mapping.put("entitytype", "search.entitytype");
 		mapping.put("description", "crisawardseries.awardseriesdescription");
 		mapping.put("category", "crisawardseries.awardseriescategory");
 		mapping.put("institution", "crisawardseries.awardseriesinstitution");

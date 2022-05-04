@@ -35,6 +35,10 @@ public class Journal implements EntityModel {
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty uuid = new CsdlProperty().setName("uuid")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty entitytype = new CsdlProperty().setName("entitytype")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty handle = new CsdlProperty().setName("handle")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty name = new CsdlProperty().setName("name")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty issn = new CsdlProperty().setName("issn")
@@ -54,7 +58,7 @@ public class Journal implements EntityModel {
 		
 		entityType = new CsdlEntityType();
 		entityType.setName(ET_JOURNAL_NAME);
-		entityType.setProperties(Arrays.asList(id, crisId, uuid, name, issn, abbrevation, homepage, description));
+		entityType.setProperties(Arrays.asList(id, crisId, uuid, entitytype, handle, name, issn, abbrevation, homepage, description));
 		entityType.setKey(Collections.singletonList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
@@ -62,8 +66,10 @@ public class Journal implements EntityModel {
 		entitySet.setType(ET_JOURNAL_FQN);
 			
 		mapping = new HashMap<String, String>();
-		mapping.put("cris-id", "cris-id");
-		mapping.put("uuid", "cris-uuid");
+		mapping.put("cris-id", "cris.legacyId");
+		mapping.put("uuid", "search.resourceid");
+		mapping.put("handle", "handle");
+		mapping.put("entitytype", "search.entitytype");
 		mapping.put("abbreviation", "crisseries.journalsabbreviation");
 		mapping.put("description", "crisseries.journalsdescription");
 		mapping.put("homepage", "crisseries.journalshomepage");

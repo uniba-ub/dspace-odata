@@ -29,11 +29,15 @@ public class Orgunit implements EntityModel{
 		
 	CsdlProperty id = new CsdlProperty().setName("id")
 			.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
+	CsdlProperty crisid = new CsdlProperty().setName("cris-id")
+			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 	CsdlProperty uuid = new CsdlProperty().setName("uuid")
 			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-	CsdlProperty active = new CsdlProperty().setName("active")
+	CsdlProperty entitytype = new CsdlProperty().setName("entitytype")
 			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-	CsdlProperty idmKey = new CsdlProperty().setName("cris-id")
+	CsdlProperty handle = new CsdlProperty().setName("handle")
+			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+	CsdlProperty active = new CsdlProperty().setName("active")
 			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 	CsdlProperty crossrefid = new CsdlProperty().setName("crossrefid")
 			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
@@ -60,7 +64,7 @@ public class Orgunit implements EntityModel{
 
 	entityType = new CsdlEntityType();
 	entityType.setName(ET_ORGUNIT_NAME);
-	entityType.setProperties(Arrays.asList(id, uuid, idmKey, name, description, url, director, date, endDate,active,crossrefid, parentorgunit));
+	entityType.setProperties(Arrays.asList(id, crisid, uuid, handle, entitytype, name, description, url, director, date, endDate,active,crossrefid, parentorgunit));
 	entityType.setKey(Arrays.asList(propertyRef));
 	
 	entitySet = new CsdlEntitySet();
@@ -68,8 +72,10 @@ public class Orgunit implements EntityModel{
 	entitySet.setType(ET_ORGUNIT_FQN);
 	
 	mapping = new HashMap<String, String>();
-	mapping.put("cris-id", "cris-id");
-	mapping.put("uuid", "cris-uuid");
+	mapping.put("cris-id", "cris.legacyId");
+	mapping.put("uuid", "search.resourceid");
+	mapping.put("handle", "handle");
+	mapping.put("entitytype", "search.entitytype");
 	mapping.put("active", "crisou.active");
 	mapping.put("crossrefid", "crisou.crossrefid");
 	mapping.put("director","crisou.director");
