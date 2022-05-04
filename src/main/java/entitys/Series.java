@@ -69,11 +69,12 @@ public class Series implements EntityModel {
 		mapping.put("uuid", "search.resourceid");
 		mapping.put("handle", "handle");
 		mapping.put("entitytype", "search.entitytype");
-		mapping.put("name", "crisseries.journalsname");
-		mapping.put("issn", "crisseries.journalsissn");
-		mapping.put("abbreviation", "crisseries.journalsabbreviation");
-		mapping.put("homepage", "crisseries.journalshomepage");
-		mapping.put("description", "crisseries.journalsdescription");
+		mapping.put("name", "dc.title");
+		
+		mapping.put("issn", "crisseries.issn");
+		mapping.put("abbreviation", "crisseries.abbreviation");
+		mapping.put("homepage", "crisseries.homepage");
+		mapping.put("description", "crisseries.description");
 		
 		ENTITYFILTER = new ArrayList<String>();
 	}

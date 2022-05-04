@@ -68,13 +68,15 @@ public class Awardseries implements EntityModel {
 		mapping.put("cris-id", "cris.legacyId");
 		mapping.put("uuid", "search.resourceid");
 		mapping.put("handle", "handle");
+		
 		mapping.put("entitytype", "search.entitytype");
-		mapping.put("description", "crisawardseries.awardseriesdescription");
-		mapping.put("category", "crisawardseries.awardseriescategory");
-		mapping.put("institution", "crisawardseries.awardseriesinstitution");
-		mapping.put("name", "crisawardseries.awardseriesname");
-		mapping.put("url", "crisawardseries.awardseriesurl");
-		mapping.put("awardseries2funder", "crisawardseries.awardseriesinstitution_authority");
+		mapping.put("name", "dc.title");
+		
+		mapping.put("description", "crisawardseries.description");
+		mapping.put("category", "crisawardseries.category");
+		mapping.put("institution", "crisawardseries.institution");
+		mapping.put("url", "crisawardseries.url");
+		mapping.put("awardseries2funder", "crisawardseries.institution_authority");
 		
 		ENTITYFILTER = new ArrayList<String>();
 	}

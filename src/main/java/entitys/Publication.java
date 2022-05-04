@@ -35,6 +35,8 @@ public class Publication implements EntityModel {
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty entitytype = new CsdlProperty().setName("entitytype")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty name = new CsdlProperty().setName("name")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty authors= new CsdlProperty().setName("author")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty articlecollectionEditor= new CsdlProperty().setName("articlecollectionEditor")
@@ -131,7 +133,7 @@ public class Publication implements EntityModel {
 
 		entityType = new CsdlEntityType();	
 		entityType.setName(ET_PUBLICATION_NAME);
-		entityType.setProperties(Arrays.asList(id, uuid, handle, entitytype, title, description, doi, doiour, type, language, publisher, series, seriesnumber, volume, articlecollectionEditor, articlecollectionTitle, ispartofotherseries, fulltext,subject,publisherPlace,issued,faculty,uriIdentifier,authors,journal,issn,multipartTitel,issue, pages, numpages, medium, gndsw, corporation, edition, isbn, thesis, peerreview, csl, supervisorname, publ2journals, publ2ou, publ2pj, publ2rp, publ2series, publ2awards, editor));
+		entityType.setProperties(Arrays.asList(id, uuid, handle, name, entitytype, title, description, doi, doiour, type, language, publisher, series, seriesnumber, volume, articlecollectionEditor, articlecollectionTitle, ispartofotherseries, fulltext,subject,publisherPlace,issued,faculty,uriIdentifier,authors,journal,issn,multipartTitel,issue, pages, numpages, medium, gndsw, corporation, edition, isbn, thesis, peerreview, csl, supervisorname, publ2journals, publ2ou, publ2pj, publ2rp, publ2series, publ2awards, editor));
 		entityType.setKey(Collections.singletonList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
@@ -143,6 +145,7 @@ public class Publication implements EntityModel {
 		mapping.put("handle", "handle");
 		mapping.put("uuid", "search.resourceid");
 		mapping.put("entitytype", "search.entitytype");
+		mapping.put("name", "dc.title");
 
 		mapping.put("articlecollectionEditor", "ubg.editor.articlecollection");
 		mapping.put("articlecollectionTitle", "ubg.titleparent.articlecollection");
@@ -235,7 +238,7 @@ public class Publication implements EntityModel {
 			navigationFilter = (navigationFilter+id+"\"");
 		} else if(sourceType.equals("Researchers_SELECTED")) {
 			/*See DataHandler Function for selectedPublications where this Key is also defined for sorting*/
-			navigationFilter = ("relationpreferences.crisrp.publications.selected:\"");
+			navigationFilter = ("relation.isPublicationsSelectedFor:\"");
 			navigationFilter = (navigationFilter+id+"\"");
 		} else if(sourceType.equals("Orgunits")) {
 			navigationFilter = ("ubg.faculty.org_authority:\"");

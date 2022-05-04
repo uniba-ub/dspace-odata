@@ -83,20 +83,20 @@ public class Awards implements EntityModel {
 		mapping.put("uuid", "search.resourceid");
 		mapping.put("handle", "handle");
 		mapping.put("entitytype", "search.entitytype");
-		mapping.put("category", "crisawards.awardseries.category");
-		mapping.put("description", "crisawards.awardsdescription");
-		mapping.put("name", "crisawards.awardsname");
-		mapping.put("url", "crisawards.awardsurl");
-		mapping.put("year", "crisawards.awardsyear");
-		mapping.put("person", "crisawards.awardsperson");
-		mapping.put("persontitle", "crisawards.awardsperson.title");
-		mapping.put("publication", "crisawards.awardspublication");
-		mapping.put("awardseries", "crisawards.awardseries");
-		mapping.put("publication", "crisawards.awardspublication");
+		mapping.put("name", "dc.title");
 		
-		mapping.put("award2awardseries", "crisawards.awardseries_authority");
-		mapping.put("award2rp", "crisawards.awardsperson_authority");
-		mapping.put("award2pj", "crisawards.awardsproject_authority");
+		mapping.put("category", "cris.virtual.awardseriescategory");
+		mapping.put("description", "crisaward.description");
+		mapping.put("url", "crisaward.url");
+		mapping.put("year", "crisaward.date");
+		mapping.put("person", "crisaward.person");
+		mapping.put("persontitle", "cris.virtual.awardpersontitle");
+		mapping.put("publication", "crisaward.publication");
+		mapping.put("awardseries", "crisaward.awardseries");
+		
+		mapping.put("award2awardseries", "crisaward.awardseries_authority");
+		mapping.put("award2rp", "crisaward.person_authority");
+		mapping.put("award2pj", "crisaward.project_authority");
 
 		ENTITYFILTER = new ArrayList<String>();
 
@@ -137,12 +137,12 @@ public class Awards implements EntityModel {
 		// TODO Auto-generated method stub
 		String navigationFilter = "";
 		if(sourceType.equals("Awardseries")) {
-			navigationFilter = ("crisawards.awardseries_authority:\""+id+"\"");
+			navigationFilter = ("crisaward.awardseries_authority:\""+id+"\"");
 		} else if(sourceType.equals("Projects")) {
-			navigationFilter = ("crisawards.awardsproject_authority:\""+ id+"\"");
+			navigationFilter = ("crisaward.awardsproject_authority:\""+ id+"\"");
 		} else
 		if(sourceType.equals("Researchers")) {
-			navigationFilter = ("crisawards.awardsperson_authority:\""+id+"\"");
+			navigationFilter = ("crisaward.awardsperson_authority:\""+id+"\"");
 		}	
 		return navigationFilter;
 	}
@@ -154,7 +154,8 @@ public class Awards implements EntityModel {
 
 	@Override
 	public ArrayList<String> getEntityFilter() {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub0,
+
 		return ENTITYFILTER;
 	}
 

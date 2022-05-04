@@ -48,6 +48,8 @@ public class Researcher implements EntityModel {
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty contactemail = new CsdlProperty().setName("contactemail")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty name = new CsdlProperty().setName("name")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty displayName = new CsdlProperty().setName("displayname")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty dept = new CsdlProperty().setName("dept")
@@ -84,7 +86,7 @@ public class Researcher implements EntityModel {
 		// configuration of the Entity Type and adding of properties
 		entityType = new CsdlEntityType();
 		entityType.setName(ET_RESEARCHER_NAME);
-		entityType.setProperties(Arrays.asList(id, crisId, uuid, entitytype, handle, displayName, researchinterests, description, title, email, biography, researcharea, contacturl, contactemail, orcid, gnd, dept, contact, affiliation, career, education, achievement, rp2ou));
+		entityType.setProperties(Arrays.asList(id, crisId, uuid, entitytype, handle, name, displayName, researchinterests, description, title, email, biography, researcharea, contacturl, contactemail, orcid, gnd, dept, contact, affiliation, career, education, achievement, rp2ou));
 		entityType.setKey(Collections.singletonList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
@@ -96,15 +98,17 @@ public class Researcher implements EntityModel {
 		mapping.put("uuid", "search.resourceid");
 		mapping.put("handle", "handle");
 		mapping.put("entitytype", "search.entitytype");
-		mapping.put("biography", "biography");
+		mapping.put("name", "dc.title");
+		
+		mapping.put("biography", "crisrp.biography");
 		mapping.put("contact", "crisrp.contact");
 		mapping.put("contacturl", "crisrp.contacturl");
 		mapping.put("contactemail", "crisrp.contactemail");
-		mapping.put("displayname", "crisrp.this");
+		mapping.put("displayname", "dc.title");
 		mapping.put("description", "crisrp.description");
 		mapping.put("dept", "crisrp.dept");
 		mapping.put("email", "crisrp.email");
-		mapping.put("orcid", "crisrp.orcid");
+		mapping.put("orcid", "person.identifier.orcid");
 		mapping.put("gnd", "crisrp.gndId");
 		mapping.put("researcharea", "crisrp.researcharea");
 		mapping.put("researchinterests", "crisrp.researchinterests");

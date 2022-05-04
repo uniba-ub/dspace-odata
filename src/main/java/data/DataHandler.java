@@ -427,7 +427,7 @@ public class DataHandler {
 			String selectedfield = "";
 			//This Relation is also configured in Publication. It's used here for sorting
 			if((sourceModel.getEntitySetName()+relation).contentEquals("Researchers_SELECTED")) {
-				selectedfield = "relationpreferences.crisrp.publications.selected";
+				selectedfield = "relation.isPublicationsSelectedFor";
 			}
 			Map<String, Integer> priority = new HashMap<String, Integer>(); // Map holding primary key of entity and Priority Value
 

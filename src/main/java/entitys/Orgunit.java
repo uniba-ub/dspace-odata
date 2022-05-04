@@ -37,10 +37,6 @@ public class Orgunit implements EntityModel{
 			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 	CsdlProperty handle = new CsdlProperty().setName("handle")
 			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-	CsdlProperty active = new CsdlProperty().setName("active")
-			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-	CsdlProperty crossrefid = new CsdlProperty().setName("crossrefid")
-			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 	CsdlProperty date = new CsdlProperty().setName("date")
 			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 	CsdlProperty description = new CsdlProperty().setName("description")
@@ -64,7 +60,7 @@ public class Orgunit implements EntityModel{
 
 	entityType = new CsdlEntityType();
 	entityType.setName(ET_ORGUNIT_NAME);
-	entityType.setProperties(Arrays.asList(id, crisid, uuid, handle, entitytype, name, description, url, director, date, endDate,active,crossrefid, parentorgunit));
+	entityType.setProperties(Arrays.asList(id, crisid, uuid, handle, entitytype, name, description, url, director, date, endDate, parentorgunit));
 	entityType.setKey(Arrays.asList(propertyRef));
 	
 	entitySet = new CsdlEntitySet();
@@ -76,13 +72,12 @@ public class Orgunit implements EntityModel{
 	mapping.put("uuid", "search.resourceid");
 	mapping.put("handle", "handle");
 	mapping.put("entitytype", "search.entitytype");
-	mapping.put("active", "crisou.active");
-	mapping.put("crossrefid", "crisou.crossrefid");
+	mapping.put("name", "dc.title");
+	
 	mapping.put("director","crisou.director");
-	mapping.put("date", "crisou.date");
+	mapping.put("date", "crisou.startdate");
 	mapping.put("description", "crisou.description");
 	mapping.put("endDate", "crisou.enddate");
-	mapping.put("name", "crisou.name");
 	mapping.put("parentorgunit", "crisou.parentorgunit_authority");
 	mapping.put("url", "crisou.url");
 	

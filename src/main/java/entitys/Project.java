@@ -18,9 +18,7 @@ public class Project implements EntityModel{
 	public static final String ET_PROJECT_NAME = "Project";
 	public static final FullQualifiedName ET_PROJECT_FQN = new FullQualifiedName(NAMESPACE, ET_PROJECT_NAME);
 	public static final String ES_PROJECTS_NAME = "Projects";
-	public final static String RECOURCE_TYPE_FILTER= "search.resourcetype:\"Item\" and search.entitytype:\"Project\"" +
-			"|||\n" + 
-			"Fundings###fundings\"";
+	public final static String RECOURCE_TYPE_FILTER= "search.resourcetype:\"Item\" and search.entitytype:\"Project\"";
 	public final static String ID_CONVERTER_TYP= "pj";
 	private CsdlEntityType entityType;
 	private CsdlEntitySet entitySet;
@@ -98,25 +96,27 @@ public class Project implements EntityModel{
 		mapping.put("uuid", "search.resourceid");
 		mapping.put("handle", "handle");
 		mapping.put("entitytype", "search.entitytype");
-		mapping.put("abstract", "crisproject.abstract");
-		mapping.put("budget", "crisproject.budget");
-		mapping.put("acronym", "crisproject.acronym");
-		mapping.put("coinvestigators", "crisproject.coinvestigators");
-		mapping.put("expdate", "crisproject.expdate");
-		mapping.put("keywords", "crisproject.keywords");
-		mapping.put("principalinvestigator", "crisproject.principalinvestigator");
-		mapping.put("projectarea", "crisproject.projectArea");
-		mapping.put("researchprofile", "crisproject.researchProfileUniBa");
-		mapping.put("potentialfield", "crisproject.potentialfield");
-		mapping.put("startdate", "crisproject.startdate");
-		mapping.put("status", "crisproject.status");
-		mapping.put("title", "crisproject.title");
-		mapping.put("url", "crisproject.projectURL");
-		mapping.put("dept", "crisproject.deptproject");
-		mapping.put("createdate", "crisproject.time_creation_dt"); //Creation-Time of Entity
+		mapping.put("name", "dc.title");
+
+		mapping.put("abstract", "crispj.abstract");
+		mapping.put("budget", "crispj.budget");
+		mapping.put("acronym", "crispj.acronym");
+		mapping.put("coinvestigators", "crispj.coinvestigators");
+		mapping.put("expdate", "crispj.expdate");
+		mapping.put("keywords", "crispj.keywords");
+		mapping.put("principalinvestigator", "crispj.principalinvestigator");
+		mapping.put("projectarea", "crispj.projectArea");
+		mapping.put("researchprofile", "crispj.researchprofileuniba");
+		mapping.put("potentialfield", "crispj.potentialfield");
+		mapping.put("startdate", "crispj.startdate");
+		mapping.put("status", "crispj.status");
+		mapping.put("title", "crispj.title");
+		mapping.put("url", "crispj.projectURL");
+		mapping.put("dept", "crispj.deptproject");
+		mapping.put("createdate", "dc.date.accessioned_dt"); //Creation-Time of Entity
 		
 		mapping.put("pj2rp", "projectinvestigators_authority");
-		mapping.put("pj2ou", "crisproject.deptproject_authority");
+		mapping.put("pj2ou", "crispj.deptproject_authority");
 
 		ENTITYFILTER = new ArrayList<String>();
 	}
@@ -152,17 +152,17 @@ public class Project implements EntityModel{
 	public String getNavigationFilter(String sourceType, String id) {
 		String navigationFilter = "";
 		if(sourceType.equals("Researchers")) {
-			navigationFilter = ("crisproject.principalinvestigator_authority:\""+ id+"\"");
+			navigationFilter = ("crispj.principalinvestigator_authority:\""+ id+"\"");
 			navigationFilter = (navigationFilter+ "OR ");
-			navigationFilter = (navigationFilter+ "crisproject.coinvestigators_authority:\""+ id+"\"");
+			navigationFilter = (navigationFilter+ "crispj.coinvestigators_authority:\""+ id+"\"");
 			
 		} else if(sourceType.equals("Orgunits")) {
-			navigationFilter = ("crisproject.deptproject_authority:\""+ id+"\"");
+			navigationFilter = ("crispj.deptproject_authority:\""+ id+"\"");
 		} else if(sourceType.equals("Projects")) {
-			navigationFilter = ("crisproject.parentproject_authority:\""+ id+"\"");
+			navigationFilter = ("crispj.parentproject_authority:\""+ id+"\"");
 		} else if(sourceType.equals("Orgunits_CHILD")) {
 			/* special function: returns all projects which belong to the specified ou and all children ou's and their projects. Use some special field being indexed in Dspace.*/
-			navigationFilter = ("projectchildoforgunits:\""+ id+"\"");
+			navigationFilter = ("pjsubsuccorgunit_authority:\""+ id+"\"");
 		}
 			return navigationFilter;
 	}
