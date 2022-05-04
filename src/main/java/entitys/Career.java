@@ -14,16 +14,11 @@ public class Career implements ComplexModel {
 
 	public static final String CT_CAREER_NAME = "Career";
 	public static final FullQualifiedName CT_CAREER_FQN = new FullQualifiedName(NAMESPACE, CT_CAREER_NAME);
-	// nested objects need a parent key and a search schema
-	public static final int PARENT_FK = 9;
-	public static final String SCHEMA = "ncrisrpcareer";
 	private CsdlComplexType complexType;
 	private HashMap<String, String> mapping;
 	
 	public Career() {
 
-		CsdlProperty uuid = new CsdlProperty().setName("uuid")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty startdate = new CsdlProperty().setName("startdate")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
 		CsdlProperty enddate = new CsdlProperty().setName("enddate")
@@ -34,15 +29,14 @@ public class Career implements ComplexModel {
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
 		complexType = new CsdlComplexType();
 		complexType.setName(CT_CAREER_NAME);
-		complexType.setProperties(Arrays.asList(uuid, startdate, enddate, desc, place));
+		complexType.setProperties(Arrays.asList(startdate, enddate, desc, place));
 		
 		mapping = new HashMap<String, String>();
 		
-		mapping.put("uuid", "cris-uuid");
-		mapping.put("startdate", "ncrisrpcareer.careerstartdate");
-		mapping.put("enddate", "ncrisrpcareer.careerenddate");
-		mapping.put("desc","ncrisrpcareer.careerdescription");
-		mapping.put("place", "ncrisrpcareer.careerplace");
+		mapping.put("startdate", "crisrp.career.startdate");
+		mapping.put("enddate", "crisrp.career.enddate");
+		mapping.put("desc","crisrp.career.description");
+		mapping.put("place", "crisrp.career.startdate.place");
 	}
 
 	public CsdlComplexType getComplexType() {
@@ -54,14 +48,6 @@ public class Career implements ComplexModel {
 	}
 	public String getName() {
 		return CT_CAREER_NAME;
-	}
-
-	public int getParentFK() {
-		return PARENT_FK;
-	}
-
-	public String getSchema() {
-		return SCHEMA;
 	}
 
 	public String getNavigationFilter(String sourceType, String id) {

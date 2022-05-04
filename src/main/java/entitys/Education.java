@@ -14,16 +14,11 @@ public class Education implements ComplexModel {
 
 	public static final String CT_EDUCATION_NAME = "Education";
 	public static final FullQualifiedName CT_EDUCATION_FQN = new FullQualifiedName(NAMESPACE, CT_EDUCATION_NAME);
-	// nested objects need a parent key and a search schema
-	public static final int PARENT_FK = 9;
-	public static final String SCHEMA = "ncrisrpeducation";
 	private CsdlComplexType complexType;
 	private HashMap<String, String> mapping;
 	
 	public Education() {
 
-		CsdlProperty uuid = new CsdlProperty().setName("uuid")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty startdate = new CsdlProperty().setName("startdate")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
 		CsdlProperty enddate = new CsdlProperty().setName("enddate")
@@ -34,15 +29,14 @@ public class Education implements ComplexModel {
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
 		complexType = new CsdlComplexType();
 		complexType.setName(CT_EDUCATION_NAME);
-		complexType.setProperties(Arrays.asList(uuid, startdate, enddate, desc, place));
+		complexType.setProperties(Arrays.asList(startdate, enddate, desc, place));
 		
 		mapping = new HashMap<String, String>();
 		
-		mapping.put("uuid", "cris-uuid");
-		mapping.put("startdate", "ncrisrpeducation.educationstartdate");
-		mapping.put("enddate", "ncrisrpeducation.educationenddate");
-		mapping.put("desc","ncrisrpeducation.educationdescription");
-		mapping.put("place", "ncrisrpeducation.educationplace");
+		mapping.put("startdate", "crisrp.education.startdate");
+		mapping.put("enddate", "crisrp.education.enddate");
+		mapping.put("desc","crisrp.education.description");
+		mapping.put("place", "crisrp.education.place");
 	}
 
 	public CsdlComplexType getComplexType() {
@@ -54,14 +48,6 @@ public class Education implements ComplexModel {
 	}
 	public String getName() {
 		return CT_EDUCATION_NAME;
-	}
-
-	public int getParentFK() {
-		return PARENT_FK;
-	}
-
-	public String getSchema() {
-		return SCHEMA;
 	}
 
 	public String getNavigationFilter(String sourceType, String id) {

@@ -14,16 +14,10 @@ public class Achievement implements ComplexModel {
 
 	public static final String CT_ACHIEVEMENT_NAME = "Achievement";
 	public static final FullQualifiedName CT_ACHIEVEMENT_FQN = new FullQualifiedName(NAMESPACE, CT_ACHIEVEMENT_NAME);
-	// nested objects need a parent key and a search schema
-	public static final int PARENT_FK = 9;
-	public static final String SCHEMA = "ncrisrpachievement";
 	private CsdlComplexType complexType;
 	private HashMap<String, String> mapping;
 	
 	public Achievement() {
-
-		CsdlProperty uuid = new CsdlProperty().setName("uuid")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty startdate = new CsdlProperty().setName("start")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
 		CsdlProperty enddate = new CsdlProperty().setName("end")
@@ -31,19 +25,21 @@ public class Achievement implements ComplexModel {
 		CsdlProperty desc = new CsdlProperty().setName("desc")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty event = new CsdlProperty().setName("event")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty type = new CsdlProperty().setName("type")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());	
 
 		complexType = new CsdlComplexType();
 		complexType.setName(CT_ACHIEVEMENT_NAME);
-		complexType.setProperties(Arrays.asList(uuid, startdate, enddate, desc, event));
+		complexType.setProperties(Arrays.asList(startdate, enddate, desc, event, type));
 		
 		mapping = new HashMap<String, String>();
 		
-		mapping.put("uuid", "cris-uuid");
-		mapping.put("start", "ncrisrpachievement.achievementstart");
-		mapping.put("end", "ncrisrpachievement.achievementend");
-		mapping.put("desc","ncrisrpachievement.achievementdescription");
-		mapping.put("event", "ncrisrpachievement.achievementtype");
+		mapping.put("start", "crisrp.achievement.start");
+		mapping.put("end", "crisrp.achievement.end");
+		mapping.put("desc","crisrp.achievement.description");
+		mapping.put("event", "crisrp.achievement.event");
+		mapping.put("type", "crisrp.achievement.type");
 
 	}
 
@@ -56,14 +52,6 @@ public class Achievement implements ComplexModel {
 	}
 	public String getName() {
 		return CT_ACHIEVEMENT_NAME;
-	}
-
-	public int getParentFK() {
-		return PARENT_FK;
-	}
-
-	public String getSchema() {
-		return SCHEMA;
 	}
 
 	public String getNavigationFilter(String sourceType, String id) {
