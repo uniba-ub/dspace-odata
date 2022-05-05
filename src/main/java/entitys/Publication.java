@@ -21,13 +21,19 @@ public class Publication implements EntityModel {
 	public static final FullQualifiedName ET_PUBLICATION_FQN = new FullQualifiedName(NAMESPACE, ET_PUBLICATION_NAME);
 	public static final String ES_PUBLICATIONS_NAME = "Publications";
 	public final static String RECOURCE_TYPE_FILTER= "search.resourcetype:\"Item\" and search.entitytype:\"Publication\"";
-	public final static String ID_CONVERTER_TYP= "uniba/";
+	
+	private HashMap<String, String> idconverter;
+	
 	private CsdlEntityType entityType;
 	private CsdlEntitySet entitySet;
 	private HashMap<String, String> mapping;
 	private ArrayList<String> ENTITYFILTER;
 	
 	public Publication(){
+		idconverter = new HashMap<String, String>();
+		idconverter.put("([a-z0-9\\-]{36})", "search.resourceid");
+		idconverter.put("([0-9]{1,6})", "handle");
+		idconverter.put("(uniba/[0-9]{1,6})", "handle");
 		
 		CsdlProperty id = new CsdlProperty().setName("id")
 				.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
@@ -215,12 +221,17 @@ public class Publication implements EntityModel {
 		return RECOURCE_TYPE_FILTER;
 	}
 
-	public String getIDConverterTyp() {
-		return ID_CONVERTER_TYP;
+	public HashMap<String, String> getIdConverter() {
+		return idconverter;
 	}
 	
 	public ArrayList<String> getEntityFilter() {
 		return ENTITYFILTER;
+	}
+
+	@Override
+	public String getLegacyPrefix() {
+		return null;
 	}
 
 	public String getNavigationFilter(String sourceType, String id) {

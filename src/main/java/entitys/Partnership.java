@@ -58,7 +58,6 @@ public class Partnership implements ComplexModel {
 	}
 
 	public String getNavigationFilter(String sourceType, String id) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

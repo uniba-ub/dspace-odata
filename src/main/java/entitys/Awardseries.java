@@ -20,13 +20,20 @@ public class Awardseries implements EntityModel {
 	public static final FullQualifiedName ET_AWARDSERIES_FQN = new FullQualifiedName(NAMESPACE, ET_AWARDSERIES_NAME);
 	public static final String ES_AWARDSERIES_NAME = "Awardseries";
 	public final static String RECOURCE_TYPE_FILTER= "search.resourcetype:\"Item\" and search.entitytype:\"Awardseries\"";
-	public final static String ID_CONVERTER_TYP= "awardseries";
+	private HashMap<String, String> idconverter;
 	private CsdlEntityType entityType;
 	private CsdlEntitySet entitySet;
 	private HashMap<String, String> mapping;
 	private ArrayList<String> ENTITYFILTER;
 	
 	public Awardseries() {
+		idconverter = new HashMap<String, String>();
+		idconverter.put("([a-z0-9\\-]{36})", "search.resourceid");
+		idconverter.put("(awardseries[0-9]{1,6})", "cris.legacyId");
+		idconverter.put("([1-9][0-9]{1,5})", "handle");
+		idconverter.put("([0][0-9]{1,4})", "cris.legacyId"); //until awardseries09999 are considered as legcayvalues
+		idconverter.put("(uniba/[0-9]{1,6})", "handle");
+		
 		CsdlProperty id = new CsdlProperty().setName("id")
 				.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
 		CsdlProperty crisId = new CsdlProperty().setName("cris-id")
@@ -107,8 +114,8 @@ public class Awardseries implements EntityModel {
 	}
 
 	@Override
-	public String getIDConverterTyp() {
-		return ID_CONVERTER_TYP;
+	public HashMap<String, String> getIdConverter() {
+		return idconverter;
 	}
 	
 	public ArrayList<String> getEntityFilter() {
@@ -116,8 +123,12 @@ public class Awardseries implements EntityModel {
 	}
 
 	@Override
+	public String getLegacyPrefix() {
+		return "awardseries";
+	}
+
+	@Override
 	public String getNavigationFilter(String sourceType, String id) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

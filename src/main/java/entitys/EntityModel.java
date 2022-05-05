@@ -15,10 +15,11 @@ public interface EntityModel {
 	public String getEntitySetName();
 	public CsdlEntitySet getEntitySet();
 	public String getRecourceTypeFilter();
-	public String getIDConverterTyp();
+	public HashMap<String, String> getIdConverter();
 	public String getNavigationFilter(String sourceType, String id);
 	public HashMap<String, String> getMapping();
 	public ArrayList<String> getEntityFilter();
+	public String getLegacyPrefix();
 
 
 }

@@ -1,45 +1,69 @@
 package service;
 
+import java.util.HashMap;
+import java.util.Map.Entry;
+import java.util.regex.Pattern;
 
 public class IdConverter {
-
 	
-	public String getIDSolrFilter (String converterTyp) {
-		if(converterTyp.equals("uniba/")) {
-			return "handle";
-		}else {
-			return "cris-id";		}	
+	private String handleprefix = "uniba";
+	
+	
+	public String convertODataIDToDSpaceID(String id) {
+		//because we've got some string parameter, replace all single quotes
+		id = id.replaceAll("'", "");	
+		return id;
 	}
-	
-	
-	public int convertCrisToId(String crisId) {
-		String convertedId = crisId.replaceAll("[^\\d.]", "");
-		convertedId = convertedId.replaceFirst("^0+(?!$)", "");
-		int resultId = Integer.valueOf(convertedId);
 
-		return resultId;
-	}	
-	
+
 	public int convertHandleToId(String handle) {
 		String convertedId = handle.replaceAll(".*/", "");
 		int resultId = Integer.valueOf(convertedId);
 		return resultId;
+
+	}
+
+
+	public String getIdField(String id, HashMap<String, String> idConverter) {
+		if(idConverter == null || idConverter.isEmpty()) {
+			return "search.resourceid";
+		}
 		
+		for(Entry<String, String> entry : idConverter.entrySet()) {
+			try {
+				if(Pattern.matches(entry.getKey(), id)) {
+					
+					return entry.getValue();
+				} 
+			}catch(Exception e) {
+				//
+			}
+		}
+		//no match, return default
+		return "search.resourceid";
 	}
 	
-	
-	public String convertODataIDToDSpaceID(String id, String type) {
-		if(type.equals("http://hdl.handle.net/123456789/")) {
-			type = type.replaceAll("[^0-9]", "");
-			type= type + "/";
-		}
-		int dspaceIdAsInt = Integer.valueOf(id);
-			if(type.equals("uniba/")) {
-				String dspaceId = String.format("%s%d", type,dspaceIdAsInt);
-				return dspaceId;
+	//add some identifier resolver prefix or similar depending on the search field
+	public String addIdentifierPrefix(String id, String type, String legacyPrefix) {
+		if(type.contentEquals("handle")) {
+			if(!id.startsWith(handleprefix)) {
+				return handleprefix+"/"+id;
 			}
-		String dspaceId = String.format("%s%05d", type,dspaceIdAsInt);
-		return dspaceId;
+		}
+		if(type.contentEquals("cris.legacyId")) {
+			//add legacy prefix
+			if(legacyPrefix != null) {
+				if(!id.startsWith(legacyPrefix)) {
+					//at least 5 digits with leading zeros!
+					return String.format("%s%05d", legacyPrefix,Integer.parseInt(id));
+				}else {
+					//withprefix ->
+					String idclean = id.replace(legacyPrefix, "");
+					return String.format("%s%05d", legacyPrefix,Integer.parseInt(idclean));
+				}
+			}
+		}
+		return id;
 	}
 	
 }

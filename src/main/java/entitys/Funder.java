@@ -20,13 +20,20 @@ public class Funder implements EntityModel {
 	public static final FullQualifiedName ET_FUNDER_FQN = new FullQualifiedName(NAMESPACE, ET_FUNDER_NAME);
 	public static final String ES_FUNDERS_NAME = "Funders";
 	public final static String RECOURCE_TYPE_FILTER= "search.resourcetype:\"Item\" and search.entitytype:\"Funder\"";
-	public final static String ID_CONVERTER_TYP= "funder";
+	private HashMap<String, String> idconverter;
 	private CsdlEntityType entityType;
 	private CsdlEntitySet entitySet;
 	private HashMap<String, String> mapping;
 	private ArrayList<String> ENTITYFILTER;
 	
 	public Funder() {
+		idconverter = new HashMap<String, String>();
+		idconverter.put("([a-z0-9\\-]{36})", "search.resourceid");
+		idconverter.put("(funder[0-9]{1,6})", "cris.legacyId");
+		idconverter.put("([1-9][0-9]{1,5})", "handle");
+		idconverter.put("([0][0-9]{1,4})", "cris.legacyId"); //until funder09999 are considered as legcayvalues
+		idconverter.put("(uniba/[0-9]{1,6})", "handle");
+		
 		CsdlProperty id = new CsdlProperty().setName("id")
 				.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
 		CsdlProperty crisId = new CsdlProperty().setName("cris-id")
@@ -130,8 +137,8 @@ public class Funder implements EntityModel {
 	}
 
 	@Override
-	public String getIDConverterTyp() {
-		return ID_CONVERTER_TYP;
+	public HashMap<String, String> getIdConverter() {
+		return idconverter;
 	}
 	
 	public ArrayList<String> getEntityFilter() {
@@ -139,8 +146,12 @@ public class Funder implements EntityModel {
 	}
 
 	@Override
+	public String getLegacyPrefix() {
+		return "funder";
+	}
+
+	@Override
 	public String getNavigationFilter(String sourceType, String id) {
-		// TODO Auto-generated method stub
 		String navigationFilter = "";
 		if(sourceType.equals("Awardseries")) {
 			navigationFilter = ("crisawardseries.institution_authority:\""+id+"\"");

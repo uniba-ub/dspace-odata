@@ -20,15 +20,23 @@ public class Researcher implements EntityModel {
 	public static final FullQualifiedName ET_RESEARCHER_FQN = new FullQualifiedName(NAMESPACE, ET_RESEARCHER_NAME);
 	public static final String ES_RESEARCHERS_NAME = "Researchers";
 	public final static String RECOURCE_TYPE_FILTER= "search.resourcetype:\"Item\" and search.entitytype:\"Person\"";
-	public final static String ID_CONVERTER_TYP= "rp";
+
 	private HashMap<String, String> mapping;
 	private ArrayList<String> ENTITYFILTER;
 
-
+	private HashMap<String, String> idconverter;
+	
 	private CsdlEntityType entityType;
 	private CsdlEntitySet entitySet;
 	
 	public Researcher() {
+		idconverter = new HashMap<String, String>();
+		idconverter.put("([a-z0-9\\-]{36})", "search.resourceid");
+		idconverter.put("(rp[0-9]{1,6})", "cris.legacyId");
+		idconverter.put("([4-9][0-9]{1,5})", "handle");
+		idconverter.put("([0-3][0-9]{1,4})", "cris.legacyId"); //rp until rp30000 are considered as legcyvalues
+		idconverter.put("(uniba/[0-9]{1,6})", "handle");
+		idconverter.put("(([0-9]{4})-([0-9]{4})-([0-9]{4})-([0-9]{4})){1}", "person.identifier.orcid");
 		
 		CsdlProperty id = new CsdlProperty().setName("id")
 				.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
@@ -141,12 +149,17 @@ public class Researcher implements EntityModel {
 		return RECOURCE_TYPE_FILTER;
 	}
 
-	public String getIDConverterTyp() {
-		return ID_CONVERTER_TYP;
+	public HashMap<String, String> getIdConverter() {
+		return idconverter;
 	}
 	
 	public ArrayList<String> getEntityFilter() {
 		return ENTITYFILTER;
+	}
+
+	@Override
+	public String getLegacyPrefix() {
+		return "rp";
 	}
 
 	public String getNavigationFilter(String sourceType, String id) {

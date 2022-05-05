@@ -156,8 +156,11 @@ public class DataHandler {
 						}
 					}
 					String id = keyParams.get(0).getText();				
-					String dspaceId = converter.convertODataIDToDSpaceID(id, item.getIDConverterTyp());
-					queryMaker.addSearchFilterForAttribute(converter.getIDSolrFilter(item.getIDConverterTyp()), dspaceId);				}
+					String dspaceId = converter.convertODataIDToDSpaceID(id);
+					String field = converter.getIdField(dspaceId,item.getIdConverter());
+					dspaceId = converter.addIdentifierPrefix(dspaceId,  field, item.getLegacyPrefix());
+					queryMaker.addSearchFilterForAttribute(field, dspaceId);				
+				}
 			}		
 		}
 	
@@ -385,7 +388,7 @@ public class DataHandler {
 					targetModel= item;	
 				}
 			}
-			
+
 			String dspaceId = converter.convertODataIDToDSpaceID(entityID, sourceModel.getIDConverterTyp());
 			queryMaker.addSearchFilter((targetModel.getNavigationFilter(sourceModel.getEntitySetName()+relation, dspaceId)));
 			String[] reverseRelationArr = Util.calculatereverseRelation(sourceModel, targetModel, sourceEntity, dspaceId,  "reverse");
@@ -431,7 +434,7 @@ public class DataHandler {
 				}
 			}
 			
-			String dspaceId = converter.convertODataIDToDSpaceID(entityID, sourceModel.getIDConverterTyp());
+			String dspaceId = converter.convertODataIDToDSpaceID(entityID);
 			dspaceId = sourceEntity.getProperty("uuid").getValue().toString();
 			if(dspaceId == null) return null;
 			queryMaker.addSearchFilter((targetModel.getNavigationFilter(sourceModel.getEntitySetName()+relation, dspaceId)));
