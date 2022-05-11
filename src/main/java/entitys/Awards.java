@@ -149,7 +149,7 @@ public class Awards implements EntityModel {
 	@Override
 	public ArrayList<String> getEntityFilter() {
 		// TODO Auto-generated method stub
-		return null;
+		return ENTITYFILTER;
 	}
 
 }
