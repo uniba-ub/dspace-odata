@@ -19,7 +19,7 @@ public class Researcher implements EntityModel {
 	public static final String ET_RESEARCHER_NAME = "Researcher";
 	public static final FullQualifiedName ET_RESEARCHER_FQN = new FullQualifiedName(NAMESPACE, ET_RESEARCHER_NAME);
 	public static final String ES_RESEARCHERS_NAME = "Researchers";
-	public final static String RECOURCE_TYPE_FILTER= "resourcetype_filter:\"009researchers\n|||\nResearcher profiles###researcherprofiles\"";
+	public final static String RECOURCE_TYPE_FILTER= "search.resourcetype:\"Item\" and search.entitytype:\"Person\"";
 	public final static String ID_CONVERTER_TYP= "rp";
 	private HashMap<String, String> mapping;
 	private ArrayList<String> ENTITYFILTER;

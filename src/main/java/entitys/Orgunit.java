@@ -18,7 +18,7 @@ public class Orgunit implements EntityModel{
 	public static final String ET_ORGUNIT_NAME = "Orgunit";
 	public static final FullQualifiedName ET_ORGUNIT_FQN = new FullQualifiedName(NAMESPACE, ET_ORGUNIT_NAME);
 	public static final String ES_ORGUNITS_NAME = "Orgunits";
-	public final static String RECOURCE_TYPE_FILTER= "resourcetype_filter:\"008orgunits\n|||\nOrganizations###orgunits\"";
+	public final static String RECOURCE_TYPE_FILTER= "search.resourcetype:\"Item\" and search.entitytype:\"OrgUnit\"";
 	public final static String ID_CONVERTER_TYP= "ou";
 	private CsdlEntityType entityType;
 	private CsdlEntitySet entitySet;

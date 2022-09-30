@@ -20,7 +20,7 @@ public class Journal implements EntityModel {
 	public static final String ET_JOURNAL_NAME = "Journal";
 	public static final FullQualifiedName ET_JOURNAL_FQN = new FullQualifiedName(NAMESPACE, ET_JOURNAL_NAME);
 	public static final String ES_JOURNALS_NAME = "Journals";
-	public final static String RECOURCE_TYPE_FILTER= "resourcetype_filter:\"series\n|||\nseries###crisseries\"";
+	public final static String RECOURCE_TYPE_FILTER= "search.resourcetype:\"Item\" and search.entitytype:\"Series\"";
 	public final static String ID_CONVERTER_TYP= "series";
 	private CsdlEntityType entityType;
 	private CsdlEntitySet entitySet;

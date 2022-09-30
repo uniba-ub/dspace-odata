@@ -18,7 +18,7 @@ public class Project implements EntityModel{
 	public static final String ET_PROJECT_NAME = "Project";
 	public static final FullQualifiedName ET_PROJECT_FQN = new FullQualifiedName(NAMESPACE, ET_PROJECT_NAME);
 	public static final String ES_PROJECTS_NAME = "Projects";
-	public final static String RECOURCE_TYPE_FILTER= "resourcetype_filter:\"010projects\n" + 
+	public final static String RECOURCE_TYPE_FILTER= "search.resourcetype:\"Item\" and search.entitytype:\"Project\"" +
 			"|||\n" + 
 			"Fundings###fundings\"";
 	public final static String ID_CONVERTER_TYP= "pj";

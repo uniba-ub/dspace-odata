@@ -20,7 +20,7 @@ public class Product implements EntityModel {
 	public static final String ET_PRODUCT_NAME = "Product";
 	public static final FullQualifiedName ET_PRODUCT_FQN = new FullQualifiedName(NAMESPACE, ET_PRODUCT_NAME);
 	public static final String ES_PRODUCTS_NAME = "Products";
-	public final static String RECOURCE_TYPE_FILTER= "resourcetype_filter:\"001publications\n|||\nPublications###publications\"";
+	public final static String RECOURCE_TYPE_FILTER= "search.resourcetype:\"Item\" and search.entitytype:\"ResearchData\"";
 	public final static String ID_CONVERTER_TYP= "uniba/";
 	private CsdlEntityType entityType;
 	private CsdlEntitySet entitySet;

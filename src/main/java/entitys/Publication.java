@@ -20,7 +20,7 @@ public class Publication implements EntityModel {
 	public static final String ET_PUBLICATION_NAME = "Publication";
 	public static final FullQualifiedName ET_PUBLICATION_FQN = new FullQualifiedName(NAMESPACE, ET_PUBLICATION_NAME);
 	public static final String ES_PUBLICATIONS_NAME = "Publications";
-	public final static String RECOURCE_TYPE_FILTER= "resourcetype_filter:\"001publications\n|||\nPublications###publications\"";
+	public final static String RECOURCE_TYPE_FILTER= "search.resourcetype:\"Item\" and search.entitytype:\"Publication\"";
 	public final static String ID_CONVERTER_TYP= "uniba/";
 	private CsdlEntityType entityType;
 	private CsdlEntitySet entitySet;

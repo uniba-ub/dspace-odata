@@ -19,7 +19,7 @@ public class Awardseries implements EntityModel {
 	public static final String ET_AWARDSERIES_NAME = "Awardserie";
 	public static final FullQualifiedName ET_AWARDSERIES_FQN = new FullQualifiedName(NAMESPACE, ET_AWARDSERIES_NAME);
 	public static final String ES_AWARDSERIES_NAME = "Awardseries";
-	public final static String RECOURCE_TYPE_FILTER= "resourcetype_filter:\"awardseries\n|||\nawardseries###crisawardseries\"";
+	public final static String RECOURCE_TYPE_FILTER= "search.resourcetype:\"Item\" and search.entitytype:\"Awardseries\"";
 	public final static String ID_CONVERTER_TYP= "awardseries";
 	private CsdlEntityType entityType;
 	private CsdlEntitySet entitySet;

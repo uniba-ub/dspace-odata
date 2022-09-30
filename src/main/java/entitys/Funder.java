@@ -19,7 +19,7 @@ public class Funder implements EntityModel {
 	public static final String ET_FUNDER_NAME = "Funder";
 	public static final FullQualifiedName ET_FUNDER_FQN = new FullQualifiedName(NAMESPACE, ET_FUNDER_NAME);
 	public static final String ES_FUNDERS_NAME = "Funders";
-	public final static String RECOURCE_TYPE_FILTER= "resourcetype_filter:\"funder\n|||\nfunder###crisfunder\"";
+	public final static String RECOURCE_TYPE_FILTER= "search.resourcetype:\"Item\" and search.entitytype:\"Funder\"";
 	public final static String ID_CONVERTER_TYP= "funder";
 	private CsdlEntityType entityType;
 	private CsdlEntitySet entitySet;

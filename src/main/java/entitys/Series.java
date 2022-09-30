@@ -20,7 +20,7 @@ public class Series implements EntityModel {
 	public static final String ET_SERIES_NAME = "Serie";
 	public static final FullQualifiedName ET_SERIES_FQN = new FullQualifiedName(NAMESPACE, ET_SERIES_NAME);
 	public static final String ES_SERIES_NAME = "Series";
-	public final static String RECOURCE_TYPE_FILTER= "resourcetype_filter:\"series\n|||\nseries###crisseries\"";
+	public final static String RECOURCE_TYPE_FILTER= "search.resourcetype:\"Item\" and search.entitytype:\"Series\"";
 	public final static String ID_CONVERTER_TYP= "series";
 	private CsdlEntityType entityType;
 	private CsdlEntitySet entitySet;
