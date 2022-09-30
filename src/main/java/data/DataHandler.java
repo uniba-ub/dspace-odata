@@ -372,8 +372,8 @@ public class DataHandler {
 	public EntityCollection getRelatedEntityCollection(Entity sourceEntity, EdmEntityType targetEntityType, String relation) throws SolrServerException, IOException {
 		EntityCollection navigationTargetEntityCollection = new EntityCollection();
 
-			// get ID from Entitiy Source
-			String entityID = sourceEntity.getProperty("id").getValue().toString();
+			// get uuid from entity, not it's primary id. This is usally being used as the values containing the links
+			String entityID = sourceEntity.getProperty("uuid").getValue().toString();
 			List<UriParameter> keyParams = null;
 			SolrDocumentList responseDocuments;
 			boolean isEntityCollection = true;
@@ -389,7 +389,7 @@ public class DataHandler {
 				}
 			}
 
-			String dspaceId = converter.convertODataIDToDSpaceID(entityID, sourceModel.getIDConverterTyp());
+			String dspaceId = entityID;
 			queryMaker.addSearchFilter((targetModel.getNavigationFilter(sourceModel.getEntitySetName()+relation, dspaceId)));
 			String[] reverseRelationArr = Util.calculatereverseRelation(sourceModel, targetModel, sourceEntity, dspaceId,  "reverse");
 			if(reverseRelationArr != null && reverseRelationArr.length > 0 && reverseRelationArr[0] != null && !reverseRelationArr[0].contentEquals("")) {
