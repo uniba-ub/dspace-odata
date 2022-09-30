@@ -1,9 +1,6 @@
 package entitys;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.*;
 
 import org.apache.olingo.commons.api.edm.EdmPrimitiveTypeKind;
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
@@ -23,7 +20,7 @@ public class Awardseries implements EntityModel {
 	private HashMap<String, String> idconverter;
 	private CsdlEntityType entityType;
 	private CsdlEntitySet entitySet;
-	private HashMap<String, String> mapping;
+	private HashMap<String, List<String>> mapping;
 	private ArrayList<String> ENTITYFILTER;
 	
 	public Awardseries() {
@@ -71,19 +68,19 @@ public class Awardseries implements EntityModel {
 		entitySet.setName(ES_AWARDSERIES_NAME);
 		entitySet.setType(ET_AWARDSERIES_FQN);
 			
-		mapping = new HashMap<String, String>();
-		mapping.put("cris-id", "cris.legacyId");
-		mapping.put("uuid", "search.resourceid");
-		mapping.put("handle", "handle");
+		mapping = new HashMap<String, List<String>>();
+		mapping.put("cris-id", List.of("cris.legacyId"));
+		mapping.put("uuid", List.of("search.resourceid"));
+		mapping.put("handle", List.of("handle"));
 		
-		mapping.put("entitytype", "search.entitytype");
-		mapping.put("name", "dc.title");
+		mapping.put("entitytype", List.of("search.entitytype"));
+		mapping.put("name", List.of("dc.title"));
 		
-		mapping.put("description", "crisawardseries.description");
-		mapping.put("category", "crisawardseries.category");
-		mapping.put("institution", "crisawardseries.institution");
-		mapping.put("url", "crisawardseries.url");
-		mapping.put("awardseries2funder", "crisawardseries.institution_authority");
+		mapping.put("description", List.of("crisawardseries.description"));
+		mapping.put("category", List.of("crisawardseries.category"));
+		mapping.put("institution", List.of("crisawardseries.institution"));
+		mapping.put("url", List.of("crisawardseries.url"));
+		mapping.put("awardseries2funder", List.of("crisawardseries.institution_authority"));
 		
 		ENTITYFILTER = new ArrayList<String>();
 	}
@@ -133,7 +130,7 @@ public class Awardseries implements EntityModel {
 	}
 
 	@Override
-	public HashMap<String, String> getMapping() {
+	public HashMap<String, List<String>> getMapping() {
 		return mapping;
 	}
 

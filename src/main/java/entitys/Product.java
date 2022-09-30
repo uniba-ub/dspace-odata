@@ -1,9 +1,6 @@
 package entitys;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.*;
 
 import org.apache.olingo.commons.api.edm.EdmPrimitiveTypeKind;
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
@@ -24,7 +21,7 @@ public class Product implements EntityModel {
 	private HashMap<String, String> idconverter;
 	private CsdlEntityType entityType;
 	private CsdlEntitySet entitySet;
-	private HashMap<String, String> mapping;
+	private HashMap<String, List<String>> mapping;
 	private ArrayList<String> ENTITYFILTER;
 	
 	public Product(){
@@ -106,37 +103,37 @@ public class Product implements EntityModel {
 		entitySet.setName(ES_PRODUCTS_NAME);
 		entitySet.setType(ET_PRODUCT_FQN);
 		
-		mapping = new HashMap<String, String>();
+		mapping = new HashMap<String, List<String>>();
 		
-		mapping.put("handle", "handle");
-		mapping.put("uuid", "search.resourceid");
-		mapping.put("entitytype", "search.entitytype");
-		mapping.put("name", "dc.title");
+		mapping.put("handle", List.of("handle"));
+		mapping.put("uuid", List.of("search.resourceid"));
+		mapping.put("entitytype", List.of("search.entitytype"));
+		mapping.put("name", List.of("dc.title"));
 		
-		mapping.put("creator", "dc.creator");
-		mapping.put("author", "dc.creator");
-		mapping.put("contributor", "contributors"); //ubg.contributor.*
-		mapping.put("completedyear", "researchdatacompleted"); //TODO:using own indexer for this value. uses dc.date.created or dc.date.issued
-		mapping.put("issued", "dateIssued.year_sort");
-		mapping.put("corporation", "dc.creator.corporation");
-		mapping.put("description", "ubg.description.abstract");
-		mapping.put("extent", "dcterms.extent");
-		mapping.put("format", "dcterms.format");
-		mapping.put("doi", "dc.identifier.doi");
-		mapping.put("ourdoi", "ubg.identifier.doi");
-		mapping.put("faculty","ubg.researchdata.org");
-		mapping.put("language", "dc.language.iso");
-		mapping.put("publisher", "dc.publisher");
-		mapping.put("type", "dc.type");
-		mapping.put("title", "dc.title");
-		mapping.put("uri", "dc.identifier.uri");
-		mapping.put("url", "dc.identifier.url");
-		mapping.put("version", "ubg.version.description");
+		mapping.put("creator", List.of("dc.creator"));
+		mapping.put("author", List.of("dc.creator"));
+		mapping.put("contributor", List.of("contributors")); //ubg.contributor.*
+		mapping.put("completedyear", List.of("researchdatacompleted"));
+		mapping.put("issued", List.of("dateIssued.year_sort"));
+		mapping.put("corporation", List.of("dc.creator.corporation"));
+		mapping.put("description", List.of("ubg.description.abstract"));
+		mapping.put("extent", List.of("dcterms.extent"));
+		mapping.put("format", List.of("dcterms.format"));
+		mapping.put("doi", List.of("dc.identifier.doi"));
+		mapping.put("ourdoi", List.of("ubg.identifier.doi"));
+		mapping.put("faculty",List.of("ubg.researchdata.org"));
+		mapping.put("language", List.of("dc.language.iso"));
+		mapping.put("publisher", List.of("dc.publisher"));
+		mapping.put("type", List.of("dc.type"));
+		mapping.put("title", List.of("dc.title"));
+		mapping.put("uri", List.of("dc.identifier.uri"));
+		mapping.put("url", List.of("dc.identifier.url"));
+		mapping.put("version", List.of("ubg.version.description"));
 		
-		mapping.put("prod2rp", "contributor_authority");
-		mapping.put("prod2pj", "ubg.relation.project_authority");
-		mapping.put("prod2ou", "ubg.researchdata.org_authority");
-		mapping.put("prod2award", "ubg.relation.award_authority");
+		mapping.put("prod2rp", List.of("contributor_authority"));
+		mapping.put("prod2pj", List.of("ubg.relation.project_authority"));
+		mapping.put("prod2ou", List.of("ubg.researchdata.org_authority"));
+		mapping.put("prod2award", List.of("ubg.relation.award_authority"));
 
 		ENTITYFILTER = new ArrayList<String>();
 
@@ -191,7 +188,7 @@ public class Product implements EntityModel {
 			return navigationFilter;
 	}
 
-	public HashMap<String, String> getMapping() {
+	public HashMap<String, List<String>> getMapping() {
 		return mapping;
 	}
 

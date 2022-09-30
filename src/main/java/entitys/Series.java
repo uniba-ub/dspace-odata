@@ -1,9 +1,6 @@
 package entitys;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.*;
 
 import org.apache.olingo.commons.api.edm.EdmPrimitiveTypeKind;
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
@@ -25,7 +22,7 @@ public class Series implements EntityModel {
 
 	private CsdlEntityType entityType;
 	private CsdlEntitySet entitySet;
-	private HashMap<String, String> mapping;
+	private HashMap<String, List<String>> mapping;
 	private ArrayList<String> ENTITYFILTER;
 	
 	public Series() {
@@ -72,17 +69,17 @@ public class Series implements EntityModel {
 		entitySet.setName(ES_SERIES_NAME);
 		entitySet.setType(ET_SERIES_FQN);
 			
-		mapping = new HashMap<String, String>();
-		mapping.put("cris-id", "cris.legacyId");
-		mapping.put("uuid", "search.resourceid");
-		mapping.put("handle", "handle");
-		mapping.put("entitytype", "search.entitytype");
-		mapping.put("name", "dc.title");
+		mapping = new HashMap<String, List<String>>();
+		mapping.put("cris-id", List.of("cris.legacyId"));
+		mapping.put("uuid", List.of("search.resourceid"));
+		mapping.put("handle", List.of("handle"));
+		mapping.put("entitytype", List.of("search.entitytype"));
+		mapping.put("name", List.of("dc.title"));
 		
-		mapping.put("issn", "crisseries.issn");
-		mapping.put("abbreviation", "crisseries.abbreviation");
-		mapping.put("homepage", "crisseries.homepage");
-		mapping.put("description", "crisseries.description");
+		mapping.put("issn", List.of("crisseries.issn"));
+		mapping.put("abbreviation", List.of("crisseries.abbreviation"));
+		mapping.put("homepage", List.of("crisseries.homepage"));
+		mapping.put("description", List.of("crisseries.description"));
 		
 		ENTITYFILTER = new ArrayList<String>();
 	}
@@ -131,7 +128,7 @@ public class Series implements EntityModel {
 	}
 
 	@Override
-	public HashMap<String, String> getMapping() {
+	public HashMap<String, List<String>> getMapping() {
 		return mapping;
 	}
 

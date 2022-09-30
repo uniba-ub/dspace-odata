@@ -1,9 +1,6 @@
 package entitys;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.*;
 
 import org.apache.olingo.commons.api.edm.EdmPrimitiveTypeKind;
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
@@ -21,7 +18,7 @@ public class Researcher implements EntityModel {
 	public static final String ES_RESEARCHERS_NAME = "Researchers";
 	public final static String RECOURCE_TYPE_FILTER= "search.resourcetype:\"Item\" and search.entitytype:\"Person\"";
 
-	private HashMap<String, String> mapping;
+	private HashMap<String, List<String>> mapping;
 	private ArrayList<String> ENTITYFILTER;
 
 	private HashMap<String, String> idconverter;
@@ -101,31 +98,30 @@ public class Researcher implements EntityModel {
 		entitySet.setName(ES_RESEARCHERS_NAME);
 		entitySet.setType(ET_RESEARCHER_FQN);
 			
-		mapping = new HashMap<String, String>();
-		mapping.put("cris-id", "cris.legacyId");
-		mapping.put("uuid", "search.resourceid");
-		mapping.put("handle", "handle");
-		mapping.put("entitytype", "search.entitytype");
-		mapping.put("name", "dc.title");
+		mapping = new HashMap<String, List<String>>();
+		mapping.put("cris-id", List.of("cris.legacyId"));
+		mapping.put("uuid", List.of("search.resourceid"));
+		mapping.put("handle", List.of("handle"));
+		mapping.put("entitytype", List.of("search.entitytype"));
+		mapping.put("name", List.of("dc.title"));
 		
-		mapping.put("biography", "crisrp.biography");
-		mapping.put("contact", "crisrp.contact");
-		mapping.put("contacturl", "crisrp.contacturl");
-		mapping.put("contactemail", "crisrp.contactemail");
-		mapping.put("displayname", "dc.title");
-		mapping.put("description", "crisrp.description");
-		mapping.put("dept", "crisrp.dept");
-		mapping.put("email", "crisrp.email");
-		mapping.put("orcid", "person.identifier.orcid");
-		mapping.put("gnd", "crisrp.gndId");
-		mapping.put("researcharea", "crisrp.researcharea");
-		mapping.put("researchinterests", "crisrp.researchinterests");
-		mapping.put("title", "crisrp.title");
+		mapping.put("biography", List.of("crisrp.biography"));
+		mapping.put("contact", List.of("crisrp.contact"));
+		mapping.put("contacturl", List.of("crisrp.contacturl"));
+		mapping.put("contactemail", List.of("crisrp.contactemail"));
+		mapping.put("displayname", List.of("dc.title"));
+		mapping.put("description", List.of("crisrp.description"));
+		mapping.put("dept", List.of("crisrp.dept"));
+		mapping.put("email", List.of("crisrp.email"));
+		mapping.put("orcid", List.of("person.identifier.orcid"));
+		mapping.put("gnd", List.of("crisrp.gndId"));
+		mapping.put("researcharea", List.of("crisrp.researcharea"));
+		mapping.put("researchinterests", List.of("crisrp.researchinterests"));
+		mapping.put("title", List.of("crisrp.title"));
 		
-		mapping.put("rp2ou", "crisrp.dept_authority");
+		mapping.put("rp2ou", List.of("crisrp.dept_authority"));
 		
 		ENTITYFILTER = new ArrayList<String>();
-		ENTITYFILTER.add("-ubg.version.visibility:0");
 	}
 	
 	public CsdlEntityType getEntityType() {	
@@ -172,7 +168,7 @@ public class Researcher implements EntityModel {
 		
 	}
 
-	public HashMap<String, String> getMapping() {
+	public HashMap<String, List<String>> getMapping() {
 		return mapping;
 	}
 

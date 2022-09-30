@@ -1,9 +1,6 @@
 package entitys;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.*;
 
 import org.apache.olingo.commons.api.edm.EdmPrimitiveTypeKind;
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
@@ -26,7 +23,7 @@ public class Publication implements EntityModel {
 	
 	private CsdlEntityType entityType;
 	private CsdlEntitySet entitySet;
-	private HashMap<String, String> mapping;
+	private HashMap<String, List<String>> mapping;
 	private ArrayList<String> ENTITYFILTER;
 	
 	public Publication(){
@@ -146,55 +143,55 @@ public class Publication implements EntityModel {
 		entitySet.setName(ES_PUBLICATIONS_NAME);
 		entitySet.setType(ET_PUBLICATION_FQN);
 		
-		mapping = new HashMap<String, String>();
+		mapping = new HashMap<String, List<String>>();
 		
-		mapping.put("handle", "handle");
-		mapping.put("uuid", "search.resourceid");
-		mapping.put("entitytype", "search.entitytype");
-		mapping.put("name", "dc.title");
+		mapping.put("handle", List.of("handle"));
+		mapping.put("uuid", List.of("search.resourceid"));
+		mapping.put("entitytype", List.of("search.entitytype"));
+		mapping.put("name", List.of("dc.title"));
 
-		mapping.put("articlecollectionEditor", "ubg.editor.articlecollection");
-		mapping.put("articlecollectionTitle", "ubg.titleparent.articlecollection");
-		mapping.put("author", "dc.contributor.author");
-		mapping.put("completedyear", "dateIssued.year_sort");
-		mapping.put("corporation", "dc.contributor.corporation");
-		mapping.put("description", "dc.description.abstract");
-		mapping.put("doi", "dc.identifier.doi");
-		mapping.put("doiour", "ubg.identifier.doi");
-		mapping.put("edition", "dc.relation.edition");
-		mapping.put("editor", "dc.contributor.editor");
-		mapping.put("supervisorname", "dc.contributor.supervisor");
-		mapping.put("faculty","ubg.faculty.org");
-		mapping.put("fulltext", "infofulltext");
-		mapping.put("gndsw","ubg.subject.gndsw");
-		mapping.put("ispartofotherseries", "dc.relation.ispartofotherseries");
-		mapping.put("ispartofseries", "dc.relation.ispartofseries");
-		mapping.put("issn", "dc.identifier.issn");
-		mapping.put("isbn", "dc.identifier.isbn"); 
-		mapping.put("issue", "ubg.relation.issue");
-		mapping.put("journal", "ubg.titleparent.journal");
-		mapping.put("language", "dc.language.iso");
-		mapping.put("multipartTitel", "ubg.multipartTitel");
-		mapping.put("pages", "ubg.pages.range");
-		mapping.put("numpages", "ubg.pages.count");
-		mapping.put("medium", "ubg.pages.medium");
-		mapping.put("peerreview", "ubg.peerreview");
-		mapping.put("publisher", "dc.publisher");
-		mapping.put("publisherplace", "dc.publisher.place");
-		mapping.put("seriesnumber", "dc.relation.seriesnumber");
-		mapping.put("subject", "dc.subject");
-		mapping.put("thesis", "dc.publisher.thesis");
-		mapping.put("type", "dc.type");
-		mapping.put("title", "dc.title");
-		mapping.put("uri", "dc.identifier.uri");
-		mapping.put("volume", "dc.relation.volume");
+		mapping.put("articlecollectionEditor", List.of("ubg.editor.articlecollection"));
+		mapping.put("articlecollectionTitle", List.of("ubg.titleparent.articlecollection"));
+		mapping.put("author", List.of("dc.contributor.author"));
+		mapping.put("completedyear", List.of("dateIssued.year_sort"));
+		mapping.put("corporation", List.of("dc.contributor.corporation"));
+		mapping.put("description", List.of("dc.description.abstract"));
+		mapping.put("doi", List.of("dc.identifier.doi"));
+		mapping.put("doiour", List.of("ubg.identifier.doi"));
+		mapping.put("edition", List.of("dc.relation.edition"));
+		mapping.put("editor", List.of("dc.contributor.editor"));
+		mapping.put("supervisorname", List.of("dc.contributor.supervisor"));
+		mapping.put("faculty",List.of("ubg.faculty.org"));
+		mapping.put("fulltext", List.of("infofulltext"));
+		mapping.put("gndsw",List.of("ubg.subject.gndsw"));
+		mapping.put("ispartofotherseries", List.of("dc.relation.ispartofotherseries"));
+		mapping.put("ispartofseries", List.of("dc.relation.ispartofseries"));
+		mapping.put("issn", List.of("dc.identifier.issn"));
+		mapping.put("isbn", List.of("dc.identifier.isbn"));
+		mapping.put("issue", List.of("ubg.relation.issue"));
+		mapping.put("journal", List.of("ubg.titleparent.journal"));
+		mapping.put("language", List.of("dc.language.iso"));
+		mapping.put("multipartTitel", List.of("ubg.multipartTitel"));
+		mapping.put("pages", List.of("ubg.pages.range"));
+		mapping.put("numpages", List.of("ubg.pages.count"));
+		mapping.put("medium", List.of("ubg.pages.medium"));
+		mapping.put("peerreview", List.of("ubg.peerreview"));
+		mapping.put("publisher", List.of("dc.publisher"));
+		mapping.put("publisherplace", List.of("dc.publisher.place"));
+		mapping.put("seriesnumber", List.of("dc.relation.seriesnumber"));
+		mapping.put("subject", List.of("dc.subject"));
+		mapping.put("thesis", List.of("dc.publisher.thesis"));
+		mapping.put("type", List.of("dc.type"));
+		mapping.put("title", List.of("dc.title"));
+		mapping.put("uri", List.of("dc.identifier.uri"));
+		mapping.put("volume", List.of("dc.relation.volume"));
 		
-		mapping.put("publ2rp", "author_authority");
-		mapping.put("publ2series", "dc.relation.ispartofseries_authority");
-		mapping.put("publ2journals", "dc.relation.ispartofseries_authority");
-		mapping.put("publ2pj", "ubg.relation.project_authority");
-		mapping.put("publ2ou", "ubg.faculty.org_authority");
-		mapping.put("publ2award", "ubg.relation.award_authority");
+		mapping.put("publ2rp", List.of("author_authority"));
+		mapping.put("publ2series", List.of("dc.relation.ispartofseries_authority"));
+		mapping.put("publ2journals", List.of("dc.relation.ispartofseries_authority"));
+		mapping.put("publ2pj", List.of("ubg.relation.project_authority"));
+		mapping.put("publ2ou", List.of("ubg.faculty.org_authority"));
+		mapping.put("publ2award", List.of("ubg.relation.award_authority"));
 
 		ENTITYFILTER = new ArrayList<String>();
 		ENTITYFILTER.add("-ubg.version.visibility:0");
@@ -275,7 +272,7 @@ public class Publication implements EntityModel {
 			return navigationFilter;
 	}
 
-	public HashMap<String, String> getMapping() {
+	public HashMap<String, List<String>> getMapping() {
 		return mapping;
 	}
 

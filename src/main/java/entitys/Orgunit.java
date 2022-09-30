@@ -3,6 +3,7 @@ package entitys;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import org.apache.olingo.commons.api.edm.EdmPrimitiveTypeKind;
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
@@ -22,7 +23,7 @@ public class Orgunit implements EntityModel{
 	private HashMap<String, String> idconverter;
 	private CsdlEntityType entityType;
 	private CsdlEntitySet entitySet;
-	private HashMap<String, String> mapping;
+	private HashMap<String, List<String>> mapping;
 	private ArrayList<String> ENTITYFILTER;
 
 	public Orgunit(){
@@ -73,19 +74,19 @@ public class Orgunit implements EntityModel{
 	entitySet.setName(ES_ORGUNITS_NAME);
 	entitySet.setType(ET_ORGUNIT_FQN);
 	
-	mapping = new HashMap<String, String>();
-	mapping.put("cris-id", "cris.legacyId");
-	mapping.put("uuid", "search.resourceid");
-	mapping.put("handle", "handle");
-	mapping.put("entitytype", "search.entitytype");
-	mapping.put("name", "dc.title");
+	mapping = new HashMap<String, List<String>>();
+	mapping.put("cris-id", List.of("cris.legacyId"));
+	mapping.put("uuid", List.of("search.resourceid"));
+	mapping.put("handle", List.of("handle"));
+	mapping.put("entitytype", List.of("search.entitytype"));
+	mapping.put("name", List.of("dc.title"));
 	
-	mapping.put("director","crisou.director");
-	mapping.put("date", "crisou.startdate");
-	mapping.put("description", "crisou.description");
-	mapping.put("endDate", "crisou.enddate");
-	mapping.put("parentorgunit", "crisou.parentorgunit_authority");
-	mapping.put("url", "crisou.url");
+	mapping.put("director",List.of("crisou.director"));
+	mapping.put("date", List.of("crisou.startdate"));
+	mapping.put("description", List.of("crisou.description"));
+	mapping.put("endDate", List.of("crisou.enddate"));
+	mapping.put("parentorgunit", List.of("crisou.parentorgunit_authority"));
+	mapping.put("url", List.of("crisou.url"));
 	
 	ENTITYFILTER = new ArrayList<String>();
 	}
@@ -131,7 +132,7 @@ public class Orgunit implements EntityModel{
 		return navigationFilter;
 	}
 
-	public HashMap<String, String> getMapping() {
+	public HashMap<String, List<String>> getMapping() {
 		return mapping;
 	}
 	

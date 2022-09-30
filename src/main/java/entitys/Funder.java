@@ -1,9 +1,6 @@
 package entitys;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.*;
 
 import org.apache.olingo.commons.api.edm.EdmPrimitiveTypeKind;
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
@@ -23,7 +20,7 @@ public class Funder implements EntityModel {
 	private HashMap<String, String> idconverter;
 	private CsdlEntityType entityType;
 	private CsdlEntitySet entitySet;
-	private HashMap<String, String> mapping;
+	private HashMap<String, List<String>> mapping;
 	private ArrayList<String> ENTITYFILTER;
 	
 	public Funder() {
@@ -87,26 +84,26 @@ public class Funder implements EntityModel {
 		entitySet.setName(ES_FUNDERS_NAME);
 		entitySet.setType(ET_FUNDER_FQN);
 			
-		mapping = new HashMap<String, String>();
-		mapping.put("cris-id", "cris.legacyId");
-		mapping.put("uuid", "search.resourceid");
-		mapping.put("handle", "handle");
-		mapping.put("entitytype", "search.entitytype");
-		mapping.put("name", "dc.title");
+		mapping = new HashMap<String, List<String>>();
+		mapping.put("cris-id", List.of("cris.legacyId"));
+		mapping.put("uuid", List.of("search.resourceid"));
+		mapping.put("handle", List.of("handle"));
+		mapping.put("entitytype", List.of("search.entitytype"));
+		mapping.put("name", List.of("dc.title"));
 		
-		mapping.put("country", "crisfunder.iso-country");
-		mapping.put("city", "crisfunder.city");
-		mapping.put("url", "crisfunder.url");
-		mapping.put("description", "crisfunder.description");
-		mapping.put("acronym", "crisfunder.shortname");
-		mapping.put("type", "crisfunder.type.cerif");
-		mapping.put("identifier_wikidata", "crisfunder.identifier.wikidata");
-		mapping.put("identifier_isni", "crisfunder.identifier.isni");
-		mapping.put("identifier_grid", "crisfunder.identifier.grid");
-		mapping.put("identifier_gnd", "crisfunder.identifier.gnd");
-		mapping.put("identifier_ror", "crisfunder.identifier.ror");
-		mapping.put("identifier_crossreffunder", "crisfunder.identifier.crossreffunder");
-		mapping.put("funder2funder", "crisfunder.parentfunder_authority");
+		mapping.put("country", List.of("crisfunder.iso-country"));
+		mapping.put("city", List.of("crisfunder.city"));
+		mapping.put("url", List.of("crisfunder.url"));
+		mapping.put("description", List.of("crisfunder.description"));
+		mapping.put("acronym", List.of("crisfunder.shortname"));
+		mapping.put("type", List.of("crisfunder.type.cerif"));
+		mapping.put("identifier_wikidata", List.of("crisfunder.identifier.wikidata"));
+		mapping.put("identifier_isni", List.of("crisfunder.identifier.isni"));
+		mapping.put("identifier_grid", List.of("crisfunder.identifier.grid"));
+		mapping.put("identifier_gnd", List.of("crisfunder.identifier.gnd"));
+		mapping.put("identifier_ror", List.of("crisfunder.identifier.ror"));
+		mapping.put("identifier_crossreffunder", List.of("crisfunder.identifier.crossreffunder"));
+		mapping.put("funder2funder", List.of("crisfunder.parentfunder_authority"));
 		
 		ENTITYFILTER = new ArrayList<String>();
 	}
@@ -164,7 +161,7 @@ public class Funder implements EntityModel {
 	}
 
 	@Override
-	public HashMap<String, String> getMapping() {
+	public HashMap<String, List<String>> getMapping() {
 		return mapping;
 	}
 

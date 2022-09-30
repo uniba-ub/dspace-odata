@@ -222,7 +222,7 @@ public class DataHandler {
 	public List<Property> createPropertyList(SolrDocument solrDocument, EntityModel entity) throws SolrServerException, IOException {
 		propertyList = new LinkedList<Property>();
 		Property property;
-		HashMap<String, String> mapping = entity.getMapping();
+		HashMap<String, List<String>> mapping = entity.getMapping();
 		StringBuilder builder = new StringBuilder();
 		String itemType;
 		for(CsdlProperty item: entity.getEntityType().getProperties()) {
@@ -234,30 +234,34 @@ public class DataHandler {
 			
 			} else {
 				itemType = item.getTypeAsFQNObject().getName();
-				if(solrDocument.getFieldValue(mapping.get(item.getName()))!=null) {
+				if(mapping.get(item.getName()) != null){
 					if(itemType.equals("String")) {
-						for(Object value: solrDocument.getFieldValues(mapping.get(item.getName()))) {
-							if(builder.toString().length()!=0) {
-								if(item.getName().equals("author") || item.getName().equals("articlecollectionEditor") || item.getName().contentEquals("editor")|| item.getName().contentEquals("creator") || item.getName().contentEquals("contributor") || item.getName().contentEquals("creatorcontributor")) {
-									builder.append("; ");
-								} else {
-									builder.append(", ");
-								}			
+						for (String val : mapping.get(item.getName())) {
+							if (solrDocument.getFieldValue(val) != null) {
+								for (Object value : solrDocument.getFieldValues(val)) {
+									if (builder.toString().length() != 0) {
+										if (item.getName().equals("author") || item.getName().equals("articlecollectionEditor") || item.getName().contentEquals("editor") || item.getName().contentEquals("creator") || item.getName().contentEquals("contributor") || item.getName().contentEquals("creatorcontributor")) {
+											builder.append("; ");
+										} else {
+											builder.append(", ");
+										}
+									}
+									builder.append(value.toString());
+								}
 							}
-							builder.append(value.toString());
-						} 
+						}
 						property = new Property(null, item.getName(), ValueType.PRIMITIVE, builder.toString());
 						propertyList.add(property);
 						builder = new StringBuilder();
-					} else if(itemType.equals("Int32")|itemType.equals("Int16")| itemType.equals("Boolean")) {
-						property = new Property(null, item.getName(), ValueType.PRIMITIVE, solrDocument.getFirstValue(mapping.get(item.getName())));
+					} else if(itemType.equals("Int32") || itemType.equals("Int16") || itemType.equals("Boolean")) {
+						property = new Property(null, item.getName(), ValueType.PRIMITIVE, solrDocument.getFirstValue(mapping.get(item.getName()).get(0)));
 						propertyList.add(property);
-					} else if(itemType.equals("DateTimeOffset") | itemType.contentEquals("DateTime")) {
+					} else if(itemType.equals("DateTimeOffset") || itemType.contentEquals("DateTime")) {
 						//transform from Solr-value to datetime
 						try {
 						DateFormat dateFormat = new SimpleDateFormat(
 					            "EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
-						Date date = dateFormat.parse((solrDocument.getFirstValue(mapping.get(item.getName()))).toString());
+						Date date = dateFormat.parse((solrDocument.getFirstValue(mapping.get(item.getName()).get(0))).toString());
 						property = new Property(null, item.getName(), ValueType.PRIMITIVE, date);
 						propertyList.add(property);
 						}catch (ParseException e) {

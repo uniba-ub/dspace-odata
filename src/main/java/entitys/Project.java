@@ -3,6 +3,7 @@ package entitys;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import org.apache.olingo.commons.api.edm.EdmPrimitiveTypeKind;
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
@@ -22,7 +23,7 @@ public class Project implements EntityModel{
 	private HashMap<String, String> idconverter;
 	private CsdlEntityType entityType;
 	private CsdlEntitySet entitySet;
-	private HashMap<String, String> mapping;
+	private HashMap<String, List<String>> mapping;
 	private ArrayList<String> ENTITYFILTER;
 	
 	public Project() {
@@ -97,32 +98,32 @@ public class Project implements EntityModel{
 		entitySet.setName(ES_PROJECTS_NAME);
 		entitySet.setType(ET_PROJECT_FQN);
 		
-		mapping = new HashMap<String, String>();
-		mapping.put("cris-id", "cris.legacyId");
-		mapping.put("uuid", "search.resourceid");
-		mapping.put("handle", "handle");
-		mapping.put("entitytype", "search.entitytype");
-		mapping.put("name", "dc.title");
+		mapping = new HashMap<String, List<String>>();
+		mapping.put("cris-id", List.of("cris.legacyId"));
+		mapping.put("uuid", List.of("search.resourceid"));
+		mapping.put("handle", List.of("handle"));
+		mapping.put("entitytype", List.of("search.entitytype"));
+		mapping.put("name", List.of("dc.title"));
 
-		mapping.put("abstract", "crispj.abstract");
-		mapping.put("budget", "crispj.budget");
-		mapping.put("acronym", "crispj.acronym");
-		mapping.put("coinvestigators", "crispj.coinvestigators");
-		mapping.put("expdate", "crispj.expdate");
-		mapping.put("keywords", "crispj.keywords");
-		mapping.put("principalinvestigator", "crispj.principalinvestigator");
-		mapping.put("projectarea", "crispj.projectArea");
-		mapping.put("researchprofile", "crispj.researchprofileuniba");
-		mapping.put("potentialfield", "crispj.potentialfield");
-		mapping.put("startdate", "crispj.startdate");
-		mapping.put("status", "crispj.status");
-		mapping.put("title", "crispj.title");
-		mapping.put("url", "crispj.projectURL");
-		mapping.put("dept", "crispj.deptproject");
-		mapping.put("createdate", "dc.date.accessioned_dt"); //Creation-Time of Entity
+		mapping.put("abstract", List.of("crispj.abstract"));
+		mapping.put("budget", List.of("crispj.budget"));
+		mapping.put("acronym", List.of("crispj.acronym"));
+		mapping.put("coinvestigators", List.of("crispj.coinvestigators"));
+		mapping.put("expdate", List.of("crispj.expdate"));
+		mapping.put("keywords", List.of("crispj.keywords"));
+		mapping.put("principalinvestigator", List.of("crispj.principalinvestigator"));
+		mapping.put("projectarea", List.of("crispj.projectArea"));
+		mapping.put("researchprofile", List.of("crispj.researchprofileuniba"));
+		mapping.put("potentialfield", List.of("crispj.potentialfield"));
+		mapping.put("startdate", List.of("crispj.startdate"));
+		mapping.put("status", List.of("crispj.status"));
+		mapping.put("title", List.of("crispj.title"));
+		mapping.put("url", List.of("crispj.projectURL"));
+		mapping.put("dept", List.of("crispj.deptproject"));
+		mapping.put("createdate", List.of("dc.date.accessioned_dt")); //Creation-Time of Entity
 		
-		mapping.put("pj2rp", "projectinvestigators_authority");
-		mapping.put("pj2ou", "crispj.deptproject_authority");
+		mapping.put("pj2rp", List.of("projectinvestigators_authority"));
+		mapping.put("pj2ou", List.of("crispj.deptproject_authority"));
 
 		ENTITYFILTER = new ArrayList<String>();
 	}
@@ -178,7 +179,7 @@ public class Project implements EntityModel{
 			return navigationFilter;
 	}
 
-	public HashMap<String, String> getMapping() {
+	public HashMap<String, List<String>> getMapping() {
 		return mapping;
 	}
 
