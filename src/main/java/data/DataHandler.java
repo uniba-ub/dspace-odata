@@ -222,22 +222,10 @@ public class DataHandler {
 		String itemType;
 		for(CsdlProperty item: entity.getEntityType().getProperties()) {
 			if(item.getName().equals("id")) {
-				if(entity.getEntityType().getName().toString().equals("Publication")) {
-					String currentId = (String) solrDocument.getFieldValue("handle");
-					int convertedId = converter.convertHandleToId(currentId);
-					property = new Property(null, "id", ValueType.PRIMITIVE, convertedId);
-					propertyList.add(property);
-				}else if(entity.getEntityType().getName().toString().equals("Product")) {
-					String currentId = (String) solrDocument.getFieldValue("handle");
-					int convertedId = converter.convertHandleToId(currentId);
-					property = new Property(null, "id", ValueType.PRIMITIVE, convertedId);
-					propertyList.add(property);
-				} else {
-					String currentId = (String) solrDocument.getFieldValue("cris-id");
-					int convertedId = converter.convertCrisToId(currentId);
-					property = new Property(null, "id", ValueType.PRIMITIVE, convertedId);
-					propertyList.add(property);	
-				}
+				String currentId = (String) solrDocument.getFieldValue("handle");
+				int convertedId = converter.convertHandleToId(currentId);
+				property = new Property(null, "id", ValueType.PRIMITIVE, convertedId);
+				propertyList.add(property);
 			
 			} else {
 				itemType = item.getTypeAsFQNObject().getName();
