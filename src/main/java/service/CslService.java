@@ -122,7 +122,11 @@ public class CslService {
 				}else if(checkValueNull(entity.getProperty("corporation")) != null) {
 					builder.editor(authorNameSpliter((String) checkValueNull(entity.getProperty("corporation"))));
 				}
+			}else if(checkValueNull(entity.getProperty("type")) != null && entity.getProperty("type").getValue().toString().equals("periodicalpart") && checkValueNull(entity.getProperty("author")) == null) {
+			if(checkValueNull(entity.getProperty("editor")) != null) {
+				builder.editor(authorNameSpliter((String) checkValueNull(entity.getProperty("editor"))));
 			}
+		}
 			
 			//Use doi (registered by us) preferred or external doi's
 			if(entity.getProperty("doiour")!=null) {
