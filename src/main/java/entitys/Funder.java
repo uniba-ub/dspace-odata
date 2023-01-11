@@ -21,10 +21,10 @@ public class Funder implements EntityModel {
 	public static final String ES_FUNDERS_NAME = "Funders";
 	public final static String RECOURCE_TYPE_FILTER= "resourcetype_filter:\"funder\n|||\nfunder###crisfunder\"";
 	public final static String ID_CONVERTER_TYP= "funder";
-	private CsdlEntityType entityType;
-	private CsdlEntitySet entitySet;
-	private HashMap<String, String> mapping;
-	private ArrayList<String> ENTITYFILTER;
+	private final CsdlEntityType entityType;
+	private final CsdlEntitySet entitySet;
+	private final HashMap<String, String> mapping;
+	private final ArrayList<String> ENTITYFILTER;
 	
 	public Funder() {
 		CsdlProperty id = new CsdlProperty().setName("id")
@@ -76,7 +76,7 @@ public class Funder implements EntityModel {
 		entitySet.setName(ES_FUNDERS_NAME);
 		entitySet.setType(ET_FUNDER_FQN);
 			
-		mapping = new HashMap<String, String>();
+		mapping = new HashMap<>();
 		mapping.put("cris-id", "cris-id");
 		mapping.put("uuid", "cris-uuid");
 		mapping.put("name", "crisfunder.fundername");
@@ -94,7 +94,7 @@ public class Funder implements EntityModel {
 		mapping.put("identifier_crossreffunder", "crisfunder.funderidentifier_crossreffunder");
 		mapping.put("funder2funder", "crisfunder.funderparentfunder_authority");
 		
-		ENTITYFILTER = new ArrayList<String>();
+		ENTITYFILTER = new ArrayList<>();
 	}
 	
 	@Override
@@ -133,14 +133,17 @@ public class Funder implements EntityModel {
 
 	@Override
 	public String getNavigationFilter(String sourceType, String id) {
-		// TODO Auto-generated method stub
 		String navigationFilter = "";
-		if(sourceType.equals("Awardseries")) {
-			navigationFilter = ("crisawardseries.awardseriesinstitution_authority:\""+id+"\"");
-		} else if(sourceType.equals("Projects")) {
-			navigationFilter = ("crisproject.funding.fundingfunder_authority:\""+ id+"\"");
-		} else if(sourceType.equals("Funders")) {
-			navigationFilter = ("crisfunder.funderparentfunder_authority:\""+ id+"\"");
+		switch (sourceType) {
+			case "Awardseries":
+				navigationFilter = ("crisawardseries.awardseriesinstitution_authority:\"" + id + "\"");
+				break;
+			case "Projects":
+				navigationFilter = ("crisproject.funding.fundingfunder_authority:\"" + id + "\"");
+				break;
+			case "Funders":
+				navigationFilter = ("crisfunder.funderparentfunder_authority:\"" + id + "\"");
+				break;
 		}
 		return navigationFilter;
 	}

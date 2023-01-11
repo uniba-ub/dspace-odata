@@ -21,10 +21,10 @@ public class Awards implements EntityModel {
 	public static final String ES_AWARDS_NAME = "Awards";
 	public final static String RECOURCE_TYPE_FILTER= "resourcetype_filter:\"awards\n|||\nawards###crisawards\"";
 	public final static String ID_CONVERTER_TYP= "awards";
-	private CsdlEntityType entityType;
-	private CsdlEntitySet entitySet;
-	private HashMap<String, String> mapping;
-	private ArrayList<String> ENTITYFILTER;	
+	private final CsdlEntityType entityType;
+	private final CsdlEntitySet entitySet;
+	private final HashMap<String, String> mapping;
+	private final ArrayList<String> ENTITYFILTER;
 	
 	public Awards() {
 		CsdlProperty id = new CsdlProperty().setName("id")
@@ -74,7 +74,7 @@ public class Awards implements EntityModel {
 		entitySet.setName(ES_AWARDS_NAME);
 		entitySet.setType(ET_AWARD_FQN);
 			
-		mapping = new HashMap<String, String>();
+		mapping = new HashMap<>();
 		mapping.put("cris-id", "cris-id");
 		mapping.put("uuid", "cris-uuid");
 		mapping.put("category", "crisawards.awardseries.category");
@@ -84,7 +84,6 @@ public class Awards implements EntityModel {
 		mapping.put("year", "crisawards.awardsyear");
 		mapping.put("person", "crisawards.awardsperson");
 		mapping.put("persontitle", "crisawards.awardsperson.title");
-		mapping.put("publication", "crisawards.awardspublication");
 		mapping.put("awardseries", "crisawards.awardseries");
 		mapping.put("publication", "crisawards.awardspublication");
 		
@@ -92,7 +91,7 @@ public class Awards implements EntityModel {
 		mapping.put("award2rp", "crisawards.awardsperson_authority");
 		mapping.put("award2pj", "crisawards.awardsproject_authority");
 
-		ENTITYFILTER = new ArrayList<String>();
+		ENTITYFILTER = new ArrayList<>();
 
 	}
 	
@@ -128,16 +127,18 @@ public class Awards implements EntityModel {
 
 	@Override
 	public String getNavigationFilter(String sourceType, String id) {
-		// TODO Auto-generated method stub
 		String navigationFilter = "";
-		if(sourceType.equals("Awardseries")) {
-			navigationFilter = ("crisawards.awardseries_authority:\""+id+"\"");
-		} else if(sourceType.equals("Projects")) {
-			navigationFilter = ("crisawards.awardsproject_authority:\""+ id+"\"");
-		} else
-		if(sourceType.equals("Researchers")) {
-			navigationFilter = ("crisawards.awardsperson_authority:\""+id+"\"");
-		}	
+		switch (sourceType) {
+			case "Awardseries":
+				navigationFilter = ("crisawards.awardseries_authority:\"" + id + "\"");
+				break;
+			case "Projects":
+				navigationFilter = ("crisawards.awardsproject_authority:\"" + id + "\"");
+				break;
+			case "Researchers":
+				navigationFilter = ("crisawards.awardsperson_authority:\"" + id + "\"");
+				break;
+		}
 		return navigationFilter;
 	}
 
@@ -148,7 +149,6 @@ public class Awards implements EntityModel {
 
 	@Override
 	public ArrayList<String> getEntityFilter() {
-		// TODO Auto-generated method stub
 		return ENTITYFILTER;
 	}
 

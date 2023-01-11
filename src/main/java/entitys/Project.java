@@ -3,6 +3,7 @@ package entitys;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import org.apache.olingo.commons.api.edm.EdmPrimitiveTypeKind;
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
@@ -22,10 +23,10 @@ public class Project implements EntityModel{
 			"|||\n" + 
 			"Fundings###fundings\"";
 	public final static String ID_CONVERTER_TYP= "pj";
-	private CsdlEntityType entityType;
-	private CsdlEntitySet entitySet;
-	private HashMap<String, String> mapping;
-	private ArrayList<String> ENTITYFILTER;
+	private final CsdlEntityType entityType;
+	private final CsdlEntitySet entitySet;
+	private final HashMap<String, String> mapping;
+	private final ArrayList<String> ENTITYFILTER;
 	
 	public Project() {
 		
@@ -83,13 +84,13 @@ public class Project implements EntityModel{
 		entityType = new CsdlEntityType();
 		entityType.setName(ET_PROJECT_NAME);
 		entityType.setProperties(Arrays.asList(id,crisId,uuid, title, abstracts, principalinvestigator, coinvestigators, budget, startDate, endDate, projectarea,acronym,keywords,status, url,funding, partnership, researchprofile, potentialfield, createdate, dept, pj2rp, pj2ou));
-		entityType.setKey(Arrays.asList(propertyRef));
+		entityType.setKey(List.of(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
 		entitySet.setName(ES_PROJECTS_NAME);
 		entitySet.setType(ET_PROJECT_FQN);
 		
-		mapping = new HashMap<String, String>();
+		mapping = new HashMap<>();
 		mapping.put("cris-id", "cris-id");
 		mapping.put("uuid", "cris-uuid");
 		mapping.put("abstract", "crisproject.abstract");
@@ -112,7 +113,7 @@ public class Project implements EntityModel{
 		mapping.put("pj2rp", "projectinvestigators_authority");
 		mapping.put("pj2ou", "crisproject.deptproject_authority");
 
-		ENTITYFILTER = new ArrayList<String>();
+		ENTITYFILTER = new ArrayList<>();
 	}
 	
 	public CsdlEntityType getEntityType() {
@@ -145,18 +146,23 @@ public class Project implements EntityModel{
 
 	public String getNavigationFilter(String sourceType, String id) {
 		String navigationFilter = "";
-		if(sourceType.equals("Researchers")) {
-			navigationFilter = ("crisproject.principalinvestigator_authority:\""+ id+"\"");
-			navigationFilter = (navigationFilter+ "OR ");
-			navigationFilter = (navigationFilter+ "crisproject.coinvestigators_authority:\""+ id+"\"");
-			
-		} else if(sourceType.equals("Orgunits")) {
-			navigationFilter = ("crisproject.deptproject_authority:\""+ id+"\"");
-		} else if(sourceType.equals("Projects")) {
-			navigationFilter = ("crisproject.parentproject_authority:\""+ id+"\"");
-		} else if(sourceType.equals("Orgunits_CHILD")) {
-			/* special function: returns all projects which belong to the specified ou and all children ou's and their projects. Use some special field being indexed in Dspace.*/
-			navigationFilter = ("projectchildoforgunits:\""+ id+"\"");
+		switch (sourceType) {
+			case "Researchers":
+				navigationFilter = ("crisproject.principalinvestigator_authority:\"" + id + "\"");
+				navigationFilter = (navigationFilter + "OR ");
+				navigationFilter = (navigationFilter + "crisproject.coinvestigators_authority:\"" + id + "\"");
+
+				break;
+			case "Orgunits":
+				navigationFilter = ("crisproject.deptproject_authority:\"" + id + "\"");
+				break;
+			case "Projects":
+				navigationFilter = ("crisproject.parentproject_authority:\"" + id + "\"");
+				break;
+			case "Orgunits_CHILD":
+				/* special function: returns all projects which belong to the specified ou and all children ou's and their projects. Use some special field being indexed in Dspace.*/
+				navigationFilter = ("projectchildoforgunits:\"" + id + "\"");
+				break;
 		}
 			return navigationFilter;
 	}

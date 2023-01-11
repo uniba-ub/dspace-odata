@@ -21,12 +21,12 @@ public class Researcher implements EntityModel {
 	public static final String ES_RESEARCHERS_NAME = "Researchers";
 	public final static String RECOURCE_TYPE_FILTER= "resourcetype_filter:\"009researchers\n|||\nResearcher profiles###researcherprofiles\"";
 	public final static String ID_CONVERTER_TYP= "rp";
-	private HashMap<String, String> mapping;
-	private ArrayList<String> ENTITYFILTER;
+	private final HashMap<String, String> mapping;
+	private final ArrayList<String> ENTITYFILTER;
 
 
-	private CsdlEntityType entityType;
-	private CsdlEntitySet entitySet;
+	private final CsdlEntityType entityType;
+	private final CsdlEntitySet entitySet;
 	
 	public Researcher() {
 		
@@ -87,7 +87,7 @@ public class Researcher implements EntityModel {
 		entitySet.setName(ES_RESEARCHERS_NAME);
 		entitySet.setType(ET_RESEARCHER_FQN);
 			
-		mapping = new HashMap<String, String>();
+		mapping = new HashMap<>();
 		mapping.put("cris-id", "cris-id");
 		mapping.put("uuid", "cris-uuid");
 		mapping.put("biography", "biography");
@@ -106,7 +106,7 @@ public class Researcher implements EntityModel {
 		
 		mapping.put("rp2ou", "crisrp.dept_authority");
 		
-		ENTITYFILTER = new ArrayList<String>();
+		ENTITYFILTER = new ArrayList<>();
 		ENTITYFILTER.add("-ubg.version.visibility:0");
 	}
 	
@@ -141,7 +141,7 @@ public class Researcher implements EntityModel {
 
 	public String getNavigationFilter(String sourceType, String id) {
 			String navigationFilter = "";
-			if(sourceType.equals("Orgunits")) {
+			if (sourceType.equals("Orgunits")) {
 				navigationFilter = ("crisrp.dept_authority:\"");
 				navigationFilter = (navigationFilter+id+"\"");
 			}

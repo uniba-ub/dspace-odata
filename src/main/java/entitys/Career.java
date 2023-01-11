@@ -17,8 +17,8 @@ public class Career implements ComplexModel {
 	// nested objects need a parent key and a search schema
 	public static final int PARENT_FK = 9;
 	public static final String SCHEMA = "ncrisrpcareer";
-	private CsdlComplexType complexType;
-	private HashMap<String, String> mapping;
+	private final CsdlComplexType complexType;
+	private final HashMap<String, String> mapping;
 	
 	public Career() {
 
@@ -36,7 +36,7 @@ public class Career implements ComplexModel {
 		complexType.setName(CT_CAREER_NAME);
 		complexType.setProperties(Arrays.asList(uuid, startdate, enddate, desc, place));
 		
-		mapping = new HashMap<String, String>();
+		mapping = new HashMap<>();
 		
 		mapping.put("uuid", "cris-uuid");
 		mapping.put("startdate", "ncrisrpcareer.careerstartdate");
@@ -62,11 +62,6 @@ public class Career implements ComplexModel {
 
 	public String getSchema() {
 		return SCHEMA;
-	}
-
-	public String getNavigationFilter(String sourceType, String id) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	public HashMap<String, String> getMapping() {

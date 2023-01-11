@@ -7,11 +7,11 @@ import org.apache.olingo.commons.api.edm.provider.CsdlComplexType;
 
 public interface ComplexModel {
 
-	public CsdlComplexType getComplexType();
-	public FullQualifiedName getFullQualifiedName();
-	public String getName();
-	public int getParentFK();
-	public HashMap<String, String> getMapping();
-	public String getSchema();
+	CsdlComplexType getComplexType();
+	FullQualifiedName getFullQualifiedName();
+	String getName();
+	int getParentFK();
+	HashMap<String, String> getMapping();
+	String getSchema();
 
 }

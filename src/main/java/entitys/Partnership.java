@@ -17,8 +17,8 @@ public class Partnership implements ComplexModel {
 	// nested objects need a parent key and a search schema
 	public static final int PARENT_FK = 10;
 	public static final String SCHEMA = "ncrisprojectpartnership";
-	private CsdlComplexType complexType;
-	private HashMap<String, String> mapping;
+	private final CsdlComplexType complexType;
+	private final HashMap<String, String> mapping;
 	
 	
 	public Partnership() {
@@ -42,7 +42,7 @@ public class Partnership implements ComplexModel {
 		complexType.setName(CT_PARTNERSHIP_NAME);
 		complexType.setProperties(Arrays.asList(uuid,name, projectpartner, cooperative, description, url, type));
 		
-		mapping = new HashMap<String, String>();
+		mapping = new HashMap<>();
 		
 		mapping.put("uuid", "cris-uuid");
 		mapping.put("cooperative","ncrisprojectpartnership.partnershipcooperative");
@@ -69,8 +69,7 @@ public class Partnership implements ComplexModel {
 		return PARENT_FK;
 	}
 
-	public String getNavigationFilter(String sourceType, String id) {
-		// TODO Auto-generated method stub
+	public String getNavigationFilter() {
 		return null;
 	}
 

@@ -21,10 +21,10 @@ public class Awardseries implements EntityModel {
 	public static final String ES_AWARDSERIES_NAME = "Awardseries";
 	public final static String RECOURCE_TYPE_FILTER= "resourcetype_filter:\"awardseries\n|||\nawardseries###crisawardseries\"";
 	public final static String ID_CONVERTER_TYP= "awardseries";
-	private CsdlEntityType entityType;
-	private CsdlEntitySet entitySet;
-	private HashMap<String, String> mapping;
-	private ArrayList<String> ENTITYFILTER;
+	private final CsdlEntityType entityType;
+	private final CsdlEntitySet entitySet;
+	private final HashMap<String, String> mapping;
+	private final ArrayList<String> ENTITYFILTER;
 	
 	public Awardseries() {
 		CsdlProperty id = new CsdlProperty().setName("id")
@@ -60,7 +60,7 @@ public class Awardseries implements EntityModel {
 		entitySet.setName(ES_AWARDSERIES_NAME);
 		entitySet.setType(ET_AWARDSERIES_FQN);
 			
-		mapping = new HashMap<String, String>();
+		mapping = new HashMap<>();
 		mapping.put("cris-id", "cris-id");
 		mapping.put("uuid", "cris-uuid");
 		mapping.put("description", "crisawardseries.awardseriesdescription");
@@ -70,7 +70,7 @@ public class Awardseries implements EntityModel {
 		mapping.put("url", "crisawardseries.awardseriesurl");
 		mapping.put("awardseries2funder", "crisawardseries.awardseriesinstitution_authority");
 		
-		ENTITYFILTER = new ArrayList<String>();
+		ENTITYFILTER = new ArrayList<>();
 	}
 	
 	@Override
@@ -109,7 +109,6 @@ public class Awardseries implements EntityModel {
 
 	@Override
 	public String getNavigationFilter(String sourceType, String id) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

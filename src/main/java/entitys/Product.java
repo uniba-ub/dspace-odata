@@ -22,12 +22,12 @@ public class Product implements EntityModel {
 	public static final String ES_PRODUCTS_NAME = "Products";
 	public final static String RECOURCE_TYPE_FILTER= "resourcetype_filter:\"001publications\n|||\nPublications###publications\"";
 	public final static String ID_CONVERTER_TYP= "uniba/";
-	private CsdlEntityType entityType;
-	private CsdlEntitySet entitySet;
-	private HashMap<String, String> mapping;
-	private ArrayList<String> ENTITYFILTER;
+	private final CsdlEntityType entityType;
+	private final CsdlEntitySet entitySet;
+	private final HashMap<String, String> mapping;
+	private final ArrayList<String> ENTITYFILTER;
 	
-	public Product(){
+	public Product() {
 		
 		CsdlProperty id = new CsdlProperty().setName("id")
 				.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
@@ -96,7 +96,7 @@ public class Product implements EntityModel {
 		entitySet.setName(ES_PRODUCTS_NAME);
 		entitySet.setType(ET_PRODUCT_FQN);
 		
-		mapping = new HashMap<String, String>();
+		mapping = new HashMap<>();
 		
 		mapping.put("handle", "handle");
 		mapping.put("creator", "dc.creator");
@@ -124,7 +124,7 @@ public class Product implements EntityModel {
 		mapping.put("prod2ou", "ubg.researchdata.org_authority");
 		mapping.put("prod2award", "ubg.relation.award_authority");
 
-		ENTITYFILTER = new ArrayList<String>();
+		ENTITYFILTER = new ArrayList<>();
 		ENTITYFILTER.add("item.isResearchdata:true");
 		
 	}
@@ -159,15 +159,19 @@ public class Product implements EntityModel {
 
 	public String getNavigationFilter(String sourceType, String id) {
 		String navigationFilter = "";
-		if(sourceType.equals("Researchers")) {
-			navigationFilter = ("contributor_authority:\"");
-			navigationFilter = (navigationFilter+id+"\"");
-		} else if(sourceType.equals("Orgunits")) {
-			navigationFilter = ("ubg.researchdata.org_authority:\"");
-			navigationFilter = (navigationFilter+id+"\"");
-		} else if(sourceType.equals("Projects")) {
-			navigationFilter = ("ubg.relation.project_authority:\"");
-			navigationFilter = (navigationFilter+id+"\"");
+		switch (sourceType) {
+			case "Researchers":
+				navigationFilter = ("contributor_authority:\"");
+				navigationFilter = (navigationFilter + id + "\"");
+				break;
+			case "Orgunits":
+				navigationFilter = ("ubg.researchdata.org_authority:\"");
+				navigationFilter = (navigationFilter + id + "\"");
+				break;
+			case "Projects":
+				navigationFilter = ("ubg.relation.project_authority:\"");
+				navigationFilter = (navigationFilter + id + "\"");
+				break;
 		}
 		
 			return navigationFilter;

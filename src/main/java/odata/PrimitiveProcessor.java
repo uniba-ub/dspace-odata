@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Locale;
 
+import data.DataHandler;
 import org.apache.olingo.commons.api.data.ContextURL;
 import org.apache.olingo.commons.api.data.Entity;
 import org.apache.olingo.commons.api.data.Property;
@@ -19,7 +20,6 @@ import org.apache.olingo.server.api.ODataApplicationException;
 import org.apache.olingo.server.api.ODataRequest;
 import org.apache.olingo.server.api.ODataResponse;
 import org.apache.olingo.server.api.ServiceMetadata;
-import org.apache.olingo.server.api.deserializer.DeserializerException;
 import org.apache.olingo.server.api.serializer.ODataSerializer;
 import org.apache.olingo.server.api.serializer.PrimitiveSerializerOptions;
 import org.apache.olingo.server.api.serializer.SerializerException;
@@ -31,12 +31,10 @@ import org.apache.olingo.server.api.uri.UriResourceEntitySet;
 import org.apache.olingo.server.api.uri.UriResourceProperty;
 import org.apache.solr.client.solrj.SolrServerException;
 
-import data.DataHandler;
-
 public class PrimitiveProcessor implements org.apache.olingo.server.api.processor.PrimitiveProcessor {
 
 	private OData odata;
-	private DataHandler datahandler;
+	private final DataHandler datahandler;
 	private ServiceMetadata serviceMetadata;
 
 	public PrimitiveProcessor(DataHandler datahandler) {
@@ -73,11 +71,7 @@ public class PrimitiveProcessor implements org.apache.olingo.server.api.processo
 		Entity entity = null;
 		try {
 			entity = datahandler.readEntityData(edmEntitySet, keyPredicates);
-		} catch (SolrServerException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		} catch (SolrServerException | IOException e) {
 			e.printStackTrace();
 		}
 		if (entity == null) { // Wrong request
@@ -94,7 +88,7 @@ public class PrimitiveProcessor implements org.apache.olingo.server.api.processo
 		Object value = property.getValue();
 		if (value != null) {
 			//check if requestedResponseFormat is null, then use json
-			if(uriInfo.getFormatOption()==null) {
+			if (uriInfo.getFormatOption() == null) {
 				responseFormat = ContentType.APPLICATION_JSON;	
 			}
 			ODataSerializer serializer = odata.createSerializer(responseFormat);
@@ -116,7 +110,7 @@ public class PrimitiveProcessor implements org.apache.olingo.server.api.processo
 
 	public void updatePrimitive(ODataRequest request, ODataResponse response, UriInfo uriInfo,
 			ContentType requestFormat, ContentType responseFormat)
-			throws ODataApplicationException, DeserializerException, SerializerException {
+			throws ODataApplicationException {
 		throw new ODataApplicationException("Not supported.", HttpStatusCode.NOT_IMPLEMENTED.getStatusCode(),
 				Locale.ROOT);
 	}

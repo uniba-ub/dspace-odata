@@ -22,10 +22,10 @@ public class Journal implements EntityModel {
 	public static final String ES_JOURNALS_NAME = "Journals";
 	public final static String RECOURCE_TYPE_FILTER= "resourcetype_filter:\"series\n|||\nseries###crisseries\"";
 	public final static String ID_CONVERTER_TYP= "series";
-	private CsdlEntityType entityType;
-	private CsdlEntitySet entitySet;
-	private HashMap<String, String> mapping;
-	private ArrayList<String> ENTITYFILTER;
+	private final CsdlEntityType entityType;
+	private final CsdlEntitySet entitySet;
+	private final HashMap<String, String> mapping;
+	private final ArrayList<String> ENTITYFILTER;
 
 	
 	public Journal() {
@@ -61,7 +61,7 @@ public class Journal implements EntityModel {
 		entitySet.setName(ES_JOURNALS_NAME);
 		entitySet.setType(ET_JOURNAL_FQN);
 			
-		mapping = new HashMap<String, String>();
+		mapping = new HashMap<>();
 		mapping.put("cris-id", "cris-id");
 		mapping.put("uuid", "cris-uuid");
 		mapping.put("abbreviation", "crisseries.journalsabbreviation");
@@ -70,7 +70,7 @@ public class Journal implements EntityModel {
 		mapping.put("issn", "crisseries.journalsissn");
 		mapping.put("name", "crisseries.journalsname");
 		
-		ENTITYFILTER = new ArrayList<String>();
+		ENTITYFILTER = new ArrayList<>();
 	}
 	
 	@Override

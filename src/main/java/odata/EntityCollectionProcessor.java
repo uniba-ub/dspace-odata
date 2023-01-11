@@ -55,9 +55,9 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 
 	private OData odata;
 	private ServiceMetadata serviceMetadata;
-	private DataHandler datahandler;
-	private QueryOptionService queryOptionService;
-	private CslService cslService;
+	private final DataHandler datahandler;
+	private final QueryOptionService queryOptionService;
+	private final CslService cslService;
 
 	public EntityCollectionProcessor(DataHandler datahandler) {
 
@@ -78,7 +78,7 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 			ContentType responseFormat) throws ODataApplicationException, ODataLibraryException {
 		EdmEntitySet responseEdmEntitySet = null;
 		EntityCollection responseEntityCollection = null;
-		UriResourceEntitySet uriResourceEntitySet = null;
+		UriResourceEntitySet uriResourceEntitySet;
 		// get the requested EntitySet from the uriInfo object
 		List<UriResource> resourceParts = uriInfo.getUriResourceParts();
 		int segmentCount = resourceParts.size();
@@ -97,7 +97,7 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 		
 
 		UriResource firstUriResourceSegment = resourceParts.get(0);
-		if(firstUriResourceSegment instanceof UriResourceEntitySet) {
+		if (firstUriResourceSegment instanceof UriResourceEntitySet) {
 			uriResourceEntitySet = (UriResourceEntitySet) firstUriResourceSegment;
 			EdmEntitySet startEdmEntitySet = uriResourceEntitySet.getEntitySet();
 			
@@ -107,16 +107,12 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 				// get the data from EntityDatabase for this requested EntitySetName and deliver
 				// as EntitySet
 				try {
-					if(searchOption != null && !searchOption.getName().isEmpty()) {
+					if (searchOption != null && !searchOption.getName().isEmpty()) {
 						entityCollection = datahandler.searchEntitySetData(startEdmEntitySet, searchOption);
-					}else {
+					} else {
 						entityCollection = datahandler.readEntitySetData(startEdmEntitySet);
 					}
-				} catch (SolrServerException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
+				} catch (SolrServerException | IOException e) {
 					e.printStackTrace();
 				}
 				List<Entity> entityList = entityCollection.getEntities();
@@ -144,15 +140,11 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 						sourceEntity = datahandler.readEntityData(startEdmEntitySet, keyPredicates, true);
 						entityCollection = datahandler.getRelatedEntityCollection(sourceEntity, targetEntityType, "");
 
-					} catch (SolrServerException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
+					} catch (SolrServerException | IOException e) {
 						e.printStackTrace();
 					}
-					
-					if(entityCollection == null) {
+
+					if (entityCollection == null) {
 						throw new ODataApplicationException("Nothing found.", HttpStatusCode.NOT_FOUND.getStatusCode(),
 								Locale.ROOT);
 					}
@@ -164,7 +156,7 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 					entityList = queryOptionService.applySkipOption(skipOption, entityList);
 					entityList = queryOptionService.applyTopOption(topOption, entityList);
 
-					if(entityList.size() == 0) {
+					if (entityList.size() == 0) {
 						throw new ODataApplicationException("Nothing found.", HttpStatusCode.NOT_FOUND.getStatusCode(),
 								Locale.ROOT, null, "emptyoption");
 					}
@@ -183,7 +175,7 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 			
 
 		}
-		else if(firstUriResourceSegment instanceof UriResourceFunction) {
+		else if (firstUriResourceSegment instanceof UriResourceFunction) {
 			final UriResourceFunction uriResourceFunction = (UriResourceFunction) firstUriResourceSegment;	
 			String cslStyle = datahandler.readFunctionImportStyle(uriResourceFunction);
 			responseEdmEntitySet = datahandler.readFunctionImportEntitySet(uriResourceFunction, serviceMetadata);
@@ -191,52 +183,52 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 			EdmEntitySet startEntitySet=null;
 			EdmEntityType targetEntityType=null;
 			String relation = ""; //special String to refine navigationproperty for certain functions
-			if(EdmProviderDSpace.FUNCTION_CSL_FOR_RESEARCHER.equals(uriResourceFunction.getFunctionImport().getName())) {
+			if (EdmProviderDSpace.FUNCTION_CSL_FOR_RESEARCHER.equals(uriResourceFunction.getFunctionImport().getName())) {
 				startEntitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Researcher.ES_RESEARCHERS_NAME);
 				targetEntityType = serviceMetadata.getEdm().getEntityType(Publication.ET_PUBLICATION_FQN);
-			} else if(EdmProviderDSpace.FUNCTION_CSL_FOR_ORGUNIT.equals(uriResourceFunction.getFunctionImport().getName())) {
+			} else if (EdmProviderDSpace.FUNCTION_CSL_FOR_ORGUNIT.equals(uriResourceFunction.getFunctionImport().getName())) {
 				startEntitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Orgunit.ES_ORGUNITS_NAME);
 				targetEntityType = serviceMetadata.getEdm().getEntityType(Publication.ET_PUBLICATION_FQN);
-			} else if(EdmProviderDSpace.FUNCTION_CSL_FOR_PROJECT.equals(uriResourceFunction.getFunctionImport().getName())) {
+			} else if (EdmProviderDSpace.FUNCTION_CSL_FOR_PROJECT.equals(uriResourceFunction.getFunctionImport().getName())) {
 				startEntitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Project.ES_PROJECTS_NAME);
 				targetEntityType = serviceMetadata.getEdm().getEntityType(Publication.ET_PUBLICATION_FQN);
-			} else if(EdmProviderDSpace.FUNCTION_CSL_FOR_JOURNAL.equals(uriResourceFunction.getFunctionImport().getName())) {
+			} else if (EdmProviderDSpace.FUNCTION_CSL_FOR_JOURNAL.equals(uriResourceFunction.getFunctionImport().getName())) {
 				startEntitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Journal.ES_JOURNALS_NAME);
 				targetEntityType = serviceMetadata.getEdm().getEntityType(Publication.ET_PUBLICATION_FQN);
-			}else if(EdmProviderDSpace.FUNCTION_CSL_FOR_SERIES.equals(uriResourceFunction.getFunctionImport().getName())) {
+			} else if (EdmProviderDSpace.FUNCTION_CSL_FOR_SERIES.equals(uriResourceFunction.getFunctionImport().getName())) {
 				startEntitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Series.ES_SERIES_NAME);
 				targetEntityType = serviceMetadata.getEdm().getEntityType(Publication.ET_PUBLICATION_FQN);
-			}else if(EdmProviderDSpace.FUNCTION_CSL_FOR_PUBLICATION.equals(uriResourceFunction.getFunctionImport().getName())) {
+			} else if (EdmProviderDSpace.FUNCTION_CSL_FOR_PUBLICATION.equals(uriResourceFunction.getFunctionImport().getName())) {
 				startEntitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Publication.ES_PUBLICATIONS_NAME);
 				relation = "_SELF";
 				targetEntityType = serviceMetadata.getEdm().getEntityType(Publication.ET_PUBLICATION_FQN);
-			}else if(EdmProviderDSpace.FUNCTION_CSL_FOR_SUPERVISOR.equals(uriResourceFunction.getFunctionImport().getName())) {
+			} else if (EdmProviderDSpace.FUNCTION_CSL_FOR_SUPERVISOR.equals(uriResourceFunction.getFunctionImport().getName())) {
 				startEntitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Researcher.ES_RESEARCHERS_NAME);
 				relation = "_SUPERVISOR";
 				targetEntityType = serviceMetadata.getEdm().getEntityType(Publication.ET_PUBLICATION_FQN);
-			}else if(EdmProviderDSpace.FUNCTION_CSL_FOR_AUTHOR.equals(uriResourceFunction.getFunctionImport().getName())) {
+			} else if (EdmProviderDSpace.FUNCTION_CSL_FOR_AUTHOR.equals(uriResourceFunction.getFunctionImport().getName())) {
 				startEntitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Researcher.ES_RESEARCHERS_NAME);
 				relation = "_AUTHOR";
 				targetEntityType = serviceMetadata.getEdm().getEntityType(Publication.ET_PUBLICATION_FQN);
-			}else if(EdmProviderDSpace.FUNCTION_CSL_FOR_RESEARCHER_SELECTED.equals(uriResourceFunction.getFunctionImport().getName())) {
+			} else if (EdmProviderDSpace.FUNCTION_CSL_FOR_RESEARCHER_SELECTED.equals(uriResourceFunction.getFunctionImport().getName())) {
 				startEntitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Researcher.ES_RESEARCHERS_NAME);
 				relation = "_SELECTED";
 				targetEntityType = serviceMetadata.getEdm().getEntityType(Publication.ET_PUBLICATION_FQN);
-			}else if(EdmProviderDSpace.FUNCTION_PJ_FOR_OU.equals(uriResourceFunction.getFunctionImport().getName())) {
+			} else if (EdmProviderDSpace.FUNCTION_PJ_FOR_OU.equals(uriResourceFunction.getFunctionImport().getName())) {
 				startEntitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Orgunit.ES_ORGUNITS_NAME);
 				relation = "_CHILD";
 				targetEntityType = serviceMetadata.getEdm().getEntityType(Project.ET_PROJECT_FQN);
-			}else if(EdmProviderDSpace.FUNCTION_CSL_FOR_PRODUCT.equals(uriResourceFunction.getFunctionImport().getName())) {
+			} else if (EdmProviderDSpace.FUNCTION_CSL_FOR_PRODUCT.equals(uriResourceFunction.getFunctionImport().getName())) {
 				startEntitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Product.ES_PRODUCTS_NAME);
 				relation = "_SELF";
 				targetEntityType = serviceMetadata.getEdm().getEntityType(Product.ET_PRODUCT_FQN);
-			} else if(EdmProviderDSpace.FUNCTION_CSL_FOR_PRODUCTPERSON.equals(uriResourceFunction.getFunctionImport().getName())) {
+			} else if (EdmProviderDSpace.FUNCTION_CSL_FOR_PRODUCTPERSON.equals(uriResourceFunction.getFunctionImport().getName())) {
 				startEntitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Researcher.ES_RESEARCHERS_NAME);
 				targetEntityType = serviceMetadata.getEdm().getEntityType(Product.ET_PRODUCT_FQN);
-			} else if(EdmProviderDSpace.FUNCTION_CSL_FOR_PRODUCTPROJECT.equals(uriResourceFunction.getFunctionImport().getName())) {
+			} else if (EdmProviderDSpace.FUNCTION_CSL_FOR_PRODUCTPROJECT.equals(uriResourceFunction.getFunctionImport().getName())) {
 				startEntitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Project.ES_PROJECTS_NAME);
 				targetEntityType = serviceMetadata.getEdm().getEntityType(Product.ET_PRODUCT_FQN);
-			}else if(EdmProviderDSpace.FUNCTION_CSL_FOR_PRODUCTORGUNIT.equals(uriResourceFunction.getFunctionImport().getName())) {
+			} else if (EdmProviderDSpace.FUNCTION_CSL_FOR_PRODUCTORGUNIT.equals(uriResourceFunction.getFunctionImport().getName())) {
 				startEntitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Orgunit.ES_ORGUNITS_NAME);
 				targetEntityType = serviceMetadata.getEdm().getEntityType(Product.ET_PRODUCT_FQN);
 			}	
@@ -245,41 +237,38 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 			Entity sourceEntity;
 			List<Entity> entityList = null;
 			try {
+				assert startEntitySet != null;
 				sourceEntity = datahandler.readEntityData(startEntitySet, keyPredicates, true);
 				
-				if(sourceEntity == null) {
+				if (sourceEntity == null) {
 					throw new ODataApplicationException("Nothing found.", HttpStatusCode.NOT_FOUND.getStatusCode(),
 							Locale.ROOT);
 				}
-				if(relation.endsWith("SELF")) {
-					entityCollection = datahandler.getEntityCollectionWithSourceEntity(sourceEntity, targetEntityType, relation);
+				if (relation.endsWith("SELF")) {
+					entityCollection = datahandler.getEntityCollectionWithSourceEntity(sourceEntity);
 					entityList = entityCollection.getEntities();
-				}else if(!relation.endsWith("SELECTED")) {
+				} else if (!relation.endsWith("SELECTED")) {
 					entityCollection = datahandler.getRelatedEntityCollection(sourceEntity, targetEntityType, relation);
 					entityList = entityCollection.getEntities();
-				}else {
+				} else {
 					entityList = datahandler.getRelatedSelectedEntityCollection(sourceEntity, targetEntityType, relation);
 				}
-				if(entityList == null) {
+				if (entityList == null) {
 					throw new ODataApplicationException("Nothing found.", HttpStatusCode.NOT_FOUND.getStatusCode(),
 							Locale.ROOT);
 				}
-					} catch (SolrServerException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					
-					responseEntityCollection = queryOptionService.applyCountOption(countOption, entityList);
+			} catch (SolrServerException | IOException e) {
+				e.printStackTrace();
+			}
+
+			responseEntityCollection = queryOptionService.applyCountOption(countOption, entityList);
 					entityList = queryOptionService.applyFilterOption(entityList, filterOption);
 					entityList = queryOptionService.applyOrderByOption(orderByOption, entityList);
 					entityList = queryOptionService.applySkipOption(skipOption, entityList);
 					entityList = queryOptionService.applyTopOption(topOption, entityList);
 					
 	
-					if(entityList.size() == 0) {
+					if (entityList.size() == 0) {
 						throw new ODataApplicationException("Nothing found.", HttpStatusCode.NOT_FOUND.getStatusCode(),
 								Locale.ROOT, null, "emptyoption");
 					}
@@ -288,14 +277,12 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 					}
 					
 					try {
-						if(targetEntityType.getFullQualifiedName().equals(Publication.ET_PUBLICATION_FQN)) {
-						responseEntityCollection = cslService.enhanceCollection(responseEntityCollection, cslStyle);
-						}else if(targetEntityType.getFullQualifiedName().equals(Product.ET_PRODUCT_FQN)) {
+						if (targetEntityType.getFullQualifiedName().equals(Publication.ET_PUBLICATION_FQN)) {
+							responseEntityCollection = cslService.enhanceCollection(responseEntityCollection, cslStyle);
+						} else if (targetEntityType.getFullQualifiedName().equals(Product.ET_PRODUCT_FQN)) {
 							responseEntityCollection = cslService.enhanceProductCollection(responseEntityCollection, cslStyle);
-							}
-						
+						}
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}		
 				
@@ -309,15 +296,12 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 			responseEdmEntitySet =
 			 queryOptionService.applyExpandOptionOnCollection(expandOption,
 			 responseEdmEntitySet, entityCollection);
-		} catch (SolrServerException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		} catch (SolrServerException | IOException e) {
 			e.printStackTrace();
 		}
-		 
 
+
+		assert responseEdmEntitySet != null;
 		EdmEntityType edmEntityType = responseEdmEntitySet.getEntityType();
 		String selectList = odata.createUriHelper().buildContextURLSelectList(edmEntityType, expandOption,
 				selectOption);
@@ -326,7 +310,7 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 		EntityCollectionSerializerOptions opts = EntityCollectionSerializerOptions.with().contextURL(contextUrl)
 				.select(selectOption).expand(expandOption).id(id).count(countOption).build();
 		//check if requestedResponseFormat is null, then use json
-		if(uriInfo.getFormatOption()==null) {
+		if (uriInfo.getFormatOption() == null) {
 			responseFormat = ContentType.APPLICATION_JSON;	
 		}
 		ODataSerializer serializer = odata.createSerializer(responseFormat);

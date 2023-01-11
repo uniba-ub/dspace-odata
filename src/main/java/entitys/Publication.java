@@ -22,12 +22,12 @@ public class Publication implements EntityModel {
 	public static final String ES_PUBLICATIONS_NAME = "Publications";
 	public final static String RECOURCE_TYPE_FILTER= "resourcetype_filter:\"001publications\n|||\nPublications###publications\"";
 	public final static String ID_CONVERTER_TYP= "uniba/";
-	private CsdlEntityType entityType;
-	private CsdlEntitySet entitySet;
-	private HashMap<String, String> mapping;
-	private ArrayList<String> ENTITYFILTER;
+	private final CsdlEntityType entityType;
+	private final CsdlEntitySet entitySet;
+	private final HashMap<String, String> mapping;
+	private final ArrayList<String> ENTITYFILTER;
 	
-	public Publication(){
+	public Publication() {
 		
 		CsdlProperty id = new CsdlProperty().setName("id")
 				.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
@@ -134,7 +134,7 @@ public class Publication implements EntityModel {
 		entitySet.setName(ES_PUBLICATIONS_NAME);
 		entitySet.setType(ET_PUBLICATION_FQN);
 		
-		mapping = new HashMap<String, String>();
+		mapping = new HashMap<>();
 		
 		mapping.put("handle", "handle");
 		mapping.put("articlecollectionEditor", "ubg.editor.articlecollection");
@@ -180,7 +180,7 @@ public class Publication implements EntityModel {
 		mapping.put("publ2ou", "ubg.faculty.org_authority");
 		mapping.put("publ2award", "ubg.relation.award_authority");
 
-		ENTITYFILTER = new ArrayList<String>();
+		ENTITYFILTER = new ArrayList<>();
 		ENTITYFILTER.add("-ubg.version.visibility:0");
 		ENTITYFILTER.add("-item.isResearchdata:true");
 		
@@ -216,41 +216,48 @@ public class Publication implements EntityModel {
 
 	public String getNavigationFilter(String sourceType, String id) {
 		String navigationFilter = "";
-		if(sourceType.equals("Researchers")) {
-			navigationFilter = ("dc.contributor.author_authority:\"");
-			navigationFilter = (navigationFilter+id+"\"");
-			navigationFilter = (navigationFilter+ "OR ");
-			navigationFilter = (navigationFilter+ "dc.contributor.editor_authority:\""+ id+"\"");
-		} else if(sourceType.equals("Researchers_AUTHOR")) {
-			navigationFilter = ("dc.contributor.author_authority:\"");
-			navigationFilter = (navigationFilter+id+"\"");
-		} else if(sourceType.equals("Researchers_SUPERVISOR")) {
-			navigationFilter = ("dc.contributor.supervisor_authority:\"");
-			navigationFilter = (navigationFilter+id+"\"");
-		} else if(sourceType.equals("Researchers_SELECTED")) {
-			/*See DataHandler Function for selectedPublications where this Key is also defined for sorting*/
-			navigationFilter = ("relationpreferences.crisrp.publications.selected:\"");
-			navigationFilter = (navigationFilter+id+"\"");
-		} else if(sourceType.equals("Orgunits")) {
-			navigationFilter = ("ubg.faculty.org_authority:\"");
-			navigationFilter = (navigationFilter+id+"\"");
-			navigationFilter = (navigationFilter+ "OR ");
-			navigationFilter = (navigationFilter+ "dc.relation.authororgunit_authority:\""+ id+"\"");
-			navigationFilter = (navigationFilter+ "OR ");
-			navigationFilter = (navigationFilter+ "dc.relation.contributororgunit_authority:\""+ id+"\"");
-		} else if(sourceType.equals("Series")) {
-			navigationFilter = ("dc.relation.ispartofseries_authority:\"");
-			navigationFilter = (navigationFilter+id+"\"");
-		} else if(sourceType.equals("Journals")) {
-			navigationFilter = ("dc.relation.ispartofseries_authority:\"");
-			navigationFilter = (navigationFilter+id+"\"");
-		} else if(sourceType.equals("Projects")) {
-			navigationFilter = ("ubg.relation.project_authority:\"");
-			navigationFilter = (navigationFilter+id+"\"");
-		} else if(sourceType.equals("Awards")) {
-			navigationFilter = ("ubg.relation.award_authority:\"");
-			navigationFilter = (navigationFilter+id+"\"");
-		} 
+		switch (sourceType) {
+			case "Researchers":
+				navigationFilter = ("dc.contributor.author_authority:\"");
+				navigationFilter = (navigationFilter + id + "\"");
+				navigationFilter = (navigationFilter + "OR ");
+				navigationFilter = (navigationFilter + "dc.contributor.editor_authority:\"" + id + "\"");
+				break;
+			case "Researchers_AUTHOR":
+				navigationFilter = ("dc.contributor.author_authority:\"");
+				navigationFilter = (navigationFilter + id + "\"");
+				break;
+			case "Researchers_SUPERVISOR":
+				navigationFilter = ("dc.contributor.supervisor_authority:\"");
+				navigationFilter = (navigationFilter + id + "\"");
+				break;
+			case "Researchers_SELECTED":
+				/*See DataHandler Function for selectedPublications where this Key is also defined for sorting*/
+				navigationFilter = ("relationpreferences.crisrp.publications.selected:\"");
+				navigationFilter = (navigationFilter + id + "\"");
+				break;
+			case "Orgunits":
+				navigationFilter = ("ubg.faculty.org_authority:\"");
+				navigationFilter = (navigationFilter + id + "\"");
+				navigationFilter = (navigationFilter + "OR ");
+				navigationFilter = (navigationFilter + "dc.relation.authororgunit_authority:\"" + id + "\"");
+				navigationFilter = (navigationFilter + "OR ");
+				navigationFilter = (navigationFilter + "dc.relation.contributororgunit_authority:\"" + id + "\"");
+				break;
+			case "Series":
+			case "Journals":
+				navigationFilter = ("dc.relation.ispartofseries_authority:\"");
+				navigationFilter = (navigationFilter + id + "\"");
+				break;
+			case "Projects":
+				navigationFilter = ("ubg.relation.project_authority:\"");
+				navigationFilter = (navigationFilter + id + "\"");
+				break;
+			case "Awards":
+				navigationFilter = ("ubg.relation.award_authority:\"");
+				navigationFilter = (navigationFilter + id + "\"");
+				break;
+		}
 		
 			return navigationFilter;
 	}

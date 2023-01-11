@@ -22,10 +22,10 @@ public class Series implements EntityModel {
 	public static final String ES_SERIES_NAME = "Series";
 	public final static String RECOURCE_TYPE_FILTER= "resourcetype_filter:\"series\n|||\nseries###crisseries\"";
 	public final static String ID_CONVERTER_TYP= "series";
-	private CsdlEntityType entityType;
-	private CsdlEntitySet entitySet;
-	private HashMap<String, String> mapping;
-	private ArrayList<String> ENTITYFILTER;
+	private final CsdlEntityType entityType;
+	private final CsdlEntitySet entitySet;
+	private final HashMap<String, String> mapping;
+	private final ArrayList<String> ENTITYFILTER;
 	
 	public Series() {
 		CsdlProperty id = new CsdlProperty().setName("id")
@@ -60,7 +60,7 @@ public class Series implements EntityModel {
 		entitySet.setName(ES_SERIES_NAME);
 		entitySet.setType(ET_SERIES_FQN);
 			
-		mapping = new HashMap<String, String>();
+		mapping = new HashMap<>();
 		mapping.put("cris-id", "cris-id");
 		mapping.put("uuid", "cris-uuid");
 		mapping.put("name", "crisseries.journalsname");
@@ -69,7 +69,7 @@ public class Series implements EntityModel {
 		mapping.put("homepage", "crisseries.journalshomepage");
 		mapping.put("description", "crisseries.journalsdescription");
 		
-		ENTITYFILTER = new ArrayList<String>();
+		ENTITYFILTER = new ArrayList<>();
 	}
 	
 	@Override

@@ -17,8 +17,8 @@ public class Affiliation implements ComplexModel {
 	// nested objects need a parent key and a search schema
 	public static final int PARENT_FK = 9;
 	public static final String SCHEMA = "ncrisrpaffiliation";
-	private CsdlComplexType complexType;
-	private HashMap<String, String> mapping;
+	private final CsdlComplexType complexType;
+	private final HashMap<String, String> mapping;
 	
 	public Affiliation() {
 
@@ -39,7 +39,7 @@ public class Affiliation implements ComplexModel {
 		complexType.setName(CT_AFFILIATION_NAME);
 		complexType.setProperties(Arrays.asList(uuid, startdate, enddate, role, ouname, aff2ou));
 		
-		mapping = new HashMap<String, String>();
+		mapping = new HashMap<>();
 		
 		mapping.put("uuid", "cris-uuid");
 		mapping.put("startdate", "ncrisrpaffiliation.affiliationstartdate");
@@ -67,11 +67,6 @@ public class Affiliation implements ComplexModel {
 
 	public String getSchema() {
 		return SCHEMA;
-	}
-
-	public String getNavigationFilter(String sourceType, String id) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	public HashMap<String, String> getMapping() {

@@ -40,8 +40,8 @@ public class EntityProcessor implements org.apache.olingo.server.api.processor.E
 
 	private OData odata;
 	private ServiceMetadata serviceMetadata;
-	private DataHandler datahandler;
-	private QueryOptionService queryOptionService;
+	private final DataHandler datahandler;
+	private final QueryOptionService queryOptionService;
 
 	public EntityProcessor(DataHandler entityDatabase) {
 
@@ -61,7 +61,7 @@ public class EntityProcessor implements org.apache.olingo.server.api.processor.E
 	}
 
 	public void deleteEntity(ODataRequest arg0, ODataResponse arg1, UriInfo arg2)
-			throws ODataApplicationException, ODataLibraryException {
+			throws ODataApplicationException {
 		throw new ODataApplicationException("Delete is not supported", HttpStatusCode.NOT_IMPLEMENTED.getStatusCode(),
 				Locale.ROOT);
 
@@ -96,11 +96,7 @@ public class EntityProcessor implements org.apache.olingo.server.api.processor.E
 			List<UriParameter> keyPredicates = uriResourceEntitySet.getKeyPredicates();
 			try {
 				responseEntity = datahandler.readEntityData(startEdmEntitySet, keyPredicates);
-			} catch (SolrServerException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
+			} catch (SolrServerException | IOException e) {
 				e.printStackTrace();
 			}
 
@@ -125,16 +121,12 @@ public class EntityProcessor implements org.apache.olingo.server.api.processor.E
 						responseEntity = datahandler.getRelatedEntity(sourceEntity, responseEdmEntityType,
 								navKeyPredicates);
 					}
-				} catch (SolrServerException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
+				} catch (SolrServerException | IOException e) {
 					e.printStackTrace();
 				}
 
 			}
-		}else {
+		} else {
 			throw new ODataApplicationException("Not supported", HttpStatusCode.NOT_IMPLEMENTED.getStatusCode(),
 					Locale.ROOT);
 		}
@@ -151,16 +143,12 @@ public class EntityProcessor implements org.apache.olingo.server.api.processor.E
 		try {
 			responseEntity = queryOptionService.applyExpandOptionOnEntity(expandOption, responseEntity,
 					responseEdmEntitySet);
-		} catch (SolrServerException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		} catch (SolrServerException | IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		//check if requestedResponseFormat is null, then use json
-		if(uriInfo.getFormatOption()==null) {
+		if (uriInfo.getFormatOption() == null) {
 			responseFormat = ContentType.APPLICATION_JSON;	
 		}
 		ODataSerializer serializer = this.odata.createSerializer(responseFormat);
@@ -184,7 +172,7 @@ public class EntityProcessor implements org.apache.olingo.server.api.processor.E
 	}
 
 	public void updateEntity(ODataRequest arg0, ODataResponse arg1, UriInfo arg2, ContentType arg3, ContentType arg4)
-			throws ODataApplicationException, ODataLibraryException {
+			throws ODataApplicationException {
 		throw new ODataApplicationException("U is not supported", HttpStatusCode.NOT_IMPLEMENTED.getStatusCode(),
 				Locale.ROOT);
 

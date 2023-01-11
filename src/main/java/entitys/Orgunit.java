@@ -3,6 +3,7 @@ package entitys;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import org.apache.olingo.commons.api.edm.EdmPrimitiveTypeKind;
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
@@ -20,12 +21,12 @@ public class Orgunit implements EntityModel{
 	public static final String ES_ORGUNITS_NAME = "Orgunits";
 	public final static String RECOURCE_TYPE_FILTER= "resourcetype_filter:\"008orgunits\n|||\nOrganizations###orgunits\"";
 	public final static String ID_CONVERTER_TYP= "ou";
-	private CsdlEntityType entityType;
-	private CsdlEntitySet entitySet;
-	private HashMap<String, String> mapping;
-	private ArrayList<String> ENTITYFILTER;
+	private final CsdlEntityType entityType;
+	private final CsdlEntitySet entitySet;
+	private final HashMap<String, String> mapping = new HashMap<>();
+	private final ArrayList<String> ENTITYFILTER;
 
-	public Orgunit(){
+	public Orgunit() {
 		
 	CsdlProperty id = new CsdlProperty().setName("id")
 			.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
@@ -61,13 +62,12 @@ public class Orgunit implements EntityModel{
 	entityType = new CsdlEntityType();
 	entityType.setName(ET_ORGUNIT_NAME);
 	entityType.setProperties(Arrays.asList(id, uuid, idmKey, name, description, url, director, date, endDate,active,crossrefid, parentorgunit));
-	entityType.setKey(Arrays.asList(propertyRef));
+	entityType.setKey(List.of(propertyRef));
 	
 	entitySet = new CsdlEntitySet();
 	entitySet.setName(ES_ORGUNITS_NAME);
 	entitySet.setType(ET_ORGUNIT_FQN);
-	
-	mapping = new HashMap<String, String>();
+
 	mapping.put("cris-id", "cris-id");
 	mapping.put("uuid", "cris-uuid");
 	mapping.put("active", "crisou.active");
@@ -80,7 +80,7 @@ public class Orgunit implements EntityModel{
 	mapping.put("parentorgunit", "crisou.parentorgunit_authority");
 	mapping.put("url", "crisou.url");
 	
-	ENTITYFILTER = new ArrayList<String>();
+	ENTITYFILTER = new ArrayList<>();
 	}
 
 	public CsdlEntityType getEntityType() {
@@ -113,7 +113,7 @@ public class Orgunit implements EntityModel{
 
 	public String getNavigationFilter(String sourceType, String id) {
 		String navigationFilter = "";
-		if(sourceType.equals("Orgunits")) {
+		if (sourceType.equals("Orgunits")) {
 			navigationFilter = ("crisou.parentorgunit_authority:\""+id+"\"");
 		}		
 		return navigationFilter;

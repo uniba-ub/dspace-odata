@@ -17,8 +17,8 @@ public class Education implements ComplexModel {
 	// nested objects need a parent key and a search schema
 	public static final int PARENT_FK = 9;
 	public static final String SCHEMA = "ncrisrpeducation";
-	private CsdlComplexType complexType;
-	private HashMap<String, String> mapping;
+	private final CsdlComplexType complexType;
+	private final HashMap<String, String> mapping;
 	
 	public Education() {
 
@@ -36,7 +36,7 @@ public class Education implements ComplexModel {
 		complexType.setName(CT_EDUCATION_NAME);
 		complexType.setProperties(Arrays.asList(uuid, startdate, enddate, desc, place));
 		
-		mapping = new HashMap<String, String>();
+		mapping = new HashMap<>();
 		
 		mapping.put("uuid", "cris-uuid");
 		mapping.put("startdate", "ncrisrpeducation.educationstartdate");
@@ -64,8 +64,7 @@ public class Education implements ComplexModel {
 		return SCHEMA;
 	}
 
-	public String getNavigationFilter(String sourceType, String id) {
-		// TODO Auto-generated method stub
+	public String getNavigationFilter() {
 		return null;
 	}
 
