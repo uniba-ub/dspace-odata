@@ -250,7 +250,12 @@ public class DataHandler {
 								}
 							}
 						}
-						property = new Property(null, item.getName(), ValueType.PRIMITIVE, builder.toString());
+						if (builder.toString().length() != 0) {
+							property = new Property(null, item.getName(), ValueType.PRIMITIVE, builder.toString());
+						}else{
+							property = new Property(null, item.getName(), ValueType.PRIMITIVE, null);
+						}
+
 						propertyList.add(property);
 						builder = new StringBuilder();
 					} else if(itemType.equals("Int32") || itemType.equals("Int16") || itemType.equals("Boolean")) {
