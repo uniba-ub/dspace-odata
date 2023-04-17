@@ -7,8 +7,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -35,7 +33,6 @@ import org.apache.olingo.commons.api.edm.EdmEntityType;
 import org.apache.olingo.commons.api.edm.provider.CsdlEntitySet;
 import org.apache.olingo.commons.api.edm.provider.CsdlProperty;
 import org.apache.olingo.commons.api.ex.ODataRuntimeException;
-import org.apache.olingo.server.api.ODataApplicationException;
 import org.apache.olingo.server.api.ServiceMetadata;
 import org.apache.olingo.server.api.uri.UriParameter;
 import org.apache.olingo.server.api.uri.UriResourceFunction;
@@ -44,13 +41,6 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 
-import entitys.ComplexModel;
-import entitys.EntityModel;
-import entitys.EntityRegister;
-import entitys.Product;
-import entitys.Project;
-import entitys.Publication;
-import odata.EdmProviderDSpace;
 import service.IdConverter;
 import service.SolrQueryMaker;
 import util.Util;
@@ -175,7 +165,7 @@ public class DataHandler {
 			}		
 		}
 
-		if(ignoreprivacy == false) {
+		if(!ignoreprivacy) {
 			addReadableByAnonymousFilter();
 		}
 
@@ -604,9 +594,15 @@ public class DataHandler {
 	}
 
 	private void addReadableByAnonymousFilter() {
-		String groupuuid = System.getenv("SOLR_ANONYMOUS_GROUP_UUID");
-		if(groupuuid != null && !groupuuid.isBlank()) {
-			queryMaker.addSearchFilterForAttribute("read", groupuuid);
+		String groupfilter = System.getenv("SOLR_ANONYMOUS_GROUP_UUID");
+		if(groupfilter != null && !groupfilter.isBlank()) {
+			if (groupfilter.contains(":")) {
+				// it's some filter'
+			queryMaker.addSearchFilter(groupfilter);
+			} else {
+				//it's an uuid
+			queryMaker.addSearchFilterForAttribute("read", groupfilter);
+			}
 		}
 
 	}
