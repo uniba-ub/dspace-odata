@@ -43,6 +43,9 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 	
 	public static final String FUNCTION_CSL_FOR_ORGUNIT = "cslfororgunit";
 	public static final FullQualifiedName FUNCTION_CSL_FOR_ORGUNIT_FQN = new FullQualifiedName(NAMESPACE, FUNCTION_CSL_FOR_ORGUNIT);
+
+	public static final String FUNCTION_CSL_FOR_ORGUNIT_CHILD = "cslfororgunitchild";
+	public static final FullQualifiedName FUNCTION_CSL_FOR_ORGUNIT_CHILD_FQN = new FullQualifiedName(NAMESPACE, FUNCTION_CSL_FOR_ORGUNIT_CHILD);
 	
 	public static final String FUNCTION_CSL_FOR_PROJECT = "cslforproject";
 	public static final FullQualifiedName FUNCTION_CSL_FOR_PROJECT_FQN = new FullQualifiedName(NAMESPACE, FUNCTION_CSL_FOR_PROJECT);
@@ -107,6 +110,7 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 		functionImports.add(getFunctionImport(CONTAINER, FUNCTION_CSL_FOR_PUBLICATION));
 		functionImports.add(getFunctionImport(CONTAINER, FUNCTION_CSL_FOR_PROJECT));
 		functionImports.add(getFunctionImport(CONTAINER, FUNCTION_CSL_FOR_ORGUNIT));
+		functionImports.add(getFunctionImport(CONTAINER, FUNCTION_CSL_FOR_ORGUNIT_CHILD));
 		functionImports.add(getFunctionImport(CONTAINER, FUNCTION_CSL_FOR_JOURNAL));
 		functionImports.add(getFunctionImport(CONTAINER, FUNCTION_CSL_FOR_SERIES));
 		functionImports.add(getFunctionImport(CONTAINER, FUNCTION_PJ_FOR_OU));
@@ -181,6 +185,7 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 		List<CsdlFunction> functions = new LinkedList<>();
 		functions.addAll(getFunctions(FUNCTION_CSL_FOR_RESEARCHER_FQN));
 		functions.addAll(getFunctions(FUNCTION_CSL_FOR_ORGUNIT_FQN));
+		functions.addAll(getFunctions(FUNCTION_CSL_FOR_ORGUNIT_CHILD_FQN));
 		functions.addAll(getFunctions(FUNCTION_CSL_FOR_PROJECT_FQN));
 		functions.addAll(getFunctions(FUNCTION_CSL_FOR_JOURNAL_FQN));
 		functions.addAll(getFunctions(FUNCTION_CSL_FOR_SERIES_FQN));
@@ -269,6 +274,37 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 					.setComposable(true);
 			functions.add(function);
 			
+			return functions;
+		} else if (functionName.equals(FUNCTION_CSL_FOR_ORGUNIT_CHILD_FQN)) {
+
+			final List<CsdlFunction> functions = new LinkedList<>();
+			final List<CsdlParameter> parameterList = new ArrayList<>();
+
+			final CsdlParameter parameterStyle = new CsdlParameter();
+			parameterStyle.setName("style");
+			parameterStyle.setNullable(false);
+			parameterStyle.setCollection(false);
+			parameterStyle.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+			parameterList.add(parameterStyle);
+
+			final CsdlParameter parameterOrgunitid = new CsdlParameter()
+				.setName("id")
+				.setNullable(false)
+				.setCollection(false)
+				.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
+			parameterList.add(parameterOrgunitid);
+
+			final CsdlReturnType returnType = new CsdlReturnType();
+			returnType.setCollection(true);
+			returnType.setType(Publication.ET_PUBLICATION_FQN);
+
+			final CsdlFunction function = new CsdlFunction();
+			function.setName(FUNCTION_CSL_FOR_ORGUNIT_CHILD_FQN.getName())
+				.setParameters(parameterList)
+				.setReturnType(returnType)
+				.setComposable(true);
+			functions.add(function);
+
 			return functions;
 		} else if (functionName.equals(FUNCTION_CSL_FOR_PUBLICATION_FQN)) {
 			
@@ -655,6 +691,12 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 						.setFunction(FUNCTION_CSL_FOR_ORGUNIT_FQN)
 						.setEntitySet(Publication.ES_PUBLICATIONS_NAME)
 						.setIncludeInServiceDocument(true);		
+			} else if (functionImportName.equals(FUNCTION_CSL_FOR_ORGUNIT_CHILD_FQN.getName())) {
+				return new CsdlFunctionImport()
+					.setName(functionImportName)
+					.setFunction(FUNCTION_CSL_FOR_ORGUNIT_CHILD_FQN)
+					.setEntitySet(Publication.ES_PUBLICATIONS_NAME)
+					.setIncludeInServiceDocument(true);
 			} else if (functionImportName.equals(FUNCTION_CSL_FOR_PROJECT_FQN.getName())) {
 				return new CsdlFunctionImport()
 						.setName(functionImportName)

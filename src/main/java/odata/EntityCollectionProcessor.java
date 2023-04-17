@@ -189,7 +189,11 @@ public class EntityCollectionProcessor implements org.apache.olingo.server.api.p
 			} else if (EdmProviderDSpace.FUNCTION_CSL_FOR_ORGUNIT.equals(uriResourceFunction.getFunctionImport().getName())) {
 				startEntitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Orgunit.ES_ORGUNITS_NAME);
 				targetEntityType = serviceMetadata.getEdm().getEntityType(Publication.ET_PUBLICATION_FQN);
-			} else if (EdmProviderDSpace.FUNCTION_CSL_FOR_PROJECT.equals(uriResourceFunction.getFunctionImport().getName())) {
+			} else if (EdmProviderDSpace.FUNCTION_CSL_FOR_ORGUNIT_CHILD.equals(uriResourceFunction.getFunctionImport().getName())) {
+				startEntitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Orgunit.ES_ORGUNITS_NAME);
+				relation = "_CHILD";
+				targetEntityType = serviceMetadata.getEdm().getEntityType(Publication.ET_PUBLICATION_FQN);
+			}  else if (EdmProviderDSpace.FUNCTION_CSL_FOR_PROJECT.equals(uriResourceFunction.getFunctionImport().getName())) {
 				startEntitySet = serviceMetadata.getEdm().getEntityContainer().getEntitySet(Project.ES_PROJECTS_NAME);
 				targetEntityType = serviceMetadata.getEdm().getEntityType(Publication.ET_PUBLICATION_FQN);
 			} else if (EdmProviderDSpace.FUNCTION_CSL_FOR_JOURNAL.equals(uriResourceFunction.getFunctionImport().getName())) {
