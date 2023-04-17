@@ -186,7 +186,7 @@ public class Publication implements EntityModel {
 		mapping.put("uri", List.of("dc.identifier.uri"));
 		mapping.put("volume", List.of("dc.relation.volume"));
 		
-		mapping.put("publ2rp", List.of("author_authority"));
+		mapping.put("publ2rp", List.of("author_authority", "author_old_authority"));
 		mapping.put("publ2series", List.of("dc.relation.ispartofseries_authority"));
 		mapping.put("publ2journals", List.of("dc.relation.ispartofseries_authority"));
 		mapping.put("publ2pj", List.of("ubg.relation.project_authority"));

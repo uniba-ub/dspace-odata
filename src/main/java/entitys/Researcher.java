@@ -171,7 +171,7 @@ public class Researcher implements EntityModel {
 
 	/***
 	 * Non-discoverable Researchers will return some limited mapping of fields.
-	 * @return
+	 * @return hashmap with mapping
 	 */
 	@Override
 	public HashMap<String, List<String>> getNonDiscoverableMapping() {
@@ -185,11 +185,11 @@ public class Researcher implements EntityModel {
 		mapping.put("orcid", List.of("person.identifier.orcid"));
 		mapping.put("gnd", List.of("crisrp.gndId"));
 		return mapping;
-	};
+	}
 
 	/***
 	 * Non-discoverable Researchers will have no complex entities.
-	 * @return
+	 * @return boolean
 	 */
 	@Override
 	public boolean hasNonDiscoverableComplexProperties(){
