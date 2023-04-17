@@ -2,7 +2,7 @@
 # build environment #
 #####################
 
-FROM maven:3.8-jdk-11 AS maven-builder
+FROM maven:3.9-eclipse-temurin-17 AS maven-builder
 
 COPY . /app
 WORKDIR /app
@@ -13,7 +13,7 @@ RUN ls -lAh /app/target/
 #######################
 # runtime environment #
 #######################
-FROM tomcat:9.0-jdk11-openjdk-slim
+FROM tomcat:9-jdk17
 
 ENV PATH=$CATALINA_HOME/bin:$PATH
 
