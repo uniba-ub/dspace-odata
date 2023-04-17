@@ -11,16 +11,16 @@ import org.apache.olingo.commons.api.edm.provider.CsdlEntityType;
 
 public interface EntityModel {
 
-	public CsdlEntityType getEntityType();
-	public FullQualifiedName getFullQualifiedName();
-	public String getEntitySetName();
-	public CsdlEntitySet getEntitySet();
-	public String getRecourceTypeFilter();
-	public HashMap<String, String> getIdConverter();
-	public String getNavigationFilter(String sourceType, String id);
-	public HashMap<String, List<String>> getMapping();
-	public ArrayList<String> getEntityFilter();
-	public String getLegacyPrefix();
+	CsdlEntityType getEntityType();
+	FullQualifiedName getFullQualifiedName();
+	String getEntitySetName();
+	CsdlEntitySet getEntitySet();
+	String getRecourceTypeFilter();
+	HashMap<String, String> getIdConverter();
+	String getNavigationFilter(String sourceType, String id);
+	HashMap<String, List<String>> getMapping();
+	ArrayList<String> getEntityFilter();
+	String getLegacyPrefix();
 
 
 }

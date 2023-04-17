@@ -4,14 +4,13 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
+import data.DataHandler;
 import org.apache.olingo.commons.api.Constants;
 import org.apache.olingo.commons.api.data.Entity;
 import org.apache.olingo.commons.api.data.EntityCollection;
@@ -42,11 +41,9 @@ import org.apache.olingo.server.api.uri.queryoption.expression.ExpressionVisitEx
 import org.apache.olingo.server.api.uri.queryoption.expression.Member;
 import org.apache.solr.client.solrj.SolrServerException;
 
-import data.DataHandler;
-
 public class QueryOptionService {
 
-	private DataHandler entityDatabase;
+	private final DataHandler entityDatabase;
 
 	public QueryOptionService(DataHandler entityDatabase) {
 
@@ -106,9 +103,9 @@ public class QueryOptionService {
 
 	public EdmEntitySet applyExpandOptionOnCollection(ExpandOption expandOption, EdmEntitySet responseEdmEntitySet,
 			EntityCollection entityCollection) throws ODataApplicationException, SolrServerException, IOException {
-		List<EdmNavigationProperty> edmNavigationPropertyList = new LinkedList<EdmNavigationProperty>();
+		List<EdmNavigationProperty> edmNavigationPropertyList = new LinkedList<>();
 		if (expandOption != null) {
-			EdmNavigationProperty edmNavigationProperty = null;
+			EdmNavigationProperty edmNavigationProperty;
 			for (ExpandItem expandItem : expandOption.getExpandItems()) {
 
 				if (expandItem.isStar()) {
@@ -130,48 +127,46 @@ public class QueryOptionService {
 
 					}
 				}
-				if (edmNavigationPropertyList != null) {
-					for (EdmNavigationProperty navProp : edmNavigationPropertyList) {
+				for (EdmNavigationProperty navProp : edmNavigationPropertyList) {
 
-						String navPropName = navProp.getName();
-						EdmEntityType expandEdmEntityType = navProp.getType();
+					String navPropName = navProp.getName();
+					EdmEntityType expandEdmEntityType = navProp.getType();
 
-						List<Entity> entityList = entityCollection.getEntities();
+					List<Entity> entityList = entityCollection.getEntities();
 
-						for (Entity entity : entityList) {
+					for (Entity entity : entityList) {
 
-							Link link = new Link();
-							link.setTitle(navPropName);
-							link.setType(Constants.ENTITY_NAVIGATION_LINK_TYPE);
-							link.setRel(Constants.NS_ASSOCIATION_LINK_REL + navPropName);
+						Link link = new Link();
+						link.setTitle(navPropName);
+						link.setType(Constants.ENTITY_NAVIGATION_LINK_TYPE);
+						link.setRel(Constants.NS_ASSOCIATION_LINK_REL + navPropName);
 
-							if (navProp.isCollection()) {
-								EntityCollection expandEntityCollection = entityDatabase
-										.getRelatedEntityCollection(entity, expandEdmEntityType, "");
-								FilterOption filterItemOption = expandItem.getFilterOption();
-								if (filterItemOption != null) {
-									List<Entity> expandedEntityList = expandEntityCollection.getEntities();
-									expandedEntityList = applyFilterOption(expandedEntityList, filterItemOption);
-								}
-
-								link.setInlineEntitySet(expandEntityCollection);
-								ExpandOption expandItemOption = expandItem.getExpandOption();
-								if (expandItemOption != null) {
-									responseEdmEntitySet = applyExpandOptionOnCollection(expandItemOption,
-											responseEdmEntitySet, expandEntityCollection);
-								}
-
-							} else {
-								Entity expandEntity = entityDatabase.getRelatedEntity(entity, expandEdmEntityType);
-								link.setInlineEntity(expandEntity);
-
+						if (navProp.isCollection()) {
+							EntityCollection expandEntityCollection = entityDatabase
+									.getRelatedEntityCollection(entity, expandEdmEntityType, "");
+							FilterOption filterItemOption = expandItem.getFilterOption();
+							if (filterItemOption != null) {
+								List<Entity> expandedEntityList = expandEntityCollection.getEntities();
+								expandedEntityList = applyFilterOption(expandedEntityList, filterItemOption);
 							}
 
-							entity.getNavigationLinks().add(link);
+							link.setInlineEntitySet(expandEntityCollection);
+							ExpandOption expandItemOption = expandItem.getExpandOption();
+							if (expandItemOption != null) {
+								responseEdmEntitySet = applyExpandOptionOnCollection(expandItemOption,
+										responseEdmEntitySet, expandEntityCollection);
+							}
+
+						} else {
+							Entity expandEntity = entityDatabase.getRelatedEntity(entity, expandEdmEntityType);
+							link.setInlineEntity(expandEntity);
 
 						}
 
+						entity.getNavigationLinks().add(link);
+
 					}
+
 				}
 			}
 		}
@@ -182,9 +177,9 @@ public class QueryOptionService {
 	public Entity applyExpandOptionOnEntity(ExpandOption expandOption, Entity responseEntity,
 			EdmEntitySet responseEdmEntitySet) throws ODataApplicationException, SolrServerException, IOException {
 		if (expandOption != null) {
-			EdmNavigationProperty edmNavigationProperty = null;
+			EdmNavigationProperty edmNavigationProperty;
 
-			List<EdmNavigationProperty> edmNavigationPropertyList = new LinkedList<EdmNavigationProperty>();
+			List<EdmNavigationProperty> edmNavigationPropertyList = new LinkedList<>();
 			for (ExpandItem expandItem : expandOption.getExpandItems()) {
 				if (expandItem.isStar()) {
 					List<EdmNavigationPropertyBinding> bindings = responseEdmEntitySet.getNavigationPropertyBindings();
@@ -211,45 +206,41 @@ public class QueryOptionService {
 
 				}
 
-				if (edmNavigationPropertyList != null) {
+				for (EdmNavigationProperty navProp : edmNavigationPropertyList) {
+					Link link = new Link();
 
-					for (EdmNavigationProperty navProp : edmNavigationPropertyList) {
-						Link link = new Link();
+					EdmEntityType expandEdmEntityType = navProp.getType();
+					String navPropName = navProp.getName();
+					link.setTitle(navPropName);
+					link.setType(Constants.ENTITY_NAVIGATION_LINK_TYPE);
+					link.setRel(Constants.NS_ASSOCIATION_LINK_REL + navPropName);
 
-						EdmEntityType expandEdmEntityType = navProp.getType();
-						String navPropName = navProp.getName();
-						link.setTitle(navPropName);
-						link.setType(Constants.ENTITY_NAVIGATION_LINK_TYPE);
-						link.setRel(Constants.NS_ASSOCIATION_LINK_REL + navPropName);
+					if (navProp.isCollection()) {
+						EntityCollection expandEntityCollection = entityDatabase
+								.getRelatedEntityCollection(responseEntity, expandEdmEntityType, "");
+						ExpandOption expandItemOption = expandItem.getExpandOption();
 
-						if (navProp.isCollection()) {
-							EntityCollection expandEntityCollection = entityDatabase
-									.getRelatedEntityCollection(responseEntity, expandEdmEntityType, "");
-							ExpandOption expandItemOption = expandItem.getExpandOption();
-
-							FilterOption filterItemOption = expandItem.getFilterOption();
-							if (filterItemOption != null) {
-								List<Entity> expandedEntityList = expandEntityCollection.getEntities();
-								expandedEntityList = applyFilterOption(expandedEntityList, filterItemOption);
-							}
-
-							if (expandItemOption != null) {
-								responseEdmEntitySet = applyExpandOptionOnCollection(expandItemOption,
-										responseEdmEntitySet, expandEntityCollection);
-							}
-
-							link.setInlineEntitySet(expandEntityCollection);
-
-						} else {
-							Entity expandEntity = entityDatabase.getRelatedEntity(responseEntity, expandEdmEntityType);
-							link.setInlineEntity(expandEntity);
-							link.setHref(expandEntity.getId().toASCIIString());
-
+						FilterOption filterItemOption = expandItem.getFilterOption();
+						if (filterItemOption != null) {
+							List<Entity> expandedEntityList = expandEntityCollection.getEntities();
+							expandedEntityList = applyFilterOption(expandedEntityList, filterItemOption);
 						}
 
-						responseEntity.getNavigationLinks().add(link);
+						if (expandItemOption != null) {
+							responseEdmEntitySet = applyExpandOptionOnCollection(expandItemOption,
+									responseEdmEntitySet, expandEntityCollection);
+						}
+
+						link.setInlineEntitySet(expandEntityCollection);
+
+					} else {
+						Entity expandEntity = entityDatabase.getRelatedEntity(responseEntity, expandEdmEntityType);
+						link.setInlineEntity(expandEntity);
+						link.setHref(expandEntity.getId().toASCIIString());
 
 					}
+
+					responseEntity.getNavigationLinks().add(link);
 
 				}
 
@@ -266,10 +257,6 @@ public class QueryOptionService {
 			// sort by one option
 			List<OrderByItem> orderItemList = orderByOption.getOrders();
 			final OrderByItem orderByItem = orderItemList.get(0);
-			try {
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
 
 			Expression expression = orderByItem.getExpression();
 			if (expression instanceof Member) {
@@ -279,58 +266,56 @@ public class QueryOptionService {
 					EdmProperty edmProperty = ((UriResourcePrimitiveProperty) uriResource).getProperty();
 					final String sortPropertyName = edmProperty.getName();
 					final String type = edmProperty.getType().toString();
-					Collections.sort(entityList, new Comparator<Entity>() {
-						public int compare(Entity entity1, Entity entity2) {
-							int compareResult = 0;
-							if (type.equals("Edm.Int32")) {
-								Integer integer1 = (Integer) entity1.getProperty(sortPropertyName).getValue();
-								Integer integer2 = (Integer) entity2.getProperty(sortPropertyName).getValue();
-								compareResult = integer1.compareTo(integer2);
-							} else if (type.equals("Edm.String")) {
-								String propertyValue1 = "";  
-								String propertyValue2 = "";
-								Property prop1 = entity1.getProperty(sortPropertyName);
-								if(prop1 != null && !prop1.isNull()) {
-									propertyValue1 = prop1.getValue().toString();
-								}
-								Property prop2 = entity2.getProperty(sortPropertyName);
-								if(prop2 != null && !prop2.isNull()) {
-									propertyValue2 = prop2.getValue().toString();
-								}
-								compareResult = propertyValue1.compareTo(propertyValue2);
-							} else if(type.contentEquals("Edm.DateTimeOffset")) {
-								Date propertyValue1 = null;  
-								Date propertyValue2 = null;
-								Property prop1 = entity1.getProperty(sortPropertyName);
-								Property prop2 = entity2.getProperty(sortPropertyName);
-								
-								DateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
-								if(prop1 != null && !prop1.isNull()) {
+					entityList.sort((entity1, entity2) -> {
+						int compareResult = 0;
+						if (type.equals("Edm.Int32")) {
+							Integer integer1 = (Integer) entity1.getProperty(sortPropertyName).getValue();
+							Integer integer2 = (Integer) entity2.getProperty(sortPropertyName).getValue();
+							compareResult = integer1.compareTo(integer2);
+						} else if (type.equals("Edm.String")) {
+							String propertyValue1 = "";
+							String propertyValue2 = "";
+							Property prop1 = entity1.getProperty(sortPropertyName);
+							if (prop1 != null && !prop1.isNull()) {
+								propertyValue1 = prop1.getValue().toString();
+							}
+							Property prop2 = entity2.getProperty(sortPropertyName);
+							if (prop2 != null && !prop2.isNull()) {
+								propertyValue2 = prop2.getValue().toString();
+							}
+							compareResult = propertyValue1.compareTo(propertyValue2);
+						} else if (type.contentEquals("Edm.DateTimeOffset")) {
+							Date propertyValue1 = null;
+							Date propertyValue2 = null;
+							Property prop1 = entity1.getProperty(sortPropertyName);
+							Property prop2 = entity2.getProperty(sortPropertyName);
+
+							DateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+							if (prop1 != null && !prop1.isNull()) {
 								try {
 									propertyValue1 = sdf.parse(prop1.getValue().toString());
-								} catch(ParseException pe) {
+								} catch (ParseException pe) {
 									pe.printStackTrace();
 								}
-								}
-								
-								if(prop2 != null && !prop2.isNull()) {
+							}
+
+							if (prop2 != null && !prop2.isNull()) {
 								try {
 									propertyValue2 = sdf.parse(prop2.getValue().toString());
-								}catch(ParseException pe) {
+								} catch (ParseException pe) {
 									pe.printStackTrace();
 								}
-								}
-								
-								if(propertyValue1 != null && propertyValue2 != null) {
+							}
+
+							if (propertyValue1 != null && propertyValue2 != null) {
 								compareResult = propertyValue1.compareTo(propertyValue2);
-								}
-								
 							}
-							if (orderByItem.isDescending()) {
-								return -compareResult;
-							}
-							return compareResult;
+
 						}
+						if (orderByItem.isDescending()) {
+							return -compareResult;
+						}
+						return compareResult;
 					});
 				}
 			}
@@ -362,114 +347,112 @@ public class QueryOptionService {
 					final String sortPropertyName2 = edmProperty2.getName();
 					final String type2 = edmProperty2.getType().toString();
 
-					Collections.sort(entityList, new Comparator<Entity>() {
-						public int compare(Entity entity1, Entity entity2) {
-							int compareResult = 0;
-							if (type.equals("Edm.Int32")) {
-								Integer integer1 = (Integer) entity1.getProperty(sortPropertyName).getValue();
-								Integer integer2 = (Integer) entity2.getProperty(sortPropertyName).getValue();
-								compareResult = integer1.compareTo(integer2);
-							} else if (type.equals("Edm.String")) {
-								
-								String propertyValue1 = "";  
-								String propertyValue2 = "";
-								Property prop1 = entity1.getProperty(sortPropertyName);
-								if(prop1 != null && !prop1.isNull()) {
-									propertyValue1 = prop1.getValue().toString();
-								}
-								Property prop2 = entity2.getProperty(sortPropertyName);
-								if(prop2 != null && !prop2.isNull()) {
-									propertyValue2 = prop2.getValue().toString();
-								}
-								compareResult = propertyValue1.compareTo(propertyValue2);
-							}else if(type.contentEquals("Edm.DateTimeOffset")) {
-								Date propertyValue1 = null;  
-								Date propertyValue2 = null;
-								Property prop1 = entity1.getProperty(sortPropertyName);
-								Property prop2 = entity2.getProperty(sortPropertyName);
-								
-								DateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
-								if(prop1 != null && !prop1.isNull()) {
+					entityList.sort((entity1, entity2) -> {
+						int compareResult = 0;
+						if (type.equals("Edm.Int32")) {
+							Integer integer1 = (Integer) entity1.getProperty(sortPropertyName).getValue();
+							Integer integer2 = (Integer) entity2.getProperty(sortPropertyName).getValue();
+							compareResult = integer1.compareTo(integer2);
+						} else if (type.equals("Edm.String")) {
+
+							String propertyValue1 = "";
+							String propertyValue2 = "";
+							Property prop1 = entity1.getProperty(sortPropertyName);
+							if (prop1 != null && !prop1.isNull()) {
+								propertyValue1 = prop1.getValue().toString();
+							}
+							Property prop2 = entity2.getProperty(sortPropertyName);
+							if (prop2 != null && !prop2.isNull()) {
+								propertyValue2 = prop2.getValue().toString();
+							}
+							compareResult = propertyValue1.compareTo(propertyValue2);
+						} else if (type.contentEquals("Edm.DateTimeOffset")) {
+							Date propertyValue1 = null;
+							Date propertyValue2 = null;
+							Property prop1 = entity1.getProperty(sortPropertyName);
+							Property prop2 = entity2.getProperty(sortPropertyName);
+
+							DateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+							if (prop1 != null && !prop1.isNull()) {
 								try {
 									propertyValue1 = sdf.parse(prop1.getValue().toString());
-								} catch(ParseException pe) {
+								} catch (ParseException pe) {
 									pe.printStackTrace();
 								}
-								}
-								if(prop2 != null && !prop2.isNull()) {
+							}
+							if (prop2 != null && !prop2.isNull()) {
 								try {
 									propertyValue2 = sdf.parse(prop2.getValue().toString());
-								}catch(ParseException pe) {
+								} catch (ParseException pe) {
 									pe.printStackTrace();
 								}
-								}
-								if(propertyValue1 != null && propertyValue2 != null) {
-								compareResult = propertyValue1.compareTo(propertyValue2);
-								}
-								
 							}
-							if (compareResult == 0) {
-								// first value is the same, compare second value
-								if (type2.equals("Edm.Int32")) {
-									Integer integer3 = (Integer) entity1.getProperty(sortPropertyName2).getValue();
-									Integer integer4 = (Integer) entity2.getProperty(sortPropertyName2).getValue();
-									compareResult = integer3.compareTo(integer4);
-								} else if (type2.equals("Edm.String")) {
-									String propertyValue3 = "";
-									String propertyValue4 = "";
-									Property prop3 = entity1.getProperty(sortPropertyName2);
-									if(prop3 != null && !prop3.isNull()) {
-										propertyValue3 = prop3.getValue().toString();
-									}
-									Property prop4 = entity2.getProperty(sortPropertyName2);
-									if(prop4 != null && !prop4.isNull()) {
-										propertyValue4 = prop4.getValue().toString();
-									}
-									compareResult = propertyValue3.compareTo(propertyValue4);
-									
-									if (orderByItem2.isDescending()) {
-										return -compareResult;
-									}
-									return compareResult;
-								}else if(type.contentEquals("Edm.DateTimeOffset")) {
-									Date propertyValue3 = null;  
-									Date propertyValue4 = null;
-									Property prop3 = entity1.getProperty(sortPropertyName);
-									Property prop4 = entity2.getProperty(sortPropertyName);
-									
-									DateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
-									if(prop3 != null && !prop3.isNull()) {
+							if (propertyValue1 != null && propertyValue2 != null) {
+								compareResult = propertyValue1.compareTo(propertyValue2);
+							}
+
+						}
+						if (compareResult == 0) {
+							// first value is the same, compare second value
+							if (type2.equals("Edm.Int32")) {
+								Integer integer3 = (Integer) entity1.getProperty(sortPropertyName2).getValue();
+								Integer integer4 = (Integer) entity2.getProperty(sortPropertyName2).getValue();
+								compareResult = integer3.compareTo(integer4);
+							} else if (type2.equals("Edm.String")) {
+								String propertyValue3 = "";
+								String propertyValue4 = "";
+								Property prop3 = entity1.getProperty(sortPropertyName2);
+								if (prop3 != null && !prop3.isNull()) {
+									propertyValue3 = prop3.getValue().toString();
+								}
+								Property prop4 = entity2.getProperty(sortPropertyName2);
+								if (prop4 != null && !prop4.isNull()) {
+									propertyValue4 = prop4.getValue().toString();
+								}
+								compareResult = propertyValue3.compareTo(propertyValue4);
+
+								if (orderByItem2.isDescending()) {
+									return -compareResult;
+								}
+								return compareResult;
+							} else if (type.contentEquals("Edm.DateTimeOffset")) {
+								Date propertyValue3 = null;
+								Date propertyValue4 = null;
+								Property prop3 = entity1.getProperty(sortPropertyName);
+								Property prop4 = entity2.getProperty(sortPropertyName);
+
+								DateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+								if (prop3 != null && !prop3.isNull()) {
 									try {
 										propertyValue3 = sdf.parse(prop3.getValue().toString());
-									} catch(ParseException pe) {
+									} catch (ParseException pe) {
 										pe.printStackTrace();
 									}
-									}
-									
-									if(prop4 != null && !prop4.isNull()) {
+								}
+
+								if (prop4 != null && !prop4.isNull()) {
 									try {
 										propertyValue4 = sdf.parse(prop4.getValue().toString());
-									}catch(ParseException pe) {
+									} catch (ParseException pe) {
 										pe.printStackTrace();
 									}
-									}
-									
-									if(propertyValue3 != null && propertyValue4 != null) {
-									compareResult = propertyValue3.compareTo(propertyValue4);
-									}
-									
 								}
+
+								if (propertyValue3 != null && propertyValue4 != null) {
+									compareResult = propertyValue3.compareTo(propertyValue4);
+								}
+
 							}
-							if (orderByItem.isDescending()) {
-								return -compareResult;
-							}
-							return compareResult;
 						}
+						if (orderByItem.isDescending()) {
+							return -compareResult;
+						}
+						return compareResult;
 					});
 				}
 			}
 		}
-		}catch(Exception ex) {
+		} catch(Exception ex) {
 			ex.printStackTrace();
 		}
 		return entityList;

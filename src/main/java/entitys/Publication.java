@@ -18,16 +18,16 @@ public class Publication implements EntityModel {
 	public static final FullQualifiedName ET_PUBLICATION_FQN = new FullQualifiedName(NAMESPACE, ET_PUBLICATION_NAME);
 	public static final String ES_PUBLICATIONS_NAME = "Publications";
 	public final static String RECOURCE_TYPE_FILTER= "search.resourcetype:\"Item\" and search.entitytype:\"Publication\"";
-	
-	private HashMap<String, String> idconverter;
-	
-	private CsdlEntityType entityType;
-	private CsdlEntitySet entitySet;
-	private HashMap<String, List<String>> mapping;
-	private ArrayList<String> ENTITYFILTER;
+
+	private final HashMap<String, String> idconverter;
+
+	private final CsdlEntityType entityType;
+	private final CsdlEntitySet entitySet;
+	private final HashMap<String, List<String>> mapping;
+	private final ArrayList<String> ENTITYFILTER;
 	
 	public Publication(){
-		idconverter = new HashMap<String, String>();
+		idconverter = new HashMap<>();
 		idconverter.put("([a-z0-9\\-]{36})", "search.resourceid");
 		idconverter.put("([0-9]{1,6})", "handle");
 		idconverter.put("(uniba/[0-9]{1,6})", "handle");
@@ -143,7 +143,7 @@ public class Publication implements EntityModel {
 		entitySet.setName(ES_PUBLICATIONS_NAME);
 		entitySet.setType(ET_PUBLICATION_FQN);
 		
-		mapping = new HashMap<String, List<String>>();
+		mapping = new HashMap<>();
 		
 		mapping.put("handle", List.of("handle"));
 		mapping.put("uuid", List.of("search.resourceid"));
@@ -193,8 +193,9 @@ public class Publication implements EntityModel {
 		mapping.put("publ2ou", List.of("ubg.faculty.org_authority"));
 		mapping.put("publ2award", List.of("ubg.relation.award_authority"));
 
-		ENTITYFILTER = new ArrayList<String>();
-		ENTITYFILTER.add("-ubg.version.visibility:0");
+		ENTITYFILTER = new ArrayList<>();
+		//No versions
+		ENTITYFILTER.add("-ubg.version.versionof:*");
 		
 	}
 
@@ -232,44 +233,20 @@ public class Publication implements EntityModel {
 	}
 
 	public String getNavigationFilter(String sourceType, String id) {
-		String navigationFilter = "";
-		if(sourceType.equals("Researchers")) {
-			navigationFilter = ("dc.contributor.author_authority:\"");
-			navigationFilter = (navigationFilter+id+"\"");
-			navigationFilter = (navigationFilter+ "OR ");
-			navigationFilter = (navigationFilter+ "dc.contributor.editor_authority:\""+ id+"\"");
-		} else if(sourceType.equals("Researchers_AUTHOR")) {
-			navigationFilter = ("dc.contributor.author_authority:\"");
-			navigationFilter = (navigationFilter+id+"\"");
-		} else if(sourceType.equals("Researchers_SUPERVISOR")) {
-			navigationFilter = ("dc.contributor.supervisor_authority:\"");
-			navigationFilter = (navigationFilter+id+"\"");
-		} else if(sourceType.equals("Researchers_SELECTED")) {
-			/*See DataHandler Function for selectedPublications where this Key is also defined for sorting*/
-			navigationFilter = ("relation.isPublicationsSelectedFor:\"");
-			navigationFilter = (navigationFilter+id+"\"");
-		} else if(sourceType.equals("Orgunits")) {
-			navigationFilter = ("ubg.faculty.org_authority:\"");
-			navigationFilter = (navigationFilter+id+"\"");
-			navigationFilter = (navigationFilter+ "OR ");
-			navigationFilter = (navigationFilter+ "dc.relation.authororgunit_authority:\""+ id+"\"");
-			navigationFilter = (navigationFilter+ "OR ");
-			navigationFilter = (navigationFilter+ "dc.relation.contributororgunit_authority:\""+ id+"\"");
-		} else if(sourceType.equals("Series")) {
-			navigationFilter = ("dc.relation.ispartofseries_authority:\"");
-			navigationFilter = (navigationFilter+id+"\"");
-		} else if(sourceType.equals("Journals")) {
-			navigationFilter = ("dc.relation.ispartofseries_authority:\"");
-			navigationFilter = (navigationFilter+id+"\"");
-		} else if(sourceType.equals("Projects")) {
-			navigationFilter = ("ubg.relation.project_authority:\"");
-			navigationFilter = (navigationFilter+id+"\"");
-		} else if(sourceType.equals("Awards")) {
-			navigationFilter = ("ubg.relation.award_authority:\"");
-			navigationFilter = (navigationFilter+id+"\"");
-		} 
-		
-			return navigationFilter;
+		return switch (sourceType) {
+			case "Researchers" -> ("dc.contributor.author_authority:\"" + id +
+				"\" OR dc.contributor.editor_authority:\"" + id + "\"");
+			case "Researchers_AUTHOR" -> ("dc.contributor.author_authority:\"" +  id + "\"");
+			case "Researchers_SUPERVISOR" -> ("dc.contributor.supervisor_authority:\"" + id + "\"");
+			case "Researchers_SELECTED" -> ("relation.isPublicationsSelectedFor:\""  + id + "\"");
+				/*See DataHandler Function for selectedPublications where this Key is also defined for sorting*/
+			case "Orgunits" -> ("ubg.faculty.org_authority:\"" + id + "\" OR dc.relation.authororgunit_authority:\"" + id +
+				"\" OR dc.relation.contributororgunit_authority:\"" + id + "\"");
+			case "Series", "Journals" -> ("dc.relation.ispartofseries_authority:\"" + id + "\"");
+			case "Projects" -> ("ubg.relation.project_authority:\"" + id + "\"");
+			case "Awards" -> ("ubg.relation.award_authority:\"" + id + "\"");
+			default -> "";
+		};
 	}
 
 	public HashMap<String, List<String>> getMapping() {

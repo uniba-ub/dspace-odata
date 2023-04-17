@@ -20,14 +20,14 @@ public class Orgunit implements EntityModel{
 	public static final FullQualifiedName ET_ORGUNIT_FQN = new FullQualifiedName(NAMESPACE, ET_ORGUNIT_NAME);
 	public static final String ES_ORGUNITS_NAME = "Orgunits";
 	public final static String RECOURCE_TYPE_FILTER= "search.resourcetype:\"Item\" and search.entitytype:\"OrgUnit\"";
-	private HashMap<String, String> idconverter;
-	private CsdlEntityType entityType;
-	private CsdlEntitySet entitySet;
-	private HashMap<String, List<String>> mapping;
-	private ArrayList<String> ENTITYFILTER;
+	private final HashMap<String, String> idconverter;
+	private final CsdlEntityType entityType;
+	private final CsdlEntitySet entitySet;
+	private final HashMap<String, List<String>> mapping;
+	private final ArrayList<String> ENTITYFILTER;
 
 	public Orgunit(){
-	idconverter = new HashMap<String, String>();	
+	idconverter = new HashMap<>();
 	idconverter.put("([a-z0-9\\-]{36})", "search.resourceid");
 	idconverter.put("(ou[0-9]{1,6})", "cris.legacyId");
 	idconverter.put("([1-9][0-9]{1,5})", "handle");
@@ -68,19 +68,19 @@ public class Orgunit implements EntityModel{
 	entityType = new CsdlEntityType();
 	entityType.setName(ET_ORGUNIT_NAME);
 	entityType.setProperties(Arrays.asList(id, crisid, uuid, handle, entitytype, name, description, url, director, date, endDate, parentorgunit));
-	entityType.setKey(Arrays.asList(propertyRef));
+	entityType.setKey(List.of(propertyRef));
 	
 	entitySet = new CsdlEntitySet();
 	entitySet.setName(ES_ORGUNITS_NAME);
 	entitySet.setType(ET_ORGUNIT_FQN);
 	
-	mapping = new HashMap<String, List<String>>();
+	mapping = new HashMap<>();
 	mapping.put("cris-id", List.of("cris.legacyId"));
 	mapping.put("uuid", List.of("search.resourceid"));
 	mapping.put("handle", List.of("handle"));
 	mapping.put("entitytype", List.of("search.entitytype"));
 	mapping.put("name", List.of("dc.title"));
-	
+
 	mapping.put("director",List.of("crisou.director"));
 	mapping.put("date", List.of("crisou.startdate"));
 	mapping.put("description", List.of("crisou.description"));
@@ -88,7 +88,7 @@ public class Orgunit implements EntityModel{
 	mapping.put("parentorgunit", List.of("crisou.parentorgunit_authority"));
 	mapping.put("url", List.of("crisou.url"));
 	
-	ENTITYFILTER = new ArrayList<String>();
+	ENTITYFILTER = new ArrayList<>();
 	}
 
 	public CsdlEntityType getEntityType() {
@@ -126,7 +126,7 @@ public class Orgunit implements EntityModel{
 
 	public String getNavigationFilter(String sourceType, String id) {
 		String navigationFilter = "";
-		if(sourceType.equals("Orgunits")) {
+		if (sourceType.equals("Orgunits")) {
 			navigationFilter = ("crisou.parentorgunit_authority:\""+id+"\"");
 		}		
 		return navigationFilter;

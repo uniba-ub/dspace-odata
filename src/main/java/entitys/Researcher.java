@@ -18,23 +18,23 @@ public class Researcher implements EntityModel {
 	public static final String ES_RESEARCHERS_NAME = "Researchers";
 	public final static String RECOURCE_TYPE_FILTER= "search.resourcetype:\"Item\" and search.entitytype:\"Person\"";
 
-	private HashMap<String, List<String>> mapping;
-	private ArrayList<String> ENTITYFILTER;
+	private final HashMap<String, List<String>> mapping;
+	private final ArrayList<String> ENTITYFILTER;
 
-	private HashMap<String, String> idconverter;
-	
-	private CsdlEntityType entityType;
-	private CsdlEntitySet entitySet;
+	private final HashMap<String, String> idconverter;
+
+	private final CsdlEntityType entityType;
+	private final CsdlEntitySet entitySet;
 	
 	public Researcher() {
-		idconverter = new HashMap<String, String>();
+		idconverter = new HashMap<>();
 		idconverter.put("([a-z0-9\\-]{36})", "search.resourceid");
 		idconverter.put("(rp[0-9]{1,6})", "cris.legacyId");
 		idconverter.put("([4-9][0-9]{1,5})", "handle");
 		idconverter.put("([0-3][0-9]{1,4})", "cris.legacyId"); //rp until rp30000 are considered as legcyvalues
 		idconverter.put("(uniba/[0-9]{1,6})", "handle");
 		idconverter.put("(([0-9]{4})-([0-9]{4})-([0-9]{4})-([0-9]{4})){1}", "person.identifier.orcid");
-		
+
 		CsdlProperty id = new CsdlProperty().setName("id")
 				.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
 		CsdlProperty crisId = new CsdlProperty().setName("cris-id")
@@ -98,7 +98,7 @@ public class Researcher implements EntityModel {
 		entitySet.setName(ES_RESEARCHERS_NAME);
 		entitySet.setType(ET_RESEARCHER_FQN);
 			
-		mapping = new HashMap<String, List<String>>();
+		mapping = new HashMap<>();
 		mapping.put("cris-id", List.of("cris.legacyId"));
 		mapping.put("uuid", List.of("search.resourceid"));
 		mapping.put("handle", List.of("handle"));
@@ -118,10 +118,10 @@ public class Researcher implements EntityModel {
 		mapping.put("researcharea", List.of("crisrp.researcharea"));
 		mapping.put("researchinterests", List.of("crisrp.researchinterests"));
 		mapping.put("title", List.of("crisrp.title"));
-		
+
 		mapping.put("rp2ou", List.of("crisrp.dept_authority"));
 		
-		ENTITYFILTER = new ArrayList<String>();
+		ENTITYFILTER = new ArrayList<>();
 	}
 	
 	public CsdlEntityType getEntityType() {	
@@ -159,13 +159,10 @@ public class Researcher implements EntityModel {
 	}
 
 	public String getNavigationFilter(String sourceType, String id) {
-			String navigationFilter = "";
-			if(sourceType.equals("Orgunits")) {
-				navigationFilter = ("crisrp.dept_authority:\"");
-				navigationFilter = (navigationFilter+id+"\"");
-			}
-				return navigationFilter;
-		
+		if (sourceType.equals("Orgunits")) {
+			return ("crisrp.dept_authority:\"" + id + "\"");
+		}
+		return "";
 	}
 
 	public HashMap<String, List<String>> getMapping() {

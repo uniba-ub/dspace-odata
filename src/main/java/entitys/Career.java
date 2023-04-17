@@ -14,8 +14,9 @@ public class Career implements ComplexModel {
 
 	public static final String CT_CAREER_NAME = "Career";
 	public static final FullQualifiedName CT_CAREER_FQN = new FullQualifiedName(NAMESPACE, CT_CAREER_NAME);
-	private CsdlComplexType complexType;
-	private HashMap<String, String> mapping;
+
+	private final CsdlComplexType complexType;
+	private final HashMap<String, String> mapping;
 	
 	public Career() {
 
@@ -31,12 +32,12 @@ public class Career implements ComplexModel {
 		complexType.setName(CT_CAREER_NAME);
 		complexType.setProperties(Arrays.asList(startdate, enddate, desc, place));
 		
-		mapping = new HashMap<String, String>();
+		mapping = new HashMap<>();
 		
 		mapping.put("startdate", "crisrp.career.startdate");
 		mapping.put("enddate", "crisrp.career.enddate");
 		mapping.put("desc","crisrp.career.description");
-		mapping.put("place", "crisrp.career.startdate.place");
+		mapping.put("place", "crisrp.career.place");
 	}
 
 	public CsdlComplexType getComplexType() {
@@ -48,10 +49,6 @@ public class Career implements ComplexModel {
 	}
 	public String getName() {
 		return CT_CAREER_NAME;
-	}
-
-	public String getNavigationFilter(String sourceType, String id) {
-		return null;
 	}
 
 	public HashMap<String, String> getMapping() {

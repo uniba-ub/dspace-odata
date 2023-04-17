@@ -20,20 +20,20 @@ public class Project implements EntityModel{
 	public static final FullQualifiedName ET_PROJECT_FQN = new FullQualifiedName(NAMESPACE, ET_PROJECT_NAME);
 	public static final String ES_PROJECTS_NAME = "Projects";
 	public final static String RECOURCE_TYPE_FILTER= "search.resourcetype:\"Item\" and search.entitytype:\"Project\"";
-	private HashMap<String, String> idconverter;
-	private CsdlEntityType entityType;
-	private CsdlEntitySet entitySet;
-	private HashMap<String, List<String>> mapping;
-	private ArrayList<String> ENTITYFILTER;
+	private final HashMap<String, String> idconverter;
+	private final CsdlEntityType entityType;
+	private final CsdlEntitySet entitySet;
+	private final HashMap<String, List<String>> mapping;
+	private final ArrayList<String> ENTITYFILTER;
 	
 	public Project() {
-		idconverter = new HashMap<String, String>();
+		idconverter = new HashMap<>();
 		idconverter.put("([a-z0-9\\-]{36})", "search.resourceid");
 		idconverter.put("(pj[0-9]{1,6})", "cris.legacyId");
 		idconverter.put("([1-9][0-9]{1,5})", "handle");
 		idconverter.put("([0][0-9]{1,4})", "cris.legacyId"); //until pj09999 are considered as legcayvalues
 		idconverter.put("(uniba/[0-9]{1,6})", "handle");
-		
+
 		CsdlProperty id = new CsdlProperty().setName("id")
 				.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
 		CsdlProperty crisId = new CsdlProperty().setName("cris-id")
@@ -92,13 +92,13 @@ public class Project implements EntityModel{
 		entityType = new CsdlEntityType();
 		entityType.setName(ET_PROJECT_NAME);
 		entityType.setProperties(Arrays.asList(id,crisId,uuid, entitytype, handle, title, abstracts, principalinvestigator, coinvestigators, budget, startDate, endDate, projectarea,acronym,keywords,status, url,funding, partnership, researchprofile, potentialfield, createdate, dept, pj2rp, pj2ou));
-		entityType.setKey(Arrays.asList(propertyRef));
+		entityType.setKey(List.of(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
 		entitySet.setName(ES_PROJECTS_NAME);
 		entitySet.setType(ET_PROJECT_FQN);
 		
-		mapping = new HashMap<String, List<String>>();
+		mapping = new HashMap<>();
 		mapping.put("cris-id", List.of("cris.legacyId"));
 		mapping.put("uuid", List.of("search.resourceid"));
 		mapping.put("handle", List.of("handle"));
@@ -125,7 +125,7 @@ public class Project implements EntityModel{
 		mapping.put("pj2rp", List.of("projectinvestigators_authority"));
 		mapping.put("pj2ou", List.of("crispj.deptproject_authority"));
 
-		ENTITYFILTER = new ArrayList<String>();
+		ENTITYFILTER = new ArrayList<>();
 	}
 	
 	public CsdlEntityType getEntityType() {
@@ -162,21 +162,16 @@ public class Project implements EntityModel{
 	}
 
 	public String getNavigationFilter(String sourceType, String id) {
-		String navigationFilter = "";
-		if(sourceType.equals("Researchers")) {
-			navigationFilter = ("crispj.principalinvestigator_authority:\""+ id+"\"");
-			navigationFilter = (navigationFilter+ "OR ");
-			navigationFilter = (navigationFilter+ "crispj.coinvestigators_authority:\""+ id+"\"");
-			
-		} else if(sourceType.equals("Orgunits")) {
-			navigationFilter = ("crispj.deptproject_authority:\""+ id+"\"");
-		} else if(sourceType.equals("Projects")) {
-			navigationFilter = ("crispj.parentproject_authority:\""+ id+"\"");
-		} else if(sourceType.equals("Orgunits_CHILD")) {
-			/* special function: returns all projects which belong to the specified ou and all children ou's and their projects. Use some special field being indexed in Dspace.*/
-			navigationFilter = ("pjsubsuccorgunit_authority:\""+ id+"\"");
-		}
-			return navigationFilter;
+		return switch (sourceType) {
+			case "Researchers" -> ("crispj.principalinvestigator_authority:\"" + id +
+				"\" OR crispj.coinvestigators_authority:\"" + id + "\"");
+			case "Orgunits" -> ("crispj.deptproject_authority:\"" + id + "\"");
+			case "Projects" -> ("crispj.parentproject_authority:\"" + id + "\"");
+			case "Orgunits_CHILD" ->
+				/* special function: returns all projects which belong to the specified ou and all children ou's and their projects. Use some special field being indexed in Dspace.*/
+				("pjsubsuccorgunit_authority:\"" + id + "\"");
+			default -> "";
+		};
 	}
 
 	public HashMap<String, List<String>> getMapping() {

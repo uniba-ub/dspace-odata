@@ -18,21 +18,21 @@ public class Series implements EntityModel {
 	public static final FullQualifiedName ET_SERIES_FQN = new FullQualifiedName(NAMESPACE, ET_SERIES_NAME);
 	public static final String ES_SERIES_NAME = "Series";
 	public final static String RECOURCE_TYPE_FILTER= "search.resourcetype:\"Item\" and search.entitytype:\"Series\"";
-	private HashMap<String, String> idconverter;
+	private final HashMap<String, String> idconverter;
 
-	private CsdlEntityType entityType;
-	private CsdlEntitySet entitySet;
-	private HashMap<String, List<String>> mapping;
-	private ArrayList<String> ENTITYFILTER;
+	private final CsdlEntityType entityType;
+	private final CsdlEntitySet entitySet;
+	private final HashMap<String, List<String>> mapping;
+	private final ArrayList<String> ENTITYFILTER;
 	
 	public Series() {
-		idconverter = new HashMap<String, String>();
+		idconverter = new HashMap<>();
 		idconverter.put("([a-z0-9\\-]{36})", "search.resourceid");
 		idconverter.put("(series[0-9]{1,6})", "cris.legacyId");
 		idconverter.put("([1-9][0-9]{1,5})", "handle");
 		idconverter.put("([0][0-9]{1,4})", "cris.legacyId"); //until series09999 are considered as legcayvalues
 		idconverter.put("(uniba/[0-9]{1,6})", "handle");
-		
+
 		CsdlProperty id = new CsdlProperty().setName("id")
 				.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
 		CsdlProperty crisId = new CsdlProperty().setName("cris-id")
@@ -69,19 +69,19 @@ public class Series implements EntityModel {
 		entitySet.setName(ES_SERIES_NAME);
 		entitySet.setType(ET_SERIES_FQN);
 			
-		mapping = new HashMap<String, List<String>>();
+		mapping = new HashMap<>();
 		mapping.put("cris-id", List.of("cris.legacyId"));
 		mapping.put("uuid", List.of("search.resourceid"));
 		mapping.put("handle", List.of("handle"));
 		mapping.put("entitytype", List.of("search.entitytype"));
 		mapping.put("name", List.of("dc.title"));
-		
+
 		mapping.put("issn", List.of("crisseries.issn"));
 		mapping.put("abbreviation", List.of("crisseries.abbreviation"));
 		mapping.put("homepage", List.of("crisseries.homepage"));
 		mapping.put("description", List.of("crisseries.description"));
 		
-		ENTITYFILTER = new ArrayList<String>();
+		ENTITYFILTER = new ArrayList<>();
 	}
 	
 	@Override

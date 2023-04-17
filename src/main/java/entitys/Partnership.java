@@ -15,12 +15,12 @@ public class Partnership implements ComplexModel {
 	public static final String CT_PARTNERSHIP_NAME = "Partnership";
 	public static final FullQualifiedName CT_PARTNERSHIP_FQN = new FullQualifiedName(NAMESPACE, CT_PARTNERSHIP_NAME);
 	// nested objects need a parent key and a search schema
-	private CsdlComplexType complexType;
-	private HashMap<String, String> mapping;
+	private final CsdlComplexType complexType;
+	private final HashMap<String, String> mapping;
 	
 	
 	public Partnership() {
-		
+
 		CsdlProperty description = new CsdlProperty().setName("description")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
 		CsdlProperty name = new CsdlProperty().setName("name")
@@ -36,7 +36,7 @@ public class Partnership implements ComplexModel {
 		complexType.setName(CT_PARTNERSHIP_NAME);
 		complexType.setProperties(Arrays.asList(name, projectpartner, description, url, type));
 		
-		mapping = new HashMap<String, String>();
+		mapping = new HashMap<>();
 		
 		mapping.put("description", "crispj.partnership.description");
 		mapping.put("projectpartner", "crispj.partnership.projectpartner");
@@ -57,13 +57,8 @@ public class Partnership implements ComplexModel {
 		return CT_PARTNERSHIP_NAME;
 	}
 
-	public String getNavigationFilter(String sourceType, String id) {
-		return null;
-	}
-
 	public HashMap<String, String> getMapping() {
 		return mapping;
 	}
-
 
 }

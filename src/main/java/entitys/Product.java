@@ -18,14 +18,14 @@ public class Product implements EntityModel {
 	public static final FullQualifiedName ET_PRODUCT_FQN = new FullQualifiedName(NAMESPACE, ET_PRODUCT_NAME);
 	public static final String ES_PRODUCTS_NAME = "Products";
 	public final static String RECOURCE_TYPE_FILTER= "search.resourcetype:\"Item\" and search.entitytype:\"ResearchData\"";
-	private HashMap<String, String> idconverter;
-	private CsdlEntityType entityType;
-	private CsdlEntitySet entitySet;
-	private HashMap<String, List<String>> mapping;
-	private ArrayList<String> ENTITYFILTER;
+	private final HashMap<String, String> idconverter;
+	private final CsdlEntityType entityType;
+	private final CsdlEntitySet entitySet;
+	private final HashMap<String, List<String>> mapping;
+	private final ArrayList<String> ENTITYFILTER;
 	
 	public Product(){
-		idconverter = new HashMap<String, String>();
+		idconverter = new HashMap<>();
 		idconverter.put("([a-z0-9\\-]{36})", "search.resourceid");
 		idconverter.put("([0-9]{1,6})", "handle");
 		idconverter.put("(uniba/[0-9]{1,6})", "handle");
@@ -103,7 +103,7 @@ public class Product implements EntityModel {
 		entitySet.setName(ES_PRODUCTS_NAME);
 		entitySet.setType(ET_PRODUCT_FQN);
 		
-		mapping = new HashMap<String, List<String>>();
+		mapping = new HashMap<>();
 		
 		mapping.put("handle", List.of("handle"));
 		mapping.put("uuid", List.of("search.resourceid"));
@@ -129,13 +129,13 @@ public class Product implements EntityModel {
 		mapping.put("uri", List.of("dc.identifier.uri"));
 		mapping.put("url", List.of("dc.identifier.url"));
 		mapping.put("version", List.of("ubg.version.description"));
-		
+
 		mapping.put("prod2rp", List.of("contributor_authority"));
 		mapping.put("prod2pj", List.of("ubg.relation.project_authority"));
 		mapping.put("prod2ou", List.of("ubg.researchdata.org_authority"));
 		mapping.put("prod2award", List.of("ubg.relation.award_authority"));
 
-		ENTITYFILTER = new ArrayList<String>();
+		ENTITYFILTER = new ArrayList<>();
 
 	}
 
@@ -173,19 +173,12 @@ public class Product implements EntityModel {
 	}
 
 	public String getNavigationFilter(String sourceType, String id) {
-		String navigationFilter = "";
-		if(sourceType.equals("Researchers")) {
-			navigationFilter = ("contributor_authority:\"");
-			navigationFilter = (navigationFilter+id+"\"");
-		} else if(sourceType.equals("Orgunits")) {
-			navigationFilter = ("ubg.researchdata.org_authority:\"");
-			navigationFilter = (navigationFilter+id+"\"");
-		} else if(sourceType.equals("Projects")) {
-			navigationFilter = ("ubg.relation.project_authority:\"");
-			navigationFilter = (navigationFilter+id+"\"");
-		}
-		
-			return navigationFilter;
+		return switch (sourceType) {
+			case "Researchers" -> ("contributor_authority:\"" + id + "\"");
+			case "Orgunits" -> ("ubg.researchdata.org_authority:\"" + id + "\"");
+			case "Projects" -> ("ubg.relation.project_authority:\"" + id + "\"");
+			default -> "";
+		};
 	}
 
 	public HashMap<String, List<String>> getMapping() {

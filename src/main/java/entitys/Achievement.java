@@ -14,9 +14,9 @@ public class Achievement implements ComplexModel {
 
 	public static final String CT_ACHIEVEMENT_NAME = "Achievement";
 	public static final FullQualifiedName CT_ACHIEVEMENT_FQN = new FullQualifiedName(NAMESPACE, CT_ACHIEVEMENT_NAME);
-	private CsdlComplexType complexType;
-	private HashMap<String, String> mapping;
-	
+	private final CsdlComplexType complexType;
+	private final HashMap<String, String> mapping;
+
 	public Achievement() {
 		CsdlProperty startdate = new CsdlProperty().setName("start")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
@@ -27,13 +27,13 @@ public class Achievement implements ComplexModel {
 		CsdlProperty event = new CsdlProperty().setName("event")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty type = new CsdlProperty().setName("type")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());	
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 
 		complexType = new CsdlComplexType();
 		complexType.setName(CT_ACHIEVEMENT_NAME);
 		complexType.setProperties(Arrays.asList(startdate, enddate, desc, event, type));
 		
-		mapping = new HashMap<String, String>();
+		mapping = new HashMap<>();
 		
 		mapping.put("start", "crisrp.achievement.start");
 		mapping.put("end", "crisrp.achievement.end");
@@ -52,10 +52,6 @@ public class Achievement implements ComplexModel {
 	}
 	public String getName() {
 		return CT_ACHIEVEMENT_NAME;
-	}
-
-	public String getNavigationFilter(String sourceType, String id) {
-		return null;
 	}
 
 	public HashMap<String, String> getMapping() {

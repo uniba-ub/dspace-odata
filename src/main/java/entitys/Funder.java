@@ -17,20 +17,20 @@ public class Funder implements EntityModel {
 	public static final FullQualifiedName ET_FUNDER_FQN = new FullQualifiedName(NAMESPACE, ET_FUNDER_NAME);
 	public static final String ES_FUNDERS_NAME = "Funders";
 	public final static String RECOURCE_TYPE_FILTER= "search.resourcetype:\"Item\" and search.entitytype:\"Funder\"";
-	private HashMap<String, String> idconverter;
-	private CsdlEntityType entityType;
-	private CsdlEntitySet entitySet;
-	private HashMap<String, List<String>> mapping;
-	private ArrayList<String> ENTITYFILTER;
+	private final HashMap<String, String> idconverter;
+	private final CsdlEntityType entityType;
+	private final CsdlEntitySet entitySet;
+	private final HashMap<String, List<String>> mapping;
+	private final ArrayList<String> ENTITYFILTER;
 	
 	public Funder() {
-		idconverter = new HashMap<String, String>();
+		idconverter = new HashMap<>();
 		idconverter.put("([a-z0-9\\-]{36})", "search.resourceid");
 		idconverter.put("(funder[0-9]{1,6})", "cris.legacyId");
 		idconverter.put("([1-9][0-9]{1,5})", "handle");
 		idconverter.put("([0][0-9]{1,4})", "cris.legacyId"); //until funder09999 are considered as legcayvalues
 		idconverter.put("(uniba/[0-9]{1,6})", "handle");
-		
+
 		CsdlProperty id = new CsdlProperty().setName("id")
 				.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
 		CsdlProperty crisId = new CsdlProperty().setName("cris-id")
@@ -84,13 +84,13 @@ public class Funder implements EntityModel {
 		entitySet.setName(ES_FUNDERS_NAME);
 		entitySet.setType(ET_FUNDER_FQN);
 			
-		mapping = new HashMap<String, List<String>>();
+		mapping = new HashMap<>();
 		mapping.put("cris-id", List.of("cris.legacyId"));
 		mapping.put("uuid", List.of("search.resourceid"));
 		mapping.put("handle", List.of("handle"));
 		mapping.put("entitytype", List.of("search.entitytype"));
 		mapping.put("name", List.of("dc.title"));
-		
+
 		mapping.put("country", List.of("crisfunder.iso-country"));
 		mapping.put("city", List.of("crisfunder.city"));
 		mapping.put("url", List.of("crisfunder.url"));
@@ -105,7 +105,7 @@ public class Funder implements EntityModel {
 		mapping.put("identifier_crossreffunder", List.of("crisfunder.identifier.crossreffunder"));
 		mapping.put("funder2funder", List.of("crisfunder.parentfunder_authority"));
 		
-		ENTITYFILTER = new ArrayList<String>();
+		ENTITYFILTER = new ArrayList<>();
 	}
 	
 	@Override
@@ -149,15 +149,12 @@ public class Funder implements EntityModel {
 
 	@Override
 	public String getNavigationFilter(String sourceType, String id) {
-		String navigationFilter = "";
-		if(sourceType.equals("Awardseries")) {
-			navigationFilter = ("crisawardseries.institution_authority:\""+id+"\"");
-		} else if(sourceType.equals("Projects")) {
-			navigationFilter = ("crispj.funding.funder_authority:\""+ id+"\"");
-		} else if(sourceType.equals("Funders")) {
-			navigationFilter = ("crisfunder.parentfunder_authority:\""+ id+"\"");
-		}
-		return navigationFilter;
+		return switch (sourceType) {
+			case "Awardseries" -> ("crisawardseries.awardseriesinstitution_authority:\"" + id + "\"");
+			case "Projects" -> ("crisproject.funding.fundingfunder_authority:\"" + id + "\"");
+			case "Funders" -> ("crisfunder.funderparentfunder_authority:\"" + id + "\"");
+			default -> "";
+		};
 	}
 
 	@Override

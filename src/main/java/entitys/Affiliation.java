@@ -14,9 +14,9 @@ public class Affiliation implements ComplexModel {
 
 	public static final String CT_AFFILIATION_NAME = "Affiliation";
 	public static final FullQualifiedName CT_AFFILIATION_FQN = new FullQualifiedName(NAMESPACE, CT_AFFILIATION_NAME);
-	private CsdlComplexType complexType;
-	private HashMap<String, String> mapping;
-	
+	private final CsdlComplexType complexType;
+	private final HashMap<String, String> mapping;
+
 	public Affiliation() {
 
 		CsdlProperty startdate = new CsdlProperty().setName("startdate")
@@ -33,8 +33,8 @@ public class Affiliation implements ComplexModel {
 		complexType = new CsdlComplexType();
 		complexType.setName(CT_AFFILIATION_NAME);
 		complexType.setProperties(Arrays.asList(startdate, enddate, role, ouname, aff2ou));
-		
-		mapping = new HashMap<String, String>();
+
+		mapping = new HashMap<>();
 		mapping.put("startdate", "crisrp.affiliation.startdate");
 		mapping.put("enddate", "crisrp.affiliation.enddate");
 		mapping.put("role",   "crisrp.affiliation.role");
@@ -51,10 +51,6 @@ public class Affiliation implements ComplexModel {
 	}
 	public String getName() {
 		return CT_AFFILIATION_NAME;
-	}
-
-	public String getNavigationFilter(String sourceType, String id) {
-		return null;
 	}
 
 	public HashMap<String, String> getMapping() {

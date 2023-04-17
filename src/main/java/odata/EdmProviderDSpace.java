@@ -88,8 +88,8 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 	@Override
 	public CsdlEntityContainer getEntityContainer() throws ODataException {
 		// create EntitySets
-		List<CsdlEntitySet> entitySets = new ArrayList<CsdlEntitySet>();
-		for(String entitySetName: entityRegister.getEntitySetNameList()) {
+		List<CsdlEntitySet> entitySets = new ArrayList<>();
+		for (String entitySetName: entityRegister.getEntitySetNameList()) {
 			entitySets.add(getEntitySet(CONTAINER, entitySetName));		
 		}
 		
@@ -99,7 +99,7 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 		entityContainer.setEntitySets(entitySets);
 		
 		//create function
-		List<CsdlFunctionImport> functionImports = new LinkedList<CsdlFunctionImport>();
+		List<CsdlFunctionImport> functionImports = new LinkedList<>();
 		functionImports.add(getFunctionImport(CONTAINER, FUNCTION_CSL_FOR_RESEARCHER));
 		functionImports.add(getFunctionImport(CONTAINER, FUNCTION_CSL_FOR_RESEARCHER_SELECTED));
 		functionImports.add(getFunctionImport(CONTAINER, FUNCTION_CSL_FOR_SUPERVISOR));
@@ -121,7 +121,7 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 	}
 
 	@Override
-	public CsdlEntityContainerInfo getEntityContainerInfo(FullQualifiedName entityContainerName) throws ODataException {
+	public CsdlEntityContainerInfo getEntityContainerInfo(FullQualifiedName entityContainerName) {
 		// Method is triggered when requesting the Service Document
 		if (entityContainerName == null || entityContainerName.equals(CONTAINER)) {
 			CsdlEntityContainerInfo entityContainerInfo = new CsdlEntityContainerInfo();
@@ -138,8 +138,8 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 		
 		CsdlEntitySet entitySet = null;
 		if (entityContainer.equals(CONTAINER)) {
-			for(CsdlEntitySet item:entityRegister.getEntitySet() )
-				if(entitySetName.equals(item.getName())) {
+			for (CsdlEntitySet item:entityRegister.getEntitySet() )
+				if (entitySetName.equals(item.getName())) {
 					entitySet = item;
 				}
 		}
@@ -149,8 +149,8 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 	@Override
 	public CsdlEntityType getEntityType(FullQualifiedName entityTypeName) throws ODataException {
 		CsdlEntityType entityType = null;
-		for(CsdlEntityType item:entityRegister.getEntityTypeList()) {
-			if(entityTypeName.equals(new FullQualifiedName(NAMESPACE, item.getName()))) {
+		for (CsdlEntityType item:entityRegister.getEntityTypeList()) {
+			if (entityTypeName.equals(new FullQualifiedName(NAMESPACE, item.getName()))) {
 				entityType = item;			
 			}
 		}
@@ -161,8 +161,8 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 	@Override
 	public CsdlComplexType getComplexType(FullQualifiedName complexTypeName) throws ODataException {
 		CsdlComplexType complexType = null;
-		for(CsdlComplexType item:entityRegister.getComplexTypeList()) {
-			if(complexTypeName.equals(new FullQualifiedName(NAMESPACE, item.getName()))) {
+		for (CsdlComplexType item:entityRegister.getComplexTypeList()) {
+			if (complexTypeName.equals(new FullQualifiedName(NAMESPACE, item.getName()))) {
 				complexType = item;
 			}
 		}
@@ -178,7 +178,7 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 		schema.setComplexTypes(entityRegister.getComplexTypeList());
 		
 		//add function
-		List<CsdlFunction> functions = new LinkedList<CsdlFunction>();
+		List<CsdlFunction> functions = new LinkedList<>();
 		functions.addAll(getFunctions(FUNCTION_CSL_FOR_RESEARCHER_FQN));
 		functions.addAll(getFunctions(FUNCTION_CSL_FOR_ORGUNIT_FQN));
 		functions.addAll(getFunctions(FUNCTION_CSL_FOR_PROJECT_FQN));
@@ -200,18 +200,18 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 		// adding EntityContainer
 		schema.setEntityContainer(getEntityContainer());
 		
-		List<CsdlSchema> schemas = new ArrayList<CsdlSchema>();
+		List<CsdlSchema> schemas = new ArrayList<>();
 		schemas.add(schema);
 
 		return schemas;
 	}
 	
 	@Override 
-	public List<CsdlFunction> getFunctions(final FullQualifiedName functionName){
-		if(functionName.equals(FUNCTION_CSL_FOR_RESEARCHER_FQN)) {
+	public List<CsdlFunction> getFunctions(final FullQualifiedName functionName) {
+		if (functionName.equals(FUNCTION_CSL_FOR_RESEARCHER_FQN)) {
 			
-			final List<CsdlFunction> functions = new LinkedList<CsdlFunction>();
-			final List<CsdlParameter> parameterList = new ArrayList<CsdlParameter>();
+			final List<CsdlFunction> functions = new LinkedList<>();
+			final List<CsdlParameter> parameterList = new ArrayList<>();
 			
 			final CsdlParameter parameterStyle = new CsdlParameter();
 			parameterStyle.setName("style");
@@ -239,10 +239,10 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 			functions.add(function);
 			
 			return functions;
-		} else if(functionName.equals(FUNCTION_CSL_FOR_ORGUNIT_FQN)){
+		} else if (functionName.equals(FUNCTION_CSL_FOR_ORGUNIT_FQN)) {
 			
-			final List<CsdlFunction> functions = new LinkedList<CsdlFunction>();
-			final List<CsdlParameter> parameterList = new ArrayList<CsdlParameter>();
+			final List<CsdlFunction> functions = new LinkedList<>();
+			final List<CsdlParameter> parameterList = new ArrayList<>();
 			
 			final CsdlParameter parameterStyle = new CsdlParameter();
 			parameterStyle.setName("style");
@@ -270,10 +270,10 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 			functions.add(function);
 			
 			return functions;
-		} else if(functionName.equals(FUNCTION_CSL_FOR_PUBLICATION_FQN)){
+		} else if (functionName.equals(FUNCTION_CSL_FOR_PUBLICATION_FQN)) {
 			
-			final List<CsdlFunction> functions = new LinkedList<CsdlFunction>();
-			final List<CsdlParameter> parameterList = new ArrayList<CsdlParameter>();
+			final List<CsdlFunction> functions = new LinkedList<>();
+			final List<CsdlParameter> parameterList = new ArrayList<>();
 			
 			final CsdlParameter parameterStyle = new CsdlParameter();
 			parameterStyle.setName("style");
@@ -301,10 +301,10 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 			functions.add(function);
 			
 			return functions;
-		}else if(functionName.equals(FUNCTION_CSL_FOR_PROJECT_FQN)){
+		} else if (functionName.equals(FUNCTION_CSL_FOR_PROJECT_FQN)) {
 			
-			final List<CsdlFunction> functions = new LinkedList<CsdlFunction>();
-			final List<CsdlParameter> parameterList = new ArrayList<CsdlParameter>();
+			final List<CsdlFunction> functions = new LinkedList<>();
+			final List<CsdlParameter> parameterList = new ArrayList<>();
 			
 			final CsdlParameter parameterStyle = new CsdlParameter();
 			parameterStyle.setName("style");
@@ -332,10 +332,10 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 			functions.add(function);
 			
 			return functions;
-		}else if(functionName.equals(FUNCTION_CSL_FOR_JOURNAL_FQN)){
+		} else if (functionName.equals(FUNCTION_CSL_FOR_JOURNAL_FQN)) {
 			
-			final List<CsdlFunction> functions = new LinkedList<CsdlFunction>();
-			final List<CsdlParameter> parameterList = new ArrayList<CsdlParameter>();
+			final List<CsdlFunction> functions = new LinkedList<>();
+			final List<CsdlParameter> parameterList = new ArrayList<>();
 			
 			final CsdlParameter parameterStyle = new CsdlParameter();
 			parameterStyle.setName("style");
@@ -363,10 +363,10 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 			functions.add(function);
 			
 			return functions;
-		}else if(functionName.equals(FUNCTION_CSL_FOR_SERIES_FQN)){
+		} else if (functionName.equals(FUNCTION_CSL_FOR_SERIES_FQN)) {
 			
-			final List<CsdlFunction> functions = new LinkedList<CsdlFunction>();
-			final List<CsdlParameter> parameterList = new ArrayList<CsdlParameter>();
+			final List<CsdlFunction> functions = new LinkedList<>();
+			final List<CsdlParameter> parameterList = new ArrayList<>();
 			
 			final CsdlParameter parameterStyle = new CsdlParameter();
 			parameterStyle.setName("style");
@@ -394,10 +394,10 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 			functions.add(function);
 			
 			return functions;
-		}else if(functionName.equals(FUNCTION_CSL_FOR_SUPERVISOR_FQN)){
+		} else if (functionName.equals(FUNCTION_CSL_FOR_SUPERVISOR_FQN)) {
 			
-			final List<CsdlFunction> functions = new LinkedList<CsdlFunction>();
-			final List<CsdlParameter> parameterList = new ArrayList<CsdlParameter>();
+			final List<CsdlFunction> functions = new LinkedList<>();
+			final List<CsdlParameter> parameterList = new ArrayList<>();
 			
 			final CsdlParameter parameterStyle = new CsdlParameter();
 			parameterStyle.setName("style");
@@ -425,10 +425,10 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 			functions.add(function);
 			
 			return functions;
-		}else if(functionName.equals(FUNCTION_CSL_FOR_AUTHOR_FQN)){
+		} else if (functionName.equals(FUNCTION_CSL_FOR_AUTHOR_FQN)) {
 			
-			final List<CsdlFunction> functions = new LinkedList<CsdlFunction>();
-			final List<CsdlParameter> parameterList = new ArrayList<CsdlParameter>();
+			final List<CsdlFunction> functions = new LinkedList<>();
+			final List<CsdlParameter> parameterList = new ArrayList<>();
 			
 			final CsdlParameter parameterStyle = new CsdlParameter();
 			parameterStyle.setName("style");
@@ -456,10 +456,10 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 			functions.add(function);
 			
 			return functions;
-		}else if(functionName.equals(FUNCTION_CSL_FOR_RESEARCHER_SELECTED_FQN)){
+		} else if (functionName.equals(FUNCTION_CSL_FOR_RESEARCHER_SELECTED_FQN)) {
 			
-			final List<CsdlFunction> functions = new LinkedList<CsdlFunction>();
-			final List<CsdlParameter> parameterList = new ArrayList<CsdlParameter>();
+			final List<CsdlFunction> functions = new LinkedList<>();
+			final List<CsdlParameter> parameterList = new ArrayList<>();
 			
 			final CsdlParameter parameterStyle = new CsdlParameter();
 			parameterStyle.setName("style");
@@ -487,10 +487,10 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 			functions.add(function);
 			
 			return functions;
-		}else if(functionName.equals(FUNCTION_PJ_FOR_OU_FQN)){
+		} else if (functionName.equals(FUNCTION_PJ_FOR_OU_FQN)) {
 			
-			final List<CsdlFunction> functions = new LinkedList<CsdlFunction>();
-			final List<CsdlParameter> parameterList = new ArrayList<CsdlParameter>();
+			final List<CsdlFunction> functions = new LinkedList<>();
+			final List<CsdlParameter> parameterList = new ArrayList<>();
 			
 			final CsdlParameter parameterSelectedId = new CsdlParameter()
 							.setName("id")
@@ -511,10 +511,10 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 			functions.add(function);
 			
 			return functions;
-		}else if(functionName.equals(FUNCTION_CSL_FOR_PRODUCT_FQN)){
+		} else if (functionName.equals(FUNCTION_CSL_FOR_PRODUCT_FQN)) {
 			
-			final List<CsdlFunction> functions = new LinkedList<CsdlFunction>();
-			final List<CsdlParameter> parameterList = new ArrayList<CsdlParameter>();
+			final List<CsdlFunction> functions = new LinkedList<>();
+			final List<CsdlParameter> parameterList = new ArrayList<>();
 			
 			final CsdlParameter parameterStyle = new CsdlParameter();
 			parameterStyle.setName("style");
@@ -542,10 +542,10 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 			functions.add(function);
 			
 			return functions;
-		}else if(functionName.equals(FUNCTION_CSL_FOR_PRODUCTPERSON_FQN)){
+		} else if (functionName.equals(FUNCTION_CSL_FOR_PRODUCTPERSON_FQN)) {
 			
-			final List<CsdlFunction> functions = new LinkedList<CsdlFunction>();
-			final List<CsdlParameter> parameterList = new ArrayList<CsdlParameter>();
+			final List<CsdlFunction> functions = new LinkedList<>();
+			final List<CsdlParameter> parameterList = new ArrayList<>();
 			
 			final CsdlParameter parameterStyle = new CsdlParameter();
 			parameterStyle.setName("style");
@@ -573,10 +573,10 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 			functions.add(function);
 			
 			return functions;
-		}else if(functionName.equals(FUNCTION_CSL_FOR_PRODUCTPROJECT_FQN)){
+		} else if (functionName.equals(FUNCTION_CSL_FOR_PRODUCTPROJECT_FQN)) {
 			
-			final List<CsdlFunction> functions = new LinkedList<CsdlFunction>();
-			final List<CsdlParameter> parameterList = new ArrayList<CsdlParameter>();
+			final List<CsdlFunction> functions = new LinkedList<>();
+			final List<CsdlParameter> parameterList = new ArrayList<>();
 			
 			final CsdlParameter parameterStyle = new CsdlParameter();
 			parameterStyle.setName("style");
@@ -604,10 +604,10 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 			functions.add(function);
 			
 			return functions;
-		}else if(functionName.equals(FUNCTION_CSL_FOR_PRODUCTORGUNIT_FQN)){
+		} else if (functionName.equals(FUNCTION_CSL_FOR_PRODUCTORGUNIT_FQN)) {
 			
-			final List<CsdlFunction> functions = new LinkedList<CsdlFunction>();
-			final List<CsdlParameter> parameterList = new ArrayList<CsdlParameter>();
+			final List<CsdlFunction> functions = new LinkedList<>();
+			final List<CsdlParameter> parameterList = new ArrayList<>();
 			
 			final CsdlParameter parameterStyle = new CsdlParameter();
 			parameterStyle.setName("style");
@@ -641,86 +641,87 @@ public class EdmProviderDSpace extends CsdlAbstractEdmProvider {
 	
 	@Override
 	public CsdlFunctionImport getFunctionImport(FullQualifiedName entityContainer, String functionImportName) {
-		if(entityContainer.equals(CONTAINER)) {
-			if(functionImportName.equals(FUNCTION_CSL_FOR_RESEARCHER_FQN.getName())) {
+		if (entityContainer.equals(CONTAINER)) {
+			if (functionImportName.equals(FUNCTION_CSL_FOR_RESEARCHER_FQN.getName())) {
 				return new CsdlFunctionImport()
 						.setName(functionImportName)
 						.setFunction(FUNCTION_CSL_FOR_RESEARCHER_FQN)
+						.setFunction(FUNCTION_CSL_FOR_RESEARCHER_FQN)
 						.setEntitySet(Publication.ES_PUBLICATIONS_NAME)
 						.setIncludeInServiceDocument(true);
-			} else if(functionImportName.equals(FUNCTION_CSL_FOR_ORGUNIT_FQN.getName())) {
+			} else if (functionImportName.equals(FUNCTION_CSL_FOR_ORGUNIT_FQN.getName())) {
 				return new CsdlFunctionImport()
 						.setName(functionImportName)
 						.setFunction(FUNCTION_CSL_FOR_ORGUNIT_FQN)
 						.setEntitySet(Publication.ES_PUBLICATIONS_NAME)
 						.setIncludeInServiceDocument(true);		
-			}else if(functionImportName.equals(FUNCTION_CSL_FOR_PROJECT_FQN.getName())) {
+			} else if (functionImportName.equals(FUNCTION_CSL_FOR_PROJECT_FQN.getName())) {
 				return new CsdlFunctionImport()
 						.setName(functionImportName)
 						.setFunction(FUNCTION_CSL_FOR_PROJECT_FQN)
 						.setEntitySet(Publication.ES_PUBLICATIONS_NAME)
 						.setIncludeInServiceDocument(true);		
-			}else if(functionImportName.equals(FUNCTION_CSL_FOR_JOURNAL_FQN.getName())) {
+			} else if (functionImportName.equals(FUNCTION_CSL_FOR_JOURNAL_FQN.getName())) {
 				return new CsdlFunctionImport()
 						.setName(functionImportName)
 						.setFunction(FUNCTION_CSL_FOR_JOURNAL_FQN)
 						.setEntitySet(Publication.ES_PUBLICATIONS_NAME)
 						.setIncludeInServiceDocument(true);		
-			}else if(functionImportName.equals(FUNCTION_CSL_FOR_SERIES_FQN.getName())) {
+			} else if (functionImportName.equals(FUNCTION_CSL_FOR_SERIES_FQN.getName())) {
 				return new CsdlFunctionImport()
 						.setName(functionImportName)
 						.setFunction(FUNCTION_CSL_FOR_SERIES_FQN)
 						.setEntitySet(Publication.ES_PUBLICATIONS_NAME)
 						.setIncludeInServiceDocument(true);		
-			}else if(functionImportName.equals(FUNCTION_CSL_FOR_PUBLICATION_FQN.getName())) {
+			} else if (functionImportName.equals(FUNCTION_CSL_FOR_PUBLICATION_FQN.getName())) {
 				return new CsdlFunctionImport()
 						.setName(functionImportName)
 						.setFunction(FUNCTION_CSL_FOR_PUBLICATION_FQN)
 						.setEntitySet(Publication.ES_PUBLICATIONS_NAME)
 						.setIncludeInServiceDocument(true);		
-			}else if(functionImportName.equals(FUNCTION_CSL_FOR_SUPERVISOR_FQN.getName())) {
+			} else if (functionImportName.equals(FUNCTION_CSL_FOR_SUPERVISOR_FQN.getName())) {
 				return new CsdlFunctionImport()
 						.setName(functionImportName)
 						.setFunction(FUNCTION_CSL_FOR_SUPERVISOR_FQN)
 						.setEntitySet(Publication.ES_PUBLICATIONS_NAME)
 						.setIncludeInServiceDocument(true);		
-			}else if(functionImportName.equals(FUNCTION_CSL_FOR_AUTHOR_FQN.getName())) {
+			} else if (functionImportName.equals(FUNCTION_CSL_FOR_AUTHOR_FQN.getName())) {
 				return new CsdlFunctionImport()
 						.setName(functionImportName)
 						.setFunction(FUNCTION_CSL_FOR_AUTHOR_FQN)
 						.setEntitySet(Publication.ES_PUBLICATIONS_NAME)
 						.setIncludeInServiceDocument(true);		
-			}else if(functionImportName.equals(FUNCTION_CSL_FOR_RESEARCHER_SELECTED_FQN.getName())) {
+			} else if (functionImportName.equals(FUNCTION_CSL_FOR_RESEARCHER_SELECTED_FQN.getName())) {
 				return new CsdlFunctionImport()
 						.setName(functionImportName)
 						.setFunction(FUNCTION_CSL_FOR_RESEARCHER_SELECTED_FQN)
 						.setEntitySet(Publication.ES_PUBLICATIONS_NAME)
 						.setIncludeInServiceDocument(true);		
-			}else if(functionImportName.equals(FUNCTION_PJ_FOR_OU_FQN.getName())) {
+			} else if (functionImportName.equals(FUNCTION_PJ_FOR_OU_FQN.getName())) {
 				return new CsdlFunctionImport()
 						.setName(functionImportName)
 						.setFunction(FUNCTION_PJ_FOR_OU_FQN)
 						.setEntitySet(Project.ES_PROJECTS_NAME)
 						.setIncludeInServiceDocument(true);		
-			}else if(functionImportName.equals(FUNCTION_CSL_FOR_PRODUCT_FQN.getName())) {
+			} else if (functionImportName.equals(FUNCTION_CSL_FOR_PRODUCT_FQN.getName())) {
 				return new CsdlFunctionImport()
 						.setName(functionImportName)
 						.setFunction(FUNCTION_CSL_FOR_PRODUCT_FQN)
 						.setEntitySet(Product.ES_PRODUCTS_NAME)
 						.setIncludeInServiceDocument(true);		
-			}else if(functionImportName.equals(FUNCTION_CSL_FOR_PRODUCTPERSON_FQN.getName())) {
+			} else if (functionImportName.equals(FUNCTION_CSL_FOR_PRODUCTPERSON_FQN.getName())) {
 				return new CsdlFunctionImport()
 						.setName(functionImportName)
 						.setFunction(FUNCTION_CSL_FOR_PRODUCTPERSON_FQN)
 						.setEntitySet(Product.ES_PRODUCTS_NAME)
 						.setIncludeInServiceDocument(true);		
-			}else if(functionImportName.equals(FUNCTION_CSL_FOR_PRODUCTPROJECT_FQN.getName())) {
+			} else if (functionImportName.equals(FUNCTION_CSL_FOR_PRODUCTPROJECT_FQN.getName())) {
 				return new CsdlFunctionImport()
 						.setName(functionImportName)
 						.setFunction(FUNCTION_CSL_FOR_PRODUCTPROJECT_FQN)
 						.setEntitySet(Product.ES_PRODUCTS_NAME)
 						.setIncludeInServiceDocument(true);		
-			}else if(functionImportName.equals(FUNCTION_CSL_FOR_PRODUCTORGUNIT_FQN.getName())) {
+			} else if (functionImportName.equals(FUNCTION_CSL_FOR_PRODUCTORGUNIT_FQN.getName())) {
 				return new CsdlFunctionImport()
 						.setName(functionImportName)
 						.setFunction(FUNCTION_CSL_FOR_PRODUCTORGUNIT_FQN)

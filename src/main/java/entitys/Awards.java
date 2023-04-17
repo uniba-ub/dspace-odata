@@ -17,20 +17,20 @@ public class Awards implements EntityModel {
 	public static final FullQualifiedName ET_AWARD_FQN = new FullQualifiedName(NAMESPACE, ET_AWARD_NAME);
 	public static final String ES_AWARDS_NAME = "Awards";
 	public final static String RECOURCE_TYPE_FILTER= "search.resourcetype:\"Item\" and search.entitytype:\"Award\"";
-	private HashMap<String, String> idconverter;
-	private CsdlEntityType entityType;
-	private CsdlEntitySet entitySet;
-	private HashMap<String, List<String>> mapping;
-	private ArrayList<String> ENTITYFILTER;	
+	private final HashMap<String, String> idconverter;
+	private final CsdlEntityType entityType;
+	private final CsdlEntitySet entitySet;
+	private final HashMap<String, List<String>> mapping;
+	private final ArrayList<String> ENTITYFILTER;
 	
 	public Awards() {
-		idconverter = new HashMap<String, String>();
+		idconverter = new HashMap<>();
 		idconverter.put("([a-z0-9\\-]{36})", "search.resourceid");
 		idconverter.put("(awards[0-9]{1,6})", "cris.legacyId");
 		idconverter.put("([1-9][0-9]{1,5})", "handle");
 		idconverter.put("([0][0-9]{1,4})", "cris.legacyId"); //until awards09999 are considered as legcayvalues
 		idconverter.put("(uniba/[0-9]{1,6})", "handle");
-		
+
 		CsdlProperty id = new CsdlProperty().setName("id")
 				.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
 		CsdlProperty crisId = new CsdlProperty().setName("cris-id")
@@ -82,7 +82,7 @@ public class Awards implements EntityModel {
 		entitySet.setName(ES_AWARDS_NAME);
 		entitySet.setType(ET_AWARD_FQN);
 			
-		mapping = new HashMap<String, List<String>>();
+		mapping = new HashMap<>();
 		mapping.put("cris-id", List.of("cris.legacyId"));
 		mapping.put("uuid", List.of("search.resourceid"));
 		mapping.put("handle", List.of("handle"));
@@ -97,12 +97,12 @@ public class Awards implements EntityModel {
 		mapping.put("persontitle", List.of("cris.virtual.awardpersontitle"));
 		mapping.put("publication", List.of("crisaward.publication"));
 		mapping.put("awardseries", List.of("crisaward.awardseries"));
-		
+
 		mapping.put("award2awardseries", List.of("crisaward.awardseries_authority"));
 		mapping.put("award2rp", List.of("crisaward.person_authority"));
 		mapping.put("award2pj", List.of("crisaward.project_authority"));
 
-		ENTITYFILTER = new ArrayList<String>();
+		ENTITYFILTER = new ArrayList<>();
 
 	}
 	
@@ -137,16 +137,12 @@ public class Awards implements EntityModel {
 
 	@Override
 	public String getNavigationFilter(String sourceType, String id) {
-		String navigationFilter = "";
-		if(sourceType.equals("Awardseries")) {
-			navigationFilter = ("crisaward.awardseries_authority:\""+id+"\"");
-		} else if(sourceType.equals("Projects")) {
-			navigationFilter = ("crisaward.awardsproject_authority:\""+ id+"\"");
-		} else
-		if(sourceType.equals("Researchers")) {
-			navigationFilter = ("crisaward.awardsperson_authority:\""+id+"\"");
-		}	
-		return navigationFilter;
+		return switch (sourceType) {
+			case "Awardseries" -> ("crisawards.awardseries_authority:\"" + id + "\"");
+			case "Projects" -> ("crisawards.awardsproject_authority:\"" + id + "\"");
+			case "Researchers" -> ("crisawards.awardsperson_authority:\"" + id + "\"");
+			default -> "";
+		};
 	}
 
 	@Override
@@ -156,8 +152,6 @@ public class Awards implements EntityModel {
 
 	@Override
 	public ArrayList<String> getEntityFilter() {
-		// TODO Auto-generated method stub0,
-
 		return ENTITYFILTER;
 	}
 

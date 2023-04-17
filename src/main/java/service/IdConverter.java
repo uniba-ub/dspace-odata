@@ -29,13 +29,12 @@ public class IdConverter {
 			return "search.resourceid";
 		}
 		
-		for(Entry<String, String> entry : idConverter.entrySet()) {
+		for (Entry<String, String> entry : idConverter.entrySet()) {
 			try {
-				if(Pattern.matches(entry.getKey(), id)) {
-					
+				if (Pattern.matches(entry.getKey(), id)) {
 					return entry.getValue();
 				} 
-			}catch(Exception e) {
+			} catch(Exception e) {
 				//
 			}
 		}
@@ -45,18 +44,18 @@ public class IdConverter {
 	
 	//add some identifier resolver prefix or similar depending on the search field
 	public String addIdentifierPrefix(String id, String type, String legacyPrefix) {
-		if(type.contentEquals("handle")) {
-			if(!id.startsWith(handleprefix)) {
+		if (type.contentEquals("handle")) {
+			if (!id.startsWith(handleprefix)) {
 				return handleprefix+"/"+id;
 			}
 		}
-		if(type.contentEquals("cris.legacyId")) {
+		if (type.contentEquals("cris.legacyId")) {
 			//add legacy prefix
-			if(legacyPrefix != null) {
-				if(!id.startsWith(legacyPrefix)) {
+			if (legacyPrefix != null) {
+				if (!id.startsWith(legacyPrefix)) {
 					//at least 5 digits with leading zeros!
 					return String.format("%s%05d", legacyPrefix,Integer.parseInt(id));
-				}else {
+				} else {
 					//withprefix ->
 					String idclean = id.replace(legacyPrefix, "");
 					return String.format("%s%05d", legacyPrefix,Integer.parseInt(idclean));

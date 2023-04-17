@@ -14,8 +14,8 @@ public class Funding implements ComplexModel {
 
 	public static final String CT_FUNDING_NAME = "Funding";
 	public static final FullQualifiedName CT_FUNDING_FQN = new FullQualifiedName(NAMESPACE, CT_FUNDING_NAME);
-	private CsdlComplexType complexType;
-	private HashMap<String, String> mapping;
+	private final CsdlComplexType complexType;
+	private final HashMap<String, String> mapping;
 	
 	
 	public Funding() {
@@ -38,7 +38,7 @@ public class Funding implements ComplexModel {
 		complexType.setName(CT_FUNDING_NAME);
 		complexType.setProperties(Arrays.asList( funder, funder_auth, period, supportCode, grant, program, url));
 		
-		mapping = new HashMap<String, String>();
+		mapping = new HashMap<>();
 		mapping.put("funder", "crispj.funding.funder");
 		mapping.put("funder_authority", "crispj.funding.funder_authority");
 		mapping.put("grant", "crispj.funding.grant");
@@ -58,10 +58,6 @@ public class Funding implements ComplexModel {
 	}
 	public String getName() {
 		return CT_FUNDING_NAME;
-	}
-
-	public String getNavigationFilter(String sourceType, String id) {
-		return null;
 	}
 
 	public HashMap<String, String> getMapping() {

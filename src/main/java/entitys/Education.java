@@ -14,8 +14,8 @@ public class Education implements ComplexModel {
 
 	public static final String CT_EDUCATION_NAME = "Education";
 	public static final FullQualifiedName CT_EDUCATION_FQN = new FullQualifiedName(NAMESPACE, CT_EDUCATION_NAME);
-	private CsdlComplexType complexType;
-	private HashMap<String, String> mapping;
+	private final CsdlComplexType complexType;
+	private final HashMap<String, String> mapping;
 	
 	public Education() {
 
@@ -31,7 +31,7 @@ public class Education implements ComplexModel {
 		complexType.setName(CT_EDUCATION_NAME);
 		complexType.setProperties(Arrays.asList(startdate, enddate, desc, place));
 		
-		mapping = new HashMap<String, String>();
+		mapping = new HashMap<>();
 		
 		mapping.put("startdate", "crisrp.education.startdate");
 		mapping.put("enddate", "crisrp.education.enddate");
@@ -48,10 +48,6 @@ public class Education implements ComplexModel {
 	}
 	public String getName() {
 		return CT_EDUCATION_NAME;
-	}
-
-	public String getNavigationFilter(String sourceType, String id) {
-		return null;
 	}
 
 	public HashMap<String, String> getMapping() {
