@@ -21,6 +21,11 @@ public interface EntityModel {
 	HashMap<String, List<String>> getMapping();
 	ArrayList<String> getEntityFilter();
 	String getLegacyPrefix();
-
+	default HashMap<String, List<String>> getNonDiscoverableMapping() {
+		return null;
+	}
+	default boolean hasNonDiscoverableComplexProperties() {
+		return true;
+	}
 
 }

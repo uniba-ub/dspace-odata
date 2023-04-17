@@ -128,11 +128,18 @@ public class DataHandler {
 		return entity;
 	}
 	
-	public SolrDocumentList getQuerriedDataFromSolr(String entitySetName, List<UriParameter> keyParams, boolean isEntityCollection, List<String> filterList) {
+	public SolrDocumentList getQuerriedDataFromSolr(String entitySetName, List<UriParameter> keyParams, boolean isEntityCollection, List<String> filterList)
+		throws SolrServerException, IOException {
 		return getQuerriedDataFromSolr(entitySetName, keyParams, isEntityCollection, filterList, null);
 	}
 
-	public SolrDocumentList getQuerriedDataFromSolr(String entitySetName, List<UriParameter> keyParams, boolean isEntityCollection, List<String> filterList, SearchOption search) {
+	public SolrDocumentList getQuerriedDataFromSolr(String entitySetName, List<UriParameter> keyParams, boolean isEntityCollection, List<String> filterList, SearchOption search)
+		throws SolrServerException, IOException {
+		return getQuerriedDataFromSolr(entitySetName, keyParams, isEntityCollection, filterList, search, false);
+	}
+
+	public SolrDocumentList getQuerriedDataFromSolr(String entitySetName, List<UriParameter> keyParams, boolean isEntityCollection, List<String> filterList, SearchOption search, boolean ignoreprivacy)
+		throws SolrServerException, IOException {
 		try {
 		for (EntityModel item: entityRegister.getEntityList()) {
 			if (item.getEntitySetName().equals(entitySetName)) {
@@ -167,17 +174,21 @@ public class DataHandler {
 				}
 			}		
 		}
-	
+
+		if(ignoreprivacy == false) {
+			addReadableByAnonymousFilter();
+		}
+
 		SolrDocumentList responseDocuments = solr.getData(queryMaker);
 		queryMaker.resetQuery();
 		return responseDocuments;
 		} catch (Exception e) {
 			//reset query, if queryMaker is false or not found
-			e.printStackTrace();
+			//e.printStackTrace();
 			queryMaker.resetQuery();
+			throw e;
 		}
-		return null;
-		}
+	}
 
 	public EntityCollection createEntitySet(SolrDocumentList documentList, EntityModel entity) throws SolrServerException, IOException {
 		return createEntitySet(documentList, entity, false);	
@@ -227,6 +238,13 @@ public class DataHandler {
 		propertyList = new LinkedList<>();
 		Property property;
 		HashMap<String, List<String>> mapping = entity.getMapping();
+		if (solrDocument.getFieldValue("discoverable") != null && ((String) solrDocument.getFieldValue("discoverable")).contentEquals("false")) {
+			// Check if there is some special mapping for non discoverable instances of this entityModel
+			if (entity.getNonDiscoverableMapping() != null) {
+				mapping = entity.getNonDiscoverableMapping();
+			}
+		}
+
 		StringBuilder builder = new StringBuilder();
 		String itemType;
 		for (CsdlProperty item: entity.getEntityType().getProperties()) {
@@ -281,9 +299,15 @@ public class DataHandler {
 							//
 						}
 					}
-				} else if(entityRegister.getComplexTypeNameList().contains(itemType)){
-					for (ComplexModel complexProperty:entityRegister.getComplexProperties()) {
-						if(complexProperty.getName().contentEquals(item.getName())) {
+				} else if (entityRegister.getComplexTypeNameList().contains(itemType)){
+					if (solrDocument.getFieldValue("discoverable") != null && ((String) solrDocument.getFieldValue("discoverable")).contentEquals("false")) {
+						// Check if there is some special mapping for non discoverable instances of this entityModel
+						if (entity.hasNonDiscoverableComplexProperties() == false) {
+							continue;
+						}
+					}
+					for (ComplexModel complexProperty : entityRegister.getComplexProperties()) {
+						if (complexProperty.getName().contentEquals(item.getName())) {
 							loadComplexPropertyFromMetadata(complexProperty, solrDocument, propertyList);
 						}
 					}
@@ -577,6 +601,13 @@ public class DataHandler {
 		parameters.add(uriResourceFunction.getParameters().get(0));
 		}
 		return parameters;
+	}
+
+	private void addReadableByAnonymousFilter() {
+		String groupuuid = System.getenv("SOLR_ANONYMOUS_GROUP_UUID");
+		if(groupuuid != null && !groupuuid.isBlank()) {
+			queryMaker.addSearchFilterForAttribute("read", groupuuid);
+		}
 
 	}
 }

@@ -169,5 +169,32 @@ public class Researcher implements EntityModel {
 		return mapping;
 	}
 
+	/***
+	 * Non-discoverable Researchers will return some limited mapping of fields.
+	 * @return
+	 */
+	@Override
+	public HashMap<String, List<String>> getNonDiscoverableMapping() {
+		HashMap<String, List<String>> mapping = new HashMap<>();
+		mapping.put("cris-id", List.of("cris.legacyId"));
+		mapping.put("uuid", List.of("search.resourceid"));
+		mapping.put("handle", List.of("handle"));
+		mapping.put("entitytype", List.of("search.entitytype"));
+		mapping.put("name", List.of("dc.title"));
+
+		mapping.put("orcid", List.of("person.identifier.orcid"));
+		mapping.put("gnd", List.of("crisrp.gndId"));
+		return mapping;
+	};
+
+	/***
+	 * Non-discoverable Researchers will have no complex entities.
+	 * @return
+	 */
+	@Override
+	public boolean hasNonDiscoverableComplexProperties(){
+		return false;
+	}
+
 }
 	
