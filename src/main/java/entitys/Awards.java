@@ -138,9 +138,9 @@ public class Awards implements EntityModel {
 	@Override
 	public String getNavigationFilter(String sourceType, String id) {
 		return switch (sourceType) {
-			case "Awardseries" -> ("crisawards.awardseries_authority:\"" + id + "\"");
-			case "Projects" -> ("crisawards.awardsproject_authority:\"" + id + "\"");
-			case "Researchers" -> ("crisawards.awardsperson_authority:\"" + id + "\"");
+			case "Awardseries" -> ("crisaward.awardseries_authority:\"" + id + "\"");
+			case "Projects" -> ("crisaward.project_authority:\"" + id + "\"");
+			case "Researchers" -> ("crisaward.person_authority:\"" + id + "\"");
 			default -> "";
 		};
 	}
