@@ -121,7 +121,7 @@ public class Product implements EntityModel {
 		mapping.put("format", List.of("dcterms.format"));
 		mapping.put("doi", List.of("dc.identifier.doi"));
 		mapping.put("ourdoi", List.of("ubg.identifier.doi"));
-		mapping.put("faculty",List.of("ubg.researchdata.org"));
+		mapping.put("faculty",List.of("dc.relation.creatororgunit"));
 		mapping.put("language", List.of("dc.language.iso"));
 		mapping.put("publisher", List.of("dc.publisher"));
 		mapping.put("type", List.of("dc.type"));
@@ -132,7 +132,7 @@ public class Product implements EntityModel {
 
 		mapping.put("prod2rp", List.of("contributor_authority"));
 		mapping.put("prod2pj", List.of("ubg.relation.project_authority"));
-		mapping.put("prod2ou", List.of("ubg.researchdata.org_authority"));
+		mapping.put("prod2ou", List.of("dc.relation.creatororgunit_authority"));
 		mapping.put("prod2award", List.of("ubg.relation.award_authority"));
 
 		ENTITYFILTER = new ArrayList<>();
@@ -175,7 +175,7 @@ public class Product implements EntityModel {
 	public String getNavigationFilter(String sourceType, String id) {
 		return switch (sourceType) {
 			case "Researchers" -> ("contributor_authority:\"" + id + "\"");
-			case "Orgunits" -> ("ubg.researchdata.org_authority:\"" + id + "\"");
+			case "Orgunits" -> ("ubg.relation.creatororgunit_authority:\"" + id + "\"");
 			case "Projects" -> ("ubg.relation.project_authority:\"" + id + "\"");
 			default -> "";
 		};
