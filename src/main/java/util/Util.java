@@ -62,7 +62,10 @@ public class Util {
 				return false;
 			}
 
-			if (!valueAsString.equals(keyText)) {
+			boolean matches = valueAsString.equals(keyText);
+			if (matches) {
+				continue;
+			} else {
 				return false;
 			}
 		}
@@ -108,55 +111,55 @@ public class Util {
 			String targetType = targetModel.getEntitySetName();
 			if (sourceType.contentEquals("Projects") && targetType.contentEquals("Researchers")) {
 				String filterquery = sourceEntity.getProperty("pj2rp").getValue().toString();
-				navigationFilter = reverseQueryGenerator(filterquery);
+				navigationFilter = reverseQueryGenerator(filterquery, "uuid");
 			} else if (sourceType.contentEquals("Projects") && targetType.contentEquals("Orgunits")) {
 				String filterquery = sourceEntity.getProperty("pj2ou").getValue().toString();
-				navigationFilter = reverseQueryGenerator(filterquery);
+				navigationFilter = reverseQueryGenerator(filterquery, "uuid");
 			} else if (sourceType.contentEquals("Publications") && targetType.contentEquals("Researchers")) {
 				String filterquery = sourceEntity.getProperty("publ2rp").getValue().toString();
-				navigationFilter = reverseQueryGenerator(filterquery);
+				navigationFilter = reverseQueryGenerator(filterquery, "uuid");
 			} else if (sourceType.contentEquals("Publications") && targetType.contentEquals("Projects")) {
 				String filterquery = sourceEntity.getProperty("publ2pj").getValue().toString();
-				navigationFilter = reverseQueryGenerator(filterquery);
+				navigationFilter = reverseQueryGenerator(filterquery, "uuid");
 			} else if (sourceType.contentEquals("Publications") && targetType.contentEquals("Orgunits")) {
 				String filterquery = sourceEntity.getProperty("publ2ou").getValue().toString();
-				navigationFilter = reverseQueryGenerator(filterquery);
+				navigationFilter = reverseQueryGenerator(filterquery, "uuid");
 			} else if (sourceType.contentEquals("Publications") && targetType.contentEquals("Series")) {
 				String filterquery = sourceEntity.getProperty("publ2series").getValue().toString();
-				navigationFilter = reverseQueryGenerator(filterquery);
-			} else if (sourceType.contentEquals("Publications") && targetType.contentEquals("Journals")) {
+				navigationFilter = reverseQueryGenerator(filterquery, "uuid");
+			} else if (sourceType.contentEquals("Publications") && targetType.contentEquals("Journals")) { //TODO: delete entry later, when journals isn't used
 				String filterquery = sourceEntity.getProperty("publ2journals").getValue().toString();
-				navigationFilter = reverseQueryGenerator(filterquery);
+				navigationFilter = reverseQueryGenerator(filterquery, "uuid");
 			} else if (sourceType.contentEquals("Researchers") && targetType.contentEquals("Orgunits")) {
 				String filterquery = sourceEntity.getProperty("rp2ou").getValue().toString();
-				navigationFilter = reverseQueryGenerator(filterquery);
+				navigationFilter = reverseQueryGenerator(filterquery, "uuid");
 			} else if (sourceType.contentEquals("Awards") && targetType.contentEquals("Awardseries")) {
 				String filterquery = sourceEntity.getProperty("award2awardseries").getValue().toString();
-				navigationFilter = reverseQueryGenerator(filterquery);
+				navigationFilter = reverseQueryGenerator(filterquery, "uuid");
 			} else if (sourceType.contentEquals("Awards") && targetType.contentEquals("Researchers")) {
 				String filterquery = sourceEntity.getProperty("award2rp").getValue().toString();
-				navigationFilter = reverseQueryGenerator(filterquery);
+				navigationFilter = reverseQueryGenerator(filterquery, "uuid");
 			} else if (sourceType.contentEquals("Publications") && targetType.contentEquals("Awards")) {
 				String filterquery = sourceEntity.getProperty("publ2award").getValue().toString();
-				navigationFilter = reverseQueryGenerator(filterquery);
+				navigationFilter = reverseQueryGenerator(filterquery, "uuid");
 			} else if (sourceType.contentEquals("Awards") && targetType.contentEquals("Projects")) {
 				String filterquery = sourceEntity.getProperty("award2pj").getValue().toString();
-				navigationFilter = reverseQueryGenerator(filterquery);
+				navigationFilter = reverseQueryGenerator(filterquery, "uuid");
 			} else if (sourceType.contentEquals("Awardseries") && targetType.contentEquals("Funders")) {
 				String filterquery = sourceEntity.getProperty("awardseries2funder").getValue().toString();
-				navigationFilter = reverseQueryGenerator(filterquery);
+				navigationFilter = reverseQueryGenerator(filterquery, "uuid");
 			} else if (sourceType.contentEquals("Products") && targetType.contentEquals("Researchers")) {
 				String filterquery = sourceEntity.getProperty("prod2rp").getValue().toString();
-				navigationFilter = reverseQueryGenerator(filterquery);
+				navigationFilter = reverseQueryGenerator(filterquery, "uuid");
 			} else if (sourceType.contentEquals("Products") && targetType.contentEquals("Projects")) {
 				String filterquery = sourceEntity.getProperty("prod2pj").getValue().toString();
-				navigationFilter = reverseQueryGenerator(filterquery);
+				navigationFilter = reverseQueryGenerator(filterquery, "uuid");
 			} else if (sourceType.contentEquals("Products") && targetType.contentEquals("Orgunits")) {
 				String filterquery = sourceEntity.getProperty("prod2ou").getValue().toString();
-				navigationFilter = reverseQueryGenerator(filterquery);
+				navigationFilter = reverseQueryGenerator(filterquery, "uuid");
 			} else if (sourceType.contentEquals("Products") && targetType.contentEquals("Awards")) {
 				String filterquery = sourceEntity.getProperty("prod2award").getValue().toString();
-				navigationFilter = reverseQueryGenerator(filterquery);
+				navigationFilter = reverseQueryGenerator(filterquery, "uuid");
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -170,19 +173,19 @@ public class Util {
 		return result;
 		}
 	}
-	private static String reverseQueryGenerator(String values) {
-		StringBuilder output = new StringBuilder();
+	private static String reverseQueryGenerator(String values, String param) {
+		String output = "";
 		try {
 			String[] split = values.split(",");
 			int it = 0;
 			while (it < (split.length -1)) {
 				split[it] = split[it].trim();
-				output.append("cris-id").append(":\"").append(split[it]).append("\" OR ");
+				output += (param + ":\"" + split[it] +"\" OR ");
 				it++;
 			} //No or for last query parameter
 			split[split.length-1] = split[split.length-1].trim();
-			output.append("cris-id").append(":\"").append(split[split.length - 1]).append("\" ");
-			return output.toString();
+			output += (param + ":\"" + split[split.length-1] +"\" ");
+			return output;
 		} catch(Exception e) {
 			return "";
 		}

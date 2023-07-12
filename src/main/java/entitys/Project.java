@@ -19,22 +19,30 @@ public class Project implements EntityModel{
 	public static final String ET_PROJECT_NAME = "Project";
 	public static final FullQualifiedName ET_PROJECT_FQN = new FullQualifiedName(NAMESPACE, ET_PROJECT_NAME);
 	public static final String ES_PROJECTS_NAME = "Projects";
-	public final static String RECOURCE_TYPE_FILTER= "resourcetype_filter:\"010projects\n" + 
-			"|||\n" + 
-			"Fundings###fundings\"";
-	public final static String ID_CONVERTER_TYP= "pj";
+	public final static String RECOURCE_TYPE_FILTER= "search.resourcetype:\"Item\" and search.entitytype:\"Project\"";
+	private final HashMap<String, String> idconverter;
 	private final CsdlEntityType entityType;
 	private final CsdlEntitySet entitySet;
-	private final HashMap<String, String> mapping;
+	private final HashMap<String, List<String>> mapping;
 	private final ArrayList<String> ENTITYFILTER;
 	
 	public Project() {
-		
+		idconverter = new HashMap<>();
+		idconverter.put("([a-z0-9\\-]{36})", "search.resourceid");
+		idconverter.put("(pj[0-9]{1,6})", "cris.legacyId");
+		idconverter.put("([1-9][0-9]{1,5})", "handle");
+		idconverter.put("([0][0-9]{1,4})", "cris.legacyId"); //until pj09999 are considered as legcayvalues
+		idconverter.put("(uniba/[0-9]{1,6})", "handle");
+
 		CsdlProperty id = new CsdlProperty().setName("id")
 				.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
 		CsdlProperty crisId = new CsdlProperty().setName("cris-id")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty uuid = new CsdlProperty().setName("uuid")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty entitytype = new CsdlProperty().setName("entitytype")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty handle = new CsdlProperty().setName("handle")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty abstracts = new CsdlProperty().setName("abstract")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
@@ -83,7 +91,7 @@ public class Project implements EntityModel{
 
 		entityType = new CsdlEntityType();
 		entityType.setName(ET_PROJECT_NAME);
-		entityType.setProperties(Arrays.asList(id,crisId,uuid, title, abstracts, principalinvestigator, coinvestigators, budget, startDate, endDate, projectarea,acronym,keywords,status, url,funding, partnership, researchprofile, potentialfield, createdate, dept, pj2rp, pj2ou));
+		entityType.setProperties(Arrays.asList(id,crisId,uuid, entitytype, handle, title, abstracts, principalinvestigator, coinvestigators, budget, startDate, endDate, projectarea,acronym,keywords,status, url,funding, partnership, researchprofile, potentialfield, createdate, dept, pj2rp, pj2ou));
 		entityType.setKey(List.of(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
@@ -91,27 +99,31 @@ public class Project implements EntityModel{
 		entitySet.setType(ET_PROJECT_FQN);
 		
 		mapping = new HashMap<>();
-		mapping.put("cris-id", "cris-id");
-		mapping.put("uuid", "cris-uuid");
-		mapping.put("abstract", "crisproject.abstract");
-		mapping.put("budget", "crisproject.budget");
-		mapping.put("acronym", "crisproject.acronym");
-		mapping.put("coinvestigators", "crisproject.coinvestigators");
-		mapping.put("expdate", "crisproject.expdate");
-		mapping.put("keywords", "crisproject.keywords");
-		mapping.put("principalinvestigator", "crisproject.principalinvestigator");
-		mapping.put("projectarea", "crisproject.projectArea");
-		mapping.put("researchprofile", "crisproject.researchProfileUniBa");
-		mapping.put("potentialfield", "crisproject.potentialfield");
-		mapping.put("startdate", "crisproject.startdate");
-		mapping.put("status", "crisproject.status");
-		mapping.put("title", "crisproject.title");
-		mapping.put("url", "crisproject.projectURL");
-		mapping.put("dept", "crisproject.deptproject");
-		mapping.put("createdate", "crisproject.time_creation_dt"); //Creation-Time of Entity
+		mapping.put("cris-id", List.of("cris.legacyId"));
+		mapping.put("uuid", List.of("search.resourceid"));
+		mapping.put("handle", List.of("handle"));
+		mapping.put("entitytype", List.of("search.entitytype"));
+		mapping.put("name", List.of("dc.title"));
+
+		mapping.put("abstract", List.of("crispj.abstract"));
+		mapping.put("budget", List.of("crispj.budget"));
+		mapping.put("acronym", List.of("crispj.acronym"));
+		mapping.put("coinvestigators", List.of("crispj.coinvestigators"));
+		mapping.put("expdate", List.of("crispj.expdate"));
+		mapping.put("keywords", List.of("crispj.keywords"));
+		mapping.put("principalinvestigator", List.of("crispj.principalinvestigator"));
+		mapping.put("projectarea", List.of("crispj.projectArea"));
+		mapping.put("researchprofile", List.of("crispj.researchprofileuniba"));
+		mapping.put("potentialfield", List.of("crispj.potentialfield"));
+		mapping.put("startdate", List.of("crispj.startdate"));
+		mapping.put("status", List.of("crispj.status"));
+		mapping.put("title", List.of("crispj.title"));
+		mapping.put("url", List.of("crispj.projectURL"));
+		mapping.put("dept", List.of("crispj.deptproject"));
+		mapping.put("createdate", List.of("dc.date.accessioned_dt")); //Creation-Time of Entity
 		
-		mapping.put("pj2rp", "projectinvestigators_authority");
-		mapping.put("pj2ou", "crisproject.deptproject_authority");
+		mapping.put("pj2rp", List.of("projectinvestigators_authority"));
+		mapping.put("pj2ou", List.of("crispj.deptproject_authority"));
 
 		ENTITYFILTER = new ArrayList<>();
 	}
@@ -136,38 +148,33 @@ public class Project implements EntityModel{
 		return RECOURCE_TYPE_FILTER;
 	}
 
-	public String getIDConverterTyp() {
-		return ID_CONVERTER_TYP;
+	public HashMap<String, String> getIdConverter() {
+		return idconverter;
 	}
 	
 	public ArrayList<String> getEntityFilter() {
 		return ENTITYFILTER;
 	}
 
-	public String getNavigationFilter(String sourceType, String id) {
-		String navigationFilter = "";
-		switch (sourceType) {
-			case "Researchers":
-				navigationFilter = ("crisproject.principalinvestigator_authority:\"" + id + "\"");
-				navigationFilter = (navigationFilter + "OR ");
-				navigationFilter = (navigationFilter + "crisproject.coinvestigators_authority:\"" + id + "\"");
-
-				break;
-			case "Orgunits":
-				navigationFilter = ("crisproject.deptproject_authority:\"" + id + "\"");
-				break;
-			case "Projects":
-				navigationFilter = ("crisproject.parentproject_authority:\"" + id + "\"");
-				break;
-			case "Orgunits_CHILD":
-				/* special function: returns all projects which belong to the specified ou and all children ou's and their projects. Use some special field being indexed in Dspace.*/
-				navigationFilter = ("projectchildoforgunits:\"" + id + "\"");
-				break;
-		}
-			return navigationFilter;
+	@Override
+	public String getLegacyPrefix() {
+		return "pj";
 	}
 
-	public HashMap<String, String> getMapping() {
+	public String getNavigationFilter(String sourceType, String id) {
+		return switch (sourceType) {
+			case "Researchers" -> ("crispj.principalinvestigator_authority:\"" + id +
+				"\" OR crispj.coinvestigators_authority:\"" + id + "\"");
+			case "Orgunits" -> ("crispj.deptproject_authority:\"" + id + "\"");
+			case "Projects" -> ("crispj.parentproject_authority:\"" + id + "\"");
+			case "Orgunits_CHILD" ->
+				/* special function: returns all projects which belong to the specified ou and all children ou's and their projects. Use some special field being indexed in Dspace.*/
+				("pjsubsuccorgunit_authority:\"" + id + "\"");
+			default -> "";
+		};
+	}
+
+	public HashMap<String, List<String>> getMapping() {
 		return mapping;
 	}
 

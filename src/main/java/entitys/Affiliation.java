@@ -14,16 +14,11 @@ public class Affiliation implements ComplexModel {
 
 	public static final String CT_AFFILIATION_NAME = "Affiliation";
 	public static final FullQualifiedName CT_AFFILIATION_FQN = new FullQualifiedName(NAMESPACE, CT_AFFILIATION_NAME);
-	// nested objects need a parent key and a search schema
-	public static final int PARENT_FK = 9;
-	public static final String SCHEMA = "ncrisrpaffiliation";
 	private final CsdlComplexType complexType;
 	private final HashMap<String, String> mapping;
-	
+
 	public Affiliation() {
 
-		CsdlProperty uuid = new CsdlProperty().setName("uuid")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty startdate = new CsdlProperty().setName("startdate")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
 		CsdlProperty enddate = new CsdlProperty().setName("enddate")
@@ -37,17 +32,14 @@ public class Affiliation implements ComplexModel {
 
 		complexType = new CsdlComplexType();
 		complexType.setName(CT_AFFILIATION_NAME);
-		complexType.setProperties(Arrays.asList(uuid, startdate, enddate, role, ouname, aff2ou));
-		
+		complexType.setProperties(Arrays.asList(startdate, enddate, role, ouname, aff2ou));
+
 		mapping = new HashMap<>();
-		
-		mapping.put("uuid", "cris-uuid");
-		mapping.put("startdate", "ncrisrpaffiliation.affiliationstartdate");
-		mapping.put("enddate", "ncrisrpaffiliation.affiliationenddate");
-		mapping.put("role","ncrisrpaffiliation.affiliationrole");
-		mapping.put("ouname", "ncrisrpaffiliation.affiliationorgunit");
-		mapping.put("aff2ou", "ncrisrpaffiliation.affiliationorgunit_authority");
-		//NOTE: Some kind of navigation paths to OU? realizable?
+		mapping.put("startdate", "crisrp.affiliation.startdate");
+		mapping.put("enddate", "crisrp.affiliation.enddate");
+		mapping.put("role",   "crisrp.affiliation.role");
+		mapping.put("ouname", "crisrp.affiliation.orgunit");
+		mapping.put("aff2ou", "crisrp.affiliation.orgunit_authority");
 	}
 
 	public CsdlComplexType getComplexType() {
@@ -59,14 +51,6 @@ public class Affiliation implements ComplexModel {
 	}
 	public String getName() {
 		return CT_AFFILIATION_NAME;
-	}
-
-	public int getParentFK() {
-		return PARENT_FK;
-	}
-
-	public String getSchema() {
-		return SCHEMA;
 	}
 
 	public HashMap<String, String> getMapping() {

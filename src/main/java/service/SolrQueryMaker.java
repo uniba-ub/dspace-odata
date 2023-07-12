@@ -23,19 +23,19 @@ public class SolrQueryMaker {
 		//see $search in https://docs.oasis-open.org/odata/odata/v4.01/os/abnf/odata-abnf-construction-rules.txt
 		query.addFilterQuery(search);
 	}
-	
+
 	public void addSearchFilter(String filter) {
 		if (filter != null) {
 		query.addFilterQuery(filter);
 		}
 	}
-	
+
 	public void addSearchFilterForAttribute(String attributeName, String filter) {
 		if (filter != null && attributeName != null) {
 			query.addFilterQuery(attributeName+":"+filter);
 		}
 	}
-	
+
 	public SolrQuery getQuery() {
 		return query;
 	}
@@ -43,12 +43,5 @@ public class SolrQueryMaker {
 	public void resetQuery() {
 		query.clear();
 	}
-	
-	public void setSearchFilterForComplexProperty(int idOfSolrObject, int parentfk, String schema) {
-		setQuerySearchTerm("resourcetype_filter:\"nobjects\n" + "|||\n" + "N-Object###default\"");
-		String parentFKWithId = (parentfk+"-"+idOfSolrObject);
-		query.addFilterQuery("search.parentfk:"+parentFKWithId);
-		query.addFilterQuery("search.schema_s:"+schema);
-	}
-	
+
 }

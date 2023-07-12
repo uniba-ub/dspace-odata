@@ -14,17 +14,11 @@ public class Funding implements ComplexModel {
 
 	public static final String CT_FUNDING_NAME = "Funding";
 	public static final FullQualifiedName CT_FUNDING_FQN = new FullQualifiedName(NAMESPACE, CT_FUNDING_NAME);
-	// nested objects need a parent key and a search schema
-	public static final int PARENT_FK = 10;
-	public static final String SCHEMA = "ncrisprojectfunding";
 	private final CsdlComplexType complexType;
 	private final HashMap<String, String> mapping;
 	
 	
 	public Funding() {
-
-		CsdlProperty uuid = new CsdlProperty().setName("uuid")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty funder = new CsdlProperty().setName("funder")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty funder_auth = new CsdlProperty().setName("funder_authority")
@@ -42,18 +36,16 @@ public class Funding implements ComplexModel {
 
 		complexType = new CsdlComplexType();
 		complexType.setName(CT_FUNDING_NAME);
-		complexType.setProperties(Arrays.asList(uuid, funder, funder_auth, period, supportCode, grant, program, url));
+		complexType.setProperties(Arrays.asList( funder, funder_auth, period, supportCode, grant, program, url));
 		
 		mapping = new HashMap<>();
-		
-		mapping.put("uuid", "cris-uuid");
-		mapping.put("funder", "ncrisprojectfunding.fundingfunder");
-		mapping.put("funder_authority", "ncrisprojectfunding.fundingfunder_auth");
-		mapping.put("grant", "ncrisprojectfunding.fundinggrant");
-		mapping.put("period","ncrisprojectfunding.fundingperiod");
-		mapping.put("program", "ncrisprojectfunding.fundingprogram");
-		mapping.put("supportcode", "ncrisprojectfunding.fundingsupportcode");
-		mapping.put("url", "ncrisprojectfunding.fundingurl");
+		mapping.put("funder", "crispj.funding.funder");
+		mapping.put("funder_authority", "crispj.funding.funder_authority");
+		mapping.put("grant", "crispj.funding.grant");
+		mapping.put("period","crispj.funding.period");
+		mapping.put("program", "crispj.funding.program");
+		mapping.put("supportcode", "crispj.funding.supportcode");
+		mapping.put("url", "crispj.funding.url");
 
 	}
 
@@ -66,18 +58,6 @@ public class Funding implements ComplexModel {
 	}
 	public String getName() {
 		return CT_FUNDING_NAME;
-	}
-
-	public int getParentFK() {
-		return PARENT_FK;
-	}
-
-	public String getSchema() {
-		return SCHEMA;
-	}
-
-	public String getNavigationFilter() {
-		return null;
 	}
 
 	public HashMap<String, String> getMapping() {

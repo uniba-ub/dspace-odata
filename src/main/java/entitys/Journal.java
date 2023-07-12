@@ -1,9 +1,6 @@
 package entitys;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.*;
 
 import org.apache.olingo.commons.api.edm.EdmPrimitiveTypeKind;
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
@@ -20,20 +17,31 @@ public class Journal implements EntityModel {
 	public static final String ET_JOURNAL_NAME = "Journal";
 	public static final FullQualifiedName ET_JOURNAL_FQN = new FullQualifiedName(NAMESPACE, ET_JOURNAL_NAME);
 	public static final String ES_JOURNALS_NAME = "Journals";
-	public final static String RECOURCE_TYPE_FILTER= "resourcetype_filter:\"series\n|||\nseries###crisseries\"";
-	public final static String ID_CONVERTER_TYP= "series";
+	public final static String RECOURCE_TYPE_FILTER= "search.resourcetype:\"Item\" and search.entitytype:\"Series\"";
+	private final HashMap<String, String> idconverter;
 	private final CsdlEntityType entityType;
 	private final CsdlEntitySet entitySet;
-	private final HashMap<String, String> mapping;
+	private final HashMap<String, List<String>> mapping;
 	private final ArrayList<String> ENTITYFILTER;
 
 	
 	public Journal() {
+		idconverter = new HashMap<>();
+		idconverter.put("([a-z0-9\\-]{36})", "search.resourceid");
+		idconverter.put("(series[0-9]{1,6})", "cris.legacyId");
+		idconverter.put("([1-9][0-9]{1,5})", "handle");
+		idconverter.put("([0][0-9]{1,4})", "cris.legacyId"); //until series09999 are considered as legcayvalues
+		idconverter.put("(uniba/[0-9]{1,6})", "handle");
+
 		CsdlProperty id = new CsdlProperty().setName("id")
 				.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
 		CsdlProperty crisId = new CsdlProperty().setName("cris-id")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty uuid = new CsdlProperty().setName("uuid")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty entitytype = new CsdlProperty().setName("entitytype")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty handle = new CsdlProperty().setName("handle")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty name = new CsdlProperty().setName("name")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
@@ -54,7 +62,7 @@ public class Journal implements EntityModel {
 		
 		entityType = new CsdlEntityType();
 		entityType.setName(ET_JOURNAL_NAME);
-		entityType.setProperties(Arrays.asList(id, crisId, uuid, name, issn, abbrevation, homepage, description));
+		entityType.setProperties(Arrays.asList(id, crisId, uuid, entitytype, handle, name, issn, abbrevation, homepage, description));
 		entityType.setKey(Collections.singletonList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
@@ -62,13 +70,17 @@ public class Journal implements EntityModel {
 		entitySet.setType(ET_JOURNAL_FQN);
 			
 		mapping = new HashMap<>();
-		mapping.put("cris-id", "cris-id");
-		mapping.put("uuid", "cris-uuid");
-		mapping.put("abbreviation", "crisseries.journalsabbreviation");
-		mapping.put("description", "crisseries.journalsdescription");
-		mapping.put("homepage", "crisseries.journalshomepage");
-		mapping.put("issn", "crisseries.journalsissn");
-		mapping.put("name", "crisseries.journalsname");
+		mapping.put("cris-id", List.of("cris.legacyId"));
+		mapping.put("uuid", List.of("search.resourceid"));
+		mapping.put("handle", List.of("handle"));
+		mapping.put("entitytype", List.of("search.entitytype"));
+		mapping.put("name", List.of("dc.title"));
+
+		mapping.put("abbreviation", List.of("crisseries.abbreviation"));
+		mapping.put("description", List.of("crisseries.description"));
+		mapping.put("homepage", List.of("crisseries.homepage"));
+		mapping.put("issn", List.of("crisseries.issn"));
+
 		
 		ENTITYFILTER = new ArrayList<>();
 	}
@@ -99,8 +111,8 @@ public class Journal implements EntityModel {
 	}
 
 	@Override
-	public String getIDConverterTyp() {
-		return ID_CONVERTER_TYP;
+	public HashMap<String, String> getIdConverter() {
+		return idconverter;
 	}
 
 	@Override
@@ -109,12 +121,17 @@ public class Journal implements EntityModel {
 	}
 
 	@Override
-	public HashMap<String, String> getMapping() {
+	public HashMap<String, List<String>> getMapping() {
 		return mapping;
 	}
 	
 	public ArrayList<String> getEntityFilter() {
 		return ENTITYFILTER;
+	}
+
+	@Override
+	public String getLegacyPrefix() {
+		return "series";
 	}
 
 }

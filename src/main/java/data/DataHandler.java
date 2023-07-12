@@ -13,6 +13,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import entitys.ComplexModel;
 import entitys.EntityModel;
@@ -38,6 +40,7 @@ import org.apache.olingo.server.api.uri.queryoption.SearchOption;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
+
 import service.IdConverter;
 import service.SolrQueryMaker;
 import util.Util;
@@ -115,11 +118,18 @@ public class DataHandler {
 		return entity;
 	}
 	
-	public SolrDocumentList getQuerriedDataFromSolr(String entitySetName, List<UriParameter> keyParams, boolean isEntityCollection, List<String> filterList) {
+	public SolrDocumentList getQuerriedDataFromSolr(String entitySetName, List<UriParameter> keyParams, boolean isEntityCollection, List<String> filterList)
+		throws SolrServerException, IOException {
 		return getQuerriedDataFromSolr(entitySetName, keyParams, isEntityCollection, filterList, null);
 	}
 
-	public SolrDocumentList getQuerriedDataFromSolr(String entitySetName, List<UriParameter> keyParams, boolean isEntityCollection, List<String> filterList, SearchOption search) {
+	public SolrDocumentList getQuerriedDataFromSolr(String entitySetName, List<UriParameter> keyParams, boolean isEntityCollection, List<String> filterList, SearchOption search)
+		throws SolrServerException, IOException {
+		return getQuerriedDataFromSolr(entitySetName, keyParams, isEntityCollection, filterList, search, false);
+	}
+
+	public SolrDocumentList getQuerriedDataFromSolr(String entitySetName, List<UriParameter> keyParams, boolean isEntityCollection, List<String> filterList, SearchOption search, boolean ignoreprivacy)
+		throws SolrServerException, IOException {
 		try {
 		for (EntityModel item: entityRegister.getEntityList()) {
 			if (item.getEntitySetName().equals(entitySetName)) {
@@ -147,21 +157,28 @@ public class DataHandler {
 						}
 					}
 					String id = keyParams.get(0).getText();				
-					String dspaceId = converter.convertODataIDToDSpaceID(id, item.getIDConverterTyp());
-					queryMaker.addSearchFilterForAttribute(converter.getIDSolrFilter(item.getIDConverterTyp()), dspaceId);				}
+					String dspaceId = converter.convertODataIDToDSpaceID(id);
+					String field = converter.getIdField(dspaceId,item.getIdConverter());
+					dspaceId = converter.addIdentifierPrefix(dspaceId,  field, item.getLegacyPrefix());
+					queryMaker.addSearchFilterForAttribute(field, dspaceId);
+				}
 			}		
 		}
-	
+
+		if(!ignoreprivacy) {
+			addReadableByAnonymousFilter();
+		}
+
 		SolrDocumentList responseDocuments = solr.getData(queryMaker);
 		queryMaker.resetQuery();
 		return responseDocuments;
 		} catch (Exception e) {
 			//reset query, if queryMaker is false or not found
-			e.printStackTrace();
+			//e.printStackTrace();
 			queryMaker.resetQuery();
+			throw e;
 		}
-		return null;
-		}
+	}
 
 	public EntityCollection createEntitySet(SolrDocumentList documentList, EntityModel entity) throws SolrServerException, IOException {
 		return createEntitySet(documentList, entity, false);	
@@ -210,70 +227,78 @@ public class DataHandler {
 	public List<Property> createPropertyList(SolrDocument solrDocument, EntityModel entity) throws SolrServerException, IOException {
 		propertyList = new LinkedList<>();
 		Property property;
-		HashMap<String, String> mapping = entity.getMapping();
+		HashMap<String, List<String>> mapping = entity.getMapping();
+		if (solrDocument.getFieldValue("discoverable") != null && ((String) solrDocument.getFieldValue("discoverable")).contentEquals("false")) {
+			// Check if there is some special mapping for non discoverable instances of this entityModel
+			if (entity.getNonDiscoverableMapping() != null) {
+				mapping = entity.getNonDiscoverableMapping();
+			}
+		}
+
 		StringBuilder builder = new StringBuilder();
 		String itemType;
 		for (CsdlProperty item: entity.getEntityType().getProperties()) {
 			if (item.getName().equals("id")) {
-				if (entity.getEntityType().getName().equals("Publication")) {
-					String currentId = (String) solrDocument.getFieldValue("handle");
-					int convertedId = converter.convertHandleToId(currentId);
-					property = new Property(null, "id", ValueType.PRIMITIVE, convertedId);
-					propertyList.add(property);
-				} else if (entity.getEntityType().getName().equals("Product")) {
-					String currentId = (String) solrDocument.getFieldValue("handle");
-					int convertedId = converter.convertHandleToId(currentId);
-					property = new Property(null, "id", ValueType.PRIMITIVE, convertedId);
-					propertyList.add(property);
-				} else {
-					String currentId = (String) solrDocument.getFieldValue("cris-id");
-					int convertedId = converter.convertCrisToId(currentId);
-					property = new Property(null, "id", ValueType.PRIMITIVE, convertedId);
-					propertyList.add(property);	
-				}
+				String currentId = (String) solrDocument.getFieldValue("handle");
+				int convertedId = converter.convertHandleToId(currentId);
+				property = new Property(null, "id", ValueType.PRIMITIVE, convertedId);
+				propertyList.add(property);
 			
 			} else {
 				itemType = item.getTypeAsFQNObject().getName();
-				if (solrDocument.getFieldValue(mapping.get(item.getName())) != null) {
+				if (mapping.get(item.getName()) != null){
 					if (itemType.equals("String")) {
-						for (Object value: solrDocument.getFieldValues(mapping.get(item.getName()))) {
-							if (builder.toString().length()!=0) {
-								if (item.getName().equals("author") ||
-									item.getName().equals("articlecollectionEditor") ||
-									item.getName().contentEquals("editor") ||
-									item.getName().contentEquals("creator") ||
-									item.getName().contentEquals("contributor") ||
-									item.getName().contentEquals("creatorcontributor")) {
-									builder.append("; ");
-								} else {
-									builder.append(", ");
-								}			
+						for (String val : mapping.get(item.getName())) {
+							if (solrDocument.getFieldValue(val) != null) {
+								for (Object value : solrDocument.getFieldValues(val)) {
+									if (builder.toString().length() != 0) {
+										if (item.getName().equals("author") ||
+											item.getName().equals("articlecollectionEditor") ||
+											item.getName().contentEquals("editor") ||
+											item.getName().contentEquals("creator") ||
+											item.getName().contentEquals("contributor") ||
+											item.getName().contentEquals("creatorcontributor")) {
+											builder.append("; ");
+										} else {
+											builder.append(", ");
+										}
+									}
+									builder.append(value.toString());
+								}
 							}
-							builder.append(value.toString());
-						} 
-						property = new Property(null, item.getName(), ValueType.PRIMITIVE, builder.toString());
+						}
+						if (builder.toString().length() != 0) {
+							property = new Property(null, item.getName(), ValueType.PRIMITIVE, builder.toString());
+						} else {
+							property = new Property(null, item.getName(), ValueType.PRIMITIVE, null);
+						}
 						propertyList.add(property);
 						builder = new StringBuilder();
 					} else if (itemType.equals("Int32")|itemType.equals("Int16")| itemType.equals("Boolean")) {
-						property = new Property(null, item.getName(), ValueType.PRIMITIVE, solrDocument.getFirstValue(mapping.get(item.getName())));
+						property = new Property(null, item.getName(), ValueType.PRIMITIVE, solrDocument.getFirstValue(mapping.get(item.getName()).get(0)));
 						propertyList.add(property);
 					} else if (itemType.equals("DateTimeOffset") | itemType.contentEquals("DateTime")) {
 						//transform from Solr-value to datetime
 						try {
 							DateFormat dateFormat = new SimpleDateFormat(
 					            "EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
-							Date date = dateFormat.parse((solrDocument.getFirstValue(mapping.get(item.getName()))).toString());
+							Date date = dateFormat.parse((solrDocument.getFirstValue(mapping.get(item.getName()).get(0))).toString());
 							property = new Property(null, item.getName(), ValueType.PRIMITIVE, date);
 							propertyList.add(property);
 						} catch(Exception e) {
 							//
 						}
 					}
-				} else if (entityRegister.getComplexTypeNameList().contains(itemType)) {
-					int idOfSolrObject = (Integer) solrDocument.getFieldValue("search.resourceid");
-					for (ComplexModel complexProperty:entityRegister.getComplexProperties()) {
-						if (complexProperty.getName().equals(item.getName())) {
-							loadComplexPropertyFromSolr(complexProperty, idOfSolrObject, propertyList);
+				} else if (entityRegister.getComplexTypeNameList().contains(itemType)){
+					if (solrDocument.getFieldValue("discoverable") != null && ((String) solrDocument.getFieldValue("discoverable")).contentEquals("false")) {
+						// Check if there is some special mapping for non discoverable instances of this entityModel
+						if (entity.hasNonDiscoverableComplexProperties() == false) {
+							continue;
+						}
+					}
+					for (ComplexModel complexProperty : entityRegister.getComplexProperties()) {
+						if (complexProperty.getName().contentEquals(item.getName())) {
+							loadComplexPropertyFromMetadata(complexProperty, solrDocument, propertyList);
 						}
 					}
 				}
@@ -283,25 +308,51 @@ public class DataHandler {
 		return propertyList;
 	}
 
-	private void loadComplexPropertyFromSolr(ComplexModel complexProperty, int idOfSolrObject, List<Property> propertyList) throws
-		IOException {
-		queryMaker.setSearchFilterForComplexProperty(idOfSolrObject, complexProperty.getParentFK(), complexProperty.getSchema());
-		queryMaker.setResponseLimitToMax();
-		SolrDocumentList responseDocumentsForComplexProperty = solr.getData(queryMaker);
+	private void loadComplexPropertyFromMetadata(ComplexModel complexProperty, SolrDocument solrDocument, List<Property> propertyList) throws IOException {
+
 		HashMap<String, String> mapping = complexProperty.getMapping();
-		List<ComplexValue> complexValueList = new LinkedList<>();
-		for (SolrDocument solrDocument: responseDocumentsForComplexProperty) {
-			ComplexValue complexvalue = new ComplexValue();
-			List <Property> complexSubProperties = complexvalue.getValue();
-			for (CsdlProperty item: complexProperty.getComplexType().getProperties()) {
-				Property complexSubProperty = new Property(null, item.getName(), ValueType.PRIMITIVE, solrDocument.getFirstValue(mapping.get(item.getName())));
+		List<ComplexValue> complexValueList = new LinkedList<ComplexValue>();
+
+
+			// Loop through results in metadata fields list and ignore Placeholder Values
+			// Assume all lists have the same length. Otherwise the size of every property must be checked.
+			CsdlProperty item = complexProperty.getComplexType().getProperties().get(0);
+			if (item == null) return;
+			if (solrDocument.getFieldValues(mapping.get(item.getName())) == null) return;
+			//the "parent" field being iterated
+			for (int i = 0; i < solrDocument.getFieldValues(mapping.get(item.getName())).size(); i++) {
+				ComplexValue complexvalue = new ComplexValue();
+				List <Property> complexSubProperties = complexvalue.getValue();
+				List<String> vals = solrDocument.getFieldValues(mapping.get(item.getName())).stream()
+						   .map(object -> Objects.toString(object, null))
+						   .collect(Collectors.toList());
+				String val = vals.get(i);
+				if (val == null) continue;
+				if (val.equalsIgnoreCase("#PLACEHOLDER_PARENT_METADATA_VALUE#")) val = null;
+				Property complexSubProperty = new Property(null, item.getName(), ValueType.PRIMITIVE, val);
 				complexSubProperties.add(complexSubProperty);
+
+				//loop through all other values on this position
+				for (CsdlProperty otheritem : complexProperty.getComplexType().getProperties().subList( 1, complexProperty.getComplexType().getProperties().size())) {
+					if (solrDocument.getFirstValue(mapping.get(otheritem.getName()))== null){
+					Property othercomplexSubProperty = new Property(null, otheritem.getName(), ValueType.PRIMITIVE, null);
+					complexSubProperties.add(othercomplexSubProperty);
+					} else {
+					List<String> othervals = solrDocument.getFieldValues(mapping.get(otheritem.getName())).stream()
+							   .map(object -> Objects.toString(object, null))
+							   .collect(Collectors.toList());
+					String otherval = othervals.get(i);
+					if (otherval == null) continue;
+					if (otherval.equalsIgnoreCase("#PLACEHOLDER_PARENT_METADATA_VALUE#")) otherval = null;
+					Property othercomplexSubProperty = new Property(null, otheritem.getName(), ValueType.PRIMITIVE, otherval);
+					complexSubProperties.add(othercomplexSubProperty);
+					}
+
+				}
+				complexValueList.add(complexvalue);
 			}
-			complexValueList.add(complexvalue);
-		}
 		Property propertyComplex = new Property(null, complexProperty.getName(), ValueType.COLLECTION_COMPLEX, complexValueList);
 		propertyList.add(propertyComplex);
-		queryMaker.resetQuery();
 	}
 
 	private URI createId(Entity entity, String idPropertyName, String navigationName) {
@@ -348,8 +399,9 @@ public class DataHandler {
 	}
 
 	public EntityCollection getRelatedEntityCollection(Entity sourceEntity, EdmEntityType targetEntityType, String relation) throws SolrServerException, IOException {
-			// get ID from Entitiy Source
-			String entityID = sourceEntity.getProperty("id").getValue().toString();
+
+			// get uuid from entity, not it's primary id. This is usally being used as the values containing the links
+			String entityID = sourceEntity.getProperty("uuid").getValue().toString();
 			List<UriParameter> keyParams = null;
 			SolrDocumentList responseDocuments;
 			boolean isEntityCollection = true;
@@ -364,8 +416,8 @@ public class DataHandler {
 					targetModel= item;	
 				}
 			}
-			
-			String dspaceId = converter.convertODataIDToDSpaceID(entityID, sourceModel.getIDConverterTyp());
+
+			String dspaceId = entityID;
 			queryMaker.addSearchFilter((targetModel.getNavigationFilter(sourceModel.getEntitySetName()+relation, dspaceId)));
 			String[] reverseRelationArr = Util.calculatereverseRelation(sourceModel, targetModel, sourceEntity,
 				"reverse");
@@ -385,16 +437,16 @@ public class DataHandler {
 	
 	public List<Entity> getRelatedSelectedEntityCollection(Entity sourceEntity, EdmEntityType targetEntityType,
 			String relation) throws SolrServerException, IOException {
-			/* Returns a already ordered List for this EntityCollection
+			/* Returns an already ordered List for this EntityCollection
 			 * The List is ordered after the amount of the occurence of the dspaceId (here uuid) in some  solr-field.
 			 * This selected preferences field is not part of the odata entity, only of the solrdocument. 
-			 * Combines several Logic from other functions here.
+			 * Combines Logic from other functions here.
 			 * */
 		if (relation.isEmpty() || !relation.endsWith("_SELECTED")) {
 			//For Selected Lists, we have to use the uuid value instead of the id
 			return getRelatedEntityCollection(sourceEntity, targetEntityType, relation).getEntities();
 		}
-			// get ID from from Entity Source
+			// get ID from  Entity Source
 			String entityID = sourceEntity.getProperty("id").getValue().toString();
 			List<UriParameter> keyParams = null;
 			SolrDocumentList responseDocuments;
@@ -410,7 +462,7 @@ public class DataHandler {
 				}
 			}
 			
-			String dspaceId = converter.convertODataIDToDSpaceID(entityID, sourceModel.getIDConverterTyp());
+			String dspaceId = converter.convertODataIDToDSpaceID(entityID);
 			dspaceId = sourceEntity.getProperty("uuid").getValue().toString();
 			if (dspaceId == null) return null;
 			queryMaker.addSearchFilter((targetModel.getNavigationFilter(sourceModel.getEntitySetName()+relation, dspaceId)));
@@ -422,7 +474,7 @@ public class DataHandler {
 			String selectedfield = "";
 			//This Relation is also configured in Publication. It's used here for sorting
 			if ((sourceModel.getEntitySetName()+relation).contentEquals("Researchers_SELECTED")) {
-				selectedfield = "relationpreferences.crisrp.publications.selected";
+				selectedfield = "relation.isPublicationsSelectedFor";
 			}
 			Map<String, Integer> priority = new HashMap<>(); // Map holding primary key of entity and Priority Value
 
@@ -453,11 +505,12 @@ public class DataHandler {
 			}
 			
 			//sort entitySet by priority value determined in Map priority. higher priorityvalue = higher Position in List
+			//NOT YET IMPLEMENTED: The sorting/place of the relation selection is not yet implemented in dspace-cris7
 			List<Entity> result = navigationTargetEntityCollection.getEntities();
 			result.sort((entity1, entity2) -> {
 				int compareResult = 0;
 				try {
-					//Issue with Priority and RelationPreferencesSolrIndexPlugin in Dspace-Cris:
+					//Issue with Priority and Relation Selected/Hidden Funktionality in Dspace-Cris:
 					//first Element has Priority 1, following 100 desc
 					Integer prio1 = priority.get(entity1.getProperty(idproperty).getValue().toString());
 					Integer prio2 = priority.get(entity2.getProperty(idproperty).getValue().toString());
@@ -501,6 +554,8 @@ public class DataHandler {
 			return serviceMetadata.getEdm().getEntityContainer().getEntitySet(Publication.ES_PUBLICATIONS_NAME);
 		} else if (EdmProviderDSpace.FUNCTION_CSL_FOR_ORGUNIT.equals(uriResourceFunction.getFunctionImport().getName())) {
 			return serviceMetadata.getEdm().getEntityContainer().getEntitySet(Publication.ES_PUBLICATIONS_NAME);
+		}  else if (EdmProviderDSpace.FUNCTION_CSL_FOR_ORGUNIT_CHILD.equals(uriResourceFunction.getFunctionImport().getName())) {
+			return serviceMetadata.getEdm().getEntityContainer().getEntitySet(Publication.ES_PUBLICATIONS_NAME);
 		} else if (EdmProviderDSpace.FUNCTION_CSL_FOR_PROJECT.equals(uriResourceFunction.getFunctionImport().getName())) {
 			return serviceMetadata.getEdm().getEntityContainer().getEntitySet(Publication.ES_PUBLICATIONS_NAME);
 		} else if (EdmProviderDSpace.FUNCTION_CSL_FOR_PUBLICATION.equals(uriResourceFunction.getFunctionImport().getName())) {
@@ -538,6 +593,19 @@ public class DataHandler {
 		parameters.add(uriResourceFunction.getParameters().get(0));
 		}
 		return parameters;
+	}
+
+	private void addReadableByAnonymousFilter() {
+		String groupfilter = System.getenv("SOLR_ANONYMOUS_GROUP_UUID");
+		if(groupfilter != null && !groupfilter.isBlank()) {
+			if (groupfilter.contains(":")) {
+				// it's some filter'
+			queryMaker.addSearchFilter(groupfilter);
+			} else {
+				//it's an uuid
+			queryMaker.addSearchFilterForAttribute("read", groupfilter);
+			}
+		}
 
 	}
 }

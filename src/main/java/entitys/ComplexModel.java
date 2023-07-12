@@ -10,8 +10,6 @@ public interface ComplexModel {
 	CsdlComplexType getComplexType();
 	FullQualifiedName getFullQualifiedName();
 	String getName();
-	int getParentFK();
 	HashMap<String, String> getMapping();
-	String getSchema();
 
 }

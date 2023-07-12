@@ -1,9 +1,6 @@
 package entitys;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.*;
 
 import org.apache.olingo.commons.api.edm.EdmPrimitiveTypeKind;
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
@@ -20,17 +17,27 @@ public class Product implements EntityModel {
 	public static final String ET_PRODUCT_NAME = "Product";
 	public static final FullQualifiedName ET_PRODUCT_FQN = new FullQualifiedName(NAMESPACE, ET_PRODUCT_NAME);
 	public static final String ES_PRODUCTS_NAME = "Products";
-	public final static String RECOURCE_TYPE_FILTER= "resourcetype_filter:\"001publications\n|||\nPublications###publications\"";
-	public final static String ID_CONVERTER_TYP= "uniba/";
+	public final static String RECOURCE_TYPE_FILTER= "search.resourcetype:\"Item\" and search.entitytype:\"ResearchData\"";
+	private final HashMap<String, String> idconverter;
 	private final CsdlEntityType entityType;
 	private final CsdlEntitySet entitySet;
-	private final HashMap<String, String> mapping;
+	private final HashMap<String, List<String>> mapping;
 	private final ArrayList<String> ENTITYFILTER;
 	
-	public Product() {
+	public Product(){
+		idconverter = new HashMap<>();
+		idconverter.put("([a-z0-9\\-]{36})", "search.resourceid");
+		idconverter.put("([0-9]{1,6})", "handle");
+		idconverter.put("(uniba/[0-9]{1,6})", "handle");
 		
 		CsdlProperty id = new CsdlProperty().setName("id")
 				.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
+		CsdlProperty uuid = new CsdlProperty().setName("uuid")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty entitytype = new CsdlProperty().setName("entitytype")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty name = new CsdlProperty().setName("name")
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty creator= new CsdlProperty().setName("creator")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty author= new CsdlProperty().setName("author")
@@ -89,7 +96,7 @@ public class Product implements EntityModel {
 
 		entityType = new CsdlEntityType();	
 		entityType.setName(ET_PRODUCT_NAME);
-		entityType.setProperties(Arrays.asList(id, handle, title, creator, contributor, author, description, doi, ourdoi, extent, format, type, language, publisher, issued,faculty,uriIdentifier, urlIdentifier, corporation, version, csl, prod2ou, prod2pj, prod2rp, prod2awards));
+		entityType.setProperties(Arrays.asList(id, uuid, entitytype, handle, name, title, creator, contributor, author, description, doi, ourdoi, extent, format, type, language, publisher, issued,faculty,uriIdentifier, urlIdentifier, corporation, version, csl, prod2ou, prod2pj, prod2rp, prod2awards));
 		entityType.setKey(Collections.singletonList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
@@ -98,35 +105,38 @@ public class Product implements EntityModel {
 		
 		mapping = new HashMap<>();
 		
-		mapping.put("handle", "handle");
-		mapping.put("creator", "dc.creator");
-		mapping.put("author", "dc.creator");
-		mapping.put("contributor", "contributors"); //ubg.contributor.*
-		mapping.put("completedyear", "researchdatacompleted"); //using own indexer for this value. uses dc.date.created or dc.date.issued
-		mapping.put("issued", "dateIssued.year_sort");
-		mapping.put("corporation", "dc.creator.corporation");
-		mapping.put("description", "ubg.description.abstract");
-		mapping.put("extent", "dcterms.extent");
-		mapping.put("format", "dcterms.format");
-		mapping.put("doi", "dc.identifier.doi");
-		mapping.put("ourdoi", "ubg.identifier.doi");
-		mapping.put("faculty","ubg.researchdata.org");
-		mapping.put("language", "dc.language.iso");
-		mapping.put("publisher", "dc.publisher");
-		mapping.put("type", "dc.type");
-		mapping.put("title", "dc.title");
-		mapping.put("uri", "dc.identifier.uri");
-		mapping.put("url", "dc.identifier.url");
-		mapping.put("version", "ubg.version.description");
+		mapping.put("handle", List.of("handle"));
+		mapping.put("uuid", List.of("search.resourceid"));
+		mapping.put("entitytype", List.of("search.entitytype"));
+		mapping.put("name", List.of("dc.title"));
 		
-		mapping.put("prod2rp", "contributor_authority");
-		mapping.put("prod2pj", "ubg.relation.project_authority");
-		mapping.put("prod2ou", "ubg.researchdata.org_authority");
-		mapping.put("prod2award", "ubg.relation.award_authority");
+		mapping.put("creator", List.of("dc.creator"));
+		mapping.put("author", List.of("dc.creator"));
+		mapping.put("contributor", List.of("contributors")); //ubg.contributor.*
+		mapping.put("completedyear", List.of("researchdatacompleted"));
+		mapping.put("issued", List.of("dateIssued.year_sort"));
+		mapping.put("corporation", List.of("dc.creator.corporation"));
+		mapping.put("description", List.of("ubg.description.abstract"));
+		mapping.put("extent", List.of("dcterms.extent"));
+		mapping.put("format", List.of("dcterms.format"));
+		mapping.put("doi", List.of("dc.identifier.doi"));
+		mapping.put("ourdoi", List.of("ubg.identifier.doi"));
+		mapping.put("faculty",List.of("dc.relation.creatororgunit"));
+		mapping.put("language", List.of("dc.language.iso"));
+		mapping.put("publisher", List.of("dc.publisher"));
+		mapping.put("type", List.of("dc.type"));
+		mapping.put("title", List.of("dc.title"));
+		mapping.put("uri", List.of("dc.identifier.uri"));
+		mapping.put("url", List.of("dc.identifier.url"));
+		mapping.put("version", List.of("ubg.version.description"));
+
+		mapping.put("prod2rp", List.of("contributor_authority"));
+		mapping.put("prod2pj", List.of("ubg.relation.project_authority"));
+		mapping.put("prod2ou", List.of("dc.relation.creatororgunit_authority"));
+		mapping.put("prod2award", List.of("ubg.relation.award_authority"));
 
 		ENTITYFILTER = new ArrayList<>();
-		ENTITYFILTER.add("item.isResearchdata:true");
-		
+
 	}
 
 	public CsdlEntityType getEntityType() {
@@ -149,35 +159,29 @@ public class Product implements EntityModel {
 		return RECOURCE_TYPE_FILTER;
 	}
 
-	public String getIDConverterTyp() {
-		return ID_CONVERTER_TYP;
+	public HashMap<String, String> getIdConverter() {
+		return idconverter;
 	}
 	
 	public ArrayList<String> getEntityFilter() {
 		return ENTITYFILTER;
 	}
 
-	public String getNavigationFilter(String sourceType, String id) {
-		String navigationFilter = "";
-		switch (sourceType) {
-			case "Researchers":
-				navigationFilter = ("contributor_authority:\"");
-				navigationFilter = (navigationFilter + id + "\"");
-				break;
-			case "Orgunits":
-				navigationFilter = ("ubg.researchdata.org_authority:\"");
-				navigationFilter = (navigationFilter + id + "\"");
-				break;
-			case "Projects":
-				navigationFilter = ("ubg.relation.project_authority:\"");
-				navigationFilter = (navigationFilter + id + "\"");
-				break;
-		}
-		
-			return navigationFilter;
+	@Override
+	public String getLegacyPrefix() {
+		return null;
 	}
 
-	public HashMap<String, String> getMapping() {
+	public String getNavigationFilter(String sourceType, String id) {
+		return switch (sourceType) {
+			case "Researchers" -> ("contributor_authority:\"" + id + "\"");
+			case "Orgunits" -> ("ubg.relation.creatororgunit_authority:\"" + id + "\"");
+			case "Projects" -> ("ubg.relation.project_authority:\"" + id + "\"");
+			default -> "";
+		};
+	}
+
+	public HashMap<String, List<String>> getMapping() {
 		return mapping;
 	}
 

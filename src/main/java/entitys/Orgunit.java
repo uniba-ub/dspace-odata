@@ -19,24 +19,30 @@ public class Orgunit implements EntityModel{
 	public static final String ET_ORGUNIT_NAME = "Orgunit";
 	public static final FullQualifiedName ET_ORGUNIT_FQN = new FullQualifiedName(NAMESPACE, ET_ORGUNIT_NAME);
 	public static final String ES_ORGUNITS_NAME = "Orgunits";
-	public final static String RECOURCE_TYPE_FILTER= "resourcetype_filter:\"008orgunits\n|||\nOrganizations###orgunits\"";
-	public final static String ID_CONVERTER_TYP= "ou";
+	public final static String RECOURCE_TYPE_FILTER= "search.resourcetype:\"Item\" and search.entitytype:\"OrgUnit\"";
+	private final HashMap<String, String> idconverter;
 	private final CsdlEntityType entityType;
 	private final CsdlEntitySet entitySet;
-	private final HashMap<String, String> mapping = new HashMap<>();
+	private final HashMap<String, List<String>> mapping;
 	private final ArrayList<String> ENTITYFILTER;
 
-	public Orgunit() {
+	public Orgunit(){
+	idconverter = new HashMap<>();
+	idconverter.put("([a-z0-9\\-]{36})", "search.resourceid");
+	idconverter.put("(ou[0-9]{1,6})", "cris.legacyId");
+	idconverter.put("([1-9][0-9]{1,5})", "handle");
+	idconverter.put("([0][0-9]{1,4})", "cris.legacyId"); //until ou09999 are considered as legcayvalues
+	idconverter.put("(uniba/[0-9]{1,6})", "handle");
 		
 	CsdlProperty id = new CsdlProperty().setName("id")
 			.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
+	CsdlProperty crisid = new CsdlProperty().setName("cris-id")
+			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 	CsdlProperty uuid = new CsdlProperty().setName("uuid")
 			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-	CsdlProperty active = new CsdlProperty().setName("active")
+	CsdlProperty entitytype = new CsdlProperty().setName("entitytype")
 			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-	CsdlProperty idmKey = new CsdlProperty().setName("cris-id")
-			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-	CsdlProperty crossrefid = new CsdlProperty().setName("crossrefid")
+	CsdlProperty handle = new CsdlProperty().setName("handle")
 			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 	CsdlProperty date = new CsdlProperty().setName("date")
 			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
@@ -61,24 +67,26 @@ public class Orgunit implements EntityModel{
 
 	entityType = new CsdlEntityType();
 	entityType.setName(ET_ORGUNIT_NAME);
-	entityType.setProperties(Arrays.asList(id, uuid, idmKey, name, description, url, director, date, endDate,active,crossrefid, parentorgunit));
+	entityType.setProperties(Arrays.asList(id, crisid, uuid, handle, entitytype, name, description, url, director, date, endDate, parentorgunit));
 	entityType.setKey(List.of(propertyRef));
 	
 	entitySet = new CsdlEntitySet();
 	entitySet.setName(ES_ORGUNITS_NAME);
 	entitySet.setType(ET_ORGUNIT_FQN);
+	
+	mapping = new HashMap<>();
+	mapping.put("cris-id", List.of("cris.legacyId"));
+	mapping.put("uuid", List.of("search.resourceid"));
+	mapping.put("handle", List.of("handle"));
+	mapping.put("entitytype", List.of("search.entitytype"));
+	mapping.put("name", List.of("dc.title"));
 
-	mapping.put("cris-id", "cris-id");
-	mapping.put("uuid", "cris-uuid");
-	mapping.put("active", "crisou.active");
-	mapping.put("crossrefid", "crisou.crossrefid");
-	mapping.put("director","crisou.director");
-	mapping.put("date", "crisou.date");
-	mapping.put("description", "crisou.description");
-	mapping.put("endDate", "crisou.enddate");
-	mapping.put("name", "crisou.name");
-	mapping.put("parentorgunit", "crisou.parentorgunit_authority");
-	mapping.put("url", "crisou.url");
+	mapping.put("director",List.of("crisou.director"));
+	mapping.put("date", List.of("crisou.startdate"));
+	mapping.put("description", List.of("crisou.description"));
+	mapping.put("endDate", List.of("crisou.enddate"));
+	mapping.put("parentorgunit", List.of("crisou.parentorgunit_authority"));
+	mapping.put("url", List.of("crisou.url"));
 	
 	ENTITYFILTER = new ArrayList<>();
 	}
@@ -103,12 +111,17 @@ public class Orgunit implements EntityModel{
 		return RECOURCE_TYPE_FILTER;
 	}
 
-	public String getIDConverterTyp() {
-		return ID_CONVERTER_TYP;
+	public HashMap<String, String> getIdConverter() {
+		return idconverter;
 	}
 	
 	public ArrayList<String> getEntityFilter() {
 		return ENTITYFILTER;
+	}
+
+	@Override
+	public String getLegacyPrefix() {
+		return "ou";
 	}
 
 	public String getNavigationFilter(String sourceType, String id) {
@@ -119,7 +132,7 @@ public class Orgunit implements EntityModel{
 		return navigationFilter;
 	}
 
-	public HashMap<String, String> getMapping() {
+	public HashMap<String, List<String>> getMapping() {
 		return mapping;
 	}
 	

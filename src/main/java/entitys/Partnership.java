@@ -15,18 +15,12 @@ public class Partnership implements ComplexModel {
 	public static final String CT_PARTNERSHIP_NAME = "Partnership";
 	public static final FullQualifiedName CT_PARTNERSHIP_FQN = new FullQualifiedName(NAMESPACE, CT_PARTNERSHIP_NAME);
 	// nested objects need a parent key and a search schema
-	public static final int PARENT_FK = 10;
-	public static final String SCHEMA = "ncrisprojectpartnership";
 	private final CsdlComplexType complexType;
 	private final HashMap<String, String> mapping;
 	
 	
 	public Partnership() {
-		
-		CsdlProperty uuid = new CsdlProperty().setName("uuid")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty cooperative = new CsdlProperty().setName("cooperative")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+
 		CsdlProperty description = new CsdlProperty().setName("description")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
 		CsdlProperty name = new CsdlProperty().setName("name")
@@ -40,17 +34,15 @@ public class Partnership implements ComplexModel {
 
 		complexType = new CsdlComplexType();
 		complexType.setName(CT_PARTNERSHIP_NAME);
-		complexType.setProperties(Arrays.asList(uuid,name, projectpartner, cooperative, description, url, type));
+		complexType.setProperties(Arrays.asList(name, projectpartner, description, url, type));
 		
 		mapping = new HashMap<>();
 		
-		mapping.put("uuid", "cris-uuid");
-		mapping.put("cooperative","ncrisprojectpartnership.partnershipcooperative");
-		mapping.put("description", "ncrisprojectpartnership.partnershipdescription");
-		mapping.put("projectpartner", "ncrisprojectpartnership.partnershipprojectpartner");
-		mapping.put("name", "ncrisprojectpartnership.partnershipname");
-		mapping.put("type", "ncrisprojectpartnership.partnershiptypeofpartnership");
-		mapping.put("url", "ncrisprojectpartnership.partnershipurl");
+		mapping.put("description", "crispj.partnership.description");
+		mapping.put("projectpartner", "crispj.partnership.projectpartner");
+		mapping.put("name", "crispj.partnership.name");
+		mapping.put("type", "crispj.partnership.typeofpartnership");
+		mapping.put("url", "crispj.partnership.url");
 
 	}
 	
@@ -65,22 +57,8 @@ public class Partnership implements ComplexModel {
 		return CT_PARTNERSHIP_NAME;
 	}
 
-	public int getParentFK() {
-		return PARENT_FK;
-	}
-
-	public String getNavigationFilter() {
-		return null;
-	}
-
 	public HashMap<String, String> getMapping() {
 		return mapping;
 	}
-
-
-	public String getSchema() {
-		return SCHEMA;
-	}
-
 
 }
