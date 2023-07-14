@@ -29,7 +29,7 @@ public class Journal implements EntityModel {
 		idconverter = new HashMap<>();
 		idconverter.put("([a-z0-9\\-]{36})", "search.resourceid");
 		idconverter.put("(series[0-9]{1,6})", "cris.legacyId");
-		idconverter.put("([1-9][0-9]{1,5})", "handle");
+		idconverter.put("([1-9]{1}[0-9]{4})|([1]{1}[0-9]{5})", "handle"); //greater than 10.000
 		idconverter.put("([0][0-9]{1,4})", "cris.legacyId"); //until series09999 are considered as legcayvalues
 		idconverter.put("(uniba/[0-9]{1,6})", "handle");
 
