@@ -30,7 +30,7 @@ public class Orgunit implements EntityModel{
 	idconverter = new HashMap<>();
 	idconverter.put("([a-z0-9\\-]{36})", "search.resourceid");
 	idconverter.put("(ou[0-9]{1,6})", "cris.legacyId");
-	idconverter.put("([1-9][0-9]{4,5})", "handle");
+	idconverter.put("([1-9]{5})", "handle");
 	idconverter.put("([0-9]{1,4})", "cris.legacyId"); //until ou09999 are considered as legcayvalues
 	idconverter.put("(uniba/[0-9]{1,6})", "handle");
 		
