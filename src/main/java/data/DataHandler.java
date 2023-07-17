@@ -418,7 +418,8 @@ public class DataHandler {
 			}
 
 			String dspaceId = entityID;
-			queryMaker.addSearchFilter((targetModel.getNavigationFilter(sourceModel.getEntitySetName()+relation, dspaceId)));
+			String searchfilter = targetModel.getNavigationFilter(sourceModel.getEntitySetName()+relation, dspaceId);
+			queryMaker.addSearchFilter(searchfilter);
 			String[] reverseRelationArr = Util.calculatereverseRelation(sourceModel, targetModel, sourceEntity,
 				"reverse");
 			if (reverseRelationArr != null && reverseRelationArr.length > 0 && reverseRelationArr[0] != null && !reverseRelationArr[0].contentEquals("")) {
@@ -426,6 +427,9 @@ public class DataHandler {
 				filterList.addAll(reverseRelation);
 			}
 			filterList.addAll(targetModel.getEntityFilter());
+			if ((searchfilter == null || searchfilter.isBlank()) && filterList.isEmpty()) {
+				return null;
+			}
 			responseDocuments = getQuerriedDataFromSolr(targetModel.getEntitySetName(), keyParams, isEntityCollection, filterList);
 		EntityCollection navigationTargetEntityCollection = createEntitySet(responseDocuments, targetModel);
 			
@@ -465,8 +469,12 @@ public class DataHandler {
 			String dspaceId = converter.convertODataIDToDSpaceID(entityID);
 			dspaceId = sourceEntity.getProperty("uuid").getValue().toString();
 			if (dspaceId == null) return null;
-			queryMaker.addSearchFilter((targetModel.getNavigationFilter(sourceModel.getEntitySetName()+relation, dspaceId)));
+			String searchfilter = targetModel.getNavigationFilter(sourceModel.getEntitySetName()+relation, dspaceId);
+			queryMaker.addSearchFilter(searchfilter);
 			List<String> filterList = new LinkedList<>(targetModel.getEntityFilter());
+			if ((searchfilter == null || searchfilter.isBlank()) && filterList.isEmpty()) {
+				return null;
+			}
 			responseDocuments = getQuerriedDataFromSolr(targetModel.getEntitySetName(), keyParams, isEntityCollection, filterList);
 	
 			if (responseDocuments == null || responseDocuments.isEmpty()) return null;
