@@ -117,7 +117,7 @@ public class Project implements EntityModel{
 		mapping.put("potentialfield", List.of("crispj.potentialfield"));
 		mapping.put("startdate", List.of("crispj.startdate"));
 		mapping.put("status", List.of("crispj.status"));
-		mapping.put("title", List.of("crispj.title"));
+		mapping.put("title", List.of("dc.title"));
 		mapping.put("url", List.of("crispj.projectURL"));
 		mapping.put("dept", List.of("crispj.deptproject"));
 		mapping.put("createdate", List.of("dc.date.accessioned_dt")); //Creation-Time of Entity
