@@ -181,6 +181,7 @@ public class Researcher implements EntityModel {
 		mapping.put("handle", List.of("handle"));
 		mapping.put("entitytype", List.of("search.entitytype"));
 		mapping.put("name", List.of("dc.title"));
+		mapping.put("displayname", List.of("dc.title"));
 
 		mapping.put("orcid", List.of("person.identifier.orcid"));
 		mapping.put("gnd", List.of("crisrp.gndId"));
