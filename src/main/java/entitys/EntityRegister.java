@@ -144,10 +144,12 @@ public class EntityRegister {
 			complexPropertyList.add(partnership);
 			Affiliation affiliation = new Affiliation();
 			Achievement achievement = new Achievement();
+			Activity activity = new Activity();
 			Career career = new Career();
 			Education education = new Education();
 			complexPropertyList.add(affiliation);
 			complexPropertyList.add(achievement);
+			complexPropertyList.add(activity);
 			complexPropertyList.add(career);
 			complexPropertyList.add(education);
 		}
