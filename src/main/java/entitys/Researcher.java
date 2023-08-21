@@ -31,7 +31,7 @@ public class Researcher implements EntityModel {
 		idconverter.put("([a-z0-9\\-]{36})", "search.resourceid");
 		idconverter.put("(rp[0-9]{1,6})", "cris.legacyId");
 		idconverter.put("([6-9]{1}[0-9]{4})|([0-9]{6})", "handle"); //greater than 60.000 or grater than 100.000
-		idconverter.put("([0-3][0-9]{1,4})", "cris.legacyId"); //rp until rp30000 are considered as legacyvalues
+		idconverter.put("([0-3]{0,1}[0-9]{1,4})", "cris.legacyId"); //rp until rp30000 are considered as legacyvalues
 		idconverter.put("(uniba/[0-9]{1,6})", "handle");
 		idconverter.put("(([0-9]{4})-([0-9]{4})-([0-9]{4})-([0-9]{4})){1}", "person.identifier.orcid");
 
