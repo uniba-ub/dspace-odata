@@ -55,3 +55,7 @@ local.properties
 .cache-main
 .scala_dependencies
 .worksheet
+# ignore m2
+m2/
+#ignore intellij
+.idea/
