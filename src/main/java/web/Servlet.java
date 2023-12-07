@@ -1,10 +1,9 @@
 package web;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.LinkedList;
 
@@ -26,7 +25,7 @@ public class Servlet extends HttpServlet {
 
 	@Override
 	protected void service(final HttpServletRequest req, final HttpServletResponse resp)
-			throws ServletException, IOException {
+			throws IOException {
 		try {
 			HttpSession session = req.getSession(true);
 			DataHandler entityDatabase = (DataHandler) session.getAttribute(DataHandler.class.getName());
@@ -45,7 +44,7 @@ public class Servlet extends HttpServlet {
 			handler.process(req, resp);
 		} catch (RuntimeException e) {
 			LOG.error("Server Error occurred in Servlet", e);
-			throw new ServletException(e);
+			throw new IOException(e);
 		}
 	}
 

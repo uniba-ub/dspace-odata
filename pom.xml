@@ -5,12 +5,12 @@
 	<groupId>api</groupId>
 	<artifactId>ODataService</artifactId>
 	<packaging>war</packaging>
-	<version>4.10.0</version>
+	<version>5.0.0</version>
 	<name>ODataService Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 	<properties>
 		<javax.version>4.0.1</javax.version>
-		<odata.version>4.10.0</odata.version>
+		<odata.version>5.0.0-ALPHA-02</odata.version>
 		<slf4j.version>2.0.9</slf4j.version>
 	</properties>
 	<repositories>
@@ -45,9 +45,9 @@
     </build>
 	<dependencies>
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>${javax.version}</version>
+			<groupId>jakarta.servlet</groupId>
+			<artifactId>jakarta.servlet-api</artifactId>
+			<version>6.0.0</version>
 			<scope>provided</scope>
 		</dependency>
 
