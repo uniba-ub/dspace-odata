@@ -1,7 +1,64 @@
-include:
-  - project: rz-internal/pipeline
-    file: /gitlab-ci.yml
+#include:
+#  - project: rz-internal/pipeline
+#    file: /gitlab-ci.yml
 
 # jobs
+#latestimg:
+#  extends: .latestimg
+
+#img:
+#  extends: .img
+#tag-latest:
+#  extends: .tag-latest
+#tag-staging:
+#  extends: .tag-staging
+#tag-version:
+#  extends: .tag-version
+
+##############
+### Runner ###
+##############
+.runner_build: &runner_build
+#  image: firecyberice/docker-toolbox:latest
+  image: docker-registry.rz.uni-bamberg.de/rz/rz/it-fopro/docker-executor:25
+  tags:
+    - build
+    - amd64
+
+###########################
+### Build and Tag Image ###
+###########################
+
+.global_variables: &global_variables
+    DOCKER_HOST: unix:///var/run/docker.sock
+
+.latestimage:
+  script: &latestimage
+    - echo ${CI_JOB_TOKEN} |docker login --username gitlab-ci-token --password-stdin ${CI_REGISTRY}
+    - make docker_build
+    - docker tag ${CI_REGISTRY_IMAGE}:${CI_PIPELINE_ID} ${CI_REGISTRY_IMAGE}:${NEW_TAG}
+    - docker push ${CI_REGISTRY_IMAGE}:${NEW_TAG}
+
 latestimg:
-  extends: .latestimg
+  variables:
+    <<: *global_variables
+    NEW_TAG: latest
+  rules:
+    - if: $CI_COMMIT_REF_NAME == "main"
+    - if: $CI_COMMIT_REF_NAME == "master"
+  <<: *runner_build
+  script: *latestimage
+
+#test images. only latest is kept persistent in the docker registry
+testimg:
+  rules:
+    - if: $CI_MERGE_REQUEST_ID
+      when: never
+    - if: $CI_COMMIT_REF_NAME =~ /^feature-/
+    - if: $CI_COMMIT_REF_NAME =~ /^test-/
+    - if: $CI_COMMIT_REF_NAME =~ /^update-/
+  <<: *runner_build
+  variables:
+    <<: *global_variables
+    NEW_TAG: ${CI_COMMIT_REF_SLUG}
+  script: *latestimage
