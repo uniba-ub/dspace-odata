@@ -92,7 +92,8 @@ public class Awards implements EntityModel {
 		mapping.put("category", List.of("cris.virtual.awardseriescategory"));
 		mapping.put("description", List.of("crisaward.description"));
 		mapping.put("url", List.of("crisaward.url"));
-		mapping.put("year", List.of("crisaward.date"));
+		//mapping.put("year", List.of("crisaward.date"));
+		mapping.put("year", List.of("awardyear.year_sort"));
 		mapping.put("person", List.of("crisaward.person"));
 		mapping.put("persontitle", List.of("cris.virtual.awardpersontitle"));
 		mapping.put("publication", List.of("crisaward.publication"));
