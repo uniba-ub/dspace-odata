@@ -13,7 +13,7 @@ RUN ls -lAh /app/target/
 #######################
 # runtime environment #
 #######################
-FROM tomcat:9-jdk17
+FROM tomcat:10-jdk17
 
 ENV PATH=$CATALINA_HOME/bin:$PATH
 

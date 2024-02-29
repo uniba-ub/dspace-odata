@@ -1,7 +1,7 @@
-<%@ page import="javax.servlet.ServletContext" %>
+<%@ page import="jakarta.servlet.ServletContext" %>
 
 <%
-//adopt to your needs
+//adapt to your needs
 String baseurl = "odata.fis.uni-bamberg.de/";
 String folder = "";
 String url = baseurl + folder;
@@ -25,19 +25,20 @@ h6    {color: #002a4d;}
 	<p>This API offer read-access to contents of the FIS. 
 	It is based on the <a href="https://docs.oasis-open.org/odata/odata/v4.01/">OASIS OData Specification</a>, Version 4.0.1. 
 	The standard response format is JSON. </p>
-	<p><a href="generator.html">Query-Generator (Alpha)</a></p>
 	<p>Table of Content:
 	<ul>
-	<li><a href='#top'>OData API for fis.uni-bamberg.de</a></li>
-	<li><a href='#ent'>Entities and Relations</a></li>
-	<li><a href='#sample'>Sample Requests</a>
+		<li><a href='#top'>OData API for fis.uni-bamberg.de</a></li>
+		<li><a href='#ent'>Entities and Relations</a></li>
+		<li><a href='#sample'>Sample Requests</a>
 	<ul>
-	<li><a href='#request-entity-set'>Get Collection of Entities</a></li>
-	<li><a href='#request-entity'>Get a specific entity</a></li>
-	<li><a href='#request-entity-relation'>Get entities which are linked to each other</a></li>
-	<li><a href='#filters'>Filters</a></li>
-	<li><a href='#functions'>Functions</a>
-	<ul><li><a href='#csl'>CSL</a></ul></li></ul>
+		<li><a href='#request-entity-set'>Get Collection of Entities</a></li>
+		<li><a href='#request-entity'>Get a specific entity</a></li>
+		<li><a href='#request-entity-relation'>Get entities which are linked to each other</a></li>
+		<li><a href='#filters'>Filters</a></li>
+		<li><a href='#functions'>Functions</a>
+	<ul>
+		<li><a href='#csl'>CSL</a></ul></li>
+	</ul>
 	</ul>
 	</div>
 	
@@ -109,14 +110,17 @@ h6    {color: #002a4d;}
 	<div>
 	<p>Filter and Options can be added as Parameters <code>?</code></p>
 	<p>This implementation supports main functionality from the <a href="https://www.odata.org/getting-started/basic-tutorial/#queryData">Odata Specification</a>. For Syntax have a look there:</p>
-	<p><ul><li><code>?$orderby=</code> : Sort results on a parameter ascending or descending. Sorting on two levels is possible , e.g. '$orderby=completedyear desc, author asc'</li>
-	<li><code>?$top=</code> : Return top x entries  </li>
-	<li><code>?$count=</code> : Return number of entries  </li>
-	<li><code>?$skip=</code> : Skip x entries  </li>
-	<li><code>?$expand=</code> : expand selected entity with further information  </li>
-	<li><code>?$filter=</code> : apply filter to content. Filter Expression is evaluated in a boolean tree.  </li>
-	<li><code>?$format=</code> : requested serialization format: $format=application/atom+xml , $format=application/json </li>
-	</ul></p>
+	<p>
+		<ul>
+			<li><code>?$orderby=</code> : Sort results on a parameter ascending or descending. Sorting on two levels is possible , e.g. '$orderby=completedyear desc, author asc'</li>
+			<li><code>?$top=</code> : Return top x entries  </li>
+			<li><code>?$count=</code> : Return number of entries  </li>
+			<li><code>?$skip=</code> : Skip x entries  </li>
+			<li><code>?$expand=</code> : expand selected entity with further information  </li>
+			<li><code>?$filter=</code> : apply filter to content. Filter Expression is evaluated in a boolean tree.  </li>
+			<li><code>?$format=</code> : requested serialization format: $format=application/atom+xml , $format=application/json </li>
+		</ul>
+	</p>
 	</div>
 	
 	<h6>Get Project entity with id 5 only containing metadata about attribute "title":</h6>
@@ -172,7 +176,7 @@ h6    {color: #002a4d;}
 	<thead>
 		<tr><th>HTTP Status Code</th><th>OData Error Code</th><th>Description</th>
 	</thead>
-	<tbody >
+	<tbody>
 	    <tr><td>...</td><td></td><td></td></tr>
 		<tr><td>200</td><td></td><td>Successful response with at least some entry.</td></tr>
 		<tr><td>400</td><td></td><td>bad request, query syntax is not correct</td></tr>

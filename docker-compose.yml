@@ -1,7 +1,7 @@
 ---
-version: '3.6'
+version: '3.7'
 
-# To use traefik.io as reverse proxy uncomment this to connect to traefik:
+# To use traefik.io 2 as reverse proxy uncomment this to connect to traefik:
 #networks:
 #  net-proxy:
 #    external: true
@@ -9,25 +9,28 @@ version: '3.6'
 
 services:
   odata:
-#    build:
-#      context: ./
-#      dockerfile: Dockerfile
-    image: ${CI_REGISTRY_IMAGE:-docker-registry.rz.uni-bamberg.de/itfl-service/hydra/odata:latest}
+    build:
+      context: ./
+      dockerfile: Dockerfile
+#    image: ${CI_REGISTRY_IMAGE:-docker-registry.rz.uni-bamberg.de/itfl-service/hydra/odata:latest}
     environment:
-      CATALINA_OPTS: "-Dorg.apache.el.parser.SKIP_IDENTIFIER_CHECK=true -Xmx2048m -Xms2048m -XX:MaxPermSize=512m"
-	  SOLR_URL: "https://fis.uni-bamberg.de/solr/search"
+      CATALINA_OPTS: "-Xmx2048m -Xms2048m"
+      # Adapt url to solr index, e.g. in same docker network
+      SOLR_URL: "http://localhost:8983/solr/search"
     ports:
       - "8080:8080"
 
-# To use traefik.io as reverse proxy uncomment this and set IMAGE NAME and URL as env vars:
+
+## To use traefik.io 2 as reverse proxy uncomment this and set IMAGE NAME and URL as env vars:
 #    networks:
 #      net-proxy:
 #    labels:
-#      traefik.enable: "true"
-#      traefik.docker.network: "net-proxy"
-#      traefik.backend: "$NAME"
-#      traefik.port: "8080"
-#      traefik.frontend.rule: "Host:$URL"
-#      traefik.frontend.entryPoints: "http"
-#      traefik.frontend.passHostHeader: "true"
-#      traefik.backend.loadbalancer.stickiness: "true"
+#      traefik.enable: true
+#      traefik.http.services.odata.loadbalancer.server.port: 8080
+#      traefik.http.routers.odata.rule: Host(`${NAME}.${SERVER_DOMAIN}`))
+#      traefik.http.routers.odata.entrypoints: websecure
+#      traefik.http.routers.odata.tls: true
+## define some ipAllowlist
+##      traefik.http.routers.odata.middlewares: ip-allowlist-odatacampusnet
+##      traefik.http.middlewares.ip-allowlist-odatacampusnet.ipallowlist.sourcerange: 141.13.240.0/24,141.13.222.0/24,141.13.150.0/23,141.13.241.49,141.13.240.64
+
