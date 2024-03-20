@@ -241,7 +241,7 @@ public class Publication implements EntityModel {
 			case "Researchers_SELECTED" -> ("relation.isPublicationsSelectedFor:\""  + id + "\"");
 				/*See DataHandler Function for selectedPublications where this Key is also defined for sorting*/
 			case "Orgunits" -> ("ubg.faculty.org_authority:\"" + id + "\" OR dc.relation.authororgunit_authority:\"" + id +
-				"\" OR dc.relation.contributororgunit_authority:\"" + id + "\"");
+				"\" OR dc.relation.contributororgunit_authority:\"" + id + "\" OR dc.relation.editororgunit_authority:\"" + id + "\"");
 			case "Orgunits_CHILD" -> ("pubsuccessor_authority:\"" + id + "\"");
 			case "Series", "Journals" -> ("dc.relation.ispartofseries_authority:\"" + id + "\"");
 			case "Projects" -> ("ubg.relation.project_authority:\"" + id + "\"");
