@@ -98,7 +98,7 @@ public class Util {
 	public static String[] calculatereverseRelation(EntityModel sourceModel, EntityModel targetModel,
 													Entity sourceEntity,
 													String mode) {
-		//solr documents only save one pointer in a document (project -> researcher) referencing each other, not two
+		//solr documents only save one pointer in a document (project -> person) referencing each other, not two
 		//this method is used to get cris-id's to enable the establishment of "reverse" navigation paths
 		//Definitions are actually here, not in the entitys models, because sourceEntity is already given and no third solr query is necessary
 		String navigationFilter = "";
@@ -109,13 +109,13 @@ public class Util {
 			}
 			String sourceType = sourceModel.getEntitySetName();
 			String targetType = targetModel.getEntitySetName();
-			if (sourceType.contentEquals("Projects") && targetType.contentEquals("Researchers")) {
+			if (sourceType.contentEquals("Projects") && targetType.contentEquals("Persons")) {
 				String filterquery = sourceEntity.getProperty("pj2rp").getValue().toString();
 				navigationFilter = reverseQueryGenerator(filterquery, "search.resourceid");
 			} else if (sourceType.contentEquals("Projects") && targetType.contentEquals("Orgunits")) {
 				String filterquery = sourceEntity.getProperty("pj2ou").getValue().toString();
 				navigationFilter = reverseQueryGenerator(filterquery, "search.resourceid");
-			} else if (sourceType.contentEquals("Publications") && targetType.contentEquals("Researchers")) {
+			} else if (sourceType.contentEquals("Publications") && targetType.contentEquals("Persons")) {
 				String filterquery = sourceEntity.getProperty("publ2rp").getValue().toString();
 				navigationFilter = reverseQueryGenerator(filterquery, "search.resourceid");
 			} else if (sourceType.contentEquals("Publications") && targetType.contentEquals("Projects")) {
@@ -124,31 +124,13 @@ public class Util {
 			} else if (sourceType.contentEquals("Publications") && targetType.contentEquals("Orgunits")) {
 				String filterquery = sourceEntity.getProperty("publ2ou").getValue().toString();
 				navigationFilter = reverseQueryGenerator(filterquery, "search.resourceid");
-			} else if (sourceType.contentEquals("Publications") && targetType.contentEquals("Series")) {
-				String filterquery = sourceEntity.getProperty("publ2series").getValue().toString();
-				navigationFilter = reverseQueryGenerator(filterquery, "search.resourceid");
-			} else if (sourceType.contentEquals("Publications") && targetType.contentEquals("Journals")) { //TODO: delete entry later, when journals isn't used
+			} else if (sourceType.contentEquals("Publications") && targetType.contentEquals("Journals")) {
 				String filterquery = sourceEntity.getProperty("publ2journals").getValue().toString();
 				navigationFilter = reverseQueryGenerator(filterquery, "search.resourceid");
-			} else if (sourceType.contentEquals("Researchers") && targetType.contentEquals("Orgunits")) {
+			} else if (sourceType.contentEquals("Persons") && targetType.contentEquals("Orgunits")) {
 				String filterquery = sourceEntity.getProperty("rp2ou").getValue().toString();
 				navigationFilter = reverseQueryGenerator(filterquery, "search.resourceid");
-			} else if (sourceType.contentEquals("Awards") && targetType.contentEquals("Awardseries")) {
-				String filterquery = sourceEntity.getProperty("award2awardseries").getValue().toString();
-				navigationFilter = reverseQueryGenerator(filterquery, "search.resourceid");
-			} else if (sourceType.contentEquals("Awards") && targetType.contentEquals("Researchers")) {
-				String filterquery = sourceEntity.getProperty("award2rp").getValue().toString();
-				navigationFilter = reverseQueryGenerator(filterquery, "search.resourceid");
-			} else if (sourceType.contentEquals("Publications") && targetType.contentEquals("Awards")) {
-				String filterquery = sourceEntity.getProperty("publ2award").getValue().toString();
-				navigationFilter = reverseQueryGenerator(filterquery, "search.resourceid");
-			} else if (sourceType.contentEquals("Awards") && targetType.contentEquals("Projects")) {
-				String filterquery = sourceEntity.getProperty("award2pj").getValue().toString();
-				navigationFilter = reverseQueryGenerator(filterquery, "search.resourceid");
-			} else if (sourceType.contentEquals("Awardseries") && targetType.contentEquals("Funders")) {
-				String filterquery = sourceEntity.getProperty("awardseries2funder").getValue().toString();
-				navigationFilter = reverseQueryGenerator(filterquery, "search.resourceid");
-			} else if (sourceType.contentEquals("Products") && targetType.contentEquals("Researchers")) {
+			} else if (sourceType.contentEquals("Products") && targetType.contentEquals("Persons")) {
 				String filterquery = sourceEntity.getProperty("prod2rp").getValue().toString();
 				navigationFilter = reverseQueryGenerator(filterquery, "search.resourceid");
 			} else if (sourceType.contentEquals("Products") && targetType.contentEquals("Projects")) {
@@ -156,9 +138,6 @@ public class Util {
 				navigationFilter = reverseQueryGenerator(filterquery, "search.resourceid");
 			} else if (sourceType.contentEquals("Products") && targetType.contentEquals("Orgunits")) {
 				String filterquery = sourceEntity.getProperty("prod2ou").getValue().toString();
-				navigationFilter = reverseQueryGenerator(filterquery, "search.resourceid");
-			} else if (sourceType.contentEquals("Products") && targetType.contentEquals("Awards")) {
-				String filterquery = sourceEntity.getProperty("prod2award").getValue().toString();
 				navigationFilter = reverseQueryGenerator(filterquery, "search.resourceid");
 			}
 		} catch(Exception e) {

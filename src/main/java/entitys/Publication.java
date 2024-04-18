@@ -33,13 +33,16 @@ public class Publication implements EntityModel {
 		idconverter.put("(uniba/[0-9]{1,6})", "handle");
 		
 		CsdlProperty id = new CsdlProperty().setName("id")
-				.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty uuid = new CsdlProperty().setName("uuid")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty entitytype = new CsdlProperty().setName("entitytype")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty name = new CsdlProperty().setName("name")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty handle = new CsdlProperty().setName("handle")
+			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+
 		CsdlProperty authors= new CsdlProperty().setName("author")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty articlecollectionEditor= new CsdlProperty().setName("articlecollectionEditor")
@@ -63,8 +66,6 @@ public class Publication implements EntityModel {
 		CsdlProperty fulltext= new CsdlProperty().setName("fulltext")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty gndsw= new CsdlProperty().setName("gndsw")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty handle = new CsdlProperty().setName("handle")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty issued= new CsdlProperty().setName("completedyear")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
@@ -115,17 +116,13 @@ public class Publication implements EntityModel {
 		CsdlProperty supervisorname= new CsdlProperty().setName("supervisorname")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		
-		CsdlProperty publ2rp= new CsdlProperty().setName("publ2rp")
+		CsdlProperty publication2person = new CsdlProperty().setName("publication2person")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty publ2series= new CsdlProperty().setName("publ2series")
+		CsdlProperty publication2journal = new CsdlProperty().setName("publication2journal")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty publ2journals= new CsdlProperty().setName("publ2journals")
+		CsdlProperty publication2project = new CsdlProperty().setName("publication2project")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty publ2pj= new CsdlProperty().setName("publ2pj")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty publ2ou= new CsdlProperty().setName("publ2ou")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty publ2awards= new CsdlProperty().setName("publ2award")
+		CsdlProperty publication2orgunit = new CsdlProperty().setName("publication2orgunit")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		//creation of PropertyRef for the key Element
 
@@ -136,7 +133,10 @@ public class Publication implements EntityModel {
 
 		entityType = new CsdlEntityType();	
 		entityType.setName(ET_PUBLICATION_NAME);
-		entityType.setProperties(Arrays.asList(id, uuid, handle, name, entitytype, title, description, doi, doiour, type, language, publisher, series, seriesnumber, volume, articlecollectionEditor, articlecollectionTitle, ispartofotherseries, fulltext,subject,publisherPlace,issued,faculty,uriIdentifier,authors,journal,issn,multipartTitel,issue, pages, numpages, medium, gndsw, corporation, edition, isbn, thesis, peerreview, csl, supervisorname, publ2journals, publ2ou, publ2pj, publ2rp, publ2series, publ2awards, editor));
+		entityType.setProperties(Arrays.asList(id, uuid, handle, name, entitytype, title,
+			description, doi, doiour, type, language, publisher, series, seriesnumber, volume, articlecollectionEditor, articlecollectionTitle, ispartofotherseries, fulltext,subject,publisherPlace,issued,faculty,uriIdentifier,authors,journal,issn,multipartTitel,issue, pages, numpages, medium, gndsw, corporation, edition, isbn, thesis, peerreview, supervisorname, editor,
+			csl,
+			publication2journal, publication2orgunit, publication2project, publication2person));
 		entityType.setKey(Collections.singletonList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
@@ -186,16 +186,12 @@ public class Publication implements EntityModel {
 		mapping.put("uri", List.of("dc.identifier.uri"));
 		mapping.put("volume", List.of("dc.relation.volume"));
 		
-		mapping.put("publ2rp", List.of("author_authority", "author_old_authority"));
-		mapping.put("publ2series", List.of("dc.relation.ispartofseries_authority"));
-		mapping.put("publ2journals", List.of("dc.relation.ispartofseries_authority"));
-		mapping.put("publ2pj", List.of("ubg.relation.project_authority"));
-		mapping.put("publ2ou", List.of("ubg.faculty.org_authority"));
-		mapping.put("publ2award", List.of("ubg.relation.award_authority"));
+		mapping.put("publication2person", List.of("author_authority", "author_old_authority"));
+		mapping.put("publication2journals", List.of("dc.relation.ispartofseries_authority"));
+		mapping.put("publication2project", List.of("ubg.relation.project_authority"));
+		mapping.put("publication2orgunit", List.of("ubg.faculty.org_authority"));
 
 		ENTITYFILTER = new ArrayList<>();
-		//No versions
-		ENTITYFILTER.add("-ubg.version.versionof:*");
 		
 	}
 
@@ -234,18 +230,16 @@ public class Publication implements EntityModel {
 
 	public String getNavigationFilter(String sourceType, String id) {
 		return switch (sourceType) {
-			case "Researchers" -> ("dc.contributor.author_authority:\"" + id +
+			case "Persons" -> ("dc.contributor.author_authority:\"" + id +
 				"\" OR dc.contributor.editor_authority:\"" + id + "\"");
-			case "Researchers_AUTHOR" -> ("dc.contributor.author_authority:\"" +  id + "\"");
-			case "Researchers_SUPERVISOR" -> ("dc.contributor.supervisor_authority:\"" + id + "\"");
-			case "Researchers_SELECTED" -> ("relation.isPublicationsSelectedFor:\""  + id + "\"");
+			case "Persons_AUTHOR" -> ("dc.contributor.author_authority:\"" +  id + "\"");
+			case "Persons_SUPERVISOR" -> ("dc.contributor.supervisor_authority:\"" + id + "\"");
+			case "Persons_SELECTED" -> ("relation.isPublicationsSelectedFor:\""  + id + "\"");
 				/*See DataHandler Function for selectedPublications where this Key is also defined for sorting*/
 			case "Orgunits" -> ("ubg.faculty.org_authority:\"" + id + "\" OR dc.relation.authororgunit_authority:\"" + id +
 				"\" OR dc.relation.contributororgunit_authority:\"" + id + "\" OR dc.relation.editororgunit_authority:\"" + id + "\"");
-			case "Orgunits_CHILD" -> ("pubsuccessor_authority:\"" + id + "\"");
-			case "Series", "Journals" -> ("dc.relation.ispartofseries_authority:\"" + id + "\"");
+			case "Journals" -> ("dc.relation.ispartofseries_authority:\"" + id + "\"");
 			case "Projects" -> ("ubg.relation.project_authority:\"" + id + "\"");
-			case "Awards" -> ("ubg.relation.award_authority:\"" + id + "\"");
 			default -> "";
 		};
 	}

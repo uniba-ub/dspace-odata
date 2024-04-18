@@ -35,7 +35,7 @@ public class Orgunit implements EntityModel{
 	idconverter.put("(uniba/[0-9]{1,6})", "handle");
 		
 	CsdlProperty id = new CsdlProperty().setName("id")
-			.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
+			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 	CsdlProperty crisid = new CsdlProperty().setName("cris-id")
 			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 	CsdlProperty uuid = new CsdlProperty().setName("uuid")
@@ -44,6 +44,9 @@ public class Orgunit implements EntityModel{
 			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 	CsdlProperty handle = new CsdlProperty().setName("handle")
 			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+	CsdlProperty name = new CsdlProperty().setName("name")
+			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+
 	CsdlProperty date = new CsdlProperty().setName("date")
 			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 	CsdlProperty description = new CsdlProperty().setName("description")
@@ -52,11 +55,8 @@ public class Orgunit implements EntityModel{
 			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 	CsdlProperty endDate = new CsdlProperty().setName("enddate")
 			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-	CsdlProperty name = new CsdlProperty().setName("name")
-			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 	CsdlProperty url = new CsdlProperty().setName("url")
 			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-	
 	CsdlProperty parentorgunit = new CsdlProperty().setName("parentorgunit")
 			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 	
@@ -67,7 +67,8 @@ public class Orgunit implements EntityModel{
 
 	entityType = new CsdlEntityType();
 	entityType.setName(ET_ORGUNIT_NAME);
-	entityType.setProperties(Arrays.asList(id, crisid, uuid, handle, entitytype, name, description, url, director, date, endDate, parentorgunit));
+	entityType.setProperties(Arrays.asList(id, crisid, uuid, handle, entitytype, name,
+		description, url, director, date, endDate, parentorgunit));
 	entityType.setKey(List.of(propertyRef));
 	
 	entitySet = new CsdlEntitySet();

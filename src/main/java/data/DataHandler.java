@@ -481,7 +481,7 @@ public class DataHandler {
 
 			String selectedfield = "";
 			//This Relation is also configured in Publication. It's used here for sorting
-			if ((sourceModel.getEntitySetName()+relation).contentEquals("Researchers_SELECTED")) {
+			if ((sourceModel.getEntitySetName()+relation).contentEquals("Persons_SELECTED")) {
 				selectedfield = "relation.isPublicationsSelectedFor";
 			}
 			Map<String, Integer> priority = new HashMap<>(); // Map holding primary key of entity and Priority Value
@@ -513,7 +513,6 @@ public class DataHandler {
 			}
 			
 			//sort entitySet by priority value determined in Map priority. higher priorityvalue = higher Position in List
-			//NOT YET IMPLEMENTED: The sorting/place of the relation selection is not yet implemented in dspace-cris7
 			List<Entity> result = navigationTargetEntityCollection.getEntities();
 			result.sort((entity1, entity2) -> {
 				int compareResult = 0;
@@ -558,25 +557,20 @@ public class DataHandler {
 	}	
 	
 	public EdmEntitySet readFunctionImportEntitySet(final UriResourceFunction uriResourceFunction, final ServiceMetadata serviceMetadata) {
-		if (EdmProviderDSpace.FUNCTION_CSL_FOR_RESEARCHER.equals(uriResourceFunction.getFunctionImport().getName())) {
+		if (EdmProviderDSpace.FUNCTION_CSL_FOR_PERSON.equals(uriResourceFunction.getFunctionImport().getName())) {
 			return serviceMetadata.getEdm().getEntityContainer().getEntitySet(Publication.ES_PUBLICATIONS_NAME);
 		} else if (EdmProviderDSpace.FUNCTION_CSL_FOR_ORGUNIT.equals(uriResourceFunction.getFunctionImport().getName())) {
-			return serviceMetadata.getEdm().getEntityContainer().getEntitySet(Publication.ES_PUBLICATIONS_NAME);
-		}  else if (EdmProviderDSpace.FUNCTION_CSL_FOR_ORGUNIT_CHILD.equals(uriResourceFunction.getFunctionImport().getName())) {
-			return serviceMetadata.getEdm().getEntityContainer().getEntitySet(Publication.ES_PUBLICATIONS_NAME);
-		} else if (EdmProviderDSpace.FUNCTION_CSL_FOR_PROJECT.equals(uriResourceFunction.getFunctionImport().getName())) {
+			return serviceMetadata.getEdm().getEntityContainer().getEntitySet(Publication.ES_PUBLICATIONS_NAME);		} else if (EdmProviderDSpace.FUNCTION_CSL_FOR_PROJECT.equals(uriResourceFunction.getFunctionImport().getName())) {
 			return serviceMetadata.getEdm().getEntityContainer().getEntitySet(Publication.ES_PUBLICATIONS_NAME);
 		} else if (EdmProviderDSpace.FUNCTION_CSL_FOR_PUBLICATION.equals(uriResourceFunction.getFunctionImport().getName())) {
 			return serviceMetadata.getEdm().getEntityContainer().getEntitySet(Publication.ES_PUBLICATIONS_NAME);
 		} else if (EdmProviderDSpace.FUNCTION_CSL_FOR_JOURNAL.equals(uriResourceFunction.getFunctionImport().getName())) {
 			return serviceMetadata.getEdm().getEntityContainer().getEntitySet(Publication.ES_PUBLICATIONS_NAME);
-		} else if (EdmProviderDSpace.FUNCTION_CSL_FOR_SERIES.equals(uriResourceFunction.getFunctionImport().getName())) {
-			return serviceMetadata.getEdm().getEntityContainer().getEntitySet(Publication.ES_PUBLICATIONS_NAME);
 		} else if (EdmProviderDSpace.FUNCTION_CSL_FOR_SUPERVISOR.equals(uriResourceFunction.getFunctionImport().getName())) {
 			return serviceMetadata.getEdm().getEntityContainer().getEntitySet(Publication.ES_PUBLICATIONS_NAME);
 		} else if (EdmProviderDSpace.FUNCTION_CSL_FOR_AUTHOR.equals(uriResourceFunction.getFunctionImport().getName())) {
 			return serviceMetadata.getEdm().getEntityContainer().getEntitySet(Publication.ES_PUBLICATIONS_NAME);
-		} else if (EdmProviderDSpace.FUNCTION_CSL_FOR_RESEARCHER_SELECTED.equals(uriResourceFunction.getFunctionImport().getName())) {
+		} else if (EdmProviderDSpace.FUNCTION_CSL_FOR_PERSON_SELECTED.equals(uriResourceFunction.getFunctionImport().getName())) {
 			return serviceMetadata.getEdm().getEntityContainer().getEntitySet(Publication.ES_PUBLICATIONS_NAME);
 		} else if (EdmProviderDSpace.FUNCTION_PJ_FOR_OU.equals(uriResourceFunction.getFunctionImport().getName())) {
 			return serviceMetadata.getEdm().getEntityContainer().getEntitySet(Project.ES_PROJECTS_NAME);

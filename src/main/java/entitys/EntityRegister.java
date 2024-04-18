@@ -42,9 +42,12 @@ public class EntityRegister {
 		    
 		    Product product = new Product();
 		    entityList.add(product);
+
+			Patent patent = new Patent();
+			entityList.add(patent);
 		    
-			Researcher researcher = new Researcher();
-			entityList.add(researcher);
+			Person person = new Person();
+			entityList.add(person);
 			
 			Orgunit orgunit = new Orgunit();
 		    entityList.add(orgunit);
@@ -54,29 +57,25 @@ public class EntityRegister {
 		    
 		    Journal journal = new Journal();
 		    entityList.add(journal);
-		    
-		    Awards awards = new Awards();
-		    entityList.add(awards);
-		    
-		    Awardseries awardseries = new Awardseries();
-		    entityList.add(awardseries);
-		    
-		    Series series = new Series();
-		    entityList.add(series);
-		    
-		    Funder funder = new Funder();
-		    entityList.add(funder);
+
+			Event event = new Event();
+			entityList.add(event);
+
+			Equipment equipment = new Equipment();
+			entityList.add(equipment);
+
+			Funding funding = new Funding();
+			entityList.add(funding);
 		    
 		    navEntityList.add(publication);
 		    navEntityList.add(product);
 		    navEntityList.add(project);
 		    navEntityList.add(orgunit);
-		    navEntityList.add(awards);
-		    setNavigationPropertyForEntity(researcher, navEntityList);
+		    setNavigationPropertyForEntity(person, navEntityList);
 		    
 		    navEntityList = new LinkedList<>();
 		    navEntityList.add(project);
-		    navEntityList.add(researcher);
+		    navEntityList.add(person);
 		    navEntityList.add(publication);
 		    navEntityList.add(product);
 		    navEntityList.add(orgunit);
@@ -84,8 +83,7 @@ public class EntityRegister {
 		    
 		    navEntityList = new LinkedList<>();
 		    navEntityList.add(orgunit);
-		    navEntityList.add(researcher);
-		    navEntityList.add(awards);
+		    navEntityList.add(person);
 		    navEntityList.add(project);
 		    navEntityList.add(publication);
 		    navEntityList.add(product);
@@ -96,61 +94,33 @@ public class EntityRegister {
 		    setNavigationPropertyForEntity(journal, navEntityList);
 		    
 		    navEntityList = new LinkedList<>();
-		    navEntityList.add(publication);
-		    setNavigationPropertyForEntity(series, navEntityList);
-		    
-		    navEntityList = new LinkedList<>();
-		    navEntityList.add(series);
 		    navEntityList.add(journal);
-		    navEntityList.add(researcher);
+		    navEntityList.add(person);
 		    navEntityList.add(orgunit);
 		    navEntityList.add(project);
-		    navEntityList.add(awards);
 		    setNavigationPropertyForEntity(publication, navEntityList);
 	
 		    navEntityList = new LinkedList<>();
-		    navEntityList.add(researcher);
+		    navEntityList.add(person);
 		    navEntityList.add(orgunit);
 		    navEntityList.add(project);
-		    navEntityList.add(awards);
 		    setNavigationPropertyForEntity(product, navEntityList);
-		    
-		    navEntityList = new LinkedList<>();
-		    navEntityList.add(researcher);
-		    navEntityList.add(awardseries);
-		    navEntityList.add(project);
-		    navEntityList.add(publication);
-		    navEntityList.add(product);
-		    setNavigationPropertyForEntity(awards, navEntityList);
-		    
-		    navEntityList = new LinkedList<>();
-		    navEntityList.add(awards);
-		    navEntityList.add(funder);
-		    setNavigationPropertyForEntity(awardseries, navEntityList);
-		    
-		    navEntityList = new LinkedList<>();
-		    navEntityList.add(awardseries);
-		    navEntityList.add(project);
-		    navEntityList.add(funder);
-		    setNavigationPropertyForEntity(funder, navEntityList);
-		    
+
+			// TODO: event
+
+			// TODO: equipment
+
+			// TODO: funding
+
 		}
 
 		private void registerComplexTypes() {
 			complexPropertyList = new LinkedList<>();
-			Funding funding = new Funding();
-			Partnership partnership = new Partnership();
-			complexPropertyList.add(funding);
-			complexPropertyList.add(partnership);
 			Affiliation affiliation = new Affiliation();
-			Achievement achievement = new Achievement();
-			Activity activity = new Activity();
-			Career career = new Career();
+			Qualification qualification = new Qualification();
 			Education education = new Education();
 			complexPropertyList.add(affiliation);
-			complexPropertyList.add(achievement);
-			complexPropertyList.add(activity);
-			complexPropertyList.add(career);
+			complexPropertyList.add(qualification);
 			complexPropertyList.add(education);
 		}
 		
@@ -182,12 +152,12 @@ public class EntityRegister {
 			return complexTypeNameList;
 		}
 
-		public void setNavigationPropertyForEntity (EntityModel entity, List<EntityModel> entitiyList) {
+		public void setNavigationPropertyForEntity (EntityModel entity, List<EntityModel> entityList) {
 
 			List<CsdlNavigationPropertyBinding> navPropBindingList = new ArrayList<>();
 			List<CsdlNavigationProperty> navPropList = new ArrayList<>();
 
-			for (EntityModel item: entitiyList) {
+			for (EntityModel item: entityList) {
 				CsdlNavigationPropertyBinding navPropBinding= new CsdlNavigationPropertyBinding();
 				navPropBinding.setTarget(item.getEntitySetName());
 				navPropBinding.setPath(item.getEntitySetName());

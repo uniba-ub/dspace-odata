@@ -1,6 +1,10 @@
 package entitys;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
 import org.apache.olingo.commons.api.edm.EdmPrimitiveTypeKind;
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
@@ -9,22 +13,22 @@ import org.apache.olingo.commons.api.edm.provider.CsdlEntityType;
 import org.apache.olingo.commons.api.edm.provider.CsdlProperty;
 import org.apache.olingo.commons.api.edm.provider.CsdlPropertyRef;
 
-public class Product implements EntityModel {
-	
-	
+public class Patent implements EntityModel {
+
+
 	public final static String NAMESPACE = "dspace";
-	
-	public static final String ET_PRODUCT_NAME = "Product";
-	public static final FullQualifiedName ET_PRODUCT_FQN = new FullQualifiedName(NAMESPACE, ET_PRODUCT_NAME);
-	public static final String ES_PRODUCTS_NAME = "Products";
-	public final static String RECOURCE_TYPE_FILTER= "search.resourcetype:\"Item\" and search.entitytype:\"ResearchData\"";
+
+	public static final String ET_PATENT_NAME = "Patent";
+	public static final FullQualifiedName ET_PATENT_FQN = new FullQualifiedName(NAMESPACE, ET_PATENT_NAME);
+	public static final String ES_PATENTS_NAME = "Patents";
+	public final static String RECOURCE_TYPE_FILTER= "search.resourcetype:\"Item\" and search.entitytype:\"Patent\"";
 	private final HashMap<String, String> idconverter;
 	private final CsdlEntityType entityType;
 	private final CsdlEntitySet entitySet;
 	private final HashMap<String, List<String>> mapping;
 	private final ArrayList<String> ENTITYFILTER;
-	
-	public Product(){
+
+	public Patent(){
 		idconverter = new HashMap<>();
 		idconverter.put("([a-z0-9\\-]{36})", "search.resourceid");
 		idconverter.put("([0-9]{1,6})", "handle");
@@ -38,6 +42,8 @@ public class Product implements EntityModel {
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty name = new CsdlProperty().setName("name")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty handle = new CsdlProperty().setName("handle")
+			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 
 		CsdlProperty creator= new CsdlProperty().setName("creator")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
@@ -61,8 +67,7 @@ public class Product implements EntityModel {
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty faculty= new CsdlProperty().setName("faculty")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty handle = new CsdlProperty().setName("handle")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+
 		CsdlProperty issued= new CsdlProperty().setName("completedyear")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty  language= new CsdlProperty().setName("language")
@@ -80,11 +85,11 @@ public class Product implements EntityModel {
 		CsdlProperty version= new CsdlProperty().setName("version")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		
-		CsdlProperty product2person= new CsdlProperty().setName("product2person")
+		CsdlProperty prod2rp= new CsdlProperty().setName("prod2rp")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty product2project= new CsdlProperty().setName("product2project")
+		CsdlProperty prod2pj= new CsdlProperty().setName("prod2pj")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty product2orgunit= new CsdlProperty().setName("product2orgunit")
+		CsdlProperty prod2ou= new CsdlProperty().setName("prod2ou")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		//creation of PropertyRef for the key Element
 
@@ -94,16 +99,14 @@ public class Product implements EntityModel {
 		// configuration of the Entity Type and adding of properties
 
 		entityType = new CsdlEntityType();	
-		entityType.setName(ET_PRODUCT_NAME);
+		entityType.setName(ET_PATENT_NAME);
 		entityType.setProperties(Arrays.asList(id, uuid, entitytype, handle, name,
-			title, creator, contributor, author, description, doi, ourdoi, extent, format, type, language, publisher, issued,faculty,uriIdentifier, urlIdentifier, corporation, version,
-			csl,
-			product2person, product2project, product2orgunit));
+			title, creator, contributor, author, description, doi, ourdoi, extent, format, type, language, publisher, issued, faculty, uriIdentifier, urlIdentifier, corporation, version, csl, prod2ou, prod2pj, prod2rp));
 		entityType.setKey(Collections.singletonList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
-		entitySet.setName(ES_PRODUCTS_NAME);
-		entitySet.setType(ET_PRODUCT_FQN);
+		entitySet.setName(ES_PATENTS_NAME);
+		entitySet.setType(ET_PATENT_FQN);
 		
 		mapping = new HashMap<>();
 		
@@ -132,9 +135,9 @@ public class Product implements EntityModel {
 		mapping.put("url", List.of("dc.identifier.url"));
 		mapping.put("version", List.of("ubg.version.description"));
 
-		mapping.put("product2person", List.of("contributor_authority"));
-		mapping.put("product2project", List.of("ubg.relation.project_authority"));
-		mapping.put("product2orgunit", List.of("dc.relation.creatororgunit_authority"));
+		mapping.put("prod2rp", List.of("contributor_authority"));
+		mapping.put("prod2pj", List.of("ubg.relation.project_authority"));
+		mapping.put("prod2ou", List.of("dc.relation.creatororgunit_authority"));
 
 		ENTITYFILTER = new ArrayList<>();
 
@@ -145,11 +148,11 @@ public class Product implements EntityModel {
 	}
 
 	public FullQualifiedName getFullQualifiedName() {
-		return ET_PRODUCT_FQN;
+		return ET_PATENT_FQN;
 	}
 
 	public String getEntitySetName() {
-		return ES_PRODUCTS_NAME;
+		return ES_PATENTS_NAME;
 	}
 
 	public CsdlEntitySet getEntitySet() {

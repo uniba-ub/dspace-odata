@@ -23,20 +23,20 @@ public class Education implements ComplexModel {
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
 		CsdlProperty enddate = new CsdlProperty().setName("enddate")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
-		CsdlProperty desc = new CsdlProperty().setName("desc")
+		CsdlProperty role = new CsdlProperty().setName("role")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty place = new CsdlProperty().setName("place")
+		CsdlProperty organisation = new CsdlProperty().setName("organisation")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
 		complexType = new CsdlComplexType();
 		complexType.setName(CT_EDUCATION_NAME);
-		complexType.setProperties(Arrays.asList(startdate, enddate, desc, place));
+		complexType.setProperties(Arrays.asList(startdate, enddate, role, organisation));
 		
 		mapping = new HashMap<>();
 		
 		mapping.put("startdate", "crisrp.education.startdate");
 		mapping.put("enddate", "crisrp.education.enddate");
-		mapping.put("desc","crisrp.education.description");
-		mapping.put("place", "crisrp.education.place");
+		mapping.put("role","crisrp.education.role");
+		mapping.put("organisation", "crisrp.education");
 	}
 
 	public CsdlComplexType getComplexType() {

@@ -17,7 +17,7 @@ public class Journal implements EntityModel {
 	public static final String ET_JOURNAL_NAME = "Journal";
 	public static final FullQualifiedName ET_JOURNAL_FQN = new FullQualifiedName(NAMESPACE, ET_JOURNAL_NAME);
 	public static final String ES_JOURNALS_NAME = "Journals";
-	public final static String RECOURCE_TYPE_FILTER= "search.resourcetype:\"Item\" and search.entitytype:\"Series\"";
+	public final static String RECOURCE_TYPE_FILTER= "search.resourcetype:\"Item\" and search.entitytype:\"Journal\"";
 	private final HashMap<String, String> idconverter;
 	private final CsdlEntityType entityType;
 	private final CsdlEntitySet entitySet;
@@ -28,13 +28,13 @@ public class Journal implements EntityModel {
 	public Journal() {
 		idconverter = new HashMap<>();
 		idconverter.put("([a-z0-9\\-]{36})", "search.resourceid");
-		idconverter.put("(series[0-9]{1,6})", "cris.legacyId");
+		idconverter.put("(journal[0-9]{1,6})", "cris.legacyId");
 		idconverter.put("([1-9]{1}[0-9]{4})|([1]{1}[0-9]{5})", "handle"); //greater than 10.000
-		idconverter.put("([0]{0,1}[0-9]{1,4})", "cris.legacyId"); //until series09999 are considered as legcayvalues
+		idconverter.put("([0]{0,1}[0-9]{1,4})", "cris.legacyId"); //until journal09999 are considered as legcayvalues
 		idconverter.put("(uniba/[0-9]{1,6})", "handle");
 
 		CsdlProperty id = new CsdlProperty().setName("id")
-				.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty crisId = new CsdlProperty().setName("cris-id")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty uuid = new CsdlProperty().setName("uuid")
@@ -131,7 +131,7 @@ public class Journal implements EntityModel {
 
 	@Override
 	public String getLegacyPrefix() {
-		return "series";
+		return "journal";
 	}
 
 }

@@ -25,7 +25,7 @@ public class Affiliation implements ComplexModel {
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
 		CsdlProperty role = new CsdlProperty().setName("role")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty ouname = new CsdlProperty().setName("ouname")
+		CsdlProperty ouname = new CsdlProperty().setName("organisation")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());		
 		CsdlProperty aff2ou = new CsdlProperty().setName("aff2ou")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
@@ -35,11 +35,11 @@ public class Affiliation implements ComplexModel {
 		complexType.setProperties(Arrays.asList(startdate, enddate, role, ouname, aff2ou));
 
 		mapping = new HashMap<>();
-		mapping.put("startdate", "crisrp.affiliation.startdate");
-		mapping.put("enddate", "crisrp.affiliation.enddate");
-		mapping.put("role",   "crisrp.affiliation.role");
-		mapping.put("ouname", "crisrp.affiliation.orgunit");
-		mapping.put("aff2ou", "crisrp.affiliation.orgunit_authority");
+		mapping.put("startdate", "oairecerif.affiliation.startDate");
+		mapping.put("enddate", "oairecerif.affiliation.endDate");
+		mapping.put("role",   "oairecerif.affiliation.role");
+		mapping.put("organisation", "oairecerif.person.affiliation");
+		mapping.put("aff2ou", "oairecerif.person.affiliation_authority");
 	}
 
 	public CsdlComplexType getComplexType() {

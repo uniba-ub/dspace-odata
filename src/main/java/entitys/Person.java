@@ -9,13 +9,13 @@ import org.apache.olingo.commons.api.edm.provider.CsdlEntityType;
 import org.apache.olingo.commons.api.edm.provider.CsdlProperty;
 import org.apache.olingo.commons.api.edm.provider.CsdlPropertyRef;
 
-public class Researcher implements EntityModel {
+public class Person implements EntityModel {
 	
 	public final static String NAMESPACE = "dspace";
 	
-	public static final String ET_RESEARCHER_NAME = "Researcher";
-	public static final FullQualifiedName ET_RESEARCHER_FQN = new FullQualifiedName(NAMESPACE, ET_RESEARCHER_NAME);
-	public static final String ES_RESEARCHERS_NAME = "Researchers";
+	public static final String ET_PERSON_NAME = "Person";
+	public static final FullQualifiedName ET_PERSON_FQN = new FullQualifiedName(NAMESPACE, ET_PERSON_NAME);
+	public static final String ES_PERSONS_NAME = "Persons";
 	public final static String RECOURCE_TYPE_FILTER= "search.resourcetype:\"Item\" and search.entitytype:\"Person\"";
 
 	private final HashMap<String, List<String>> mapping;
@@ -26,7 +26,7 @@ public class Researcher implements EntityModel {
 	private final CsdlEntityType entityType;
 	private final CsdlEntitySet entitySet;
 	
-	public Researcher() {
+	public Person() {
 		idconverter = new HashMap<>();
 		idconverter.put("([a-z0-9\\-]{36})", "search.resourceid");
 		idconverter.put("(rp[0-9]{1,6})", "cris.legacyId");
@@ -36,7 +36,7 @@ public class Researcher implements EntityModel {
 		idconverter.put("(([0-9]{4})-([0-9]{4})-([0-9]{4})-([0-9]{4})){1}", "person.identifier.orcid");
 
 		CsdlProperty id = new CsdlProperty().setName("id")
-				.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty crisId = new CsdlProperty().setName("cris-id")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty uuid = new CsdlProperty().setName("uuid")
@@ -45,33 +45,35 @@ public class Researcher implements EntityModel {
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty handle = new CsdlProperty().setName("handle")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+
 		CsdlProperty biography = new CsdlProperty().setName("biography")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty contact = new CsdlProperty().setName("contact")
+		CsdlProperty country = new CsdlProperty().setName("country")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty contacturl = new CsdlProperty().setName("contacturl")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty contactemail = new CsdlProperty().setName("contactemail")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+
 		CsdlProperty name = new CsdlProperty().setName("name")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty displayName = new CsdlProperty().setName("displayname")
+		CsdlProperty nameOfficial = new CsdlProperty().setName("nameofficial")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty dept = new CsdlProperty().setName("dept")
+		CsdlProperty nameTranslated = new CsdlProperty().setName("nametranslated")
+			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+		CsdlProperty nameVariant = new CsdlProperty().setName("namevariant")
+			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+
+		CsdlProperty mainaffiliation = new CsdlProperty().setName("mainaffiliation")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty description = new CsdlProperty().setName("description")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+
+		CsdlProperty researchinterests = new CsdlProperty().setName("researchinterests")
+			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+
+		CsdlProperty website = new CsdlProperty().setName("website")
+			.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+
 		CsdlProperty email = new CsdlProperty().setName("email")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty orcid = new CsdlProperty().setName("orcid")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty gnd = new CsdlProperty().setName("gnd")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty researcharea = new CsdlProperty().setName("researcharea")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty researchinterests = new CsdlProperty().setName("researchinterests")
-				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty title = new CsdlProperty().setName("title")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		
 		CsdlProperty rp2ou = new CsdlProperty().setName("rp2ou")
@@ -83,21 +85,22 @@ public class Researcher implements EntityModel {
 		
 		//complex type
 		CsdlProperty affiliation = new CsdlProperty().setName("Affiliation").setType(Affiliation.CT_AFFILIATION_FQN).setCollection(true);
-		CsdlProperty achievement = new CsdlProperty().setName("Achievement").setType(Achievement.CT_ACHIEVEMENT_FQN).setCollection(true);
-		CsdlProperty activity = new CsdlProperty().setName("Activity").setType(Activity.CT_ACTIVITY_FQN).setCollection(true);
 		CsdlProperty education = new CsdlProperty().setName("Education").setType(Education.CT_EDUCATION_FQN).setCollection(true);
-		CsdlProperty career = new CsdlProperty().setName("Career").setType(Career.CT_CAREER_FQN).setCollection(true);
-
+		CsdlProperty qualification = new CsdlProperty().setName("Qualification").setType(Qualification.CT_QUALIFICATION_FQN).setCollection(true);
 		
 		// configuration of the Entity Type and adding of properties
 		entityType = new CsdlEntityType();
-		entityType.setName(ET_RESEARCHER_NAME);
-		entityType.setProperties(Arrays.asList(id, crisId, uuid, entitytype, handle, name, displayName, researchinterests, description, title, email, biography, researcharea, contacturl, contactemail, orcid, gnd, dept, contact, affiliation, career, education, achievement, activity, rp2ou));
+		entityType.setName(ET_PERSON_NAME);
+		entityType.setProperties(Arrays.asList(id, crisId, uuid, entitytype, handle, name,
+			nameOfficial, nameTranslated, nameVariant,
+			description, email, biography, researchinterests, website, orcid, mainaffiliation, country,
+			affiliation, qualification, education,
+			rp2ou));
 		entityType.setKey(Collections.singletonList(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
-		entitySet.setName(ES_RESEARCHERS_NAME);
-		entitySet.setType(ET_RESEARCHER_FQN);
+		entitySet.setName(ES_PERSONS_NAME);
+		entitySet.setType(ET_PERSON_FQN);
 			
 		mapping = new HashMap<>();
 		mapping.put("cris-id", List.of("cris.legacyId"));
@@ -105,22 +108,22 @@ public class Researcher implements EntityModel {
 		mapping.put("handle", List.of("handle"));
 		mapping.put("entitytype", List.of("search.entitytype"));
 		mapping.put("name", List.of("dc.title"));
-		
-		mapping.put("biography", List.of("crisrp.biography"));
-		mapping.put("contact", List.of("crisrp.contact"));
-		mapping.put("contacturl", List.of("crisrp.contacturl"));
-		mapping.put("contactemail", List.of("crisrp.contactemail"));
-		mapping.put("displayname", List.of("dc.title"));
-		mapping.put("description", List.of("crisrp.description"));
-		mapping.put("dept", List.of("crisrp.dept"));
-		mapping.put("email", List.of("crisrp.email"));
-		mapping.put("orcid", List.of("person.identifier.orcid"));
-		mapping.put("gnd", List.of("crisrp.gndId"));
-		mapping.put("researcharea", List.of("crisrp.researcharea"));
-		mapping.put("researchinterests", List.of("crisrp.researchinterests"));
-		mapping.put("title", List.of("crisrp.title"));
 
-		mapping.put("rp2ou", List.of("crisrp.dept_authority"));
+		mapping.put("nameofficial", List.of("crisrp.name"));
+		mapping.put("nametranslated", List.of("crisrp.name.translated"));
+		mapping.put("namevariant", List.of("crisrp.name.variant"));
+
+		mapping.put("biography", List.of("dc.description.abstract"));
+		mapping.put("country", List.of("crisrp.country"));
+		mapping.put("mainaffiliation", List.of("person.affiliation.name"));
+
+		mapping.put("description", List.of("crisrp.description"));
+		mapping.put("website", List.of("oairecerif.identifier.url"));
+		mapping.put("researchinterests", List.of("dc.subject"));
+		mapping.put("email", List.of("person.email"));
+		mapping.put("orcid", List.of("person.identifier.orcid"));
+
+		mapping.put("rp2ou", List.of("person.affiliation.name_authority"));
 		
 		ENTITYFILTER = new ArrayList<>();
 	}
@@ -131,11 +134,11 @@ public class Researcher implements EntityModel {
 	}
 	
 	public FullQualifiedName getFullQualifiedName() {
-		return ET_RESEARCHER_FQN;
+		return ET_PERSON_FQN;
 	}
 
 	public String getEntitySetName() {
-		return ES_RESEARCHERS_NAME;
+		return ES_PERSONS_NAME;
 	}
 
 	public CsdlEntitySet getEntitySet() {
@@ -161,7 +164,7 @@ public class Researcher implements EntityModel {
 
 	public String getNavigationFilter(String sourceType, String id) {
 		if (sourceType.equals("Orgunits")) {
-			return ("crisrp.dept_authority:\"" + id + "\"");
+			return ("person.affiliation.name_authority:\"" + id + "\"");
 		}
 		return "";
 	}
@@ -171,7 +174,7 @@ public class Researcher implements EntityModel {
 	}
 
 	/***
-	 * Non-discoverable Researchers will return some limited mapping of fields.
+	 * Non-discoverable Person will return some limited mapping of fields.
 	 * @return hashmap with mapping
 	 */
 	@Override
@@ -185,12 +188,11 @@ public class Researcher implements EntityModel {
 		mapping.put("displayname", List.of("dc.title"));
 
 		mapping.put("orcid", List.of("person.identifier.orcid"));
-		mapping.put("gnd", List.of("crisrp.gndId"));
 		return mapping;
 	}
 
 	/***
-	 * Non-discoverable Researchers will have no complex entities.
+	 * Non-discoverable Person will have no complex entities.
 	 * @return boolean
 	 */
 	@Override

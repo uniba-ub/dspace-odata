@@ -35,7 +35,7 @@ public class Project implements EntityModel{
 		idconverter.put("(uniba/[0-9]{1,6})", "handle");
 
 		CsdlProperty id = new CsdlProperty().setName("id")
-				.setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
+				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty crisId = new CsdlProperty().setName("cris-id")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 		CsdlProperty uuid = new CsdlProperty().setName("uuid")
@@ -77,21 +77,18 @@ public class Project implements EntityModel{
 		CsdlProperty createdate = new CsdlProperty().setName("createdate")
 				.setType(EdmPrimitiveTypeKind.DateTimeOffset.getFullQualifiedName());
 		//The following properties are used for holding authority Keys to other entities
-		CsdlProperty pj2rp = new CsdlProperty().setName("pj2rp")
+		CsdlProperty project2person = new CsdlProperty().setName("projectj2person")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-		CsdlProperty pj2ou = new CsdlProperty().setName("pj2ou")
+		CsdlProperty project2orgunit = new CsdlProperty().setName("projectj2orgunit")
 				.setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());	
-
-		//complex type
-		CsdlProperty funding = new CsdlProperty().setName("Funding").setType(Funding.CT_FUNDING_FQN).setCollection(true);
-		CsdlProperty partnership = new CsdlProperty().setName("Partnership").setType(Partnership.CT_PARTNERSHIP_FQN).setCollection(true);
-
 		CsdlPropertyRef propertyRef = new CsdlPropertyRef();
 		propertyRef.setName("id");
 
 		entityType = new CsdlEntityType();
 		entityType.setName(ET_PROJECT_NAME);
-		entityType.setProperties(Arrays.asList(id,crisId,uuid, entitytype, handle, title, abstracts, principalinvestigator, coinvestigators, budget, startDate, endDate, projectarea,acronym,keywords,status, url,funding, partnership, researchprofile, potentialfield, createdate, dept, pj2rp, pj2ou));
+		entityType.setProperties(Arrays.asList(id,crisId,uuid, entitytype, handle, title,
+			abstracts, principalinvestigator, coinvestigators, budget, startDate, endDate, projectarea,acronym,keywords,status, url, researchprofile, potentialfield, createdate, dept,
+			project2person, project2orgunit));
 		entityType.setKey(List.of(propertyRef));
 		
 		entitySet = new CsdlEntitySet();
@@ -105,25 +102,25 @@ public class Project implements EntityModel{
 		mapping.put("entitytype", List.of("search.entitytype"));
 		mapping.put("name", List.of("dc.title"));
 
-		mapping.put("abstract", List.of("crispj.abstract"));
+		mapping.put("abstract", List.of("dc.description.abstract"));
 		mapping.put("budget", List.of("crispj.budget"));
-		mapping.put("acronym", List.of("crispj.acronym"));
+		mapping.put("acronym", List.of("oairecerif.acronym"));
 		mapping.put("coinvestigators", List.of("crispj.coinvestigators"));
-		mapping.put("expdate", List.of("crispj.expdate"));
-		mapping.put("keywords", List.of("crispj.keywords"));
+		mapping.put("expdate", List.of("oairecerif.project.endDate"));
+		mapping.put("keywords", List.of("dc.subject"));
 		mapping.put("principalinvestigator", List.of("crispj.principalinvestigator"));
 		mapping.put("projectarea", List.of("crispj.projectArea"));
 		mapping.put("researchprofile", List.of("crispj.researchprofileuniba"));
 		mapping.put("potentialfield", List.of("crispj.potentialfield"));
-		mapping.put("startdate", List.of("crispj.startdate"));
-		mapping.put("status", List.of("crispj.status"));
+		mapping.put("startdate", List.of("oairecerif.project.startDate"));
+		mapping.put("status", List.of("oairecerif.project.status"));
 		mapping.put("title", List.of("dc.title"));
 		mapping.put("url", List.of("crispj.projectURL"));
 		mapping.put("dept", List.of("crispj.deptproject"));
 		mapping.put("createdate", List.of("dc.date.accessioned_dt")); //Creation-Time of Entity
 		
-		mapping.put("pj2rp", List.of("projectinvestigators_authority"));
-		mapping.put("pj2ou", List.of("crispj.deptproject_authority"));
+		mapping.put("project2person", List.of("projectinvestigators_authority"));
+		mapping.put("project2orgunit", List.of("crispj.deptproject_authority"));
 
 		ENTITYFILTER = new ArrayList<>();
 	}
@@ -163,13 +160,10 @@ public class Project implements EntityModel{
 
 	public String getNavigationFilter(String sourceType, String id) {
 		return switch (sourceType) {
-			case "Researchers" -> ("crispj.principalinvestigator_authority:\"" + id +
+			case "Persons" -> ("crispj.principalinvestigator_authority:\"" + id +
 				"\" OR crispj.coinvestigators_authority:\"" + id + "\"");
 			case "Orgunits" -> ("crispj.deptproject_authority:\"" + id + "\"");
 			case "Projects" -> ("crispj.parentproject_authority:\"" + id + "\"");
-			case "Orgunits_CHILD" ->
-				/* special function: returns all projects which belong to the specified ou and all children ou's and their projects. Use some special field being indexed in Dspace.*/
-				("pjsubsuccorgunit_authority:\"" + id + "\"");
 			default -> "";
 		};
 	}
