@@ -45,7 +45,7 @@ h6    {color: #002a4d;}
 	<h4 id="ent">Entities and their Relations:</h4>
 	<div>
 <img src="schema.svg" alt="Entities and their Relations" height="400px">
-<p>Visual overview on entities and their relations. Coming up entities are marked with <code>*</code> . All relations can also be traversed in their inverse relationship, e.g. Researchers/Publications and Publications/Researchers. Relations can only be traversed by a depth of 2.</p>
+<p>Visual overview on entities and their relations. Coming up entities are marked with <code>*</code> . All relations can also be traversed in their inverse relationship, e.g. Persons/Publications and Publications/Persons. Relations can only be traversed by a depth of 2.</p>
 	
 	<h6>Complete overview of metadata (all entities, properties and relations</h6>
 	<a href="/ODataService.svc/$metadata?$format=application/json">
@@ -65,8 +65,8 @@ h6    {color: #002a4d;}
 	<h6>Get all Projects:</h6>
 	<p><%=url %>ODataService.svc/Projects</p>
 
-	<h6>Get all Researchers:</h6>
-	<p><%=url %>ODataService.svc/Researchers</p>
+	<h6>Get all Persons:</h6>
+	<p><%=url %>ODataService.svc/Persons</p>
 
 	<h6>Get all Orgunits:</h6>
 	<p><%=url %>ODataService.svc/Orgunits</p>
@@ -77,34 +77,34 @@ h6    {color: #002a4d;}
 	<h4 id="request-entity">Get a specific entity:</h4>
 	<p class="pattern">Pattern: <code>{Service}/{EntitySet}(id)/</code></p>
 	<h6>Get Project entity with id 5:</h6>
-	<p><%=url %>ODataService.svc/Projects(5)</p>
+	<p><%=url %>ODataService.svc/Projects('5')</p>
 
-	<h6>Get Researcher entity with id 5:</h6>
-	<p><%=url %>ODataService.svc/Researchers(5)</p>
+	<h6>Get Person entity with id 5:</h6>
+	<p><%=url %>ODataService.svc/Persons('5')</p>
 
 	<h6>Get Orgunit entity with id 5:</h6>
-	<p><%=url %>ODataService.svc/Orgunits(5)</p>
+	<p><%=url %>ODataService.svc/Orgunits('5')</p>
 	
 	<h6>Get Journal entity with id 28:</h6>
-	<p>o<%=url %>ODataService.svc/Journals(28)</p>
+	<p>o<%=url %>ODataService.svc/Journals('28')</p>
 
 	<h4 id="request-entity-relation">Get entities which are linked to each other</h4>
 	<p class="pattern">Pattern:	<code>{Service}/{EntitySet}(id)/RelatedEntitySet</code></p>
 	
 	<h6>Get all Publications of OrganisationUnit with id 5</h6>
-	<p><%=url %>ODataService.svc/Orgunits(5)/Publications</p>
+	<p><%=url %>ODataService.svc/Orgunits('5')/Publications</p>
 
-	<h6>Get all Projects of Researcher with id 5</h6>
-	<p><%=url %>ODataService.svc/Researchers(5)/Projects</p>
+	<h6>Get all Projects of Person with id 5</h6>
+	<p><%=url %>ODataService.svc/Persons('5')/Projects</p>
 
 	<h6>Get all Researchers of OrganisationUnit with id 5</h6>
-	<p><%=url %>ODataService.svc/Orgunits(5)/Researchers</p>
+	<p><%=url %>ODataService.svc/Orgunits('5')/Persons</p>
 
 	<h6>Get all Publications of Journal with id 28</h6>
-	<p><%=url %>ODataService.svc/Journals(28)/Publications</p>
+	<p><%=url %>ODataService.svc/Journals('28')/Publications</p>
 	
 	<h6>Get all Publications of Project with id 5</h6>
-	<p><%=url %>ODataService.svc/Projects(5)/Publications</p>
+	<p><%=url %>ODataService.svc/Projects('5')/Publications</p>
 	
 	<h4 id="filters">Further options to add to request:</h4>
 	<div>
@@ -124,47 +124,47 @@ h6    {color: #002a4d;}
 	</div>
 	
 	<h6>Get Project entity with id 5 only containing metadata about attribute "title":</h6>
-	<p><%=url %>ODataService.svc/Projects(5)?$select=title</p>
+	<p><%=url %>ODataService.svc/Projects('5')?$select=title</p>
 
-	<h6>Get Organisation Unit entity with id 5 and include all Researchers belonging to this entity</h6>
-	<p><%=url %>ODataService.svc/Orgunits(5)?$expand=Researchers</p>
+	<h6>Get Organisation Unit entity with id 5 and include all Persons belonging to this entity</h6>
+	<p><%=url %>ODataService.svc/Orgunits('5')?$expand=Persons</p>
 
 	<h6>Get Project entity with id 5 and include all Publications belonging to this entity</h6>
-	<p><%=url %>ODataService.svc/Projects(5)?$expand=Publications</p>
+	<p><%=url %>ODataService.svc/Projects('5')?$expand=Publications</p>
 	
 	<h6>Get Journal entity with id 5 and include all Publications belonging to this entity</h6>
-	<p><%=url %>ODataService.svc/Journals(5)?$expand=Publications</p>
+	<p><%=url %>ODataService.svc/Journals('5')?$expand=Publications</p>
 
 	<h6>Get Publications of Orgunit with id 5 filtered by type 'book':</h6>
-	<p><%=url %>ODataService.svc/Orgunits(5)/Publications?$filter=contains(type,'book')</p>
+	<p><%=url %>ODataService.svc/Orgunits('5')/Publications?$filter=contains(type,'book')</p>
 
-	<h6>Get Publications of Researcher with id 5 and order the result by completedyear</h6>
-	<p><%=url %>ODataService.svc/Researchers(5)/Publications?$orderby= completedyear desc</p>
+	<h6>Get Publications of Person with id 5 and order the result by completedyear</h6>
+	<p><%=url %>ODataService.svc/Persons('5')/Publications?$orderby= completedyear desc</p>
 
 	<h4 id="functions">Functions</h4>
 	<p class="pattern">Pattern: <code>{Service}/{Function(Param*)}</code></p>
 	<p>Filter options can also be applied to functions</p>
 	<h5 id="csl">How to use Citation Style Language:</h5>
 	
-	<p>There are several methods which can be used to create a csl style: cslforresearcher(style,id);cslfororgunit(style,id) etc...</p>
+	<p>There are several methods which can be used to create a csl style: cslforperson(style,id);cslfororgunit(style,id) etc...</p>
 
-	<h6>Get Publications of researcher with id 1411 in style 'apa'</h6>
-	<p><%=baseurl %>ODataService.svc/cslforresearcher(style='apa',id=1411)</p>
+	<h6>Get Publications of person with id 1411 in style 'apa'</h6>
+	<p><%=baseurl %>ODataService.svc/cslforperson(style='apa',id='1411')</p>
 
 	<h6>Get Publications of orgunit with id 11 in style 'ieee'</h6>
-	<p><%=baseurl %>ODataService.svc/cslfororgunit(style='ieee',id=11)</p>
+	<p><%=baseurl %>ODataService.svc/cslfororgunit(style='ieee',id='11')</p>
 
 	<h6>It is still possible to add filter or order options to the uri:</h6>
-	<p><%=baseurl %>ODataService.svc/cslfororgunit(style='ieee',id=11)?$filter=contains(type,'book')</p>
+	<p><%=baseurl %>ODataService.svc/cslfororgunit(style='ieee',id='11')?$filter=contains(type,'book')</p>
 	
-	<h6>Get Publications of researcher with id 1411 in style 'apa'</h6>
-	<p><%=baseurl %>ODataService.svc/cslforresearcher(style='apa',id=1411)</p>
+	<h6>Get Publications of person with id 1411 in style 'apa'</h6>
+	<p><%=baseurl %>ODataService.svc/cslforperson(style='apa',id='1411')</p>
 	
 	<h6>Get Publications of journal with id 28 in style 'apa'</h6>
-	<p><%=baseurl %>ODataService.svc/cslforjournal(style='apa',id=28)</p>
+	<p><%=baseurl %>ODataService.svc/cslforjournal(style='apa',id='28')</p>
 	
 	<h6>Get Publications of project with id 236 in style 'apa'</h6>
-	<p><%=baseurl %>ODataService.svc/cslforproject(style='apa',id=236)</p>
+	<p><%=baseurl %>ODataService.svc/cslforproject(style='apa',id='236')</p>
 
 	</div>
 	

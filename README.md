@@ -1,3 +1,9 @@
+### About
+The configuration for these odata entities is aligned to the structure which is currently defined in the   
+[DSpace-Cris](https://github.com/4Science/DSpace/tree/dspace-cris-2023_02_x) `dspace-cris-2023_02_x` branch which is itself aligned to the [OpenAIRE Guidelines for Cris Manager](https://github.com/openaire/guidelines-cris-managers).   
+
+It is currently `Work in Progress` and will maintain some updates in near future.
+
 ### Build WAR File
 Build a war file form manual deployment with `./buildService.sh` the result is in the target
 folder.
