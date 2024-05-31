@@ -32,14 +32,13 @@ Example value:
 
 ### Adjustments regarding data model of dspace instance
 
-Already existing Entitys (Publication, Project, Researcher, Orgunit) can be used as default.
+Already existing Entitys (Publication, Project, Project, Orgunit) can be used as default.
 
 Probably need to be changed for entitys (regarding your database model):
 
 - `Resource_TYPE_FILTER` need to be changed, if you are using a different resource type filters at your dspace installation. You can find your Resource Type Filters in solr: `localhost:8080/solr/#/search/schema-browser?field=resourcetype_filter`
-- For Entity **Publication**: `ID_CONVERTER_TYP` need to be changed to the handle you are using at your dspace instance for dspace items
+- The Items are adresses using the uuid of the item in search.
 - Metadata field names and mapping of names in all Entities regarding your database model   
-
 
 All new Entities with metadata need to be definied in `src/main/java/entitys/` and added to `src/main/java/entitys/EntityRegister`.
 Relations between those entities and ComplexProperties (which represents NestedObjects from DspaceCris) need to be registered in the `EntitiyRegister` as well. 
@@ -52,8 +51,8 @@ Examples:
 * Get all Projects
 `http://localhost:8080/ODataService/ODataService.svc/Projects`
 
-* Get all Researchers
-`http://localhost:8080/ODataService/ODataService.svc/Researchers`
+* Get all Persons
+`http://localhost:8080/ODataService/ODataService.svc/Persons`
 
 * Get all Publications
 `http://localhost:8080/ODataService/ODataService.svc/Publications`
@@ -61,40 +60,40 @@ Examples:
 * Get all Orgunits
 `http://localhost:8080/ODataService/ODataService.svc/Orgunits`
 
-* Get Researcher with id 1
-`http://localhost:8080/ODataService/ODataService.svc/Researchers(1)`
+* Get Persons with id 1
+`http://localhost:8080/ODataService/ODataService.svc/Persons('1')`
 
 * Get Publication with id 7
-`http://localhost:8080/ODataService/ODataService.svc/Publications(7)`
+`http://localhost:8080/ODataService/ODataService.svc/Publications('7')`
 
 * Get all Publications of Orgunit with id 5
-`http://localhost:8080/ODataService/ODataService.svc/Orgunits(5)/Publications`
+`http://localhost:8080/ODataService/ODataService.svc/Orgunits('5')/Publications`
 
-* Get all Researchers of Orgunit with id 5
-`http://localhost:8080/ODataService/ODataService.svc/Orgunits(5)/Researchers`
+* Get all Persons of Orgunit with id 5
+`http://localhost:8080/ODataService/ODataService.svc/Orgunits('5')/Persons`
 
-* Get all Publications of Researcher with id 5
-`http://localhost:8080/ODataService/ODataService.svc/Researchers(5)/Publications`
+* Get all Publications of Person with id 5
+`http://localhost:8080/ODataService/ODataService.svc/Persons('5')/Publications`
 
-* Get all Researchers of Orgunit and Orgunit data with id 5 in single JSON Object
-`http://localhost:8070/ODataService/ODataService.svc/Orgunits(14)?$expand=Researchers`
+* Get all Persons of Orgunit and Orgunit data with id 5 in single JSON Object
+`http://localhost:8070/ODataService/ODataService.svc/Orgunits('14')?$expand=Persons`
 
-* Filter Researcher Name with String 'Test'
-`http://localhost:8080/ODataService/ODataService.svc/Researchers?$filter=contains(name,'Test')`
+* Filter Persons Name with String 'Test'
+`http://localhost:8080/ODataService/ODataService.svc/Persons?$filter=contains(name,'Test')`
 
-* Filter Publications of a Researcher with String 'Book'
-`http://localhost:8080/ODataService/ODataService.svc/Researchers(5)/Publications?$filter=contains(type,'Book')`
+* Filter Publications of a Person with String 'Book'
+`http://localhost:8080/ODataService/ODataService.svc/Persons('5')/Publications?$filter=contains(type,'Book')`
 
 ### Use OData API with CSL
 
-* Get all Publications of Researcher with id 5 in csl style 'apa'
-`http://localhost:8080/ODataService/ODataService.svc/cslforresearcher(style='apa',id=5)`
+* Get all Publications of Person with id 5 in csl style 'apa'
+`http://localhost:8080/ODataService/ODataService.svc/cslforresearcher(style='apa',id='5')`
 
 * Get Publications of orgunit with id 11 in style 'ieee'
-`http://localhost:8080/ODataService/ODataService.svc/cslfororgunit(style='ieee',id=11)`
+`http://localhost:8080/ODataService/ODataService.svc/cslfororgunit(style='ieee',id='11')`
 
 * It is still possible to add filter or order options to the uri:
-`.../cslfororgunit(style='ieee',id=11)?$filter=contains(type,'book')`
+`.../cslfororgunit(style='ieee',id='11')?$filter=contains(type,'book')`
 
 
 ### API Architecture
@@ -108,3 +107,7 @@ please have a look at:
 ![Apache Olingo](https://olingo.apache.org/doc/odata4/index.html)
 ![Olingo OData 4.0 Javadoc](https://olingo.apache.org/javadoc/odata4/index.html)
 
+
+## possible usage
+This plugin can be used together in Typo3, e.g. with the plugin provided here https://gitlab.rz.uni-bamberg.de/rz/rz/dspace-typo3-plugin
+- 
