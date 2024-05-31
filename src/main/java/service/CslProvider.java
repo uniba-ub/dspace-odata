@@ -1,8 +1,6 @@
 package service;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import de.undercouch.citeproc.ItemDataProvider;
 import de.undercouch.citeproc.csl.CSLItemData;
@@ -14,9 +12,9 @@ public class CslProvider implements ItemDataProvider{
 	public CslProvider(List<CSLItemData> itemdata) {
 		itemdataList = itemdata;
 	}
-
-	public Collection<String> getIds() {
-		return itemdataList.stream().map(CSLItemData::getId).collect(Collectors.toList());
+	
+	public String[] getIds() {	
+		return itemdataList.stream().map(CSLItemData::getId).toArray(String[]::new);
 	}
 
 	public CSLItemData retrieveItem(String id) {
